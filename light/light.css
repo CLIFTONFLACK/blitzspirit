@@ -37,18 +37,18 @@ body::after { opacity: 0.04; }
 /* product card wells: wall texture as concrete backing — garment photos
    use mix-blend-mode:multiply so white disappears, concrete shows through */
 .product-media {
-  background: #E9E5DC url('../assets/hero-wall-light.svg') center / cover no-repeat;
+  background: #E9E5DC url('../assets/brutalist-wall.png') center / cover no-repeat;
 }
 
 /* newsletter band: wall as backdrop */
 .newsletter {
-  background: url('../assets/hero-wall-light.svg') center / cover no-repeat;
+  background: url('../assets/brutalist-wall.png') center / cover no-repeat;
   background-color: var(--panel-black);
 }
 
 /* lead-gen modal: wall interior */
 .signup-modal {
-  background: url('../assets/hero-wall-light.svg') center / cover no-repeat;
+  background: url('../assets/brutalist-wall.png') center / cover no-repeat;
   background-color: var(--panel-black);
 }
 
@@ -58,7 +58,8 @@ body::after { opacity: 0.04; }
 .tile .tile-label span.count { color: #D8C18A; }
 .tile .tile-label span.count.waitlist { color: #E25A50; }
 
-/* hero: light wall + dark paint */
+/* hero: light wall + dark paint — undo the dark theme's darkening filter */
+.hero-bg.wall { filter: none; }
 .hero-bg.wall::after {
   background: linear-gradient(100deg, rgba(233, 229, 220, 0.30) 0%, rgba(233, 229, 220, 0) 45%, rgba(233, 229, 220, 0.12) 100%);
 }

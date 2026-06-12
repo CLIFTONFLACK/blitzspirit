@@ -251,7 +251,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visibl
 .hero-ctas { display: flex; flex-wrap: wrap; gap: 16px; }
 
 /* ---------- brutalist wall hero variant ---------- */
-.hero-bg.wall { opacity: 1; filter: none; animation: none; }
+/* photo is light concrete — pull it down to ink for the dark theme */
+.hero-bg.wall { opacity: 1; filter: brightness(0.34) contrast(1.1); animation: none; }
 .hero-bg.wall::after {
   background: linear-gradient(100deg, rgba(13,12,10,0.30) 0%, rgba(13,12,10,0) 45%, rgba(13,12,10,0.12) 100%);
 }

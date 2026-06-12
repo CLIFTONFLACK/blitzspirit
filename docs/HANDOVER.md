@@ -29,7 +29,7 @@ C:\Users\clift\Ai-Projects\SLC-BlitzSpirit\          ← session working dir (NO
 │   ├── 404.html               "Bombed out." (Vercel serves it automatically)
 │   ├── styles.css             all tokens + components (single stylesheet)
 │   ├── main.js                all interactivity (single file, no dependencies)
-│   ├── assets\                product imagery, heritage photos, hero-wall.svg
+│   ├── assets\                product imagery, heritage photos, brutalist-wall.png
 │   └── docs\                  DESIGN_SYSTEM.md, SHOPIFY_BUILD_SPEC.md,
 │                              LEAD_GENERATION.md, HANDOVER.md (this file)
 ├── website_design\            ← SUPERSEDED phase-1 mockups. Do not edit. Kept for history.
@@ -82,8 +82,13 @@ C:\Users\clift\Ai-Projects\SLC-BlitzSpirit\          ← session working dir (NO
 - **Signature component:** product card — panel-black, khaki hairline + corner ticks,
   bone image well (`mix-blend-mode: multiply` to sink white-bg photos), mono strap,
   Oswald name, swatch dots, hover colourway-swap + red QUICK ADD bar.
-- **Homepage hero:** brutalist board-formed concrete wall (`assets/hero-wall.svg`,
-  hand-built SVG) with the tagline as stencil-spray text (`h1.painted`, rotated −2°).
+- **Homepage hero:** real board-formed concrete wall photo (`assets/brutalist-wall.png`)
+  with the tagline as stencil-spray text (`h1.painted`, rotated −2°). The photo is light —
+  the dark theme darkens it via `filter: brightness(0.34)` on `.hero-bg.wall`; the light
+  theme uses it as-is (also behind product card wells, newsletter band and signup modal).
+- **Voice rules (2026-06-12):** no manifesto/political/lecture/philosophy/self-help copy,
+  no persuading the visitor. Attitude with a grin: NOT HERE TO BE LIKED / COME ON THEN /
+  WAKEY WAKEY register. The brand presents itself; the customer decides.
   The previous Blitz-London photo hero is still used on story/404 pages as backdrop.
 - **Anti-patterns:** no Union-Jack wallpaper, no glassmorphism/neon/rounded-bubble UI,
   max one red CTA per viewport, no pure white text.
