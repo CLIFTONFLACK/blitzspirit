@@ -71,19 +71,19 @@ Shopify policy templates; required for UK distance selling.
 hand-editing templates):
 - `custom.strapline` (single line) — e.g. "WARRIOR. QUEEN. LEGEND."
 - `custom.attitude` (rich text) — "The Attitude" panel copy from approved cards
-- `custom.era` (single line) — "BORN FIGHTING — EST. AD 60"
+- `custom.era` (single line) — "EST. AD 60 — STILL STANDING"
 
 ## 5. Page blueprints (match mockups)
 
 ### Homepage (`index.html`)
-1. **Announcement bar** — red, mono: "FREE UK DELIVERY OVER £40 — NO NONSENSE. NO SURRENDER."
+1. **Announcement bar** — red, mono: "FREE UK DELIVERY OVER £40 — NO NONSENSE. NO FUSS."
 2. **Hero** — darkened Blitz-London image, eyebrow, "URBAN FASHION WITH A BACKBONE." (red on "BACKBONE"), 2 CTAs
 3. **Marquee strip** — UNBOWED ■ UNBROKEN ■ UNFORGIVING ■ … (CSS-only, reduced-motion safe)
 4. **Featured collection** — 4 product cards (see §6)
 5. **Boudica editorial split** — image + "The Attitude" copy + "GO ON THEN." + CTA
 6. **Heritage band (bone)** — lion stencil, dictionary-style definition, Churchill quote
 7. **Collection tiles** — T-Shirts / Headwear / Accessories ("Incoming")
-8. **Newsletter** — "JOIN THE RESISTANCE TO CORROSION"
+8. **Newsletter** — "WAKEY WAKEY." (Join the Home Guard, code BACKBONE10)
 9. **Footer** — brand blurb, Shop/Help/Brand columns, payments line
 
 ### Collection (`collection.html`)
@@ -95,7 +95,7 @@ Breadcrumb → gallery (main + 5 thumbs incl. design-detail crop) → eyebrow / 
 strapline / price / stock line → colour swatches → size pills (+ size guide link) →
 qty + ADD TO BASKET (red) + Buy-it-now (ghost) → trust row → **The Attitude panel**
 (khaki frame, mono, from metafield) → accordions (Fabric & fit / The print /
-Delivery & returns) → "REINFORCEMENTS — PAIR IT WITH" cross-sell row.
+Delivery & returns) → "GOOD COMPANY — PAIR IT WITH" cross-sell row.
 
 ## 6. Product card spec (the signature component)
 
@@ -130,7 +130,7 @@ Derived from approved BOUDICA/ROUNDEL cards:
 ## 9. Voice & microcopy bank (use everywhere)
 
 - Buttons: SHOP THE COLLECTION · QUICK ADD + · ADD TO BASKET · GO ON THEN.
-- Badges/sections: THE ARMOURY · DISPATCHES · REINFORCEMENTS · CHOOSE YOUR WEAPON
+- Badges/sections: THE KIT · DISPATCHES · GOOD COMPANY · TAKE YOUR PICK
 - Trust: "30-day no-quibble returns — that would be nonsense."
 - Empty cart: "Nothing in here. That's not very Blitz of you."
 - 404: "Bombed out. The page is gone — the spirit isn't."

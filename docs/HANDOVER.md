@@ -88,7 +88,9 @@ C:\Users\clift\Ai-Projects\SLC-BlitzSpirit\          ← session working dir (NO
   theme uses it as-is (also behind product card wells, newsletter band and signup modal).
 - **Voice rules (2026-06-12):** no manifesto/political/lecture/philosophy/self-help copy,
   no persuading the visitor. Attitude with a grin: NOT HERE TO BE LIKED / COME ON THEN /
-  WAKEY WAKEY register. The brand presents itself; the customer decides.
+  WAKEY WAKEY register. The brand presents itself; the customer decides. Militant register
+  dialled down too: no surrender/weapon/war/armoury/conscription/soldier wording — cosy
+  period texture stays (Home Guard, Field Manual, Quartermaster's, "Bombed out.").
   The previous Blitz-London photo hero is still used on story/404 pages as backdrop.
 - **Anti-patterns:** no Union-Jack wallpaper, no glassmorphism/neon/rounded-bubble UI,
   max one red CTA per viewport, no pure white text.

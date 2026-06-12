@@ -166,7 +166,7 @@
     '<div class="signup-inner">' +
       '<span class="frame-tick tl" aria-hidden="true"></span><span class="frame-tick br" aria-hidden="true"></span>' +
       '<button class="modal-close" type="button" aria-label="Close">&times;</button>' +
-      '<p class="eyebrow">Conscription Office</p>' +
+      '<p class="eyebrow">Dispatches</p>' +
       '<h2>Join the Home Guard.<br>Take <span class="red">10&#37; off</span> your first order.</h2>' +
       '<p>First word on new drops and restocks, stories worth telling, and a code for 10&#37; off. No spam &mdash; that would be nonsense.</p>' +
       '<form data-newsletter>' +
@@ -195,7 +195,7 @@
       '<div class="signup-success">' +
         '<p class="eyebrow">Orders received</p>' +
         '<h2>Welcome to the Home Guard.</h2>' +
-        '<p>Your 10&#37; code, soldier:</p>' +
+        '<p>Your 10&#37; code:</p>' +
         '<span class="code">BACKBONE10</span><br><br>' +
         '<button class="btn btn-primary" type="button" data-close>Carry on shopping</button>' +
       '</div>';

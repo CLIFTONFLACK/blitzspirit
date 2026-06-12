@@ -9,8 +9,12 @@
   Unbowed. Unbroken. Unforgiving." / "Go on then.")
 - **Story:** Blitz spirit — courage under adversity, British cultural heritage,
   wartime grit recast for today. Ironic and iconic, never costume-party.
-- **Taglines:** "Urban fashion with a backbone." · "Born fighting." · "No nonsense, no
-  political correctness, and no surrender."
+- **Taglines:** "Urban fashion with a backbone." · "Not here to be liked." ·
+  "Come on then." · "Wakey wakey." · "No nonsense. No fuss."
+- **Voice limits (2026-06-12):** no manifesto/political/lecture/philosophy/self-help
+  copy, no persuading the visitor, and militant register dialled down — no
+  surrender/weapon/war/armoury/conscription wording. Cosy period texture is fine
+  (Home Guard, Field Manual, Quartermaster's, "Bombed out."); fighting talk is not.
 
 ## Colour tokens
 | Token | Hex | Usage |
