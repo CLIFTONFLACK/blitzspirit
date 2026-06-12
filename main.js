@@ -1,4 +1,4 @@
-/* BlitzSpirit — shared interactivity
+﻿/* BlitzSpirit — shared interactivity
    Scroll reveals, mobile drawer, quick-add toasts, PDP options,
    newsletter + signup modal (lead gen). No dependencies. */
 (function () {
@@ -218,4 +218,102 @@
       }
     });
   }
+
+  /* ---------- theme toggle ---------- */
+  var isLight = location.pathname.indexOf('/light/') !== -1;
+  var themeBtn = document.createElement('button');
+  themeBtn.className = 'theme-toggle';
+  themeBtn.type = 'button';
+  themeBtn.setAttribute('aria-label', isLight ? 'Switch to dark theme' : 'Switch to light theme');
+  themeBtn.textContent = isLight ? 'Dark' : 'Light';
+  var headerIcons = document.querySelector('.header-icons');
+  if (headerIcons) headerIcons.insertBefore(themeBtn, headerIcons.firstChild);
+  themeBtn.addEventListener('click', function () {
+    var p = location.pathname;
+    if (isLight) {
+      location.href = p.replace(/^\/light\//, '/') || '/index.html';
+    } else {
+      var page = p.split('/').pop() || 'index.html';
+      location.href = 'light/' + (page || 'index.html');
+    }
+  });
+
+  /* ---------- feedback widget ---------- */
+  var fbTheme = isLight ? 'light' : 'dark';
+
+  var fbBtn = document.createElement('button');
+  fbBtn.className = 'feedback-btn';
+  fbBtn.type = 'button';
+  fbBtn.setAttribute('aria-label', 'Leave a note');
+  fbBtn.setAttribute('aria-expanded', 'false');
+  fbBtn.textContent = '[ note ]';
+  document.body.appendChild(fbBtn);
+
+  var fbPanel = document.createElement('div');
+  fbPanel.className = 'feedback-panel';
+  fbPanel.setAttribute('role', 'complementary');
+  fbPanel.setAttribute('aria-label', 'Leave a note');
+  fbPanel.innerHTML =
+    '<div class="feedback-panel-head">' +
+      '<span class="eyebrow">Leave a note</span>' +
+      '<button class="feedback-panel-close" type="button" aria-label="Close">&times;</button>' +
+    '</div>' +
+    '<textarea placeholder="What\'s wrong, unclear, or could be better?"></textarea>' +
+    '<button class="btn btn-primary" type="button" data-fb-send>Send</button>' +
+    '<p class="feedback-panel-status"></p>';
+  document.body.appendChild(fbPanel);
+
+  var fbTextarea = fbPanel.querySelector('textarea');
+  var fbStatus = fbPanel.querySelector('.feedback-panel-status');
+
+  function fbOpen() {
+    fbPanel.classList.add('fb-open');
+    fbBtn.setAttribute('aria-expanded', 'true');
+    fbTextarea.focus();
+  }
+  function fbClose() {
+    fbPanel.classList.remove('fb-open');
+    fbBtn.setAttribute('aria-expanded', 'false');
+    fbTextarea.value = '';
+    fbStatus.textContent = '';
+  }
+
+  fbBtn.addEventListener('click', fbOpen);
+  fbPanel.querySelector('.feedback-panel-close').addEventListener('click', fbClose);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && fbPanel.classList.contains('fb-open')) fbClose();
+  });
+
+  fbPanel.querySelector('[data-fb-send]').addEventListener('click', function () {
+    var comment = fbTextarea.value.trim();
+    if (!comment) { fbTextarea.focus(); return; }
+    var sendBtn = this;
+    sendBtn.disabled = true;
+    sendBtn.textContent = 'Sending…';
+    fbStatus.style.color = '';
+    fbStatus.textContent = '';
+
+    fetch('/api/feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ page: location.pathname, comment: comment, theme: fbTheme })
+    }).then(function (r) {
+      if (r.ok || r.status === 201) {
+        fbStatus.style.color = 'var(--khaki-gold)';
+        fbStatus.textContent = 'Noted. Cheers.';
+        fbTextarea.value = '';
+        setTimeout(fbClose, 2000);
+      } else {
+        fbStatus.style.color = 'var(--blood-red)';
+        fbStatus.textContent = 'No luck - try again.';
+      }
+      sendBtn.disabled = false;
+      sendBtn.textContent = 'Send';
+    }).catch(function () {
+      fbStatus.style.color = 'var(--blood-red)';
+        fbStatus.textContent = 'No luck - try again.';
+      sendBtn.disabled = false;
+      sendBtn.textContent = 'Send';
+    });
+  });
 })();

@@ -875,3 +875,91 @@ body.drawer-open .drawer-backdrop { opacity: 1; pointer-events: auto; }
 /* ---------- waitlist chip on tiles ---------- */
 .tile .tile-label span.count.waitlist { color: var(--blood-red); }
 
+/* ---------- feedback widget ---------- */
+.feedback-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 95;
+  background: var(--panel-black);
+  border: 1px solid var(--khaki-line-strong);
+  color: var(--bone-dim);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  padding: 7px 13px;
+  transition: border-color 0.18s, color 0.18s;
+}
+.feedback-btn:hover { border-color: var(--khaki-gold); color: var(--bone); }
+
+.feedback-panel {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 320px;
+  max-width: 100vw;
+  background: var(--panel-black);
+  border-top: 1px solid var(--khaki-line-strong);
+  border-left: 1px solid var(--khaki-line-strong);
+  z-index: 96;
+  padding: 22px 24px 26px;
+  transform: translateY(calc(100% + 2px));
+  transition: transform 0.22s ease;
+}
+.feedback-panel.fb-open { transform: translateY(0); }
+.feedback-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.feedback-panel-close {
+  background: none;
+  border: none;
+  color: var(--bone-dim);
+  font-size: 18px;
+  line-height: 1;
+  padding: 0;
+}
+.feedback-panel-close:hover { color: var(--bone); }
+.feedback-panel textarea {
+  display: block;
+  width: 100%;
+  background: var(--ink-black);
+  border: 1px solid var(--khaki-line-strong);
+  color: var(--bone);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.55;
+  padding: 10px 12px;
+  resize: vertical;
+  min-height: 88px;
+  margin-bottom: 12px;
+}
+.feedback-panel textarea::placeholder { color: var(--bone-dim); opacity: 1; }
+.feedback-panel textarea:focus { outline: 2px solid var(--khaki-gold); outline-offset: 0; border-color: transparent; }
+.feedback-panel-status {
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  min-height: 16px;
+}
+
+/* ---------- theme toggle ---------- */
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--khaki-line);
+  color: var(--bone-dim);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  transition: border-color 0.18s, color 0.18s;
+  margin-right: 6px;
+}
+.theme-toggle:hover { border-color: var(--khaki-gold); color: var(--bone); }
+

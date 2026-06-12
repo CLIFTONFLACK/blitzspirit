@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BlitzSpirit — Admin</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Admin-specific layout — tokens from styles.css */
+    .admin-header { border-bottom: 1px solid var(--khaki-line); padding: 48px 0 32px; margin-bottom: 40px; }
+    .admin-header h1 { font-family: var(--font-display); font-size: clamp(28px, 4vw, 48px); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+    .admin-header .badge { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.22em; color: var(--blood-red); text-transform: uppercase; margin-bottom: 8px; }
+
+    /* Connect screen */
+    #connect-screen { min-height: 60vh; display: flex; align-items: center; }
+    .connect-box { max-width: 480px; }
+    .connect-box p { color: var(--bone-dim); margin-bottom: 24px; }
+    .connect-box input[type="password"] {
+      display: block; width: 100%;
+      background: var(--panel-black); border: 1px solid var(--khaki-line-strong);
+      color: var(--bone); font-family: var(--font-mono); font-size: 12px;
+      letter-spacing: 0.08em; padding: 12px 14px; margin-bottom: 12px;
+    }
+    .connect-box input[type="password"]:focus { outline: 2px solid var(--khaki-gold); outline-offset: 0; border-color: transparent; }
+    .connect-box input::placeholder { color: var(--bone-dim); }
+
+    /* Dashboard */
+    #dashboard { display: none; }
+    #dashboard.active { display: block; }
+
+    /* Stats bar */
+    .admin-stats {
+      display: flex; gap: 32px; flex-wrap: wrap; align-items: center;
+      padding: 18px 22px; background: var(--panel-black);
+      border: 1px solid var(--khaki-line); margin-bottom: 24px;
+    }
+    .stat { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--bone-dim); }
+    .stat strong { display: block; font-size: 22px; font-family: var(--font-display); font-weight: 700; color: var(--bone); margin-top: 2px; }
+    .stat.pending strong { color: var(--khaki-gold); }
+    .stat.applied strong { color: #5a9e6f; }
+    .stat.dismissed strong { color: var(--bone-dim); }
+
+    /* Toolbar */
+    .admin-toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; margin-bottom: 20px; }
+    .filter-group { display: flex; gap: 0; border: 1px solid var(--khaki-line); }
+    .filter-btn {
+      background: none; border: none; border-right: 1px solid var(--khaki-line);
+      color: var(--bone-dim); font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.18em; text-transform: uppercase; padding: 8px 16px;
+      transition: background 0.15s, color 0.15s; cursor: pointer;
+    }
+    .filter-btn:last-child { border-right: none; }
+    .filter-btn:hover { color: var(--bone); background: var(--panel-black); }
+    .filter-btn.active { background: var(--khaki-gold); color: var(--ink-black); }
+
+    .run-btn { position: relative; }
+    .run-btn.running { opacity: 0.6; pointer-events: none; }
+
+    /* Table */
+    .feedback-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .feedback-table th {
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--khaki-gold); padding: 10px 14px; text-align: left;
+      border-bottom: 1px solid var(--khaki-line-strong); white-space: nowrap;
+    }
+    .feedback-table td { padding: 14px; border-bottom: 1px solid var(--khaki-line); vertical-align: top; }
+    .feedback-table tr:last-child td { border-bottom: none; }
+    .feedback-table tr:hover td { background: var(--panel-black); }
+
+    .cell-date { font-family: var(--font-mono); font-size: 11px; color: var(--bone-dim); white-space: nowrap; min-width: 90px; }
+    .cell-page { font-family: var(--font-mono); font-size: 11px; color: var(--bone-dim); max-width: 160px; word-break: break-all; }
+    .cell-theme .theme-pill {
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase;
+      padding: 2px 7px; border: 1px solid var(--khaki-line);
+    }
+    .cell-theme .theme-pill.light { border-color: rgba(184,155,94,0.5); color: var(--khaki-gold); }
+    .cell-comment { max-width: 340px; color: var(--bone); line-height: 1.5; }
+    .cell-status .status-pill {
+      display: inline-block; font-family: var(--font-mono); font-size: 9px;
+      letter-spacing: 0.16em; text-transform: uppercase; padding: 3px 8px;
+      border: 1px solid;
+    }
+    .status-pill.pending { color: var(--khaki-gold); border-color: var(--khaki-gold); }
+    .status-pill.applied { color: #5a9e6f; border-color: #5a9e6f; }
+    .status-pill.dismissed { color: var(--bone-dim); border-color: var(--khaki-line); }
+
+    .cell-actions { white-space: nowrap; }
+    .action-btn {
+      background: none; border: 1px solid var(--khaki-line); color: var(--bone-dim);
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
+      padding: 4px 10px; cursor: pointer; transition: border-color 0.15s, color 0.15s; margin-right: 6px;
+    }
+    .action-btn:hover { border-color: var(--khaki-gold); color: var(--bone); }
+    .action-btn.apply:hover { border-color: #5a9e6f; color: #5a9e6f; }
+    .action-btn.dismiss:hover { border-color: var(--blood-red); color: var(--blood-red); }
+    .action-btn:disabled { opacity: 0.35; pointer-events: none; }
+
+    .empty-state { text-align: center; padding: 64px 0; color: var(--bone-dim); font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
+
+    /* Toast */
+    .admin-toast {
+      position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(12px);
+      background: var(--panel-black); border: 1px solid var(--khaki-line-strong);
+      color: var(--bone); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em;
+      padding: 11px 20px; opacity: 0; transition: opacity 0.2s, transform 0.2s; pointer-events: none; z-index: 200;
+    }
+    .admin-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* Disconnect link */
+    .disconnect-link { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--bone-dim); cursor: pointer; }
+    .disconnect-link:hover { color: var(--blood-red); }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html" aria-label="BlitzSpirit home">
+        <span class="logo-mark">blitzspirit</span>
+      </a>
+      <span class="eyebrow" style="margin-left:16px;align-self:center;">Admin</span>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Connect screen -->
+    <div id="connect-screen" class="admin-header">
+      <div class="connect-box">
+        <p class="badge">Feedback Admin</p>
+        <h1>Connect</h1>
+        <p>Enter your Supabase service role key. Stays in this browser tab only.</p>
+        <input type="password" id="key-input" placeholder="eyJ..." autocomplete="off" spellcheck="false">
+        <button class="btn btn-primary" id="connect-btn">Connect</button>
+      </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard">
+      <div class="admin-header" style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+        <div>
+          <p class="badge">Feedback Admin</p>
+          <h1>Feedback Queue</h1>
+        </div>
+        <span class="disconnect-link" id="disconnect-link">Disconnect</span>
+      </div>
+
+      <!-- Stats -->
+      <div class="admin-stats">
+        <div class="stat pending"><span>Pending</span><strong id="count-pending">—</strong></div>
+        <div class="stat applied"><span>Applied</span><strong id="count-applied">—</strong></div>
+        <div class="stat dismissed"><span>Dismissed</span><strong id="count-dismissed">—</strong></div>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="admin-toolbar">
+        <div class="filter-group">
+          <button class="filter-btn active" data-filter="pending">Pending</button>
+          <button class="filter-btn" data-filter="applied">Applied</button>
+          <button class="filter-btn" data-filter="dismissed">Dismissed</button>
+          <button class="filter-btn" data-filter="all">All</button>
+        </div>
+        <button class="btn btn-primary run-btn" id="run-btn">&#9654; Run Processor Now</button>
+      </div>
+
+      <!-- Table -->
+      <div style="overflow-x:auto;">
+        <table class="feedback-table" id="feedback-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Page</th>
+              <th>Theme</th>
+              <th>Comment</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="feedback-tbody"></tbody>
+        </table>
+        <div class="empty-state" id="empty-state" style="display:none;">Bombed out. Nothing here.</div>
+      </div>
+    </div>
+
+  </main>
+
+  <div class="admin-toast" id="admin-toast"></div>
+
+  <script>
+    var SUPABASE_URL = 'https://ojrzxknkovkiafzejegy.supabase.co';
+    var currentFilter = 'pending';
+    var allFeedback = [];
+    var serviceKey = '';
+
+    /* ---- utils ---- */
+    function apiHeaders(key) {
+      return { 'apikey': key || serviceKey, 'Authorization': 'Bearer ' + (key || serviceKey), 'Content-Type': 'application/json' };
+    }
+
+    var toastTimer;
+    function toast(msg, duration) {
+      var el = document.getElementById('admin-toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function() { el.classList.remove('show'); }, duration || 2800);
+    }
+
+    function fmt(iso) {
+      if (!iso) return '';
+      var d = new Date(iso);
+      return d.toLocaleDateString('en-GB', { day:'2-digit', month:'short' }) + ' ' +
+             d.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
+    }
+
+    /* ---- connect / disconnect ---- */
+    function connect(key) {
+      serviceKey = key;
+      sessionStorage.setItem('bs_admin_key', key);
+      document.getElementById('connect-screen').style.display = 'none';
+      document.getElementById('dashboard').classList.add('active');
+      loadFeedback();
+    }
+
+    function disconnect() {
+      sessionStorage.removeItem('bs_admin_key');
+      serviceKey = '';
+      allFeedback = [];
+      document.getElementById('connect-screen').style.display = '';
+      document.getElementById('dashboard').classList.remove('active');
+      document.getElementById('key-input').value = '';
+    }
+
+    document.getElementById('connect-btn').addEventListener('click', function() {
+      var key = document.getElementById('key-input').value.trim();
+      if (!key) { document.getElementById('key-input').focus(); return; }
+      connect(key);
+    });
+
+    document.getElementById('key-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') document.getElementById('connect-btn').click();
+    });
+
+    document.getElementById('disconnect-link').addEventListener('click', disconnect);
+
+    /* ---- load feedback ---- */
+    function loadFeedback() {
+      fetch(SUPABASE_URL + '/rest/v1/feedback?order=created_at.desc', { headers: apiHeaders() })
+        .then(function(r) {
+          if (r.status === 401 || r.status === 403) { toast('Invalid key — disconnecting.'); setTimeout(disconnect, 1500); return null; }
+          return r.json();
+        })
+        .then(function(data) {
+          if (!data) return;
+          allFeedback = data;
+          updateStats();
+          renderTable();
+        })
+        .catch(function() { toast('Could not load feedback.'); });
+    }
+
+    /* ---- stats ---- */
+    function updateStats() {
+      document.getElementById('count-pending').textContent = allFeedback.filter(function(f) { return f.status === 'pending'; }).length;
+      document.getElementById('count-applied').textContent = allFeedback.filter(function(f) { return f.status === 'applied'; }).length;
+      document.getElementById('count-dismissed').textContent = allFeedback.filter(function(f) { return f.status === 'dismissed'; }).length;
+    }
+
+    /* ---- render table ---- */
+    function renderTable() {
+      var items = currentFilter === 'all' ? allFeedback : allFeedback.filter(function(f) { return f.status === currentFilter; });
+      var tbody = document.getElementById('feedback-tbody');
+      var empty = document.getElementById('empty-state');
+
+      if (!items.length) {
+        tbody.innerHTML = '';
+        empty.style.display = '';
+        return;
+      }
+      empty.style.display = 'none';
+
+      tbody.innerHTML = items.map(function(f) {
+        var isPending = f.status === 'pending';
+        return '<tr data-id="' + f.id + '">' +
+          '<td class="cell-date">' + fmt(f.created_at) + '</td>' +
+          '<td class="cell-page">' + escHtml(f.page || '') + '</td>' +
+          '<td class="cell-theme"><span class="theme-pill ' + (f.theme || '') + '">' + (f.theme || '—') + '</span></td>' +
+          '<td class="cell-comment">' + escHtml(f.comment || '') + '</td>' +
+          '<td class="cell-status"><span class="status-pill ' + f.status + '">' + f.status + '</span></td>' +
+          '<td class="cell-actions">' +
+            (isPending ? '<button class="action-btn apply" data-action="applied" data-id="' + f.id + '">Apply</button>' : '') +
+            (f.status !== 'dismissed' ? '<button class="action-btn dismiss" data-action="dismissed" data-id="' + f.id + '">Dismiss</button>' : '') +
+          '</td>' +
+        '</tr>';
+      }).join('');
+    }
+
+    function escHtml(s) {
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    /* ---- action buttons (delegated) ---- */
+    document.getElementById('feedback-tbody').addEventListener('click', function(e) {
+      var btn = e.target.closest('.action-btn[data-action]');
+      if (!btn) return;
+      var id = btn.dataset.id;
+      var newStatus = btn.dataset.action;
+      btn.disabled = true;
+
+      fetch(SUPABASE_URL + '/rest/v1/feedback?id=eq.' + id, {
+        method: 'PATCH',
+        headers: Object.assign({}, apiHeaders(), { 'Prefer': 'return=minimal' }),
+        body: JSON.stringify({ status: newStatus })
+      }).then(function(r) {
+        if (r.ok) {
+          var item = allFeedback.find(function(f) { return f.id === id; });
+          if (item) item.status = newStatus;
+          updateStats();
+          renderTable();
+          toast(newStatus === 'applied' ? 'Marked applied.' : 'Dismissed.');
+        } else {
+          toast('Update failed.');
+          btn.disabled = false;
+        }
+      }).catch(function() { toast('Update failed.'); btn.disabled = false; });
+    });
+
+    /* ---- filter tabs ---- */
+    document.querySelectorAll('.filter-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        renderTable();
+      });
+    });
+
+    /* ---- run processor now ---- */
+    document.getElementById('run-btn').addEventListener('click', function() {
+      var btn = this;
+      btn.classList.add('running');
+      btn.textContent = 'Queuing...';
+
+      fetch(SUPABASE_URL + '/rest/v1/run_queue?id=eq.1', {
+        method: 'PATCH',
+        headers: Object.assign({}, apiHeaders(), { 'Prefer': 'return=minimal' }),
+        body: JSON.stringify({ requested: true, requested_at: new Date().toISOString() })
+      }).then(function(r) {
+        if (r.ok) {
+          toast('Processor queued. Claude will run within the hour. For immediate execution, type "run feedback now" in Claude Code.');
+        } else {
+          toast('Could not queue run.');
+        }
+      }).catch(function() {
+        toast('Could not queue run.');
+      }).finally(function() {
+        btn.classList.remove('running');
+        btn.innerHTML = '&#9654; Run Processor Now';
+      });
+    });
+
+    /* ---- auto-refresh every 60s ---- */
+    setInterval(function() { if (serviceKey) loadFeedback(); }, 60000);
+
+    /* ---- init: restore session ---- */
+    var saved = sessionStorage.getItem('bs_admin_key');
+    if (saved) { connect(saved); }
+  </script>
+</body>
+</html>
