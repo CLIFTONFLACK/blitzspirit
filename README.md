@@ -1,6 +1,6 @@
 # BlitzSpirit.co.uk
 
-**T-shirts with a backbone.** British heritage apparel — ironic and iconic designs
+**Urban fashion with a backbone.** British heritage apparel — ironic and iconic designs
 evoking the grit of the Blitz. Unbowed. Unbroken. Unforgiving.
 
 ## Live site

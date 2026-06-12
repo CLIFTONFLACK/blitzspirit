@@ -2,14 +2,14 @@
 
 > Derived from approved brand assets (web product cards BOUDICA + ROUNDEL, final
 > t-shirt designs, red wordmark logo) — these override any generic recommendations.
-> Project: BlitzSpirit.co.uk — Shopify ecommerce. "T-shirts with a backbone."
+> Project: BlitzSpirit.co.uk — Shopify ecommerce. "Urban fashion with a backbone."
 
 ## Brand essence
 - **Voice:** Defiant, ironic, clipped. Short declarative sentences. ("She stands.
   Unbowed. Unbroken. Unforgiving." / "Go on then.")
 - **Story:** Blitz spirit — courage under adversity, British cultural heritage,
   wartime grit recast for today. Ironic and iconic, never costume-party.
-- **Taglines:** "T-shirts with a backbone." · "Born fighting." · "No nonsense, no
+- **Taglines:** "Urban fashion with a backbone." · "Born fighting." · "No nonsense, no
   political correctness, and no surrender."
 
 ## Colour tokens

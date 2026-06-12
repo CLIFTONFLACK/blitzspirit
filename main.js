@@ -61,7 +61,7 @@
     drawer.setAttribute('aria-label', 'Mobile navigation');
     var head = document.createElement('div');
     head.className = 'drawer-head';
-    head.innerHTML = '<img src="assets/logo-box.png" alt="BlitzSpirit">' +
+    head.innerHTML = '<span class="logo-mark">blitzspirit</span>' +
       '<button class="drawer-close" type="button" aria-label="Close menu">&times;</button>';
     drawer.appendChild(head);
     document.querySelectorAll('.main-nav a').forEach(function (a) {

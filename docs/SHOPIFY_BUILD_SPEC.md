@@ -8,7 +8,7 @@ Open `index.html` in a browser to see the design.
 
 ## 1. Positioning recap
 
-- **Brand promise:** "T-shirts with a backbone." British heritage, Blitz-era grit,
+- **Brand promise:** "Urban fashion with a backbone." British heritage, Blitz-era grit,
   ironic-and-iconic. Customers wear the brand to say what kind of Britain they want back.
 - **Tone:** Defiant, clipped, dry humour. ("Politely menacing since the Blitz." /
   "30-day no-quibble returns — that would be nonsense.")
@@ -77,7 +77,7 @@ hand-editing templates):
 
 ### Homepage (`index.html`)
 1. **Announcement bar** — red, mono: "FREE UK DELIVERY OVER £40 — NO NONSENSE. NO SURRENDER."
-2. **Hero** — darkened Blitz-London image, eyebrow, "T-SHIRTS WITH A BACKBONE." (red on "BACKBONE"), 2 CTAs
+2. **Hero** — darkened Blitz-London image, eyebrow, "URBAN FASHION WITH A BACKBONE." (red on "BACKBONE"), 2 CTAs
 3. **Marquee strip** — UNBOWED ■ UNBROKEN ■ UNFORGIVING ■ … (CSS-only, reduced-motion safe)
 4. **Featured collection** — 4 product cards (see §6)
 5. **Boudica editorial split** — image + "The Attitude" copy + "GO ON THEN." + CTA

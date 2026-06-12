@@ -112,6 +112,23 @@ a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visibl
   height: 72px;
 }
 .logo img { height: 30px; width: auto; filter: var(--red-filter); }
+/* Text logo — lowercase boxed wordmark, as on the caps and neck labels */
+.logo-mark {
+  font-family: 'Bevan', 'Rockwell', serif;
+  font-size: 20px;
+  line-height: 1;
+  text-transform: lowercase;
+  letter-spacing: 0.01em;
+  color: var(--blood-red);
+  border: 2px solid currentColor;
+  border-radius: 9px;
+  padding: 7px 13px 9px;
+  display: inline-block;
+  white-space: nowrap;
+}
+.footer-brand .logo-mark { font-size: 16px; margin-bottom: 18px; }
+.drawer .drawer-head .logo-mark { font-size: 14px; }
+@media (max-width: 480px) { .logo-mark { font-size: 17px; padding: 6px 10px 8px; } }
 .main-nav { display: flex; gap: 34px; }
 .main-nav a {
   font-family: var(--font-mono);
