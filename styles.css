@@ -201,13 +201,13 @@ a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visibl
   position: absolute; inset: 0;
   background-size: cover;
   background-position: center 30%;
-  filter: grayscale(35%) contrast(1.05);
-  opacity: 0.38;
+  filter: grayscale(15%) contrast(1.06);
+  opacity: 0.68;
 }
 .hero-bg::after {
   content: '';
   position: absolute; inset: 0;
-  background: linear-gradient(100deg, rgba(13,12,10,0.96) 18%, rgba(13,12,10,0.55) 55%, rgba(13,12,10,0.82) 100%);
+  background: linear-gradient(100deg, rgba(13,12,10,0.88) 14%, rgba(13,12,10,0.38) 52%, rgba(13,12,10,0.18) 100%);
 }
 .hero-content { position: relative; z-index: 2; max-width: 720px; padding: 120px 0; }
 .hero h1 {
