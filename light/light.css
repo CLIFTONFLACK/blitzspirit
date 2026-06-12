@@ -34,10 +34,13 @@ body::after { opacity: 0.04; }
 .feature-media, .gallery-main, .thumb { background: #F4EFE4; }
 .tile .tile-img.is-bone { background-color: #F4EFE4; }
 
-/* product card wells: wall texture as concrete backing — garment photos
-   use mix-blend-mode:multiply so white disappears, concrete shows through */
+/* product card wells: concrete backing knocked back to a whisper — the garment
+   photos multiply onto the well, so wall seams/holes would show straight through
+   white shirts at full strength; keep it subtle until cut-out photography (v2) */
 .product-media {
-  background: #E9E5DC url('../assets/brutalist-wall.png') center / cover no-repeat;
+  background:
+    linear-gradient(rgba(244, 239, 228, 0.9), rgba(244, 239, 228, 0.9)),
+    url('../assets/brutalist-wall.png') center / cover no-repeat;
 }
 
 /* newsletter band: wall as backdrop */
