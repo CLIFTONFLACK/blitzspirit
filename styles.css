@@ -119,7 +119,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visibl
   line-height: 1;
   text-transform: lowercase;
   letter-spacing: 0.01em;
-  color: var(--blood-red);
+  color: var(--bone);
   border: 2px solid currentColor;
   border-radius: 9px;
   padding: 7px 13px 9px;
