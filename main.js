@@ -101,7 +101,8 @@
   }
 
   /* ---------- PDP: colour swatches swap image ---------- */
-  var colourMap = { 'Black': 'assets/tee-boudica-black.jpg', 'Off white': 'assets/tee-boudica-offwhite.jpg' };
+  var ASSET_BASE = location.pathname.indexOf('/light/') === -1 ? 'assets/' : '../assets/';
+  var colourMap = { 'Black': ASSET_BASE + 'tee-boudica-black.jpg', 'Off white': ASSET_BASE + 'tee-boudica-offwhite.jpg' };
   document.querySelectorAll('.colour-opt').forEach(function (b) {
     b.addEventListener('click', function () {
       document.querySelectorAll('.colour-opt').forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
