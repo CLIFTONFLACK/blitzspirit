@@ -1,17 +1,19 @@
 /* ============================================================
    BLITZSPIRIT — LIGHT THEME OVERRIDES (/light/)
-   Inverted palette: light concrete background, ink text.
+   Inverted palette keyed to the brutalist wall photo:
+   cool concrete greys (wall avg #A2A5BB, highlights #B7BBD0),
+   ink text, khaki + blood-red accents kept warm.
    Loaded after ../styles.css — token swap + targeted fixes for
    spots where the dark theme hardcodes colours.
    ============================================================ */
 
 :root {
-  --ink-black: #E9E5DC;        /* page background — light concrete */
-  --panel-black: #DFDACE;      /* cards / panels */
-  --panel-black-2: #D7D1C3;
-  --bone: #1C1915;             /* primary text */
-  --bone-dim: #57503F;         /* secondary text (AA on light bg) */
-  --bone-bright: #0D0C0A;      /* strongest text */
+  --ink-black: #E4E6EE;        /* page background — light concrete */
+  --panel-black: #DADDE8;      /* cards / panels */
+  --panel-black-2: #D1D5E2;
+  --bone: #191A20;             /* primary text — cool ink */
+  --bone-dim: #555866;         /* secondary text (AA on light bg) */
+  --bone-bright: #0C0D11;      /* strongest text */
   --khaki-gold: #7C6738;       /* eyebrows / hairlines, darkened for contrast */
   --khaki-line: rgba(124, 103, 56, 0.32);
   --khaki-line-strong: rgba(124, 103, 56, 0.55);
@@ -21,25 +23,25 @@
 body::after { opacity: 0.04; }
 
 /* header was hardcoded dark glass */
-.site-header { background: rgba(233, 229, 220, 0.94); }
+.site-header { background: rgba(228, 230, 238, 0.94); }
 
 /* elements whose text must stay light-on-red / light-on-dark */
-.announce { color: #F4EFE4; }
-.btn-primary { color: #F4EFE4; }
-.quick-add { color: #F4EFE4; }
-.cart-count { color: #F4EFE4; }
-.product-media .badge { color: #F4EFE4; }
+.announce { color: #F4F5F8; }
+.btn-primary { color: #F4F5F8; }
+.quick-add { color: #F4F5F8; }
+.cart-count { color: #F4F5F8; }
+.product-media .badge { color: #F4F5F8; }
 
 /* image wells must stay light for the multiply-blended photos */
-.feature-media, .gallery-main, .thumb { background: #F4EFE4; }
-.tile .tile-img.is-bone { background-color: #F4EFE4; }
+.feature-media, .gallery-main, .thumb { background: #F4F5F8; }
+.tile .tile-img.is-bone { background-color: #F4F5F8; }
 
 /* product card wells: concrete backing knocked back to a whisper — the garment
    photos multiply onto the well, so wall seams/holes would show straight through
    white shirts at full strength; keep it subtle until cut-out photography (v2) */
 .product-media {
   background:
-    linear-gradient(rgba(244, 239, 228, 0.9), rgba(244, 239, 228, 0.9)),
+    linear-gradient(rgba(241, 242, 246, 0.9), rgba(241, 242, 246, 0.9)),
     url('../assets/brutalist-wall.png') center / cover no-repeat;
 }
 
@@ -55,16 +57,25 @@ body::after { opacity: 0.04; }
   background-color: var(--panel-black);
 }
 
+/* inner-page heroes: wall texture instead of the dark Blitz photo —
+   light overlay keeps ink text comfortably AA over the seams */
+.page-hero, .collection-hero, .notfound {
+  background:
+    linear-gradient(rgba(228, 230, 238, 0.82), rgba(228, 230, 238, 0.82)),
+    url('../assets/brutalist-wall.png') center / cover no-repeat;
+}
+.page-hero .hero-bg, .notfound .hero-bg { display: none; }
+
 /* tile labels sit on a dark photo gradient — keep light text */
 .tile .tile-label { background: linear-gradient(transparent, rgba(13, 12, 10, 0.88) 38%); }
-.tile .tile-label span.name { color: #F4EFE4; }
+.tile .tile-label span.name { color: #F4F5F8; }
 .tile .tile-label span.count { color: #D8C18A; }
 .tile .tile-label span.count.waitlist { color: #E25A50; }
 
 /* hero: light wall + dark paint — undo the dark theme's darkening filter */
 .hero-bg.wall { filter: none; }
 .hero-bg.wall::after {
-  background: linear-gradient(100deg, rgba(233, 229, 220, 0.30) 0%, rgba(233, 229, 220, 0) 45%, rgba(233, 229, 220, 0.12) 100%);
+  background: linear-gradient(100deg, rgba(228, 230, 238, 0.30) 0%, rgba(228, 230, 238, 0) 45%, rgba(228, 230, 238, 0.12) 100%);
 }
 .hero h1.painted {
   text-shadow:
@@ -80,14 +91,10 @@ body::after { opacity: 0.04; }
 }
 .painted-tag { text-shadow: 1px 2px 0 rgba(255, 255, 255, 0.3); }
 
-/* heritage band: pin to its original bone-on-dark-text look
+/* heritage band: concrete slab, ink copy
    (its inner copy uses hardcoded dark greys) */
-.heritage { background: #E2DBCA; color: #0D0C0A; }
+.heritage { background: #D6D9E2; color: #0D0C0A; }
 .heritage h2 { color: #0D0C0A; }
-
-/* page heroes on inner pages use the dark photo backdrop — soften on light */
-.page-hero .hero-bg { opacity: 0.1 !important; }
-.notfound .hero-bg { opacity: 0.08 !important; }
 
 /* story photos: keep their period look against light bg */
 .story-media { border-color: rgba(124, 103, 56, 0.55); }
