@@ -251,11 +251,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visibl
 .hero-ctas { display: flex; flex-wrap: wrap; gap: 16px; }
 
 /* ---------- brutalist wall hero variant ---------- */
-/* photo is light concrete — pull it down to ink for the dark theme */
-.hero-bg.wall { opacity: 1; filter: brightness(0.34) contrast(1.1); animation: none; }
-.hero-bg.wall::after {
-  background: linear-gradient(100deg, rgba(13,12,10,0.30) 0%, rgba(13,12,10,0) 45%, rgba(13,12,10,0.12) 100%);
-}
+/* the wall photo runs clear and true on BOTH themes — no filter, no mask.
+   Hero copy is therefore painted in ink (hardcoded, not token-driven) so it
+   reads on the light concrete even while the rest of the dark page is ink. */
+.hero-bg.wall { opacity: 1; filter: none; animation: none; }
+.hero-bg.wall::after { content: none; }
 .hero h1.painted {
   font-family: 'Stardos Stencil', 'Oswald', sans-serif;
   font-weight: 700;
@@ -263,18 +263,18 @@ a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visibl
   line-height: 1.04;
   transform: rotate(-2deg);
   transform-origin: left bottom;
-  color: var(--bone-bright);
+  color: #16171C;
   text-shadow:
-    0 0 1px rgba(244, 239, 228, 0.55),
-    0 0 16px rgba(244, 239, 228, 0.16),
-    3px 4px 0 rgba(0, 0, 0, 0.28);
+    0 0 1px rgba(13, 12, 10, 0.5),
+    0 0 14px rgba(13, 12, 10, 0.10),
+    3px 4px 0 rgba(255, 255, 255, 0.22);
 }
 .hero h1.painted .red {
   color: var(--blood-red);
   text-shadow:
-    0 0 1px rgba(200, 40, 30, 0.65),
-    0 0 20px rgba(200, 40, 30, 0.32),
-    3px 4px 0 rgba(0, 0, 0, 0.28);
+    0 0 1px rgba(200, 40, 30, 0.6),
+    0 0 18px rgba(200, 40, 30, 0.22),
+    3px 4px 0 rgba(255, 255, 255, 0.22);
 }
 .hero .painted-tag {
   display: inline-block;
@@ -284,11 +284,14 @@ a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visibl
   font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--khaki-gold);
-  border: 1.5px solid rgba(184, 155, 94, 0.55);
+  color: #7C6738;
+  border: 1.5px solid rgba(124, 103, 56, 0.55);
   padding: 7px 12px;
-  text-shadow: 1px 2px 0 rgba(0, 0, 0, 0.3);
+  text-shadow: 1px 2px 0 rgba(255, 255, 255, 0.3);
 }
+.hero p.lede { color: #3E414C; }
+.hero .btn-ghost { color: #191A20; border-color: rgba(25, 26, 32, 0.45); }
+.hero .btn-ghost:hover { border-color: #0C0D11; color: #0C0D11; }
 
 /* ---------- marquee ---------- */
 .marquee {

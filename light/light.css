@@ -72,24 +72,7 @@ body::after { opacity: 0.04; }
 .tile .tile-label span.count { color: #D8C18A; }
 .tile .tile-label span.count.waitlist { color: #E25A50; }
 
-/* hero: light wall + dark paint — undo the dark theme's darkening filter */
-.hero-bg.wall { filter: none; }
-.hero-bg.wall::after {
-  background: linear-gradient(100deg, rgba(228, 230, 238, 0.30) 0%, rgba(228, 230, 238, 0) 45%, rgba(228, 230, 238, 0.12) 100%);
-}
-.hero h1.painted {
-  text-shadow:
-    0 0 1px rgba(13, 12, 10, 0.5),
-    0 0 14px rgba(13, 12, 10, 0.10),
-    3px 4px 0 rgba(255, 255, 255, 0.22);
-}
-.hero h1.painted .red {
-  text-shadow:
-    0 0 1px rgba(200, 40, 30, 0.6),
-    0 0 18px rgba(200, 40, 30, 0.22),
-    3px 4px 0 rgba(255, 255, 255, 0.22);
-}
-.painted-tag { text-shadow: 1px 2px 0 rgba(255, 255, 255, 0.3); }
+/* hero: now identical on both themes — clear wall + ink paint live in ../styles.css */
 
 /* heritage band: concrete slab, ink copy
    (its inner copy uses hardcoded dark greys) */
