@@ -22,8 +22,8 @@
     <nav class="main-nav" aria-label="Main navigation">
       <a href="collection.html">Shop All</a>
       <a href="collection.html" aria-current="page">T-Shirts</a>
-      <a href="collection.html">Headwear</a>
-      <a href="index.html#story">The Story</a>
+      <a href="icons.html">The Icons</a>
+      <a href="story.html">The Story</a>
     </nav>
     <div class="header-icons">
       <button type="button" class="nav-toggle" aria-label="Menu">
@@ -108,7 +108,7 @@
           <input type="text" inputmode="numeric" value="1" aria-label="Quantity">
           <button type="button" aria-label="Increase quantity">+</button>
         </div>
-        <button class="btn btn-primary" type="button">Add to basket</button>
+        <button class="btn btn-primary" type="button" data-add-to-cart>Add to basket</button>
       </div>
       <button class="btn btn-ghost btn-block" type="button">Buy it now</button>
 
@@ -128,6 +128,7 @@
         <p>A look that dares you to do something about it. <strong>Go on then.</strong></p>
       </div>
 
+      <p style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.18em; text-transform:uppercase; margin:-14px 0 28px;"><a href="icons.html#boudica" style="color:var(--khaki-gold); text-decoration:underline;">Read the full Boudica file &rarr;</a></p>
       <div class="pdp-accordions">
         <details open>
           <summary>Fabric &amp; fit</summary>
@@ -159,13 +160,13 @@
   <!-- CROSS-SELL -->
   <section class="pairs">
     <div class="container">
-      <div class="section-head">
+      <div class="section-head reveal">
         <div>
           <p class="eyebrow">Reinforcements</p>
           <h2 class="display">Pair it with</h2>
         </div>
       </div>
-      <div class="product-grid">
+      <div class="product-grid reveal-stagger">
         <article class="product-card">
           <span class="frame-tick tl" aria-hidden="true"></span><span class="frame-tick br" aria-hidden="true"></span>
           <div class="product-media">
@@ -249,23 +250,23 @@
           <li><a href="collection.html">All products</a></li>
           <li><a href="collection.html">T-shirts</a></li>
           <li><a href="collection.html">Headwear</a></li>
-          <li><a href="#">Gift cards</a></li>
+          <li><a href="#" data-open-signup>Gift cards</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>Help</h4>
         <ul>
-          <li><a href="#">Delivery &amp; returns</a></li>
-          <li><a href="#">Size guide</a></li>
-          <li><a href="#">Contact us</a></li>
-          <li><a href="#">FAQ</a></li>
+          <li><a href="help.html#delivery">Delivery &amp; returns</a></li>
+          <li><a href="help.html#size-guide">Size guide</a></li>
+          <li><a href="help.html#contact">Contact us</a></li>
+          <li><a href="help.html#faq">FAQ</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>The Brand</h4>
         <ul>
-          <li><a href="index.html#story">Our story</a></li>
-          <li><a href="#">Journal</a></li>
+          <li><a href="story.html">Our story</a></li>
+          <li><a href="icons.html">The icons</a></li>
           <li><a href="#">Instagram</a></li>
           <li><a href="#">Facebook</a></li>
         </ul>
@@ -278,5 +279,6 @@
   </div>
 </footer>
 
+<script src="main.js" defer></script>
 </body>
 </html>

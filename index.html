@@ -22,8 +22,8 @@
     <nav class="main-nav" aria-label="Main navigation">
       <a href="collection.html">Shop All</a>
       <a href="collection.html">T-Shirts</a>
-      <a href="collection.html">Headwear</a>
-      <a href="#story">The Story</a>
+      <a href="icons.html">The Icons</a>
+      <a href="story.html">The Story</a>
     </nav>
     <div class="header-icons">
       <button type="button" class="nav-toggle" aria-label="Menu">
@@ -54,7 +54,7 @@
         <p class="lede">When your back is against the wall, you dig deep. Ironic, iconic designs that tell the world the kind of Britain you want back. Unswerving steadfastness, printed on heavyweight cotton.</p>
         <div class="hero-ctas">
           <a class="btn btn-primary" href="collection.html">Shop the collection</a>
-          <a class="btn btn-ghost" href="#story">Our story</a>
+          <a class="btn btn-ghost" href="story.html">Our story</a>
         </div>
       </div>
     </div>
@@ -81,7 +81,7 @@
   <!-- FEATURED DROP -->
   <section class="section">
     <div class="container">
-      <div class="section-head">
+      <div class="section-head reveal">
         <div>
           <p class="eyebrow">The First Drop &mdash; 2026</p>
           <h2 class="display">Built from the brand</h2>
@@ -89,7 +89,7 @@
         <a class="view-all" href="collection.html">View all products &rarr;</a>
       </div>
 
-      <div class="product-grid">
+      <div class="product-grid reveal-stagger">
 
         <article class="product-card">
           <span class="frame-tick tl" aria-hidden="true"></span><span class="frame-tick br" aria-hidden="true"></span>
@@ -175,7 +175,7 @@
   <!-- BOUDICA EDITORIAL -->
   <section class="section" style="padding-top:0;">
     <div class="container">
-      <div class="feature-split">
+      <div class="feature-split reveal">
         <div class="feature-media">
           <img src="assets/tee-boudica-black.jpg" alt="Boudica t-shirt — black, with red-crested warrior queen artwork" loading="lazy">
         </div>
@@ -192,6 +192,7 @@
           <p class="go-on">Go on then.</p>
           <div class="hero-ctas">
             <a class="btn btn-primary" href="product.html">Shop Boudica</a>
+            <a class="btn btn-ghost" href="icons.html#boudica">The story behind it</a>
           </div>
         </div>
       </div>
@@ -224,13 +225,13 @@
   <!-- COLLECTION TILES -->
   <section class="section">
     <div class="container">
-      <div class="section-head">
+      <div class="section-head reveal">
         <div>
           <p class="eyebrow">Departments</p>
           <h2 class="display">Choose your weapon</h2>
         </div>
       </div>
-      <div class="tile-grid">
+      <div class="tile-grid reveal-stagger">
         <a class="tile" href="collection.html">
           <span class="tile-img is-bone" style="background-image:url('assets/tee-roundel-black.jpg');"></span>
           <span class="tile-label"><span class="name">T-Shirts</span><span class="count">8 styles</span></span>
@@ -239,9 +240,9 @@
           <span class="tile-img is-bone" style="background-image:url('assets/cap-navy.jpg');"></span>
           <span class="tile-label"><span class="name">Headwear</span><span class="count">3 styles</span></span>
         </a>
-        <a class="tile" href="collection.html">
+        <a class="tile" href="#" data-open-signup>
           <span class="tile-img" style="background-image:url('assets/heritage-telephonists.jpg'); filter:grayscale(60%); opacity:.5;"></span>
-          <span class="tile-label"><span class="name">Accessories</span><span class="count">Incoming</span></span>
+          <span class="tile-label"><span class="name">Accessories</span><span class="count waitlist">Incoming &mdash; join the waitlist</span></span>
         </a>
       </div>
     </div>
@@ -249,11 +250,11 @@
 
   <!-- NEWSLETTER -->
   <section class="newsletter section">
-    <div class="container inner">
+    <div class="container inner reveal">
       <p class="eyebrow">Dispatches</p>
       <h2 class="display">Join the resistance to corrosion</h2>
-      <p>First word on new drops, restocks and stories worth telling. No spam. That would be nonsense.</p>
-      <form action="#" method="post">
+      <p>First word on new drops, restocks and stories worth telling &mdash; plus 10&#37; off your first order. No spam. That would be nonsense.</p>
+      <form action="#" method="post" data-newsletter>
         <label for="newsletter-email">Email address</label>
         <input id="newsletter-email" type="email" name="email" placeholder="YOUR@EMAIL.CO.UK" required>
         <button class="btn btn-primary" type="submit">Sign up</button>
@@ -276,23 +277,23 @@
           <li><a href="collection.html">All products</a></li>
           <li><a href="collection.html">T-shirts</a></li>
           <li><a href="collection.html">Headwear</a></li>
-          <li><a href="#">Gift cards</a></li>
+          <li><a href="#" data-open-signup>Gift cards</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>Help</h4>
         <ul>
-          <li><a href="#">Delivery &amp; returns</a></li>
-          <li><a href="#">Size guide</a></li>
-          <li><a href="#">Contact us</a></li>
-          <li><a href="#">FAQ</a></li>
+          <li><a href="help.html#delivery">Delivery &amp; returns</a></li>
+          <li><a href="help.html#size-guide">Size guide</a></li>
+          <li><a href="help.html#contact">Contact us</a></li>
+          <li><a href="help.html#faq">FAQ</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>The Brand</h4>
         <ul>
-          <li><a href="#story">Our story</a></li>
-          <li><a href="#">Journal</a></li>
+          <li><a href="story.html">Our story</a></li>
+          <li><a href="icons.html">The icons</a></li>
           <li><a href="#">Instagram</a></li>
           <li><a href="#">Facebook</a></li>
         </ul>
@@ -305,5 +306,6 @@
   </div>
 </footer>
 
+<script src="main.js" defer></script>
 </body>
 </html>
