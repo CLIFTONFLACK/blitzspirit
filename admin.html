@@ -106,6 +106,18 @@
     }
     .admin-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+    /* Type pill */
+    .type-pill {
+      display: inline-block; font-family: var(--font-mono); font-size: 9px;
+      letter-spacing: 0.16em; text-transform: uppercase; padding: 2px 7px;
+      border: 1px solid; margin-right: 5px; vertical-align: middle;
+    }
+    .type-pill.comment { color: var(--khaki-gold); border-color: var(--khaki-gold); }
+    .type-pill.edit    { color: #5a9e6f; border-color: #5a9e6f; }
+    .cell-quote { font-family: var(--font-mono); font-size: 12px; color: var(--bone-dim); font-style: italic; }
+    .cell-repl  { font-family: var(--font-mono); font-size: 12px; color: var(--bone); }
+    .cell-note  { margin-top: 5px; color: var(--bone-dim); font-size: 13px; }
+
     /* Disconnect link */
     .disconnect-link { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--bone-dim); cursor: pointer; }
     .disconnect-link:hover { color: var(--blood-red); }
@@ -170,7 +182,7 @@
               <th>Date</th>
               <th>Page</th>
               <th>Theme</th>
-              <th>Comment</th>
+              <th>Feedback</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
@@ -284,7 +296,7 @@
           '<td class="cell-date">' + fmt(f.created_at) + '</td>' +
           '<td class="cell-page">' + escHtml(f.page || '') + '</td>' +
           '<td class="cell-theme"><span class="theme-pill ' + (f.theme || '') + '">' + (f.theme || '—') + '</span></td>' +
-          '<td class="cell-comment">' + escHtml(f.comment || '') + '</td>' +
+          '<td class="cell-comment">' + feedbackCell(f) + '</td>' +
           '<td class="cell-status"><span class="status-pill ' + f.status + '">' + f.status + '</span></td>' +
           '<td class="cell-actions">' +
             (isPending ? '<button class="action-btn apply" data-action="applied" data-id="' + f.id + '">Apply</button>' : '') +
@@ -296,6 +308,26 @@
 
     function escHtml(s) {
       return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function feedbackCell(f) {
+      var html = '';
+      var type = f.type || 'general';
+      if (type !== 'general') {
+        html += '<span class="type-pill ' + type + '">' + type + '</span>';
+      }
+      if (type === 'edit' && f.quote) {
+        html += '<span class="cell-quote">“' + escHtml(f.quote) + '”</span>';
+        html += '<span style="color:var(--khaki-gold)"> → </span>';
+        html += '<span class="cell-repl">' + escHtml(f.replacement || '') + '</span>';
+      } else if (type === 'comment' && f.quote) {
+        html += '<span class="cell-quote">“' + escHtml(f.quote) + '”</span>';
+        var note = (f.comment || '').replace('“' + f.quote + '”\n\n', '').trim();
+        if (note) html += '<div class="cell-note">' + escHtml(note) + '</div>';
+      } else {
+        html += escHtml(f.comment || '');
+      }
+      return html;
     }
 
     /* ---- action buttons (delegated) ---- */

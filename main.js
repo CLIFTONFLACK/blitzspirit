@@ -265,6 +265,7 @@
 
   var fbTextarea = fbPanel.querySelector('textarea');
   var fbStatus = fbPanel.querySelector('.feedback-panel-status');
+  var pendingQuote = ''; var pendingType = 'general';
 
   function fbOpen() {
     fbPanel.classList.add('fb-open');
@@ -276,6 +277,7 @@
     fbBtn.setAttribute('aria-expanded', 'false');
     fbTextarea.value = '';
     fbStatus.textContent = '';
+    pendingQuote = ''; pendingType = 'general';
   }
 
   fbBtn.addEventListener('click', fbOpen);
@@ -296,7 +298,7 @@
     fetch('/api/feedback', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ page: location.pathname, comment: comment, theme: fbTheme })
+      body: JSON.stringify({ page: location.pathname, comment: comment, theme: fbTheme, type: pendingType, quote: pendingQuote || null })
     }).then(function (r) {
       if (r.ok || r.status === 201) {
         fbStatus.style.color = 'var(--khaki-gold)';
@@ -316,4 +318,136 @@
       sendBtn.textContent = 'Send';
     });
   });
+
+  /* ---------- highlight-to-note / suggest-edit ---------- */
+  var currentQuote = '';
+
+  var selToolbar = document.createElement('div');
+  selToolbar.className = 'sel-toolbar';
+  selToolbar.innerHTML =
+    '<button class="sel-btn" data-sa="comment">&#9654; note</button>' +
+    '<button class="sel-btn" data-sa="edit">&#9998; suggest edit</button>';
+  document.body.appendChild(selToolbar);
+
+  var selEditPanel = document.createElement('div');
+  selEditPanel.className = 'sel-edit-panel';
+  selEditPanel.setAttribute('role', 'complementary');
+  selEditPanel.setAttribute('aria-label', 'Suggest an edit');
+  selEditPanel.innerHTML =
+    '<div class="sel-edit-head">' +
+      '<span class="eyebrow">Suggest edit</span>' +
+      '<button class="sel-close" type="button" aria-label="Close">&times;</button>' +
+    '</div>' +
+    '<p class="sel-original"></p>' +
+    '<label class="sel-label">Replace with</label>' +
+    '<textarea class="sel-replace" placeholder="Replacement text…" rows="3"></textarea>' +
+    '<button class="btn btn-primary" style="width:100%;margin-top:2px" type="button" data-sel-send>Send</button>' +
+    '<p class="sel-status"></p>';
+  document.body.appendChild(selEditPanel);
+
+  var selReplace = selEditPanel.querySelector('.sel-replace');
+  var selStatus  = selEditPanel.querySelector('.sel-status');
+  var selOriginalEl = selEditPanel.querySelector('.sel-original');
+
+  function hideSelAll() {
+    selToolbar.classList.remove('sel-show');
+    selEditPanel.classList.remove('sel-show');
+    selReplace.value = '';
+    selStatus.textContent = '';
+    currentQuote = '';
+  }
+
+  document.addEventListener('mouseup', function(e) {
+    if (e.target.closest('.sel-toolbar,.sel-edit-panel,.feedback-panel,.feedback-btn,.signup-modal')) return;
+    setTimeout(function() {
+      var sel = window.getSelection();
+      if (!sel || sel.isCollapsed) {
+        if (!selEditPanel.classList.contains('sel-show')) hideSelAll();
+        return;
+      }
+      var q = sel.toString().trim();
+      if (q.length < 3) { hideSelAll(); return; }
+      var range = sel.getRangeAt(0);
+      var rect = range.getBoundingClientRect();
+      if (!rect.width) { hideSelAll(); return; }
+      currentQuote = q;
+      selToolbar.style.left = Math.round(rect.left + rect.width / 2) + 'px';
+      selToolbar.style.top  = Math.round(rect.top - 4) + 'px';
+      selToolbar.classList.add('sel-show');
+    }, 20);
+  });
+
+  document.addEventListener('mousedown', function(e) {
+    if (!e.target.closest('.sel-toolbar,.sel-edit-panel')) hideSelAll();
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') hideSelAll();
+  });
+
+  window.addEventListener('scroll', function() {
+    if (selToolbar.classList.contains('sel-show')) hideSelAll();
+  }, true);
+
+  selToolbar.addEventListener('click', function(e) {
+    var btn = e.target.closest('[data-sa]');
+    if (!btn) return;
+    var action = btn.getAttribute('data-sa');
+    if (action === 'comment') {
+      pendingType  = 'comment';
+      pendingQuote = currentQuote;
+      fbTextarea.value = '“' + currentQuote + '”\n\n';
+      selToolbar.classList.remove('sel-show');
+      currentQuote = '';
+      fbOpen();
+      fbTextarea.setSelectionRange(fbTextarea.value.length, fbTextarea.value.length);
+    } else if (action === 'edit') {
+      selOriginalEl.textContent = '“' + currentQuote + '”';
+      selEditPanel.classList.add('sel-show');
+      selToolbar.classList.remove('sel-show');
+      selReplace.focus();
+    }
+  });
+
+  selEditPanel.querySelector('.sel-close').addEventListener('click', hideSelAll);
+
+  selEditPanel.querySelector('[data-sel-send]').addEventListener('click', function() {
+    var replacement = selReplace.value.trim();
+    if (!replacement) { selReplace.focus(); return; }
+    var sendBtn = this;
+    sendBtn.disabled = true;
+    sendBtn.textContent = 'Sending…';
+    selStatus.style.color = '';
+    selStatus.textContent = '';
+
+    fetch('/api/feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        page: location.pathname,
+        comment: '“' + currentQuote + '” → “' + replacement + '”',
+        theme: fbTheme,
+        type: 'edit',
+        quote: currentQuote,
+        replacement: replacement
+      })
+    }).then(function(r) {
+      if (r.ok || r.status === 201) {
+        selStatus.style.color = 'var(--khaki-gold)';
+        selStatus.textContent = 'Noted. Cheers.';
+        setTimeout(hideSelAll, 1600);
+      } else {
+        selStatus.style.color = 'var(--blood-red)';
+        selStatus.textContent = 'No luck — try again.';
+      }
+      sendBtn.disabled = false;
+      sendBtn.textContent = 'Send';
+    }).catch(function() {
+      selStatus.style.color = 'var(--blood-red)';
+      selStatus.textContent = 'No luck — try again.';
+      sendBtn.disabled = false;
+      sendBtn.textContent = 'Send';
+    });
+  });
+
 })();
