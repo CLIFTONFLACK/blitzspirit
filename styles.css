@@ -224,6 +224,45 @@ a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visibl
 .hero p.lede { font-size: 19px; color: var(--bone-dim); max-width: 540px; margin-bottom: 38px; }
 .hero-ctas { display: flex; flex-wrap: wrap; gap: 16px; }
 
+/* ---------- brutalist wall hero variant ---------- */
+.hero-bg.wall { opacity: 1; filter: none; animation: none; }
+.hero-bg.wall::after {
+  background: linear-gradient(100deg, rgba(13,12,10,0.30) 0%, rgba(13,12,10,0) 45%, rgba(13,12,10,0.12) 100%);
+}
+.hero h1.painted {
+  font-family: 'Stardos Stencil', 'Oswald', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.005em;
+  line-height: 1.04;
+  transform: rotate(-2deg);
+  transform-origin: left bottom;
+  color: var(--bone-bright);
+  text-shadow:
+    0 0 1px rgba(244, 239, 228, 0.55),
+    0 0 16px rgba(244, 239, 228, 0.16),
+    3px 4px 0 rgba(0, 0, 0, 0.28);
+}
+.hero h1.painted .red {
+  color: var(--blood-red);
+  text-shadow:
+    0 0 1px rgba(200, 40, 30, 0.65),
+    0 0 20px rgba(200, 40, 30, 0.32),
+    3px 4px 0 rgba(0, 0, 0, 0.28);
+}
+.hero .painted-tag {
+  display: inline-block;
+  transform: rotate(-2deg);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--khaki-gold);
+  border: 1.5px solid rgba(184, 155, 94, 0.55);
+  padding: 7px 12px;
+  text-shadow: 1px 2px 0 rgba(0, 0, 0, 0.3);
+}
+
 /* ---------- marquee ---------- */
 .marquee {
   border-top: 1px solid var(--khaki-line);
