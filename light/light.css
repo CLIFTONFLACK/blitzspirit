@@ -31,8 +31,26 @@ body::after { opacity: 0.04; }
 .product-media .badge { color: #F4EFE4; }
 
 /* image wells must stay light for the multiply-blended photos */
-.product-media, .feature-media, .gallery-main, .thumb { background: #F4EFE4; }
+.feature-media, .gallery-main, .thumb { background: #F4EFE4; }
 .tile .tile-img.is-bone { background-color: #F4EFE4; }
+
+/* product card wells: wall texture as concrete backing — garment photos
+   use mix-blend-mode:multiply so white disappears, concrete shows through */
+.product-media {
+  background: #E9E5DC url('../assets/hero-wall-light.svg') center / cover no-repeat;
+}
+
+/* newsletter band: wall as backdrop */
+.newsletter {
+  background: url('../assets/hero-wall-light.svg') center / cover no-repeat;
+  background-color: var(--panel-black);
+}
+
+/* lead-gen modal: wall interior */
+.signup-modal {
+  background: url('../assets/hero-wall-light.svg') center / cover no-repeat;
+  background-color: var(--panel-black);
+}
 
 /* tile labels sit on a dark photo gradient — keep light text */
 .tile .tile-label { background: linear-gradient(transparent, rgba(13, 12, 10, 0.88) 38%); }
