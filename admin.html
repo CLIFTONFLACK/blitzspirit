@@ -94,6 +94,8 @@
     .action-btn.apply:hover { border-color: #5a9e6f; color: #5a9e6f; }
     .action-btn.dismiss:hover { border-color: var(--blood-red); color: var(--blood-red); }
     .action-btn:disabled { opacity: 0.35; pointer-events: none; }
+    .action-btn.approve-btn:hover { border-color: #5a9e6f; color: #5a9e6f; }
+    .approved-tag { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: #5a9e6f; margin-right: 6px; }
 
     .empty-state { text-align: center; padding: 64px 0; color: var(--bone-dim); font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
 
@@ -299,7 +301,8 @@
           '<td class="cell-comment">' + feedbackCell(f) + '</td>' +
           '<td class="cell-status"><span class="status-pill ' + f.status + '">' + f.status + '</span></td>' +
           '<td class="cell-actions">' +
-            (isPending ? '<button class="action-btn apply" data-action="applied" data-id="' + f.id + '">Apply</button>' : '') +
+            (isPending && !f.approved ? '<button class="action-btn approve-btn" data-action="approve" data-id="' + f.id + '">Approve</button>' : '') +
+            (isPending && f.approved  ? '<button class="action-btn apply" data-action="applied" data-id="' + f.id + '">Apply</button>' : '') +
             (f.status !== 'dismissed' ? '<button class="action-btn dismiss" data-action="dismissed" data-id="' + f.id + '">Dismiss</button>' : '') +
           '</td>' +
         '</tr>';
@@ -315,6 +318,9 @@
       var type = f.type || 'general';
       if (type !== 'general') {
         html += '<span class="type-pill ' + type + '">' + type + '</span>';
+      }
+      if (f.approved && f.status === 'pending') {
+        html += '<span class="approved-tag">&#10003; queued</span>';
       }
       if (type === 'edit' && f.quote) {
         html += '<span class="cell-quote">“' + escHtml(f.quote) + '”</span>';
@@ -335,20 +341,24 @@
       var btn = e.target.closest('.action-btn[data-action]');
       if (!btn) return;
       var id = btn.dataset.id;
-      var newStatus = btn.dataset.action;
+      var action = btn.dataset.action;
       btn.disabled = true;
+
+      var isApprove = action === 'approve';
+      var patchBody  = isApprove ? { approved: true } : { status: action };
+      var successMsg = isApprove ? 'Approved — processor will action on next run.' : (action === 'applied' ? 'Marked applied.' : 'Dismissed.');
 
       fetch(SUPABASE_URL + '/rest/v1/feedback?id=eq.' + id, {
         method: 'PATCH',
         headers: Object.assign({}, apiHeaders(), { 'Prefer': 'return=minimal' }),
-        body: JSON.stringify({ status: newStatus })
+        body: JSON.stringify(patchBody)
       }).then(function(r) {
         if (r.ok) {
           var item = allFeedback.find(function(f) { return f.id === id; });
-          if (item) item.status = newStatus;
+          if (item) { if (isApprove) { item.approved = true; } else { item.status = action; } }
           updateStats();
           renderTable();
-          toast(newStatus === 'applied' ? 'Marked applied.' : 'Dismissed.');
+          toast(successMsg);
         } else {
           toast('Update failed.');
           btn.disabled = false;
