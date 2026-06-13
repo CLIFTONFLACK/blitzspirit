@@ -962,6 +962,17 @@ body.drawer-open .drawer-backdrop { opacity: 1; pointer-events: auto; }
   margin-right: 6px;
 }
 .theme-toggle:hover { border-color: var(--khaki-gold); color: var(--bone); }
+.admin-link {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+  text-decoration: none;
+  padding: 4px 6px;
+  transition: color 0.18s;
+}
+.admin-link:hover { color: var(--khaki-gold); }
 
 /* ---------- highlight toolbar ---------- */
 .sel-toolbar {

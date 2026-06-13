@@ -238,6 +238,14 @@
     }
   });
 
+  /* ---------- admin link ---------- */
+  var adminLink = document.createElement('a');
+  adminLink.className = 'admin-link';
+  adminLink.href = isLight ? '../admin.html' : 'admin.html';
+  adminLink.textContent = 'admin';
+  adminLink.setAttribute('aria-label', 'Admin');
+  if (headerIcons) headerIcons.appendChild(adminLink);
+
   /* ---------- feedback widget ---------- */
   var fbTheme = isLight ? 'light' : 'dark';
 
