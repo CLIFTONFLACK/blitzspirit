@@ -141,10 +141,10 @@
     <div id="connect-screen" class="admin-header">
       <div class="connect-box">
         <p class="badge">Feedback Admin</p>
-        <h1>Connect</h1>
-        <p>Enter your Supabase service role key. Stays in this browser tab only.</p>
-        <input type="password" id="key-input" placeholder="eyJ..." autocomplete="off" spellcheck="false">
-        <button class="btn btn-primary" id="connect-btn">Connect</button>
+        <h1>Sign in</h1>
+        <p>Enter the admin password. Stays in this browser tab only.</p>
+        <input type="password" id="key-input" placeholder="Password" autocomplete="current-password" spellcheck="false">
+        <button class="btn btn-primary" id="connect-btn">Enter</button>
       </div>
     </div>
 
@@ -200,14 +200,18 @@
   <div class="admin-toast" id="admin-toast"></div>
 
   <script>
-    var SUPABASE_URL = 'https://ojrzxknkovkiafzejegy.supabase.co';
     var currentFilter = 'pending';
     var allFeedback = [];
-    var serviceKey = '';
+    var adminPw = '';
 
-    /* ---- utils ---- */
-    function apiHeaders(key) {
-      return { 'apikey': key || serviceKey, 'Authorization': 'Bearer ' + (key || serviceKey), 'Content-Type': 'application/json' };
+    /* ---- api: all admin DB access goes through the password-gated proxy ---- */
+    function adminApi(op, extra) {
+      var payload = Object.assign({ password: adminPw, op: op }, extra || {});
+      return fetch('/api/admin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
     }
 
     var toastTimer;
@@ -226,28 +230,47 @@
              d.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
     }
 
-    /* ---- connect / disconnect ---- */
-    function connect(key) {
-      serviceKey = key;
-      sessionStorage.setItem('bs_admin_key', key);
+    /* ---- sign in / out ---- */
+    function showDashboard() {
       document.getElementById('connect-screen').style.display = 'none';
       document.getElementById('dashboard').classList.add('active');
-      loadFeedback();
     }
 
     function disconnect() {
-      sessionStorage.removeItem('bs_admin_key');
-      serviceKey = '';
+      sessionStorage.removeItem('bs_admin_pw');
+      adminPw = '';
       allFeedback = [];
       document.getElementById('connect-screen').style.display = '';
       document.getElementById('dashboard').classList.remove('active');
       document.getElementById('key-input').value = '';
     }
 
+    // Verify the password against the server before unlocking the dashboard.
+    function signIn(pw, fromSession) {
+      adminPw = pw;
+      adminApi('list').then(function(r) {
+        if (r.status === 401) {
+          adminPw = '';
+          sessionStorage.removeItem('bs_admin_pw');
+          if (!fromSession) toast('Wrong password.');
+          return null;
+        }
+        if (!r.ok) { toast('Could not reach admin.'); return null; }
+        sessionStorage.setItem('bs_admin_pw', pw);
+        showDashboard();
+        return r.json();
+      }).then(function(data) {
+        if (!data) return;
+        allFeedback = data;
+        updateStats();
+        renderTable();
+      }).catch(function() { toast('Could not reach admin.'); });
+    }
+
     document.getElementById('connect-btn').addEventListener('click', function() {
-      var key = document.getElementById('key-input').value.trim();
-      if (!key) { document.getElementById('key-input').focus(); return; }
-      connect(key);
+      var pw = document.getElementById('key-input').value.trim();
+      if (!pw) { document.getElementById('key-input').focus(); return; }
+      signIn(pw, false);
     });
 
     document.getElementById('key-input').addEventListener('keydown', function(e) {
@@ -258,9 +281,10 @@
 
     /* ---- load feedback ---- */
     function loadFeedback() {
-      fetch(SUPABASE_URL + '/rest/v1/feedback?order=created_at.desc', { headers: apiHeaders() })
+      adminApi('list')
         .then(function(r) {
-          if (r.status === 401 || r.status === 403) { toast('Invalid key — disconnecting.'); setTimeout(disconnect, 1500); return null; }
+          if (r.status === 401) { toast('Session expired — signing out.'); setTimeout(disconnect, 1500); return null; }
+          if (!r.ok) { toast('Could not load feedback.'); return null; }
           return r.json();
         })
         .then(function(data) {
@@ -345,14 +369,11 @@
       btn.disabled = true;
 
       var isApprove = action === 'approve';
-      var patchBody  = isApprove ? { approved: true } : { status: action };
+      var update = isApprove ? { id: id, approved: true } : { id: id, status: action };
       var successMsg = isApprove ? 'Approved — processor will action on next run.' : (action === 'applied' ? 'Marked applied.' : 'Dismissed.');
 
-      fetch(SUPABASE_URL + '/rest/v1/feedback?id=eq.' + id, {
-        method: 'PATCH',
-        headers: Object.assign({}, apiHeaders(), { 'Prefer': 'return=minimal' }),
-        body: JSON.stringify(patchBody)
-      }).then(function(r) {
+      adminApi('update', update).then(function(r) {
+        if (r.status === 401) { toast('Session expired — signing out.'); setTimeout(disconnect, 1500); return; }
         if (r.ok) {
           var item = allFeedback.find(function(f) { return f.id === id; });
           if (item) { if (isApprove) { item.approved = true; } else { item.status = action; } }
@@ -382,11 +403,8 @@
       btn.classList.add('running');
       btn.textContent = 'Queuing...';
 
-      fetch(SUPABASE_URL + '/rest/v1/run_queue?id=eq.1', {
-        method: 'PATCH',
-        headers: Object.assign({}, apiHeaders(), { 'Prefer': 'return=minimal' }),
-        body: JSON.stringify({ requested: true, requested_at: new Date().toISOString() })
-      }).then(function(r) {
+      adminApi('run').then(function(r) {
+        if (r.status === 401) { toast('Session expired — signing out.'); setTimeout(disconnect, 1500); return; }
         if (r.ok) {
           toast('Queued. Processor will pick this up on the next hourly run.');
         } else {
@@ -401,11 +419,11 @@
     });
 
     /* ---- auto-refresh every 60s ---- */
-    setInterval(function() { if (serviceKey) loadFeedback(); }, 60000);
+    setInterval(function() { if (adminPw) loadFeedback(); }, 60000);
 
     /* ---- init: restore session ---- */
-    var saved = sessionStorage.getItem('bs_admin_key');
-    if (saved) { connect(saved); }
+    var saved = sessionStorage.getItem('bs_admin_pw');
+    if (saved) { signIn(saved, true); }
   </script>
 </body>
 </html>
