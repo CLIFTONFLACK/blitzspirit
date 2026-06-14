@@ -113,8 +113,11 @@ C:\Users\clift\Ai-Projects\SLC-BlitzSpirit\          ← session working dir (NO
 
 ## 6a. Feedback & content-change admin
 
-- **Visitor side:** floating feedback widget + highlight-to-suggest-edit (main.js).
-  Posts to `POST /api/feedback` (Vercel serverless) which writes to the Supabase
+- **Visitor side:** floating feedback widget + highlight-to-edit (main.js). Selecting
+  text offers **note** or **edit**; an edit applies the replacement to the page live
+  (wrapped in `mark.bs-edited`, preview-only) so the visitor sees the change, while the
+  same request still pipes to the queue. Posts to `POST /api/feedback` (Vercel
+  serverless) which writes to the Supabase
   `feedback` table using `SUPABASE_ANON_KEY` (server-side env var; anon key never
   shipped to the browser). Rows: comment/page/theme/type/quote/replacement/status
   (`pending`→`applied`/`dismissed`)/`approved` (bool).
