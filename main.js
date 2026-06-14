@@ -327,23 +327,25 @@
     });
   });
 
-  /* ---------- highlight-to-note / suggest-edit ---------- */
+  /* ---------- highlight-to-note / edit ---------- */
   var currentQuote = '';
+  var savedRange = null;     // live DOM range of the current selection
+  var editApplied = false;   // guard so a retry doesn't apply the edit twice
 
   var selToolbar = document.createElement('div');
   selToolbar.className = 'sel-toolbar';
   selToolbar.innerHTML =
     '<button class="sel-btn" data-sa="comment">&#9654; note</button>' +
-    '<button class="sel-btn" data-sa="edit">&#9998; suggest edit</button>';
+    '<button class="sel-btn" data-sa="edit">&#9998; edit</button>';
   document.body.appendChild(selToolbar);
 
   var selEditPanel = document.createElement('div');
   selEditPanel.className = 'sel-edit-panel';
   selEditPanel.setAttribute('role', 'complementary');
-  selEditPanel.setAttribute('aria-label', 'Suggest an edit');
+  selEditPanel.setAttribute('aria-label', 'Edit');
   selEditPanel.innerHTML =
     '<div class="sel-edit-head">' +
-      '<span class="eyebrow">Suggest edit</span>' +
+      '<span class="eyebrow">Edit</span>' +
       '<button class="sel-close" type="button" aria-label="Close">&times;</button>' +
     '</div>' +
     '<p class="sel-original"></p>' +
@@ -363,6 +365,30 @@
     selReplace.value = '';
     selStatus.textContent = '';
     currentQuote = '';
+    savedRange = null;
+    editApplied = false;
+  }
+
+  // Swap the selected text on the page for the replacement so the user sees
+  // the change live. Purely visual + local — the suggestion still goes to the
+  // admin queue and the processor applies it permanently later. Returns true
+  // if the page was updated.
+  function applyLiveEdit(replacement) {
+    if (editApplied) return true;
+    if (!savedRange) return false;
+    try {
+      var mark = document.createElement('mark');
+      mark.className = 'bs-edited';
+      mark.textContent = replacement;
+      savedRange.deleteContents();
+      savedRange.insertNode(mark);
+      var sel = window.getSelection();
+      if (sel) sel.removeAllRanges();
+      editApplied = true;
+      return true;
+    } catch (err) {
+      return false;
+    }
   }
 
   document.addEventListener('mouseup', function(e) {
@@ -379,6 +405,8 @@
       var rect = range.getBoundingClientRect();
       if (!rect.width) { hideSelAll(); return; }
       currentQuote = q;
+      savedRange = range.cloneRange();
+      editApplied = false;
       selToolbar.style.left = Math.round(rect.left + rect.width / 2) + 'px';
       selToolbar.style.top  = Math.round(rect.top - 4) + 'px';
       selToolbar.classList.add('sel-show');
@@ -422,37 +450,41 @@
   selEditPanel.querySelector('[data-sel-send]').addEventListener('click', function() {
     var replacement = selReplace.value.trim();
     if (!replacement) { selReplace.focus(); return; }
+    var quote = currentQuote;
     var sendBtn = this;
     sendBtn.disabled = true;
     sendBtn.textContent = 'Sending…';
     selStatus.style.color = '';
     selStatus.textContent = '';
 
+    // Show the change on the page right away, then pipe it to the admin queue.
+    var live = applyLiveEdit(replacement);
+
     fetch('/api/feedback', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         page: location.pathname,
-        comment: '“' + currentQuote + '” → “' + replacement + '”',
+        comment: '“' + quote + '” → “' + replacement + '”',
         theme: fbTheme,
         type: 'edit',
-        quote: currentQuote,
+        quote: quote,
         replacement: replacement
       })
     }).then(function(r) {
       if (r.ok || r.status === 201) {
         selStatus.style.color = 'var(--khaki-gold)';
-        selStatus.textContent = 'Noted. Cheers.';
+        selStatus.textContent = live ? 'Changed here — and logged. Cheers.' : 'Logged. Cheers.';
         setTimeout(hideSelAll, 1600);
       } else {
         selStatus.style.color = 'var(--blood-red)';
-        selStatus.textContent = 'No luck — try again.';
+        selStatus.textContent = live ? 'Shown here, but not logged — try again.' : 'No luck — try again.';
       }
       sendBtn.disabled = false;
       sendBtn.textContent = 'Send';
     }).catch(function() {
       selStatus.style.color = 'var(--blood-red)';
-      selStatus.textContent = 'No luck — try again.';
+      selStatus.textContent = live ? 'Shown here, but not logged — try again.' : 'No luck — try again.';
       sendBtn.disabled = false;
       sendBtn.textContent = 'Send';
     });

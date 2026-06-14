@@ -1083,3 +1083,19 @@ body.drawer-open .drawer-backdrop { opacity: 1; pointer-events: auto; }
   min-height: 16px;
 }
 
+/* Live-applied edit — visitor sees their change on the page (preview only) */
+.bs-edited {
+  background: rgba(184, 155, 94, 0.18);
+  color: inherit;
+  box-shadow: inset 0 -1px 0 var(--khaki-gold);
+  border-radius: 2px;
+  animation: bsEditFlash 1.2s ease-out;
+}
+@keyframes bsEditFlash {
+  0%   { background: rgba(184, 155, 94, 0.65); }
+  100% { background: rgba(184, 155, 94, 0.18); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bs-edited { animation: none; }
+}
+
