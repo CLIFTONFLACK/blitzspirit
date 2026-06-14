@@ -111,6 +111,27 @@ C:\Users\clift\Ai-Projects\SLC-BlitzSpirit\          ← session working dir (NO
   suppress). All `form[data-newsletter]` show an inline success + the code.
 - Forms are mocks — no ESP wired yet (top open item).
 
+## 6a. Feedback & content-change admin
+
+- **Visitor side:** floating feedback widget + highlight-to-suggest-edit (main.js).
+  Posts to `POST /api/feedback` (Vercel serverless) which writes to the Supabase
+  `feedback` table using `SUPABASE_ANON_KEY` (server-side env var; anon key never
+  shipped to the browser). Rows: comment/page/theme/type/quote/replacement/status
+  (`pending`→`applied`/`dismissed`)/`approved` (bool).
+- **Admin (`admin.html`):** password-gated queue. Approve→Apply/Dismiss flow;
+  "Approve" sets `approved=true` (queues for the processor); Apply/Dismiss close it.
+  Stats + filters + 60s auto-refresh. "Run Processor Now" flips the `run_queue`
+  row so the external hourly processor picks it up.
+- **Auth (changed 2026-06-14):** admin no longer asks for the Supabase service-role
+  key. It now takes a **password (default `2026`)** and routes ALL DB access through
+  `POST /api/admin` — a serverless proxy that holds `SUPABASE_SERVICE_KEY` server-side,
+  validates the password, and **whitelists writes to `approved`/`status` only**. The
+  service key never reaches the browser. Password is `process.env.ADMIN_PASSWORD ||
+  '2026'`; override it in Vercel to harden.
+- **Vercel env vars required:** `SUPABASE_ANON_KEY` (feedback submit) and
+  `SUPABASE_SERVICE_KEY` (admin proxy). Both keys also live locally in
+  `.fbconfig` (gitignored). Optional: `ADMIN_PASSWORD`.
+
 ## 7. State of play (git history highlights)
 
 | Commit | What |
@@ -120,6 +141,7 @@ C:\Users\clift\Ai-Projects\SLC-BlitzSpirit\          ← session working dir (NO
 | c289637 | Rebrand: Bevan boxed lowercase logo + "Urban Fashion With a Backbone" |
 | 050a1a3 | Hero image visibility pass |
 | 7b7c0a3 | Hero → brutalist wall with painted tagline (hero-wall.svg) |
+| 5b90200 | Admin auth: password gate (default 2026) via /api/admin proxy; service key off the client |
 
 ## 8. Open items (priority order)
 
