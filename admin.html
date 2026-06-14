@@ -388,7 +388,7 @@
         body: JSON.stringify({ requested: true, requested_at: new Date().toISOString() })
       }).then(function(r) {
         if (r.ok) {
-          toast('Processor queued. Claude will run within the hour. For immediate execution, type "run feedback now" in Claude Code.');
+          toast('Queued. Processor will pick this up on the next hourly run.');
         } else {
           toast('Could not queue run.');
         }
