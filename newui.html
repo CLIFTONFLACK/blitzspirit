@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BLITZSPIRIT // ISSUE_001</title>
+<meta name="description" content="Blitzspirit Issue 001 Capsule. Not here to be liked." />
+<meta name="robots" content="noindex" />
+
+<!--
+  BLITZSPIRIT // ISSUE_001  — brutalist industrial capsule ("newui")
+  Standalone capsule page. Design system locked by client brief:
+  ChunkFive + native monospace, border-radius:0, transition:0ms,
+  1px crisp borders, monochrome concrete, signal red rationed.
+  Live route: /newui
+-->
+
+<link rel="preload" href="assets/newui/fonts/chunkfive.woff2" as="font" type="font/woff2" crossorigin />
+
+<style>
+/* ============================================================
+   0. FONTS — ChunkFive = display voice. Monospace = ledger.
+   ============================================================ */
+@font-face {
+  font-family: "ChunkFive";
+  src: url("assets/newui/fonts/chunkfive.woff2") format("woff2"),
+       url("assets/newui/fonts/chunkfive.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+
+/* ============================================================
+   1. TOKENS
+   ============================================================ */
+:root {
+  --ink:#0A0A0A; --panel:#111; --panel-2:#181818; --line:#2a2a2a; --line-bri:#3a3a3a;
+  --bone:#ECECEC; --bone-dim:#8A8A8A; --bone-mute:#5A5A5A;
+  --plate:#EAE8E2;            /* neutral product plate — reads dark AND light garments */
+  --signal:#FF0000;          /* the only accent — rationed */
+  --tex-hero:url("assets/newui/hero-panel-concrete.jpg");
+  --tex-char:url("assets/newui/dark-charcoal-concrete.jpg");
+  --tex-crack:url("assets/newui/dark-cracked-concrete.jpg");
+  --mono: ui-monospace,"SF Mono",SFMono-Regular,Menlo,Monaco,Consolas,"Roboto Mono",monospace;
+  --s1:8px; --s2:16px; --s3:24px; --s4:32px; --s5:48px; --s6:64px; --s7:96px;
+}
+
+/* ============================================================
+   2. RESET — brutalist: no softness anywhere
+   ============================================================ */
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; border-radius:0 !important; }
+html { scroll-behavior:smooth; }
+body {
+  background:var(--ink); color:var(--bone); font-family:var(--mono);
+  font-size:14px; line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+img { display:block; max-width:100%; }
+button { font:inherit; color:inherit; background:none; border:none; cursor:pointer; }
+a { color:inherit; text-decoration:none; }
+::selection { background:var(--signal); color:#fff; }
+.snap { transition:none !important; }
+.chunk { font-family:"ChunkFive",Georgia,serif; text-transform:uppercase; letter-spacing:-0.01em; line-height:0.95; }
+.tag { font-family:var(--mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--bone-dim); }
+.tag-mute { color:var(--bone-mute); }
+.rule { color:var(--line-bri); user-select:none; white-space:nowrap; overflow:hidden; }
+:focus-visible { outline:2px solid var(--signal); outline-offset:2px; }
+
+/* ============================================================
+   3. FIXED HEADER
+   ============================================================ */
+.masthead {
+  position:fixed; top:0; left:0; right:0; z-index:50;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px var(--s3); background:rgba(10,10,10,0.82);
+  backdrop-filter:blur(2px); border-bottom:1px solid var(--line);
+}
+.masthead .nodes { display:flex; gap:var(--s3); }
+.masthead a:hover,.masthead button:hover { color:var(--bone); }
+.masthead .bag b { color:var(--signal); font-weight:400; }
+
+/* ============================================================
+   4. BLOCK 1 — HERO
+   ============================================================ */
+.hero {
+  position:relative; min-height:100vh; display:flex; flex-direction:column; justify-content:space-between;
+  padding:96px var(--s3) var(--s3);
+  background:linear-gradient(rgba(8,8,8,0.62),rgba(8,8,8,0.72)),var(--tex-hero) center/cover no-repeat;
+  border-bottom:1px solid var(--line);
+}
+.hero-corner,.hero-foot { display:flex; justify-content:space-between; }
+.hero-title-wrap { margin:auto 0; text-align:center; }
+.hero h1 { color:#fff; font-size:clamp(3rem,11vw,9.5rem); max-width:18ch; margin:0 auto; text-shadow:0 2px 40px rgba(0,0,0,.5); }
+.hero-sub { margin-top:var(--s3); display:inline-block; border:1px solid var(--line-bri); padding:6px 14px; }
+.scrollcue { position:absolute; left:50%; bottom:14px; transform:translateX(-50%); font-size:10px; color:var(--bone-mute); letter-spacing:.3em; }
+
+/* ============================================================
+   5. BLOCK 2 — APPAREL ARCHIVE (50/50)
+   ============================================================ */
+.archive { display:flex; flex-direction:column; }
+.item { display:grid; grid-template-columns:1fr 1fr; min-height:90vh; border-bottom:1px solid var(--line); }
+
+.item-visual {
+  position:relative; display:flex; align-items:center; justify-content:center;
+  padding:var(--s5); border-right:1px solid var(--line);
+  background:linear-gradient(rgba(205,205,205,.9),rgba(188,188,188,.9)),var(--tex-hero) center/cover no-repeat;
+}
+.item--dark .item-visual {
+  background:linear-gradient(rgba(10,10,10,.62),rgba(10,10,10,.78)),var(--tex-char) center/cover no-repeat;
+}
+.item-asset-ref { position:absolute; top:var(--s3); left:var(--s3); z-index:2; }
+.item--dark .item-asset-ref { color:var(--bone-dim); }
+
+/* Product plate — white catalogue card; image swaps on colourway */
+.plate {
+  width:min(82%,420px); aspect-ratio:1/1.12; background:var(--plate);
+  border:1px solid #0c0c0c; box-shadow:0 24px 60px rgba(0,0,0,.4);
+  display:flex; align-items:center; justify-content:center; padding:6%;
+  position:relative;
+}
+.item--dark .plate { border-color:#000; box-shadow:0 24px 70px rgba(0,0,0,.7); }
+.plate img { width:100%; height:100%; object-fit:contain; }
+.plate .plate-cnr { position:absolute; bottom:8px; right:10px; font-size:9px; letter-spacing:.1em; color:#9a958c; }
+
+/* Ledger */
+.item-ledger { background:var(--panel); display:flex; flex-direction:column; justify-content:space-between; padding:clamp(24px,4vw,56px); }
+.item--dark .item-ledger { background:#0c0c0c; }
+.led-index { color:var(--bone-mute); margin-bottom:var(--s2); }
+.item--dark .led-index { color:var(--signal); }
+.led-name { color:#fff; font-size:clamp(2rem,4.5vw,3.7rem); margin-bottom:var(--s4); }
+
+.cw { border:1px solid var(--line); padding:var(--s2); margin-bottom:var(--s4); }
+.cw-label { display:block; margin-bottom:10px; }
+.cw-opts { display:flex; gap:10px; flex-wrap:wrap; }
+.cw-opt { display:inline-flex; align-items:center; gap:8px; border:1px solid var(--line-bri); padding:6px 12px; font-size:12px; letter-spacing:.08em; color:var(--bone-dim); }
+.cw-opt .dot { width:11px; height:11px; border:1px solid #000; background:var(--dot,#000); }
+.cw-opt:hover { color:var(--bone); border-color:var(--bone-dim); }
+.cw-opt[aria-pressed="true"] { background:var(--bone); color:var(--ink); border-color:var(--bone); }
+.item--dark .cw-opt[aria-pressed="true"] { background:var(--signal); color:#fff; border-color:var(--signal); }
+
+.dossier { border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:var(--s3) 0; }
+.dossier p { text-transform:uppercase; letter-spacing:.04em; color:var(--bone-dim); }
+.dossier p + p { margin-top:6px; }
+.dossier .hit { color:var(--bone); }
+.item--dark .dossier .hit { color:#fff; }
+
+.led-foot { margin-top:var(--s4); }
+.sizes { display:flex; align-items:center; gap:10px; margin-bottom:var(--s2); flex-wrap:wrap; }
+.size-pill { border:1px solid var(--line-bri); padding:7px 13px; font-size:12px; color:var(--bone-dim); min-width:40px; text-align:center; }
+.size-pill:hover { border-color:var(--bone-dim); color:var(--bone); }
+.size-pill[aria-pressed="true"] { background:var(--bone); color:var(--ink); border-color:var(--bone); }
+
+.directive { width:100%; border:1px solid var(--bone-dim); padding:18px; text-align:center; font-size:13px; letter-spacing:.18em; text-transform:uppercase; color:var(--bone); }
+.directive:hover { background:var(--bone); color:var(--ink); border-color:var(--bone); }
+.directive--red { border-color:var(--line-bri); color:var(--bone-dim); }
+.directive--red:hover { background:transparent; color:var(--signal); border-color:var(--signal); }
+.directive--flicker:hover { animation:flicker .45s infinite steps(1); }
+@keyframes flicker { 0%,100%{opacity:1} 8%{opacity:.25} 10%{opacity:1} 20%{opacity:.6} 22%{opacity:1} 60%{opacity:1} 62%{opacity:.4} 64%{opacity:1} }
+
+/* ============================================================
+   6. BLOCK 3 — EQUIPMENT
+   ============================================================ */
+.equipment { background:var(--panel); border-bottom:1px solid var(--line); padding:var(--s5) var(--s3); }
+.section-divider { border-bottom:1px solid var(--line); padding-bottom:var(--s2); margin-bottom:var(--s5); }
+.eq-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--s3); margin-bottom:var(--s5); }
+.eq-cell {
+  border:1px solid var(--line);
+  background:linear-gradient(rgba(10,10,10,.5),rgba(10,10,10,.72)),var(--tex-char) center/cover no-repeat;
+  padding:var(--s3); display:flex; flex-direction:column; justify-content:space-between; min-height:420px;
+}
+.eq-cell .eq-ref { font-size:10px; color:var(--bone-mute); letter-spacing:.1em; }
+.eq-plate { width:80%; aspect-ratio:1/1; margin:var(--s3) auto; background:var(--plate); border:1px solid #000; display:flex; align-items:center; justify-content:center; padding:8%; }
+.eq-plate img { width:100%; height:100%; object-fit:contain; }
+.eq-foot { display:flex; justify-content:space-between; align-items:flex-end; }
+.eq-name { color:var(--bone); font-size:13px; letter-spacing:.08em; }
+.eq-id { font-size:10px; color:var(--bone-mute); }
+.eq-state { font-size:11px; color:var(--bone-mute); letter-spacing:.08em; }
+.eq-state.sel { color:var(--signal); }
+.eq-cell[aria-pressed="true"] { border-color:var(--bone-dim); }
+
+.spec { border:1px solid var(--line); background:var(--ink); max-width:880px; margin:0 auto; display:grid; grid-template-columns:1fr auto; gap:var(--s4); padding:var(--s4); align-items:end; }
+.spec h3 { font-family:var(--mono); font-size:13px; font-weight:400; color:#fff; letter-spacing:.12em; margin-bottom:4px; }
+.spec .spec-sub { font-size:11px; color:var(--bone-mute); margin-bottom:var(--s2); letter-spacing:.1em; }
+.spec .spec-head { color:var(--bone-mute); font-size:11px; letter-spacing:.1em; margin-bottom:6px; }
+.spec ul { list-style:none; }
+.spec li { font-size:12px; color:var(--bone-dim); }
+.spec li::before { content:"- "; color:var(--bone-mute); }
+.spec .spec-status { margin-top:var(--s2); font-size:11px; color:var(--bone-mute); letter-spacing:.08em; }
+.spec .directive { width:auto; min-width:260px; align-self:end; }
+
+/* ============================================================
+   7. BLOCK 4 — OUTRO MONUMENT
+   ============================================================ */
+.outro { text-align:center; padding:var(--s7) var(--s3); background:linear-gradient(rgba(6,6,6,.78),rgba(6,6,6,.88)),var(--tex-crack) center/cover no-repeat; }
+.rollcall { display:flex; flex-direction:column; gap:var(--s2); margin:var(--s5) 0; }
+.rc-item { position:relative; height:1.2em; display:flex; justify-content:center; align-items:center; }
+.rc-name { font-family:"ChunkFive",serif; text-transform:uppercase; font-size:clamp(1.8rem,5vw,3.2rem); color:var(--bone-mute); letter-spacing:-0.01em; }
+.rc-item:hover .rc-name { color:#fff; opacity:0; }
+.rc-meta { position:absolute; inset:0; display:none; align-items:center; justify-content:center; font-family:var(--mono); font-size:clamp(.7rem,1.6vw,.95rem); letter-spacing:.16em; color:var(--signal); }
+.rc-item:hover .rc-meta { display:flex; }
+.outro-foot { max-width:720px; margin:var(--s5) auto 0; }
+.outro-foot .line { color:var(--bone-dim); letter-spacing:.04em; text-transform:uppercase; padding:var(--s2) 0; }
+.copyright { margin-top:var(--s4); font-size:10px; color:var(--bone-mute); letter-spacing:.16em; }
+
+/* ============================================================
+   8. RESPONSIVE
+   ============================================================ */
+@media (max-width:860px) {
+  .item { grid-template-columns:1fr; min-height:0; }
+  .item-visual { border-right:none; border-bottom:1px solid var(--line); padding:var(--s5); }
+  .eq-grid { grid-template-columns:1fr; }
+  .spec { grid-template-columns:1fr; }
+  .spec .directive { width:100%; }
+  .masthead { padding:10px var(--s2); font-size:10px; }
+  .masthead .nodes { gap:var(--s2); }
+  .hero-corner .tag,.hero-foot .tag { font-size:9px; }
+}
+@media (max-width:480px) {
+  .masthead { white-space:nowrap; font-size:9px; letter-spacing:.06em; }
+  .masthead .nodes { gap:12px; }
+  .mh-long { display:none; }              /* collapse to [ ISSUE_001 ] on phones */
+  .scrollcue { display:none; }            /* avoid overlap with hero foot tags */
+}
+@media (prefers-reduced-motion:reduce) {
+  html { scroll-behavior:auto; }
+  .directive--flicker:hover { animation:none; }
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <a href="#top" class="tag">[ <span class="mh-long">APPAREL_ARCHIVE // </span>ISSUE_001 ]</a>
+  <nav class="nodes">
+    <a href="#equipment" class="tag">[ EQUIPMENT ]</a>
+    <button class="tag bag" id="bagBtn" aria-label="Bag">[ BAG (<b id="bagCount">0</b>) ]</button>
+  </nav>
+</header>
+
+<!-- BLOCK 1 — HERO -->
+<section class="hero" id="top">
+  <div class="hero-corner">
+    <span class="tag tag-mute">SYS_REF // 47-CONCRETE-SEAMS</span>
+    <span class="tag tag-mute">LAT 51.5074° // LON 0.1278°</span>
+  </div>
+  <div class="hero-title-wrap">
+    <h1 class="chunk">NOT HERE<br>TO BE LIKED.</h1>
+    <div class="hero-sub tag">ISSUE_001 // CAPSULE LAUNCH</div>
+  </div>
+  <div class="hero-foot">
+    <span class="tag tag-mute">STATUS: UNMOVING / LOCKED</span>
+    <span class="tag tag-mute">EST. 2026 // BRITISH STUBBORNNESS</span>
+  </div>
+  <div class="scrollcue">↓ SCROLL TO ARCHIVE</div>
+</section>
+
+<!-- BLOCK 2 — APPAREL ARCHIVE -->
+<main class="archive">
+
+  <!-- 01 BOUDICA -->
+  <article class="item" data-product="boudica">
+    <div class="item-visual">
+      <span class="item-asset-ref tag">[ APPAREL // FLAT_LAY ]</span>
+      <div class="plate">
+        <img data-plate alt="Boudica tee — Britannia with trident and Union Jack shield, black" src="assets/tee-boudica-black.jpg" />
+        <span class="plate-cnr">BS_001 // OVERHEAD</span>
+      </div>
+    </div>
+    <div class="item-ledger">
+      <div>
+        <div class="led-index tag">[ ENTRY_01 // BOUDICA ]</div>
+        <h2 class="led-name chunk">BOUDICA</h2>
+        <div class="cw">
+          <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
+          <div class="cw-opts">
+            <button class="cw-opt snap" aria-pressed="true"  data-cw="OXY_BLACK"   data-img="assets/tee-boudica-black.jpg"    style="--dot:#0a0a0a">OXY_BLACK</button>
+            <button class="cw-opt snap" aria-pressed="false" data-cw="DESERT_SAND" data-img="assets/tee-boudica-offwhite.jpg" style="--dot:#cabfa6">DESERT_SAND</button>
+          </div>
+        </div>
+        <div class="dossier">
+          <p class="hit">BOUDICA DOESN'T ASK. SHE DOESN'T EXPLAIN.</p>
+          <p>SHE STANDS. UNBOWED. UNBROKEN. UNFORGIVING.</p>
+          <p>THIS ISN'T A QUEEN FOR CEREMONY.</p>
+        </div>
+      </div>
+      <div class="led-foot">
+        <div class="sizes"><span class="tag" style="margin-right:4px">[ SIZES ]</span>
+          <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
+        <button class="directive snap" data-idle="[ SYSTEM DIRECTIVE: SUBMIT ]" data-hover="[ EXECUTE // COME ON THEN ]" data-add>[ SYSTEM DIRECTIVE: SUBMIT ]</button>
+      </div>
+    </div>
+  </article>
+
+  <!-- 02 THE ESTABLISHMENT -->
+  <article class="item" data-product="establishment">
+    <div class="item-visual">
+      <span class="item-asset-ref tag">[ APPAREL // FLAT_LAY ]</span>
+      <div class="plate">
+        <img data-plate alt="The Establishment tee — bowler-hatted skull over crossed umbrellas, black" src="assets/tee-skull-black-mono.jpg" />
+        <span class="plate-cnr">BS_002 // OVERHEAD</span>
+      </div>
+    </div>
+    <div class="item-ledger">
+      <div>
+        <div class="led-index tag">[ ENTRY_02 // THE ESTABLISHMENT ]</div>
+        <h2 class="led-name chunk">THE ESTABLISHMENT</h2>
+        <div class="cw">
+          <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
+          <div class="cw-opts">
+            <button class="cw-opt snap" aria-pressed="true"  data-cw="OXY_BLACK"   data-img="assets/tee-skull-black-mono.jpg" style="--dot:#0a0a0a">OXY_BLACK</button>
+            <button class="cw-opt snap" aria-pressed="false" data-cw="CHALK_WHITE" data-img="assets/tee-skull-offwhite.jpg"   style="--dot:#e7e7e2">CHALK_WHITE</button>
+          </div>
+        </div>
+        <div class="dossier">
+          <p class="hit">THE OLD GUARD IS GONE. THE UNIFORM REMAINS.</p>
+          <p>A BOWLER HAT. AN UMBRELLA.</p>
+          <p>A GRIN BUILT FOR THE FRONT ROW, NOT THE FRONT BENCH.</p>
+        </div>
+      </div>
+      <div class="led-foot">
+        <div class="sizes"><span class="tag" style="margin-right:4px">[ SIZES ]</span>
+          <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
+        <button class="directive snap" data-idle="[ REGULATION // ACQUIRE ]" data-hover="[ KNOW YOUR PLACE ]" data-add>[ REGULATION // ACQUIRE ]</button>
+      </div>
+    </div>
+  </article>
+
+  <!-- 03 THE CLERK (CHARCOAL SHIFT) -->
+  <article class="item item--dark" data-product="clerk">
+    <div class="item-visual">
+      <span class="item-asset-ref tag">[ ANOMALY // UNAUTHORISED ]</span>
+      <div class="plate">
+        <img data-plate alt="The Clerk tee — Tommy, Katie, Winston & Boudica roll-call type, black" src="assets/tee-tommy-black.jpg" />
+        <span class="plate-cnr">BS_003 // OFF-LEDGER</span>
+      </div>
+    </div>
+    <div class="item-ledger">
+      <div>
+        <div class="led-index tag">[ CRITICAL_OVERRIDE // 003 ]</div>
+        <h2 class="led-name chunk">THE CLERK</h2>
+        <div class="cw">
+          <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
+          <div class="cw-opts">
+            <button class="cw-opt snap" aria-pressed="true"  data-cw="OXY_BLACK"  data-img="assets/tee-tommy-black.jpg" style="--dot:#0a0a0a">OXY_BLACK</button>
+            <button class="cw-opt snap" aria-pressed="false" data-cw="COLD_WHITE" data-img="assets/tee-tommy-white.jpg" style="--dot:#e7e7e7">COLD_WHITE</button>
+          </div>
+        </div>
+        <div class="dossier">
+          <p>THE SYSTEM SURVIVES ON SILENCE. THIS IS THE VOICE THAT BREAKS IT.</p>
+          <p>NO NAME. NO RANK. NO PERMISSION.</p>
+          <p>A STUBBORN REFUSAL TO BE ERASED FROM THE LEDGER.</p>
+          <p class="hit">THE OFFICIAL FILES CALL IT AN ANOMALY. WE CALL IT THE TRUTH.</p>
+        </div>
+      </div>
+      <div class="led-foot">
+        <div class="sizes"><span class="tag" style="margin-right:4px">[ SIZES ]</span>
+          <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
+        <button class="directive directive--red snap" data-idle="[ DATA LOCKED // ARCHIVE ITEM ]" data-hover="[ SYSTEM ANOMALY // TRY TO ARCHIVE THIS ]" data-add>[ DATA LOCKED // ARCHIVE ITEM ]</button>
+      </div>
+    </div>
+  </article>
+
+  <!-- 04 THE FREQUENCY -->
+  <article class="item" data-product="frequency">
+    <div class="item-visual">
+      <span class="item-asset-ref tag">[ APPAREL // FLAT_LAY ]</span>
+      <div class="plate">
+        <img data-plate alt="The Frequency tee — RAF roundel target graphic, black" src="assets/tee-roundel-black.jpg" />
+        <span class="plate-cnr">BS_004 // OVERHEAD</span>
+      </div>
+    </div>
+    <div class="item-ledger">
+      <div>
+        <div class="led-index tag">[ ENTRY_04 // THE FREQUENCY ]</div>
+        <h2 class="led-name chunk">THE FREQUENCY</h2>
+        <div class="cw">
+          <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
+          <div class="cw-opts">
+            <button class="cw-opt snap" aria-pressed="true"  data-cw="OXY_BLACK"        data-img="assets/tee-roundel-black.jpg" style="--dot:#0a0a0a">OXY_BLACK</button>
+            <button class="cw-opt snap" aria-pressed="false" data-cw="INDUSTRIAL_NAVY" data-img="assets/tee-roundel-navy.jpg"  style="--dot:#1f2a3d">INDUSTRIAL_NAVY</button>
+          </div>
+        </div>
+        <div class="dossier">
+          <p class="hit">FROM A DISTANCE, A TARGET. UP CLOSE, PURE ATTITUDE.</p>
+          <p>BUILT FROM WITHIN THE SYSTEM IT REFUSES TO OBEY.</p>
+          <p>THE SIGNAL NEVER CHANGES. THE TRANSMISSION WAS NEVER AUTHORISED.</p>
+        </div>
+      </div>
+      <div class="led-foot">
+        <div class="sizes"><span class="tag" style="margin-right:4px">[ SIZES ]</span>
+          <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
+        <button class="directive directive--flicker snap" data-idle="[ INTERCEPT TRANSMISSION ]" data-hover="[ TUNE IN. OR DON'T. ]" data-add>[ INTERCEPT TRANSMISSION ]</button>
+      </div>
+    </div>
+  </article>
+
+</main>
+
+<!-- BLOCK 3 — EQUIPMENT -->
+<section class="equipment" id="equipment">
+  <div class="section-divider tag">[ SECTION // 02 : EQUIPMENT ]</div>
+  <div class="eq-grid">
+    <button class="eq-cell snap" data-cap aria-pressed="true">
+      <span class="eq-ref">[ ASSET // utility-cap-black ]</span>
+      <div class="eq-plate"><img src="assets/cap-black.jpg" alt="Blitzspirit utility cap, oxy black" /></div>
+      <span class="eq-foot"><span><span class="eq-name">OXY_BLACK</span><br><span class="eq-id">SYS_HW_01</span></span><span class="eq-state sel">[ SELECTED ]</span></span>
+    </button>
+    <button class="eq-cell snap" data-cap aria-pressed="false">
+      <span class="eq-ref">[ ASSET // utility-cap-navy ]</span>
+      <div class="eq-plate"><img src="assets/cap-navy.jpg" alt="Blitzspirit utility cap, system navy" /></div>
+      <span class="eq-foot"><span><span class="eq-name">SYSTEM_NAVY</span><br><span class="eq-id">SYS_HW_02</span></span><span class="eq-state">[ STAGED ]</span></span>
+    </button>
+    <button class="eq-cell snap" data-cap aria-pressed="false">
+      <span class="eq-ref">[ ASSET // utility-cap-stone ]</span>
+      <div class="eq-plate"><img src="assets/cap-cream.jpg" alt="Blitzspirit utility cap, chalk stone" /></div>
+      <span class="eq-foot"><span><span class="eq-name">CHALK_STONE</span><br><span class="eq-id">SYS_HW_03</span></span><span class="eq-state">[ STAGED ]</span></span>
+    </button>
+  </div>
+  <div class="spec">
+    <div>
+      <h3>[ ARCHIVE // EQUIPMENT-01 ]</h3>
+      <div class="spec-sub">BLITZSPIRIT UTILITY HARDWARE</div>
+      <div class="spec-head">SPECIFICATION MATRIX:</div>
+      <ul>
+        <li>100% HARD-WEARING TWILL COTTON CONSTRUCTION</li>
+        <li>HEAVYWEIGHT EMBROIDERED BRUSHED CORE PATCH</li>
+        <li>REAR ADJUSTABLE INDUSTRIAL METALLIC CLASP / EMBOSSED EYELETS</li>
+      </ul>
+      <div class="spec-status">STATUS: ISSUED FOR IMMEDIATE DEPLOYMENT // SIZE: UNIVERSAL ADJUSTMENT SECURED</div>
+    </div>
+    <button class="directive snap" data-idle="[ EXECUTE ORDER // ALLOCATE TO BAG ]" data-hover="[ ALLOCATE // CONFIRM ]" data-add>[ EXECUTE ORDER // ALLOCATE TO BAG ]</button>
+  </div>
+</section>
+
+<!-- BLOCK 4 — OUTRO MONUMENT -->
+<footer class="outro">
+  <div class="tag tag-mute">[ LOG // 005 : ROLL CALL ]</div>
+  <div class="rollcall">
+    <div class="rc-item"><span class="rc-name">THE REBEL.</span>     <span class="rc-meta">[ SYSTEM STATUS: 12 PIECES REMAINING IN STORAGE ]</span></div>
+    <div class="rc-item"><span class="rc-name">THE FIREBRAND.</span> <span class="rc-meta">[ SYSTEM STATUS: 07 PIECES REMAINING IN STORAGE ]</span></div>
+    <div class="rc-item"><span class="rc-name">THE STATESMAN.</span> <span class="rc-meta">[ SYSTEM STATUS: 04 PIECES REMAINING IN STORAGE ]</span></div>
+    <div class="rc-item"><span class="rc-name">THE QUEEN.</span>     <span class="rc-meta">[ SYSTEM STATUS: 19 PIECES REMAINING IN STORAGE ]</span></div>
+  </div>
+  <div class="outro-foot">
+    <div class="rule">------------------------------------------------------------------</div>
+    <div class="line">A ROLL CALL OF BRITISH STUBBORNNESS. THE CLASS IS IN SESSION.</div>
+    <div class="rule">------------------------------------------------------------------</div>
+    <div class="copyright">© 2026 BLITZSPIRIT SYSTEM CO. // ALL RIGHTS RESERVED // SECURITY OVERRIDE PRIMED.</div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  /* Colourway: swap plate image + label instantly */
+  document.querySelectorAll(".item").forEach(function (item) {
+    var opts = item.querySelectorAll(".cw-opt");
+    var img = item.querySelector("[data-plate]");
+    opts.forEach(function (opt) {
+      opt.addEventListener("click", function () {
+        opts.forEach(function (o) { o.setAttribute("aria-pressed", "false"); });
+        opt.setAttribute("aria-pressed", "true");
+        if (img && opt.dataset.img) img.src = opt.dataset.img;
+      });
+    });
+  });
+
+  /* Size pills */
+  document.querySelectorAll(".sizes").forEach(function (row) {
+    var pills = row.querySelectorAll(".size-pill");
+    pills.forEach(function (pill) {
+      pill.addEventListener("click", function () {
+        pills.forEach(function (p) { p.setAttribute("aria-pressed", "false"); });
+        pill.setAttribute("aria-pressed", "true");
+      });
+    });
+  });
+
+  /* Directive buttons: instant text swap */
+  document.querySelectorAll(".directive[data-hover]").forEach(function (btn) {
+    var idle = btn.dataset.idle, hover = btn.dataset.hover;
+    var on = function () { btn.textContent = hover; }, off = function () { btn.textContent = idle; };
+    btn.addEventListener("mouseenter", on); btn.addEventListener("mouseleave", off);
+    btn.addEventListener("focus", on); btn.addEventListener("blur", off);
+  });
+
+  /* Bag counter (front-end mock) */
+  var bagCount = document.getElementById("bagCount"), n = 0;
+  document.querySelectorAll("[data-add]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      n += 1; bagCount.textContent = n;
+      bagCount.style.color = "#fff"; setTimeout(function () { bagCount.style.color = ""; }, 120);
+    });
+  });
+
+  /* Equipment cap selector */
+  var caps = document.querySelectorAll(".eq-cell");
+  caps.forEach(function (cell) {
+    cell.addEventListener("click", function () {
+      caps.forEach(function (c) {
+        c.setAttribute("aria-pressed", "false");
+        var s = c.querySelector(".eq-state"); s.textContent = "[ STAGED ]"; s.classList.remove("sel");
+      });
+      cell.setAttribute("aria-pressed", "true");
+      var s = cell.querySelector(".eq-state"); s.textContent = "[ SELECTED ]"; s.classList.add("sel");
+    });
+  });
+})();
+</script>
+</body>
+</html>
