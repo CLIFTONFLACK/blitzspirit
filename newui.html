@@ -120,15 +120,18 @@ a { color:inherit; text-decoration:none; }
    4b. PROMO — newsletter capture (Blitz milkman) — 2-col, no scrim
    ============================================================ */
 .promo {
-  position:relative; padding:var(--s7) var(--s3); border-bottom:1px solid var(--line);
-  background:url("assets/newui/promo-milkman.jpg") center/cover no-repeat;
+  position:relative; padding:var(--s7) var(--s3); border-bottom:1px solid var(--line); overflow:hidden;
 }
-.promo-inner { max-width:1120px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:var(--s6); align-items:center; }
-.promo-text { text-align:left; }
+.promo::before {
+  content:""; position:absolute; inset:0; z-index:0;
+  background:url("assets/newui/promo-milkman.jpg") center/cover no-repeat; transform:scaleX(-1);
+}
+.promo-inner { position:relative; z-index:1; max-width:1120px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:var(--s6); align-items:center; }
+.promo-text { text-align:left; max-width:560px; }
 .promo-tag { margin-bottom:var(--s3); color:var(--bone); text-shadow:0 1px 6px #000; }
 .promo-title { color:#fff; font-size:clamp(2.2rem,5.2vw,4.2rem); text-shadow:0 2px 4px #000,0 4px 30px rgba(0,0,0,.9); margin-bottom:var(--s3); }
 .promo-sub { color:#fff; font-size:clamp(.95rem,2.1vw,1.2rem); letter-spacing:.04em; text-transform:uppercase; text-shadow:0 1px 5px #000; margin-bottom:0; }
-.promo-form { max-width:none; margin:0; }
+.promo-form { max-width:520px; margin-top:var(--s4); }
 .promo-cta { display:block; color:#fff; text-shadow:0 1px 5px #000; margin-bottom:var(--s2); }
 .promo-row { display:flex; border:1px solid var(--bone-dim); background:rgba(0,0,0,0.55); }
 .promo-input { flex:1; min-width:0; background:transparent; border:none; color:#fff; font-family:var(--mono); font-size:13px; letter-spacing:.08em; text-transform:uppercase; padding:16px; }
@@ -382,16 +385,16 @@ a { color:inherit; text-decoration:none; }
   <div class="promo-inner">
     <div class="promo-text">
       <div class="promo-tag tag">[ DISPATCH // STAND BY ]</div>
-      <h2 class="promo-title chunk">GET MORE BOTTLE<br>THAN THE MILKMAN</h2>
+      <h2 class="promo-title chunk">GOT MORE BOTTLE<br>THAN THE MILKMAN</h2>
       <p class="promo-sub">Put the kettle on, it's time for a nice cup of tea!</p>
+      <form class="promo-form" novalidate>
+        <label class="promo-cta tag" for="promo-email">ENTER YOUR EMAIL ADDRESS TO BE THE FIRST IN THE KNOW</label>
+        <div class="promo-row">
+          <input id="promo-email" class="promo-input" type="email" placeholder="NAME@DOMAIN.CO.UK" autocomplete="email" required />
+          <button class="promo-submit snap" type="submit">[ NOTIFY ME ]</button>
+        </div>
+      </form>
     </div>
-    <form class="promo-form" novalidate>
-      <label class="promo-cta tag" for="promo-email">ENTER YOUR EMAIL ADDRESS TO BE THE FIRST IN THE KNOW</label>
-      <div class="promo-row">
-        <input id="promo-email" class="promo-input" type="email" placeholder="NAME@DOMAIN.CO.UK" autocomplete="email" required />
-        <button class="promo-submit snap" type="submit">[ NOTIFY ME ]</button>
-      </div>
-    </form>
   </div>
 </section>
 
@@ -403,7 +406,7 @@ a { color:inherit; text-decoration:none; }
     <div class="item-visual">
       <span class="item-asset-ref tag">[ APPAREL // FLAT_LAY ]</span>
       <div class="plate">
-        <img data-plate alt="Boudica tee — Britannia with trident and Union Jack shield, black" src="assets/tee-boudica-black.jpg" />
+        <img data-plate alt="Boudica tee — Britannia with trident and Union Jack shield, chalk white" src="assets/tee-boudica-offwhite.jpg" />
         <span class="plate-cnr">BS_001 // OVERHEAD</span>
       </div>
     </div>
@@ -414,8 +417,8 @@ a { color:inherit; text-decoration:none; }
         <div class="cw">
           <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
           <div class="cw-opts">
-            <button class="cw-opt snap" aria-pressed="true"  data-cw="OXY_BLACK"   data-img="assets/tee-boudica-black.jpg"    style="--dot:#0a0a0a">OXY_BLACK</button>
-            <button class="cw-opt snap" aria-pressed="false" data-cw="CHALK_WHITE" data-img="assets/tee-boudica-offwhite.jpg" style="--dot:#e7e7e2">CHALK_WHITE</button>
+            <button class="cw-opt snap" aria-pressed="false" data-cw="OXY_BLACK"   data-img="assets/tee-boudica-black.jpg"    style="--dot:#0a0a0a">OXY_BLACK</button>
+            <button class="cw-opt snap" aria-pressed="true"  data-cw="CHALK_WHITE" data-img="assets/tee-boudica-offwhite.jpg" style="--dot:#e7e7e2">CHALK_WHITE</button>
           </div>
         </div>
         <div class="dossier">
@@ -437,7 +440,7 @@ a { color:inherit; text-decoration:none; }
     <div class="item-visual">
       <span class="item-asset-ref tag">[ APPAREL // FLAT_LAY ]</span>
       <div class="plate">
-        <img data-plate alt="Roll Call tee — Tommy, Katie, Winston & Boudica names roll-call type, black" src="assets/tee-tommy-black.jpg" />
+        <img data-plate alt="Roll Call tee — Tommy, Katie, Winston & Boudica names roll-call type, white" src="assets/tee-tommy-white.jpg" />
         <span class="plate-cnr">BS_003 // OVERHEAD</span>
       </div>
     </div>
@@ -448,8 +451,8 @@ a { color:inherit; text-decoration:none; }
         <div class="cw">
           <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
           <div class="cw-opts">
-            <button class="cw-opt snap" aria-pressed="true"  data-cw="OXY_BLACK"   data-img="assets/tee-tommy-black.jpg" style="--dot:#0a0a0a">OXY_BLACK</button>
-            <button class="cw-opt snap" aria-pressed="false" data-cw="CHALK_WHITE" data-img="assets/tee-tommy-white.jpg" style="--dot:#e7e7e2">CHALK_WHITE</button>
+            <button class="cw-opt snap" aria-pressed="false" data-cw="OXY_BLACK"   data-img="assets/tee-tommy-black.jpg" style="--dot:#0a0a0a">OXY_BLACK</button>
+            <button class="cw-opt snap" aria-pressed="true"  data-cw="CHALK_WHITE" data-img="assets/tee-tommy-white.jpg" style="--dot:#e7e7e2">CHALK_WHITE</button>
           </div>
         </div>
         <div class="dossier">
@@ -472,7 +475,7 @@ a { color:inherit; text-decoration:none; }
     <div class="item-visual">
       <span class="item-asset-ref tag">[ APPAREL // FLAT_LAY ]</span>
       <div class="plate">
-        <img data-plate alt="The Frequency tee — RAF roundel target graphic, black" src="assets/tee-roundel-black.jpg" />
+        <img data-plate alt="The Frequency tee — RAF roundel target graphic, chalk white" src="assets/tee-roundel-navy.jpg" />
         <span class="plate-cnr">BS_004 // OVERHEAD</span>
       </div>
     </div>
@@ -483,9 +486,9 @@ a { color:inherit; text-decoration:none; }
         <div class="cw">
           <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
           <div class="cw-opts">
-            <button class="cw-opt snap" aria-pressed="true"  data-cw="OXY_BLACK"   data-img="assets/tee-roundel-black.jpg"    style="--dot:#0a0a0a">OXY_BLACK</button>
-            <button class="cw-opt snap" aria-pressed="false" data-cw="CHALK_WHITE" data-img="assets/tee-roundel-offwhite.jpg" style="--dot:#e7e7e2">CHALK_WHITE</button>
-            <button class="cw-opt snap" aria-pressed="false" data-cw="SYSTEM_NAVY" data-img="assets/tee-roundel-navy.jpg"     style="--dot:#1f2a3d">SYSTEM_NAVY</button>
+            <button class="cw-opt snap" aria-pressed="false" data-cw="OXY_BLACK"   data-img="assets/tee-roundel-black.jpg"    style="--dot:#0a0a0a">OXY_BLACK</button>
+            <button class="cw-opt snap" aria-pressed="true"  data-cw="CHALK_WHITE" data-img="assets/tee-roundel-navy.jpg"     style="--dot:#e7e7e2">CHALK_WHITE</button>
+            <button class="cw-opt snap" aria-pressed="false" data-cw="SYSTEM_NAVY" data-img="assets/tee-roundel-offwhite.jpg" style="--dot:#1f2a3d">SYSTEM_NAVY</button>
           </div>
         </div>
         <div class="dossier">
