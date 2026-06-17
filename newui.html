@@ -84,31 +84,52 @@ a { color:inherit; text-decoration:none; }
 .hero {
   position:relative; min-height:100vh; display:flex; flex-direction:column; justify-content:space-between;
   padding:96px var(--s3) var(--s3);
-  background:linear-gradient(rgba(8,8,8,0.62),rgba(8,8,8,0.72)),var(--tex-hero) center/cover no-repeat;
+  background:linear-gradient(rgba(8,8,8,0.50),rgba(8,8,8,0.58)),var(--tex-hero) center/cover no-repeat;
   border-bottom:1px solid var(--line);
 }
 .hero-corner,.hero-foot { display:flex; justify-content:space-between; }
 .hero-title-wrap { margin:auto 0; text-align:center; }
 .asset-node { margin:0 auto var(--s3); display:flex; align-items:center; justify-content:center; }
-.asset-node img { width:128px; height:auto; max-width:none; }
+.asset-node img { width:192px; height:auto; max-width:none; }
 .hero-logo { height:clamp(46px,8vw,96px); width:auto; margin:0 auto var(--s4); filter:drop-shadow(0 2px 18px rgba(0,0,0,.6)); }
 .hero h1 { color:#fff; font-size:clamp(3rem,11vw,9.5rem); max-width:18ch; margin:0 auto; text-shadow:0 2px 40px rgba(0,0,0,.5); }
+.hero-tagline { color:#fff; font-size:clamp(1rem,3.4vw,2.1rem); margin-top:var(--s3); text-shadow:0 2px 22px rgba(0,0,0,.6); }
 .hero-sub { margin-top:var(--s3); display:inline-block; border:1px solid var(--line-bri); padding:6px 14px; }
 .scrollcue { position:absolute; left:50%; bottom:14px; transform:translateX(-50%); font-size:10px; color:var(--bone-mute); letter-spacing:.3em; }
 
 /* ============================================================
-   4b. PROMO — newsletter capture (Blitz milkman)
+   4a. FEATURED PRODUCT — elevated showcase (The Establishment)
+   ============================================================ */
+.featured { position:relative; display:grid; grid-template-columns:1.05fr 1fr; min-height:78vh; border-bottom:1px solid var(--line);
+  background:linear-gradient(rgba(10,10,10,0.74),rgba(10,10,10,0.88)),var(--tex-char) center/cover no-repeat; }
+.featured-visual { position:relative; display:flex; align-items:center; justify-content:center; padding:var(--s6) var(--s5); border-right:1px solid var(--line); }
+.featured-plate { width:min(84%,500px); aspect-ratio:1/1.12; background:var(--plate); border:1px solid #000; box-shadow:0 30px 90px rgba(0,0,0,.7); outline:2px solid var(--signal); outline-offset:10px; display:flex; align-items:center; justify-content:center; padding:6%; position:relative; }
+.featured-plate img { width:100%; height:100%; object-fit:contain; }
+.featured-plate .plate-cnr { position:absolute; bottom:8px; right:10px; font-size:9px; letter-spacing:.1em; color:#9a958c; }
+.featured-ledger { display:flex; flex-direction:column; justify-content:center; gap:var(--s3); padding:clamp(28px,5vw,72px); }
+.featured-eyebrow { align-self:flex-start; border:1px solid var(--signal); color:var(--signal); padding:6px 13px; font-size:11px; letter-spacing:.2em; text-transform:uppercase; }
+.featured-name { color:#fff; font-size:clamp(2.6rem,6.2vw,5rem); margin:0; line-height:.95; }
+.featured-name .the { color:var(--brand-red); }
+.featured .dossier { border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:var(--s3) 0; }
+.featured .dossier p { text-transform:uppercase; letter-spacing:.04em; color:var(--bone-dim); }
+.featured .dossier p + p { margin-top:6px; }
+.featured .dossier .hit { color:#fff; }
+.featured-foot { display:flex; flex-direction:column; gap:var(--s3); }
+
+/* ============================================================
+   4b. PROMO — newsletter capture (Blitz milkman) — 2-col, no scrim
    ============================================================ */
 .promo {
   position:relative; padding:var(--s7) var(--s3); border-bottom:1px solid var(--line);
-  background:linear-gradient(rgba(8,8,8,0.72),rgba(8,8,8,0.82)),url("assets/newui/promo-milkman.jpg") center/cover no-repeat;
+  background:url("assets/newui/promo-milkman.jpg") center/cover no-repeat;
 }
-.promo-inner { max-width:780px; margin:0 auto; text-align:center; }
-.promo-tag { margin-bottom:var(--s3); }
-.promo-title { color:#fff; font-size:clamp(2.2rem,6.5vw,4.6rem); text-shadow:0 2px 32px rgba(0,0,0,.7); margin-bottom:var(--s3); }
-.promo-sub { color:var(--bone); font-size:clamp(.95rem,2.1vw,1.2rem); letter-spacing:.04em; text-transform:uppercase; margin-bottom:var(--s5); }
-.promo-form { max-width:580px; margin:0 auto; }
-.promo-cta { display:block; color:var(--bone-dim); margin-bottom:var(--s2); }
+.promo-inner { max-width:1120px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:var(--s6); align-items:center; }
+.promo-text { text-align:left; }
+.promo-tag { margin-bottom:var(--s3); color:var(--bone); text-shadow:0 1px 6px #000; }
+.promo-title { color:#fff; font-size:clamp(2.2rem,5.2vw,4.2rem); text-shadow:0 2px 4px #000,0 4px 30px rgba(0,0,0,.9); margin-bottom:var(--s3); }
+.promo-sub { color:#fff; font-size:clamp(.95rem,2.1vw,1.2rem); letter-spacing:.04em; text-transform:uppercase; text-shadow:0 1px 5px #000; margin-bottom:0; }
+.promo-form { max-width:none; margin:0; }
+.promo-cta { display:block; color:#fff; text-shadow:0 1px 5px #000; margin-bottom:var(--s2); }
 .promo-row { display:flex; border:1px solid var(--bone-dim); background:rgba(0,0,0,0.55); }
 .promo-input { flex:1; min-width:0; background:transparent; border:none; color:#fff; font-family:var(--mono); font-size:13px; letter-spacing:.08em; text-transform:uppercase; padding:16px; }
 .promo-input::placeholder { color:var(--bone-mute); }
@@ -262,6 +283,10 @@ a { color:inherit; text-decoration:none; }
   .masthead { padding:10px var(--s2); font-size:10px; }
   .masthead .nodes { gap:var(--s2); }
   .hero-corner .tag,.hero-foot .tag { font-size:9px; }
+  .featured { grid-template-columns:1fr; }
+  .featured-visual { border-right:none; border-bottom:1px solid var(--line); padding:var(--s5); }
+  .promo-inner { grid-template-columns:1fr; gap:var(--s4); }
+  .promo-text { text-align:center; }
 }
 @media (max-width:480px) {
   .masthead { white-space:nowrap; font-size:9px; letter-spacing:.06em; }
@@ -313,8 +338,9 @@ a { color:inherit; text-decoration:none; }
   <div class="hero-title-wrap">
     <div class="asset-node"><img src="assets/newui/skull-umbrella.png" alt="" aria-hidden="true" /></div>
     <img class="hero-logo" src="assets/newui/blitzspirit-stamp.png" alt="BLITZSPIRIT" />
-    <h1 class="chunk">NOT HERE<br>TO BE LIKED.</h1>
-    <div class="hero-sub tag">ISSUE_001 // CAPSULE LAUNCH</div>
+    <h1 class="chunk">GET YOUR<br>BACKBONE HERE</h1>
+    <div class="hero-tagline chunk">WE'RE NOT HERE TO BE LIKED.</div>
+    <div class="hero-sub tag">Heritage with teeth. Proud and Unapologetic.</div>
   </div>
   <div class="hero-foot">
     <span class="tag tag-mute">STATUS: UNMOVING / LOCKED</span>
@@ -323,12 +349,40 @@ a { color:inherit; text-decoration:none; }
   <div class="scrollcue">↓ SCROLL TO ARCHIVE</div>
 </section>
 
+<!-- FEATURED PRODUCT — THE ESTABLISHMENT -->
+<section class="featured" data-product="establishment" aria-label="Featured product">
+  <div class="featured-visual">
+    <span class="item-asset-ref tag">[ FEATURED // ENTRY_02 ]</span>
+    <div class="featured-plate">
+      <img src="assets/tee-skull-black-colour.jpg" alt="The Establishment tee — bowler-hatted skull over crossed umbrellas" />
+      <span class="plate-cnr">BS_002 // FEATURED</span>
+    </div>
+  </div>
+  <div class="featured-ledger">
+    <span class="featured-eyebrow">★ FEATURED RELEASE</span>
+    <h2 class="featured-name chunk"><span class="the">THE</span> ESTABLISHMENT</h2>
+    <div class="dossier">
+      <p class="hit">THE OLD GUARD IS GONE. THE UNIFORM REMAINS.</p>
+      <p>A BOWLER HAT. AN UMBRELLA.</p>
+      <p>A GRIN BUILT FOR THE FRONT ROW, NOT THE FRONT BENCH.</p>
+    </div>
+    <div class="featured-foot">
+      <div class="sizes"><span class="tag" style="margin-right:4px">[ SIZES ]</span>
+        <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
+      <button class="cw-opt snap" aria-pressed="true" data-cw="OXY_BLACK" style="display:none">OXY_BLACK</button>
+      <button class="directive snap" data-idle="[ SYSTEM DIRECTIVE: SUBMIT ]" data-hover="[ SYSTEM DIRECTIVE: SUBMIT ]" data-add>[ SYSTEM DIRECTIVE: SUBMIT ]</button>
+    </div>
+  </div>
+</section>
+
 <!-- PROMO — NEWSLETTER CAPTURE -->
 <section class="promo" aria-label="Newsletter signup">
   <div class="promo-inner">
-    <div class="promo-tag tag tag-mute">[ DISPATCH // STAND BY ]</div>
-    <h2 class="promo-title chunk">GET MORE BOTTLE<br>THAN THE MILKMAN</h2>
-    <p class="promo-sub">Put the kettle on, it's time for a nice cup of tea!</p>
+    <div class="promo-text">
+      <div class="promo-tag tag">[ DISPATCH // STAND BY ]</div>
+      <h2 class="promo-title chunk">GET MORE BOTTLE<br>THAN THE MILKMAN</h2>
+      <p class="promo-sub">Put the kettle on, it's time for a nice cup of tea!</p>
+    </div>
     <form class="promo-form" novalidate>
       <label class="promo-cta tag" for="promo-email">ENTER YOUR EMAIL ADDRESS TO BE THE FIRST IN THE KNOW</label>
       <div class="promo-row">
@@ -366,39 +420,6 @@ a { color:inherit; text-decoration:none; }
           <p class="hit">BOUDICA DOESN'T ASK. SHE DOESN'T EXPLAIN.</p>
           <p>SHE STANDS. UNBOWED. UNBROKEN. UNFORGIVING.</p>
           <p>THIS ISN'T A QUEEN FOR CEREMONY.</p>
-        </div>
-      </div>
-      <div class="led-foot">
-        <div class="sizes"><span class="tag" style="margin-right:4px">[ SIZES ]</span>
-          <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
-        <button class="directive snap" data-idle="[ SYSTEM DIRECTIVE: SUBMIT ]" data-hover="[ SYSTEM DIRECTIVE: SUBMIT ]" data-add>[ SYSTEM DIRECTIVE: SUBMIT ]</button>
-      </div>
-    </div>
-  </article>
-
-  <!-- 02 THE ESTABLISHMENT -->
-  <article class="item" data-product="establishment">
-    <div class="item-visual">
-      <span class="item-asset-ref tag">[ APPAREL // FLAT_LAY ]</span>
-      <div class="plate">
-        <img data-plate alt="The Establishment tee — bowler-hatted skull over crossed umbrellas, black" src="assets/tee-skull-black-mono.jpg" />
-        <span class="plate-cnr">BS_002 // OVERHEAD</span>
-      </div>
-    </div>
-    <div class="item-ledger">
-      <div>
-        <div class="led-index tag">[ ENTRY_02 // THE ESTABLISHMENT ]</div>
-        <h2 class="led-name chunk"><span class="the">THE</span> ESTABLISHMENT</h2>
-        <div class="cw">
-          <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
-          <div class="cw-opts">
-            <button class="cw-opt snap" aria-pressed="true"  data-cw="OXY_BLACK"   data-img="assets/tee-skull-black-mono.jpg" style="--dot:#0a0a0a">OXY_BLACK</button>
-          </div>
-        </div>
-        <div class="dossier">
-          <p class="hit">THE OLD GUARD IS GONE. THE UNIFORM REMAINS.</p>
-          <p>A BOWLER HAT. AN UMBRELLA.</p>
-          <p>A GRIN BUILT FOR THE FRONT ROW, NOT THE FRONT BENCH.</p>
         </div>
       </div>
       <div class="led-foot">
@@ -600,10 +621,11 @@ a { color:inherit; text-decoration:none; }
 
   document.querySelectorAll("[data-add]").forEach(function (btn) {
     btn.addEventListener("click", function () {
-      var item = btn.closest(".item");
+      var item = btn.closest("[data-product]");
+      var nameEl = item ? item.querySelector(".led-name, .featured-name") : null;
       var name = "ITEM", size = "OS", colour = "OS";
-      if (item) {
-        name = item.querySelector(".led-name").textContent.trim();
+      if (nameEl) {
+        name = nameEl.textContent.trim();
         var ps = item.querySelector('.size-pill[aria-pressed="true"]'); if (ps) size = ps.textContent.trim();
         var pc = item.querySelector('.cw-opt[aria-pressed="true"]');    if (pc) colour = pc.dataset.cw || pc.textContent.trim();
       } else {
