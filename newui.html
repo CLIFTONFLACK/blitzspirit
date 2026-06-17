@@ -110,10 +110,10 @@ a { color:inherit; text-decoration:none; }
 .featured-eyebrow { align-self:flex-start; border:1px solid var(--signal); color:var(--signal); padding:6px 13px; font-size:11px; letter-spacing:.2em; text-transform:uppercase; }
 .featured-name { color:#fff; font-size:clamp(2.6rem,6.2vw,5rem); margin:0; line-height:.95; }
 .featured-name .the { color:var(--brand-red); }
-.featured .dossier { border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:var(--s3) 0; }
-.featured .dossier p { text-transform:uppercase; letter-spacing:.04em; color:var(--bone-dim); }
+.featured .dossier { background:var(--plate); border:1px solid #cfccc2; padding:var(--s3); }
+.featured .dossier p { text-transform:uppercase; letter-spacing:.04em; color:#3a352d; }
 .featured .dossier p + p { margin-top:6px; }
-.featured .dossier .hit { color:#fff; }
+.featured .dossier .hit { color:#0a0a0a; }
 .featured-foot { display:flex; flex-direction:column; gap:var(--s3); }
 
 /* ============================================================
@@ -183,11 +183,11 @@ a { color:inherit; text-decoration:none; }
 .cw-opt[aria-pressed="true"] { background:var(--bone); color:var(--ink); border-color:var(--bone); }
 .item--dark .cw-opt[aria-pressed="true"] { background:var(--signal); color:#fff; border-color:var(--signal); }
 
-.dossier { border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:var(--s3) 0; }
-.dossier p { text-transform:uppercase; letter-spacing:.04em; color:var(--bone-dim); }
+.dossier { background:var(--plate); border:1px solid #cfccc2; padding:var(--s3); }
+.dossier p { text-transform:uppercase; letter-spacing:.04em; color:#3a352d; }
 .dossier p + p { margin-top:6px; }
-.dossier .hit { color:var(--bone); }
-.item--dark .dossier .hit { color:#fff; }
+.dossier .hit { color:#0a0a0a; }
+.item--dark .dossier .hit { color:#0a0a0a; }
 
 .led-foot { margin-top:var(--s4); }
 .sizes { display:flex; align-items:center; gap:10px; margin-bottom:var(--s2); flex-wrap:wrap; }
@@ -232,6 +232,8 @@ a { color:inherit; text-decoration:none; }
 .spec li::before { content:"- "; color:var(--bone-mute); }
 .spec .spec-status { margin-top:var(--s2); font-size:11px; color:var(--bone-mute); letter-spacing:.08em; }
 .spec .directive { width:auto; min-width:260px; align-self:end; }
+.eq-allocate { max-width:880px; margin:0 auto; text-align:center; }
+.eq-allocate .directive { display:inline-block; width:auto; min-width:300px; }
 
 /* ============================================================
    7. BLOCK 4 — OUTRO MONUMENT
@@ -522,18 +524,7 @@ a { color:inherit; text-decoration:none; }
       <span class="eq-foot"><span><span class="eq-name">CHALK_STONE</span><br><span class="eq-id">SYS_HW_03</span></span><span class="eq-state">[ STAGED ]</span></span>
     </button>
   </div>
-  <div class="spec">
-    <div>
-      <h3>[ ARCHIVE // EQUIPMENT-01 ]</h3>
-      <div class="spec-sub">BLITZSPIRIT UTILITY HARDWARE</div>
-      <div class="spec-head">SPECIFICATION MATRIX:</div>
-      <ul>
-        <li>100% HARD-WEARING TWILL COTTON CONSTRUCTION</li>
-        <li>HEAVYWEIGHT EMBROIDERED BRUSHED CORE PATCH</li>
-        <li>REAR ADJUSTABLE INDUSTRIAL METALLIC CLASP / EMBOSSED EYELETS</li>
-      </ul>
-      <div class="spec-status">STATUS: ISSUED FOR IMMEDIATE DEPLOYMENT // SIZE: UNIVERSAL ADJUSTMENT SECURED</div>
-    </div>
+  <div class="eq-allocate">
     <button class="directive snap" data-idle="[ EXECUTE ORDER // ALLOCATE TO BAG ]" data-hover="[ ALLOCATE // CONFIRM ]" data-add>[ EXECUTE ORDER // ALLOCATE TO BAG ]</button>
   </div>
 </section>
