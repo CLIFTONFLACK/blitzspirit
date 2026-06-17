@@ -88,6 +88,8 @@ a { color:inherit; text-decoration:none; }
 }
 .hero-corner,.hero-foot { display:flex; justify-content:space-between; }
 .hero-title-wrap { margin:auto 0; text-align:center; }
+.asset-node { width:104px; height:104px; margin:0 auto var(--s3); border:2px dashed var(--line-bri); background:#000; overflow:hidden; position:relative; }
+.asset-node img { position:absolute; left:50%; top:-6px; width:175%; max-width:none; height:auto; transform:translateX(-50%); filter:invert(1); }
 .hero-logo { height:clamp(46px,8vw,96px); width:auto; margin:0 auto var(--s4); filter:drop-shadow(0 2px 18px rgba(0,0,0,.6)); }
 .hero h1 { color:#fff; font-size:clamp(3rem,11vw,9.5rem); max-width:18ch; margin:0 auto; text-shadow:0 2px 40px rgba(0,0,0,.5); }
 .hero-sub { margin-top:var(--s3); display:inline-block; border:1px solid var(--line-bri); padding:6px 14px; }
@@ -284,6 +286,7 @@ a { color:inherit; text-decoration:none; }
     <span class="tag tag-mute">LAT 51.5074° // LON 0.1278°</span>
   </div>
   <div class="hero-title-wrap">
+    <div class="asset-node"><img src="assets/skull-graphic.png" alt="" aria-hidden="true" /></div>
     <img class="hero-logo" src="assets/newui/blitzspirit-stamp.png" alt="BLITZSPIRIT" />
     <h1 class="chunk">NOT HERE<br>TO BE LIKED.</h1>
     <div class="hero-sub tag">ISSUE_001 // CAPSULE LAUNCH</div>
@@ -315,7 +318,7 @@ a { color:inherit; text-decoration:none; }
           <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
           <div class="cw-opts">
             <button class="cw-opt snap" aria-pressed="true"  data-cw="OXY_BLACK"   data-img="assets/tee-boudica-black.jpg"    style="--dot:#0a0a0a">OXY_BLACK</button>
-            <button class="cw-opt snap" aria-pressed="false" data-cw="DESERT_SAND" data-img="assets/tee-boudica-offwhite.jpg" style="--dot:#cabfa6">DESERT_SAND</button>
+            <button class="cw-opt snap" aria-pressed="false" data-cw="CHALK_WHITE" data-img="assets/tee-boudica-offwhite.jpg" style="--dot:#e7e7e2">CHALK_WHITE</button>
           </div>
         </div>
         <div class="dossier">
@@ -327,7 +330,7 @@ a { color:inherit; text-decoration:none; }
       <div class="led-foot">
         <div class="sizes"><span class="tag" style="margin-right:4px">[ SIZES ]</span>
           <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
-        <button class="directive snap" data-idle="[ SYSTEM DIRECTIVE: SUBMIT ]" data-hover="[ EXECUTE // COME ON THEN ]" data-add>[ SYSTEM DIRECTIVE: SUBMIT ]</button>
+        <button class="directive snap" data-idle="[ SYSTEM DIRECTIVE: SUBMIT ]" data-hover="[ SYSTEM DIRECTIVE: SUBMIT ]" data-add>[ SYSTEM DIRECTIVE: SUBMIT ]</button>
       </div>
     </div>
   </article>
@@ -349,7 +352,6 @@ a { color:inherit; text-decoration:none; }
           <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
           <div class="cw-opts">
             <button class="cw-opt snap" aria-pressed="true"  data-cw="OXY_BLACK"   data-img="assets/tee-skull-black-mono.jpg" style="--dot:#0a0a0a">OXY_BLACK</button>
-            <button class="cw-opt snap" aria-pressed="false" data-cw="CHALK_WHITE" data-img="assets/tee-skull-offwhite.jpg"   style="--dot:#e7e7e2">CHALK_WHITE</button>
           </div>
         </div>
         <div class="dossier">
@@ -361,42 +363,42 @@ a { color:inherit; text-decoration:none; }
       <div class="led-foot">
         <div class="sizes"><span class="tag" style="margin-right:4px">[ SIZES ]</span>
           <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
-        <button class="directive snap" data-idle="[ REGULATION // ACQUIRE ]" data-hover="[ KNOW YOUR PLACE ]" data-add>[ REGULATION // ACQUIRE ]</button>
+        <button class="directive snap" data-idle="[ SYSTEM DIRECTIVE: SUBMIT ]" data-hover="[ SYSTEM DIRECTIVE: SUBMIT ]" data-add>[ SYSTEM DIRECTIVE: SUBMIT ]</button>
       </div>
     </div>
   </article>
 
-  <!-- 03 THE CLERK (CHARCOAL SHIFT) -->
-  <article class="item item--dark" data-product="clerk">
+  <!-- 03 ROLL CALL (CHARCOAL SHIFT) — the names design: Tommy, Katie, Winston, Boudica -->
+  <article class="item item--dark" data-product="rollcall">
     <div class="item-visual">
-      <span class="item-asset-ref tag">[ ANOMALY // UNAUTHORISED ]</span>
+      <span class="item-asset-ref tag">[ APPAREL // FLAT_LAY ]</span>
       <div class="plate">
-        <img data-plate alt="The Clerk tee — Tommy, Katie, Winston & Boudica roll-call type, black" src="assets/tee-tommy-black.jpg" />
-        <span class="plate-cnr">BS_003 // OFF-LEDGER</span>
+        <img data-plate alt="Roll Call tee — Tommy, Katie, Winston & Boudica names roll-call type, black" src="assets/tee-tommy-black.jpg" />
+        <span class="plate-cnr">BS_003 // OVERHEAD</span>
       </div>
     </div>
     <div class="item-ledger">
       <div>
-        <div class="led-index tag">[ CRITICAL_OVERRIDE // 003 ]</div>
-        <h2 class="led-name chunk">THE CLERK</h2>
+        <div class="led-index tag">[ ENTRY_03 // ROLL CALL ]</div>
+        <h2 class="led-name chunk">ROLL CALL</h2>
         <div class="cw">
           <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
           <div class="cw-opts">
-            <button class="cw-opt snap" aria-pressed="true"  data-cw="OXY_BLACK"  data-img="assets/tee-tommy-black.jpg" style="--dot:#0a0a0a">OXY_BLACK</button>
-            <button class="cw-opt snap" aria-pressed="false" data-cw="COLD_WHITE" data-img="assets/tee-tommy-white.jpg" style="--dot:#e7e7e7">COLD_WHITE</button>
+            <button class="cw-opt snap" aria-pressed="true"  data-cw="OXY_BLACK"   data-img="assets/tee-tommy-black.jpg" style="--dot:#0a0a0a">OXY_BLACK</button>
+            <button class="cw-opt snap" aria-pressed="false" data-cw="CHALK_WHITE" data-img="assets/tee-tommy-white.jpg" style="--dot:#e7e7e2">CHALK_WHITE</button>
           </div>
         </div>
         <div class="dossier">
-          <p>THE SYSTEM SURVIVES ON SILENCE. THIS IS THE VOICE THAT BREAKS IT.</p>
-          <p>NO NAME. NO RANK. NO PERMISSION.</p>
-          <p>A STUBBORN REFUSAL TO BE ERASED FROM THE LEDGER.</p>
-          <p class="hit">THE OFFICIAL FILES CALL IT AN ANOMALY. WE CALL IT THE TRUTH.</p>
+          <p class="hit">NO SYMBOLS REQUIRED. NO EMBLEMS NECESSARY.</p>
+          <p>JUST THE NAMES OF THOSE WHO REFUSED TO BACK DOWN.</p>
+          <p>THE REBEL. THE FIREBRAND. THE STATESMAN. THE QUEEN.</p>
+          <p class="hit">A ROLL CALL OF BRITISH STUBBORNNESS. THE CLASS IS IN SESSION.</p>
         </div>
       </div>
       <div class="led-foot">
         <div class="sizes"><span class="tag" style="margin-right:4px">[ SIZES ]</span>
           <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
-        <button class="directive directive--red snap" data-idle="[ DATA LOCKED // ARCHIVE ITEM ]" data-hover="[ SYSTEM ANOMALY // TRY TO ARCHIVE THIS ]" data-add>[ DATA LOCKED // ARCHIVE ITEM ]</button>
+        <button class="directive snap" data-idle="[ SYSTEM DIRECTIVE: SUBMIT ]" data-hover="[ SYSTEM DIRECTIVE: SUBMIT ]" data-add>[ SYSTEM DIRECTIVE: SUBMIT ]</button>
       </div>
     </div>
   </article>
@@ -417,8 +419,9 @@ a { color:inherit; text-decoration:none; }
         <div class="cw">
           <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
           <div class="cw-opts">
-            <button class="cw-opt snap" aria-pressed="true"  data-cw="OXY_BLACK"        data-img="assets/tee-roundel-black.jpg" style="--dot:#0a0a0a">OXY_BLACK</button>
-            <button class="cw-opt snap" aria-pressed="false" data-cw="INDUSTRIAL_NAVY" data-img="assets/tee-roundel-navy.jpg"  style="--dot:#1f2a3d">INDUSTRIAL_NAVY</button>
+            <button class="cw-opt snap" aria-pressed="true"  data-cw="OXY_BLACK"   data-img="assets/tee-roundel-black.jpg"    style="--dot:#0a0a0a">OXY_BLACK</button>
+            <button class="cw-opt snap" aria-pressed="false" data-cw="CHALK_WHITE" data-img="assets/tee-roundel-offwhite.jpg" style="--dot:#e7e7e2">CHALK_WHITE</button>
+            <button class="cw-opt snap" aria-pressed="false" data-cw="SYSTEM_NAVY" data-img="assets/tee-roundel-navy.jpg"     style="--dot:#1f2a3d">SYSTEM_NAVY</button>
           </div>
         </div>
         <div class="dossier">
@@ -430,7 +433,7 @@ a { color:inherit; text-decoration:none; }
       <div class="led-foot">
         <div class="sizes"><span class="tag" style="margin-right:4px">[ SIZES ]</span>
           <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
-        <button class="directive directive--flicker snap" data-idle="[ INTERCEPT TRANSMISSION ]" data-hover="[ TUNE IN. OR DON'T. ]" data-add>[ INTERCEPT TRANSMISSION ]</button>
+        <button class="directive snap" data-idle="[ SYSTEM DIRECTIVE: SUBMIT ]" data-hover="[ SYSTEM DIRECTIVE: SUBMIT ]" data-add>[ SYSTEM DIRECTIVE: SUBMIT ]</button>
       </div>
     </div>
   </article>
