@@ -1,317 +1,664 @@
 <!DOCTYPE html>
-<html lang="en-GB">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BlitzSpirit — Urban Fashion With a Backbone | British Heritage Apparel</title>
-<meta name="description" content="Ironic and iconic British t-shirts and caps. Boudica, The Roundel, Skull &amp; Brollies. Heavyweight cotton. Not here to be liked.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bevan&family=Stardos+Stencil:wght@400;700&family=Oswald:wght@500;600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BLITZSPIRIT — Heritage With Teeth | British Apparel</title>
+<meta name="description" content="Proud and unapologetic British heritage apparel. Not here to be liked. The Boudica, The Establishment, Roll Call, The Frequency." />
+<link rel="canonical" href="https://blitzspirit.vercel.app/" />
+
+<!--
+  BLITZSPIRIT — homepage (brutalist "newui" build).
+  Design system locked by client brief: ChunkFive + native monospace,
+  border-radius:0, transition:0ms, 1px crisp borders, monochrome concrete,
+  signal red rationed. Previous heritage homepage preserved at /heritage.html
+-->
+
+<link rel="preload" href="assets/newui/fonts/chunkfive.woff2" as="font" type="font/woff2" crossorigin />
+
+<style>
+/* ============================================================
+   0. FONTS — ChunkFive = display voice. Monospace = ledger.
+   ============================================================ */
+@font-face {
+  font-family: "ChunkFive";
+  src: url("assets/newui/fonts/chunkfive.woff2") format("woff2"),
+       url("assets/newui/fonts/chunkfive.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+
+/* ============================================================
+   1. TOKENS
+   ============================================================ */
+:root {
+  --ink:#0A0A0A; --panel:#111; --panel-2:#181818; --line:#2a2a2a; --line-bri:#3a3a3a;
+  --bone:#ECECEC; --bone-dim:#8A8A8A; --bone-mute:#5A5A5A;
+  --plate:#EAE8E2;            /* neutral product plate — reads dark AND light garments */
+  --signal:#FF0000;          /* the only accent — rationed */
+  --brand-red:#8B2020;       /* logo badge red — used for "THE" in product names */
+  --tex-hero:url("assets/newui/hero-panel-concrete.jpg");
+  --tex-char:url("assets/newui/dark-charcoal-concrete.jpg");
+  --tex-crack:url("assets/newui/dark-cracked-concrete.jpg");
+  --mono: ui-monospace,"SF Mono",SFMono-Regular,Menlo,Monaco,Consolas,"Roboto Mono",monospace;
+  --s1:8px; --s2:16px; --s3:24px; --s4:32px; --s5:48px; --s6:64px; --s7:96px;
+}
+
+/* ============================================================
+   2. RESET — brutalist: no softness anywhere
+   ============================================================ */
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; border-radius:0 !important; }
+html { scroll-behavior:smooth; }
+body {
+  background:var(--ink); color:var(--bone); font-family:var(--mono);
+  font-size:14px; line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+img { display:block; max-width:100%; }
+button { font:inherit; color:inherit; background:none; border:none; cursor:pointer; }
+a { color:inherit; text-decoration:none; }
+::selection { background:var(--signal); color:#fff; }
+.snap { transition:none !important; }
+.chunk { font-family:"ChunkFive",Georgia,serif; text-transform:uppercase; letter-spacing:-0.01em; line-height:0.95; }
+.tag { font-family:var(--mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--bone-dim); }
+.tag-mute { color:var(--bone-mute); }
+.rule { color:var(--line-bri); user-select:none; white-space:nowrap; overflow:hidden; }
+:focus-visible { outline:2px solid var(--signal); outline-offset:2px; }
+
+/* ============================================================
+   3. FIXED HEADER
+   ============================================================ */
+.masthead {
+  position:fixed; top:0; left:0; right:0; z-index:50;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px var(--s3); background:rgba(10,10,10,0.82);
+  backdrop-filter:blur(2px); border-bottom:1px solid var(--line);
+}
+.masthead .nodes { display:flex; gap:var(--s3); }
+.masthead a:hover,.masthead button:hover { color:var(--bone); }
+.masthead .bag b { color:var(--signal); font-weight:400; }
+
+/* ============================================================
+   4. BLOCK 1 — HERO
+   ============================================================ */
+.hero {
+  position:relative; min-height:100vh; display:flex; flex-direction:column; justify-content:space-between;
+  padding:96px var(--s3) var(--s3);
+  background:linear-gradient(rgba(8,8,8,0.50),rgba(8,8,8,0.58)),var(--tex-hero) center/cover no-repeat;
+  border-bottom:1px solid var(--line);
+}
+.hero-corner,.hero-foot { display:flex; justify-content:space-between; }
+.hero-title-wrap { margin:auto 0; text-align:center; }
+.asset-node { margin:0 auto var(--s3); display:flex; align-items:center; justify-content:center; }
+.asset-node img { width:192px; height:auto; max-width:none; }
+.hero-logo { height:clamp(46px,8vw,96px); width:auto; margin:0 auto var(--s4); filter:drop-shadow(0 2px 18px rgba(0,0,0,.6)); }
+.hero h1 { color:#fff; font-size:clamp(3rem,11vw,9.5rem); max-width:18ch; margin:0 auto; text-shadow:0 2px 40px rgba(0,0,0,.5); }
+.hero-tagline { color:#fff; font-size:clamp(1rem,3.4vw,2.1rem); margin-top:var(--s3); text-shadow:0 2px 22px rgba(0,0,0,.6); }
+.hero-sub { margin-top:var(--s3); display:inline-block; border:1px solid var(--line-bri); padding:6px 14px; }
+.scrollcue { position:absolute; left:50%; bottom:14px; transform:translateX(-50%); font-size:10px; color:var(--bone-mute); letter-spacing:.3em; }
+
+/* ============================================================
+   4a. FEATURED PRODUCT — elevated showcase (The Establishment)
+   ============================================================ */
+.featured { position:relative; display:grid; grid-template-columns:1.05fr 1fr; min-height:78vh; border-bottom:1px solid var(--line); }
+.featured-visual { position:relative; display:flex; align-items:center; justify-content:center; padding:var(--s6) var(--s5); border-right:1px solid var(--line);
+  background:linear-gradient(rgba(205,205,205,.9),rgba(188,188,188,.9)),var(--tex-hero) center/cover no-repeat; }
+.featured-plate { width:min(84%,500px); aspect-ratio:1/1.12; background:var(--plate); border:1px solid #000; box-shadow:0 30px 90px rgba(0,0,0,.7); outline:2px solid var(--signal); outline-offset:10px; display:flex; align-items:center; justify-content:center; padding:6%; position:relative; }
+.featured-plate img { width:100%; height:100%; object-fit:contain; }
+.featured-plate .plate-cnr { position:absolute; bottom:8px; right:10px; font-size:9px; letter-spacing:.1em; color:#9a958c; }
+.featured-ledger { background:var(--panel); display:flex; flex-direction:column; justify-content:center; gap:var(--s3); padding:clamp(28px,5vw,72px); }
+.featured-eyebrow { align-self:flex-start; border:1px solid var(--signal); color:var(--signal); padding:6px 13px; font-size:11px; letter-spacing:.2em; text-transform:uppercase; }
+.featured-name { color:#fff; font-size:clamp(2.6rem,6.2vw,5rem); margin:0; line-height:.95; }
+.featured-name .the { color:var(--brand-red); }
+.featured .dossier { background:linear-gradient(rgba(205,205,205,.92),rgba(188,188,188,.92)),var(--tex-hero) center/cover; border:1px solid rgba(0,0,0,.4); padding:var(--s3); }
+.featured .dossier p { text-transform:uppercase; letter-spacing:.04em; color:#2a2722; }
+.featured .dossier p + p { margin-top:6px; }
+.featured .dossier .hit { color:#0a0a0a; }
+.featured-foot { display:flex; flex-direction:column; gap:var(--s3); }
+
+/* ============================================================
+   4b. PROMO — newsletter capture (Blitz milkman) — 2-col, no scrim
+   ============================================================ */
+.promo {
+  position:relative; padding:var(--s7) var(--s3); border-bottom:1px solid var(--line); overflow:hidden;
+}
+.promo::before {
+  content:""; position:absolute; inset:0; z-index:0;
+  background:url("assets/newui/promo-milkman.jpg") center/cover no-repeat; transform:scaleX(-1);
+}
+.promo-inner { position:relative; z-index:1; max-width:1120px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:var(--s6); align-items:center; }
+.promo-text { text-align:left; max-width:560px; }
+.promo-tag { margin-bottom:var(--s3); color:var(--bone); text-shadow:0 1px 6px #000; }
+.promo-title { color:#fff; font-size:clamp(2.2rem,5.2vw,4.2rem); text-shadow:0 2px 4px #000,0 4px 30px rgba(0,0,0,.9); margin-bottom:var(--s3); }
+.promo-sub { color:#fff; font-size:clamp(.95rem,2.1vw,1.2rem); letter-spacing:.04em; text-transform:uppercase; text-shadow:0 1px 5px #000; margin-bottom:0; }
+.promo-form { max-width:520px; margin-top:var(--s4); }
+.promo-cta { display:block; color:#fff; text-shadow:0 1px 5px #000; margin-bottom:var(--s2); }
+.promo-row { display:flex; border:1px solid var(--bone-dim); background:rgba(0,0,0,0.55); }
+.promo-input { flex:1; min-width:0; background:transparent; border:none; color:#fff; font-family:var(--mono); font-size:13px; letter-spacing:.08em; text-transform:uppercase; padding:16px; }
+.promo-input::placeholder { color:var(--bone-mute); }
+.promo-input:focus { outline:none; }
+.promo-submit { border:none; border-left:1px solid var(--bone-dim); background:var(--signal); color:#fff; font-size:12px; letter-spacing:.16em; text-transform:uppercase; padding:0 24px; white-space:nowrap; }
+.promo-submit:hover { background:#fff; color:var(--ink); }
+.promo-done { color:var(--signal); }
+
+/* ============================================================
+   5. BLOCK 2 — APPAREL ARCHIVE (50/50)
+   ============================================================ */
+.archive { display:flex; flex-direction:column; }
+.item { display:grid; grid-template-columns:1fr 1fr; min-height:90vh; border-bottom:1px solid var(--line); }
+
+.item-visual {
+  position:relative; display:flex; align-items:center; justify-content:center;
+  padding:var(--s5); border-right:1px solid var(--line);
+  background:linear-gradient(rgba(205,205,205,.9),rgba(188,188,188,.9)),var(--tex-hero) center/cover no-repeat;
+}
+.item--dark .item-visual {
+  background:linear-gradient(rgba(10,10,10,.62),rgba(10,10,10,.78)),var(--tex-char) center/cover no-repeat;
+}
+.item-asset-ref { position:absolute; top:var(--s3); left:var(--s3); z-index:2; }
+.item--dark .item-asset-ref { color:var(--bone-dim); }
+
+/* Product plate — white catalogue card; image swaps on colourway */
+.plate {
+  width:min(82%,420px); aspect-ratio:1/1.12; background:var(--plate);
+  border:1px solid #0c0c0c; box-shadow:0 24px 60px rgba(0,0,0,.4);
+  display:flex; align-items:center; justify-content:center; padding:6%;
+  position:relative;
+}
+.item--dark .plate { border-color:#000; box-shadow:0 24px 70px rgba(0,0,0,.7); }
+.plate img { width:100%; height:100%; object-fit:contain; }
+.plate .plate-cnr { position:absolute; bottom:8px; right:10px; font-size:9px; letter-spacing:.1em; color:#9a958c; }
+
+/* Ledger */
+.item-ledger { background:var(--panel); display:flex; flex-direction:column; justify-content:space-between; padding:clamp(24px,4vw,56px); }
+.item--dark .item-ledger { background:#0c0c0c; }
+.led-index { color:var(--bone-mute); margin-bottom:var(--s2); }
+.item--dark .led-index { color:var(--signal); }
+.led-name { color:#fff; font-size:clamp(2rem,4.5vw,3.7rem); margin-bottom:var(--s4); }
+.led-name .the { color:var(--brand-red); }
+
+.cw { border:1px solid var(--line); padding:var(--s2); margin-bottom:var(--s4); }
+.cw-label { display:block; margin-bottom:10px; }
+.cw-opts { display:flex; gap:10px; flex-wrap:wrap; }
+.cw-opt { display:inline-flex; align-items:center; gap:8px; border:1px solid var(--line-bri); padding:6px 12px; font-size:12px; letter-spacing:.08em; color:var(--bone-dim); }
+.cw-opt .dot { width:11px; height:11px; border:1px solid #000; background:var(--dot,#000); }
+.cw-opt:hover { color:var(--bone); border-color:var(--bone-dim); }
+.cw-opt[aria-pressed="true"] { background:var(--bone); color:var(--ink); border-color:var(--bone); }
+.item--dark .cw-opt[aria-pressed="true"] { background:var(--signal); color:#fff; border-color:var(--signal); }
+
+.dossier { background:linear-gradient(rgba(205,205,205,.92),rgba(188,188,188,.92)),var(--tex-hero) center/cover; border:1px solid rgba(0,0,0,.4); padding:var(--s3); }
+.dossier p { text-transform:uppercase; letter-spacing:.04em; color:#2a2722; }
+.dossier p + p { margin-top:6px; }
+.dossier .hit { color:#0a0a0a; }
+.item--dark .dossier { background:linear-gradient(rgba(10,10,10,.6),rgba(10,10,10,.78)),var(--tex-char) center/cover; border:1px solid #000; }
+.item--dark .dossier p { color:var(--bone-dim); }
+.item--dark .dossier .hit { color:#fff; }
+
+.led-foot { margin-top:var(--s4); }
+.sizes { display:flex; align-items:center; gap:10px; margin-bottom:var(--s2); flex-wrap:wrap; }
+.size-pill { border:1px solid var(--line-bri); padding:7px 13px; font-size:12px; color:var(--bone-dim); min-width:40px; text-align:center; }
+.size-pill:hover { border-color:var(--bone-dim); color:var(--bone); }
+.size-pill[aria-pressed="true"] { background:var(--bone); color:var(--ink); border-color:var(--bone); }
+
+.directive { width:100%; border:1px solid var(--bone-dim); padding:18px; text-align:center; font-size:13px; letter-spacing:.18em; text-transform:uppercase; color:var(--bone); }
+.directive:hover { background:var(--bone); color:var(--ink); border-color:var(--bone); }
+.directive--red { border-color:var(--line-bri); color:var(--bone-dim); }
+.directive--red:hover { background:transparent; color:var(--signal); border-color:var(--signal); }
+.directive--flicker:hover { animation:flicker .45s infinite steps(1); }
+@keyframes flicker { 0%,100%{opacity:1} 8%{opacity:.25} 10%{opacity:1} 20%{opacity:.6} 22%{opacity:1} 60%{opacity:1} 62%{opacity:.4} 64%{opacity:1} }
+
+/* ============================================================
+   6. BLOCK 3 — EQUIPMENT
+   ============================================================ */
+.equipment { background:var(--panel); border-bottom:1px solid var(--line); padding:var(--s5) var(--s3); }
+.section-divider { border-bottom:1px solid var(--line); padding-bottom:var(--s2); margin-bottom:var(--s5); }
+.eq-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--s3); margin-bottom:var(--s5); }
+.eq-cell {
+  border:1px solid var(--line);
+  background:linear-gradient(rgba(10,10,10,.5),rgba(10,10,10,.72)),var(--tex-char) center/cover no-repeat;
+  padding:var(--s3); display:flex; flex-direction:column; justify-content:space-between; min-height:420px;
+}
+.eq-cell .eq-ref { font-size:10px; color:var(--bone-mute); letter-spacing:.1em; }
+.eq-plate { width:80%; aspect-ratio:1/1; margin:var(--s3) auto; background:var(--plate); border:1px solid #000; display:flex; align-items:center; justify-content:center; padding:8%; }
+.eq-plate img { width:100%; height:100%; object-fit:contain; }
+.eq-foot { display:flex; justify-content:space-between; align-items:flex-end; }
+.eq-name { color:var(--bone); font-size:13px; letter-spacing:.08em; }
+.eq-id { font-size:10px; color:var(--bone-mute); }
+.eq-state { font-size:11px; color:var(--bone-mute); letter-spacing:.08em; }
+.eq-state.sel { color:var(--signal); }
+.eq-cell[aria-pressed="true"] { border-color:var(--bone-dim); }
+
+.spec { border:1px solid var(--line); background:var(--ink); max-width:880px; margin:0 auto; display:grid; grid-template-columns:1fr auto; gap:var(--s4); padding:var(--s4); align-items:end; }
+.spec h3 { font-family:var(--mono); font-size:13px; font-weight:400; color:#fff; letter-spacing:.12em; margin-bottom:4px; }
+.spec .spec-sub { font-size:11px; color:var(--bone-mute); margin-bottom:var(--s2); letter-spacing:.1em; }
+.spec .spec-head { color:var(--bone-mute); font-size:11px; letter-spacing:.1em; margin-bottom:6px; }
+.spec ul { list-style:none; }
+.spec li { font-size:12px; color:var(--bone-dim); }
+.spec li::before { content:"- "; color:var(--bone-mute); }
+.spec .spec-status { margin-top:var(--s2); font-size:11px; color:var(--bone-mute); letter-spacing:.08em; }
+.spec .directive { width:auto; min-width:260px; align-self:end; }
+.eq-allocate { max-width:880px; margin:0 auto; text-align:center; }
+.eq-allocate .directive { display:inline-block; width:auto; min-width:300px; }
+
+/* ============================================================
+   7. BLOCK 4 — OUTRO MONUMENT
+   ============================================================ */
+.outro { text-align:center; padding:var(--s7) var(--s3); background:linear-gradient(rgba(6,6,6,.78),rgba(6,6,6,.88)),var(--tex-crack) center/cover no-repeat; }
+.rollcall { display:flex; flex-direction:column; gap:var(--s4); margin:var(--s5) 0; }
+.rc-item { position:relative; display:flex; justify-content:center; align-items:center; line-height:1; padding:2px 0; }
+.rc-name { font-family:"ChunkFive",serif; text-transform:uppercase; font-size:clamp(1.8rem,5vw,3.2rem); color:var(--bone-mute); letter-spacing:-0.01em; }
+.rc-item:hover .rc-name { color:#fff; opacity:0; }
+.rc-meta { position:absolute; inset:0; display:none; align-items:center; justify-content:center; font-family:var(--mono); font-size:clamp(.7rem,1.6vw,.95rem); letter-spacing:.16em; color:var(--signal); }
+.rc-item:hover .rc-meta { display:flex; }
+.outro-foot { max-width:720px; margin:var(--s5) auto 0; }
+.outro-foot .line { color:var(--bone-dim); letter-spacing:.04em; text-transform:uppercase; padding:var(--s2) 0; }
+.copyright { margin-top:var(--s4); font-size:10px; color:var(--bone-mute); letter-spacing:.16em; }
+
+/* ============================================================
+   8. MINI-CART DRAWER — frictionless transactional utility
+   ============================================================ */
+.cart-overlay { position:fixed; inset:0; background:rgba(0,0,0,.72); z-index:60; opacity:0; visibility:hidden; transition:opacity 150ms ease; }
+.cart-overlay.open { opacity:1; visibility:visible; }
+.cart { position:fixed; top:0; right:0; height:100%; width:min(440px,100%); background:#000; border-left:1px solid var(--line); z-index:70; transform:translateX(100%); transition:transform 180ms cubic-bezier(.16,1,.3,1); display:flex; flex-direction:column; padding:var(--s3); }
+.cart.open { transform:translateX(0); }
+.cart-head { display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--line); padding-bottom:var(--s2); margin-bottom:var(--s3); }
+.cart-close { border:1px solid var(--line); padding:6px 10px; font-size:11px; letter-spacing:.1em; color:var(--bone-dim); text-transform:uppercase; }
+.cart-close:hover { border-color:var(--bone-dim); color:var(--bone); }
+.cart-items { flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:var(--s2); }
+.cart-empty { border:1px dashed var(--line); padding:var(--s5) var(--s3); text-align:center; color:var(--bone-mute); font-size:11px; letter-spacing:.14em; text-transform:uppercase; }
+.cart-row { border:1px solid var(--line); background:var(--panel); padding:var(--s2); display:flex; justify-content:space-between; gap:var(--s2); }
+.ci-name { color:#fff; font-size:12px; letter-spacing:.08em; text-transform:uppercase; }
+.ci-meta { color:var(--bone-mute); font-size:10px; letter-spacing:.06em; margin-top:5px; text-transform:uppercase; }
+.ci-rm { color:var(--bone-mute); font-size:10px; letter-spacing:.12em; align-self:flex-start; text-transform:uppercase; }
+.ci-rm:hover { color:var(--signal); }
+.cart-foot { border-top:1px solid var(--line); padding-top:var(--s3); margin-top:var(--s3); }
+.cart-sum { display:flex; justify-content:space-between; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--bone-dim); margin-bottom:var(--s2); }
+.cart-sum b { color:#fff; font-weight:400; }
+.cart-checkout { width:100%; border:1px solid var(--signal); background:var(--signal); color:#fff; padding:16px; font-size:12px; letter-spacing:.18em; text-transform:uppercase; }
+.cart-checkout:hover { background:#fff; color:var(--ink); border-color:#fff; }
+.cart-note { font-size:9px; color:var(--bone-mute); text-align:center; letter-spacing:.08em; margin-top:10px; text-transform:uppercase; }
+
+/* ============================================================
+   9. RESPONSIVE
+   ============================================================ */
+@media (max-width:860px) {
+  .item { grid-template-columns:1fr; min-height:0; }
+  .item-visual { border-right:none; border-bottom:1px solid var(--line); padding:var(--s5); }
+  .eq-grid { grid-template-columns:1fr; }
+  .spec { grid-template-columns:1fr; }
+  .spec .directive { width:100%; }
+  .masthead { padding:10px var(--s2); font-size:10px; }
+  .masthead .nodes { gap:var(--s2); }
+  .hero-corner .tag,.hero-foot .tag { font-size:9px; }
+  .featured { grid-template-columns:1fr; }
+  .featured-visual { border-right:none; border-bottom:1px solid var(--line); padding:var(--s5); }
+  .promo-inner { grid-template-columns:1fr; gap:var(--s4); }
+  .promo-text { text-align:center; }
+}
+@media (max-width:480px) {
+  .masthead { white-space:nowrap; font-size:9px; letter-spacing:.06em; }
+  .masthead .nodes { gap:12px; }
+  .mh-long { display:none; }              /* collapse to [ ISSUE_001 ] on phones */
+  .scrollcue { display:none; }            /* avoid overlap with hero foot tags */
+  .promo-row { flex-direction:column; }
+  .promo-submit { border-left:none; border-top:1px solid var(--bone-dim); padding:14px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  html { scroll-behavior:auto; }
+  .directive--flicker:hover { animation:none; }
+}
+</style>
 </head>
 <body>
 
-<p class="announce">Free UK delivery over &pound;40 &nbsp;&mdash;&nbsp; No nonsense. No fuss.</p>
-
-<header class="site-header">
-  <div class="container header-inner">
-    <a class="logo" href="index.html" aria-label="BlitzSpirit home">
-      <span class="logo-mark">blitzspirit</span>
-    </a>
-    <nav class="main-nav" aria-label="Main navigation">
-      <div class="nav-item has-dropdown">
-        <a href="collection.html">Quartermasters</a>
-        <div class="nav-dropdown">
-          <a href="collection.html">T&#8209;Shirts</a>
-          <a href="collection.html">Caps</a>
-          <a href="collection.html">Gift Cards</a>
-        </div>
-      </div>
-      <a href="icons.html">The Icons</a>
-      <a href="story.html">The Story</a>
-    </nav>
-    <div class="header-icons">
-      <button type="button" class="nav-toggle" aria-label="Menu">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-      </button>
-      <button type="button" aria-label="Search">        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-      </button>
-      <a href="#" aria-label="Account">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg>
-      </a>
-      <a href="#" class="cart-link" aria-label="Basket, 2 items">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 7h12l1.2 13H4.8L6 7Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></svg>
-        <span class="cart-count" aria-hidden="true">2</span>
-      </a>
-    </div>
+<!-- MINI-CART DRAWER -->
+<div class="cart-overlay" id="cartOverlay"></div>
+<aside class="cart" id="cart" aria-hidden="true" aria-label="Current bag">
+  <div class="cart-head">
+    <span class="tag">[ SYSTEM_LEDGER // CURRENT_BAG ]</span>
+    <button class="cart-close snap" id="cartClose">[ CLOSE ]</button>
   </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty" id="cartEmpty">[ LEDGER EMPTY // NO ASSETS ALLOCATED ]</div>
+  </div>
+  <div class="cart-foot">
+    <div class="cart-sum"><span>[ ITEMS ALLOCATED ]</span><b id="cartTotal">0</b></div>
+    <button class="cart-checkout snap">[ PROCEED TO SECURE CHECKOUT ]</button>
+    <div class="cart-note">Interface drops away at checkout // routes to native encrypted payment.</div>
+  </div>
+</aside>
+
+<header class="masthead">
+  <a href="#top" class="tag">[ <span class="mh-long">APPAREL_ARCHIVE // </span>ISSUE_001 ]</a>
+  <nav class="nodes">
+    <a href="#equipment" class="tag">[ EQUIPMENT ]</a>
+    <button class="tag bag" id="bagBtn" aria-label="Bag">[ BAG (<b id="bagCount">0</b>) ]</button>
+  </nav>
 </header>
 
-<main>
+<!-- BLOCK 1 — HERO -->
+<section class="hero" id="top">
+  <div class="hero-corner">
+    <span class="tag tag-mute">SYS_REF // 47-CONCRETE-SEAMS</span>
+    <span class="tag tag-mute">LAT 51.5074° // LON 0.1278°</span>
+  </div>
+  <div class="hero-title-wrap">
+    <div class="asset-node"><img src="assets/newui/skull-umbrella.png" alt="" aria-hidden="true" /></div>
+    <img class="hero-logo" src="assets/newui/blitzspirit-stamp.png" alt="BLITZSPIRIT" />
+    <h1 class="chunk">GET YOUR<br>BACKBONE HERE</h1>
+    <div class="hero-tagline chunk">WE'RE NOT HERE TO BE LIKED.</div>
+    <div class="hero-sub tag">Heritage with teeth. Proud and Unapologetic.</div>
+  </div>
+  <div class="hero-foot">
+    <span class="tag tag-mute">STATUS: UNMOVING / LOCKED</span>
+    <span class="tag tag-mute">EST. 2026 // BRITISH STUBBORNNESS</span>
+  </div>
+  <div class="scrollcue">↓ SCROLL TO ARCHIVE</div>
+</section>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-bg wall" style="background-image:url('assets/brutalist-wall.png');" role="img" aria-label="Brutalist concrete wall with the slogan painted on it"></div>
-    <div class="container">
-      <div class="hero-content">
-        <p class="eyebrow painted-tag">Blitzspirit &mdash; Est. London &mdash; Kettle On</p>
-        <h1 class="painted">Urban fashion with a <span class="red">backbone.</span></h1>
-        <p class="lede">When your back&rsquo;s against the wall, you dig deep &mdash; then put the kettle on. Ironic, iconic designs on heavyweight cotton. Not here to be liked.</p>
-        <div class="hero-ctas">
-          <a class="btn btn-primary" href="collection.html">Choose the collection</a>
-          <a class="btn btn-ghost" href="story.html">Our story</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- MARQUEE -->
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee-track">
-      <span>Not here to be liked</span><span class="sep">&#9632;</span>
-      <span>Come on then</span><span class="sep">&#9632;</span>
-      <span>Wakey wakey</span><span class="sep">&#9632;</span>
-      <span>Unbowed</span><span class="sep">&#9632;</span>
-      <span>Unbroken</span><span class="sep">&#9632;</span>
-      <span>Unforgiving</span><span class="sep">&#9632;</span>
-      <span>Not here to be liked</span><span class="sep">&#9632;</span>
-      <span>Come on then</span><span class="sep">&#9632;</span>
-      <span>Wakey wakey</span><span class="sep">&#9632;</span>
-      <span>Unbowed</span><span class="sep">&#9632;</span>
-      <span>Unbroken</span><span class="sep">&#9632;</span>
-      <span>Unforgiving</span><span class="sep">&#9632;</span>
+<!-- FEATURED PRODUCT — THE ESTABLISHMENT -->
+<section class="featured" data-product="establishment" aria-label="Featured product">
+  <div class="featured-visual">
+    <span class="item-asset-ref tag">[ FEATURED // ENTRY_02 ]</span>
+    <div class="featured-plate">
+      <img src="assets/tee-skull-black-colour.jpg" alt="The Establishment tee — bowler-hatted skull over crossed umbrellas" />
+      <span class="plate-cnr">BS_002 // FEATURED</span>
     </div>
   </div>
-
-  <!-- FEATURED DROP -->
-  <section class="section">
-    <div class="container">
-      <div class="section-head reveal">
-        <div>
-          <p class="eyebrow">The First Drop &mdash; 2026</p>
-          <h2 class="display">Made Without Apology</h2>
-        </div>
-        <a class="view-all" href="collection.html">View all products &rarr;</a>
-      </div>
-
-      <div class="product-grid reveal-stagger">
-
-        <article class="product-card">
-          <span class="frame-tick tl" aria-hidden="true"></span><span class="frame-tick br" aria-hidden="true"></span>
-          <div class="product-media">
-            <span class="badge">New</span>
-            <img class="main-img" src="assets/tee-boudica-black.jpg" alt="Boudica t-shirt in black — warrior queen with trident and Union Jack shield">
-            <img class="alt" src="assets/tee-boudica-offwhite.jpg" alt="" aria-hidden="true" loading="lazy">
-            <button class="quick-add" type="button">Quick add +</button>
-          </div>
-          <div class="product-info">
-            <p class="strap">Warrior. Queen. Legend.</p>
-            <h3><a href="product.html">Boudica</a></h3>
-            <div class="product-meta">
-              <p class="price">&pound;28.00</p>
-              <div class="swatches" aria-label="Available in black and off white">
-                <span class="swatch black"></span><span class="swatch offwhite"></span>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <article class="product-card">
-          <span class="frame-tick tl" aria-hidden="true"></span><span class="frame-tick br" aria-hidden="true"></span>
-          <div class="product-media">
-            <img class="main-img" src="assets/tee-roundel-black.jpg" alt="BlitzSpirit roundel t-shirt in black — mod target built entirely from the word blitzspirit">
-            <img class="alt" src="assets/tee-roundel-offwhite.jpg" alt="" aria-hidden="true" loading="lazy">
-            <button class="quick-add" type="button">Quick add +</button>
-          </div>
-          <div class="product-info">
-            <p class="strap">A mod icon. Closer look. Same spirit.</p>
-            <h3><a href="product.html">The Roundel</a></h3>
-            <div class="product-meta">
-              <p class="price">&pound;28.00</p>
-              <div class="swatches" aria-label="Available in black, navy and off white">
-                <span class="swatch black"></span><span class="swatch navy"></span><span class="swatch offwhite"></span>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <article class="product-card">
-          <span class="frame-tick tl" aria-hidden="true"></span><span class="frame-tick br" aria-hidden="true"></span>
-          <div class="product-media">
-            <img class="main-img" src="assets/tee-skull-black-colour.jpg" alt="Skull and brollies t-shirt in black — skull in Union Jack bowler hat over crossed umbrellas">
-            <img class="alt" src="assets/tee-skull-offwhite.jpg" alt="" aria-hidden="true" loading="lazy">
-            <button class="quick-add" type="button">Quick add +</button>
-          </div>
-          <div class="product-info">
-            <p class="strap">Politely menacing since the Blitz.</p>
-            <h3><a href="product.html">Skull &amp; Brollies</a></h3>
-            <div class="product-meta">
-              <p class="price">&pound;28.00</p>
-              <div class="swatches" aria-label="Available in black and off white">
-                <span class="swatch black"></span><span class="swatch offwhite"></span>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <article class="product-card">
-          <span class="frame-tick tl" aria-hidden="true"></span><span class="frame-tick br" aria-hidden="true"></span>
-          <div class="product-media">
-            <img class="main-img" src="assets/tee-tommy-black.jpg" alt="Tommy, Katie, Winston and Boudica typographic t-shirt in black">
-            <img class="alt" src="assets/tee-tommy-white.jpg" alt="" aria-hidden="true" loading="lazy">
-            <button class="quick-add" type="button">Quick add +</button>
-          </div>
-          <div class="product-info">
-            <p class="strap">The roll call.</p>
-            <h3><a href="product.html">Tommy, Katie, Winston &amp; Boudica</a></h3>
-            <div class="product-meta">
-              <p class="price">&pound;26.00</p>
-              <div class="swatches" aria-label="Available in black and white">
-                <span class="swatch black"></span><span class="swatch offwhite"></span>
-              </div>
-            </div>
-          </div>
-        </article>
-
-      </div>
+  <div class="featured-ledger">
+    <span class="featured-eyebrow">★ FEATURED RELEASE</span>
+    <h2 class="featured-name chunk"><span class="the">THE</span> ESTABLISHMENT</h2>
+    <div class="dossier">
+      <p class="hit">THE OLD GUARD IS GONE. THE UNIFORM REMAINS.</p>
+      <p>A BOWLER HAT. AN UMBRELLA.</p>
+      <p>A GRIN BUILT FOR THE FRONT ROW, NOT THE FRONT BENCH.</p>
     </div>
-  </section>
-
-  <!-- BOUDICA EDITORIAL -->
-  <section class="section" style="padding-top:0;">
-    <div class="container">
-      <div class="feature-split reveal">
-        <div class="feature-media">
-          <img src="assets/tee-boudica-black.jpg" alt="Boudica t-shirt — black, with red-crested warrior queen artwork" loading="lazy">
-        </div>
-        <div class="feature-copy">
-          <p class="eyebrow">Est. AD 60 &mdash; Still Standing</p>
-          <h2 class="display">Boudica</h2>
-          <hr class="rule-red">
-          <p class="attitude">
-            <strong>Boudica doesn&rsquo;t ask. She doesn&rsquo;t explain. She stands.</strong><br>
-            Unbowed. Unbroken. Unforgiving.<br>
-            This isn&rsquo;t a queen for ceremony. This is trouble.<br>
-            A look that dares you to do something about it.
-          </p>
-          <p class="go-on">Go on then.</p>
-          <div class="hero-ctas">
-            <a class="btn btn-primary" href="product.html">Choose Boudica</a>
-            <a class="btn btn-ghost" href="icons.html#boudica">The story behind it</a>
-          </div>
-        </div>
-      </div>
+    <div class="featured-foot">
+      <div class="sizes"><span class="tag" style="margin-right:4px">[ SIZES ]</span>
+        <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
+      <button class="cw-opt snap" aria-pressed="true" data-cw="OXY_BLACK" style="display:none">OXY_BLACK</button>
+      <button class="directive snap" data-idle="[ SYSTEM DIRECTIVE: SUBMIT ]" data-hover="[ SYSTEM DIRECTIVE: SUBMIT ]" data-add>[ SYSTEM DIRECTIVE: SUBMIT ]</button>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- HERITAGE / STORY BAND -->
-  <section class="heritage section" id="story">
-    <div class="container">
-      <div class="grid">
-        <img class="lion" src="assets/lion.png" alt="BlitzSpirit lion — stencilled lion head stamped with the BlitzSpirit wordmark" loading="lazy">
-        <div>
-          <p class="eyebrow">The Story</p>
-          <h2 class="display">Blitz spirit is what you need<br>when your back is against the wall.</h2>
-          <p class="def">
-            <b>blitz spirit</b> /bl&#618;ts &#712;sp&#618;r&#618;t/ <i>n.</i> &mdash; the attitude of Londoners under the bombs:
-            dig deep, carry on, look adversity in the eye and put the kettle on.
-            <i>See also:</i> getting your pint, no matter what.
-          </p>
-          <blockquote>
-            &ldquo;There was one thing about which there was never any doubt. The courage, the unconquerable
-            grit and stamina of our people. Upon that rock, all stand unshakeable.&rdquo;
-          </blockquote>
-          <cite>&mdash; Winston Churchill</cite>
+<!-- PROMO — NEWSLETTER CAPTURE -->
+<section class="promo" aria-label="Newsletter signup">
+  <div class="promo-inner">
+    <div class="promo-text">
+      <div class="promo-tag tag">[ DISPATCH // STAND BY ]</div>
+      <h2 class="promo-title chunk">GOT MORE BOTTLE<br>THAN THE MILKMAN</h2>
+      <p class="promo-sub">Put the kettle on, it's time for a nice cup of tea!</p>
+      <form class="promo-form" novalidate>
+        <label class="promo-cta tag" for="promo-email">ENTER YOUR EMAIL ADDRESS TO BE THE FIRST IN THE KNOW</label>
+        <div class="promo-row">
+          <input id="promo-email" class="promo-input" type="email" placeholder="NAME@DOMAIN.CO.UK" autocomplete="email" required />
+          <button class="promo-submit snap" type="submit">[ NOTIFY ME ]</button>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- COLLECTION TILES -->
-  <section class="section">
-    <div class="container">
-      <div class="section-head reveal">
-        <div>
-          <p class="eyebrow">The Kit</p>
-          <h2 class="display">Take your pick</h2>
-        </div>
-      </div>
-      <div class="tile-grid reveal-stagger">
-        <a class="tile" href="collection.html">
-          <span class="tile-img is-bone" style="background-image:url('assets/tee-roundel-black.jpg');"></span>
-          <span class="tile-label"><span class="name">T-Shirts</span><span class="count">8 styles</span></span>
-        </a>
-        <a class="tile" href="collection.html">
-          <span class="tile-img is-bone" style="background-image:url('assets/cap-navy.jpg');"></span>
-          <span class="tile-label"><span class="name">Headwear</span><span class="count">3 styles</span></span>
-        </a>
-        <a class="tile" href="#" data-open-signup>
-          <span class="tile-img" style="background-image:url('assets/heritage-telephonists.jpg'); filter:grayscale(60%); opacity:.5;"></span>
-          <span class="tile-label"><span class="name">Accessories</span><span class="count waitlist">Incoming &mdash; join the waitlist</span></span>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- NEWSLETTER -->
-  <section class="newsletter section">
-    <div class="container inner reveal">
-      <p class="eyebrow">Dispatches</p>
-      <h2 class="display">Wakey wakey.</h2>
-      <p>Join the Home Guard: first word on new drops, restocks and stories worth telling &mdash; plus 10&#37; off your first order. No spam. That would be nonsense.</p>
-      <form action="#" method="post" data-newsletter>
-        <label for="newsletter-email">Email address</label>
-        <input id="newsletter-email" type="email" name="email" placeholder="YOUR@EMAIL.CO.UK" required>
-        <button class="btn btn-primary" type="submit">Sign up</button>
       </form>
     </div>
-  </section>
+  </div>
+</section>
+
+<!-- BLOCK 2 — APPAREL ARCHIVE -->
+<main class="archive">
+
+  <!-- 01 BOUDICA -->
+  <article class="item" data-product="boudica">
+    <div class="item-visual">
+      <span class="item-asset-ref tag">[ APPAREL // FLAT_LAY ]</span>
+      <div class="plate">
+        <img data-plate alt="Boudica tee — Britannia with trident and Union Jack shield, chalk white" src="assets/tee-boudica-offwhite.jpg" />
+        <span class="plate-cnr">BS_001 // OVERHEAD</span>
+      </div>
+    </div>
+    <div class="item-ledger">
+      <div>
+        <div class="led-index tag">[ ENTRY_01 // BOUDICA ]</div>
+        <h2 class="led-name chunk"><span class="the">THE</span> BOUDICA</h2>
+        <div class="cw">
+          <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
+          <div class="cw-opts">
+            <button class="cw-opt snap" aria-pressed="false" data-cw="OXY_BLACK"   data-img="assets/tee-boudica-black.jpg"    style="--dot:#0a0a0a">OXY_BLACK</button>
+            <button class="cw-opt snap" aria-pressed="true"  data-cw="CHALK_WHITE" data-img="assets/tee-boudica-offwhite.jpg" style="--dot:#e7e7e2">CHALK_WHITE</button>
+          </div>
+        </div>
+        <div class="dossier">
+          <p class="hit">BOUDICA DOESN'T ASK. SHE DOESN'T EXPLAIN.</p>
+          <p>SHE STANDS. UNBOWED. UNBROKEN. UNFORGIVING.</p>
+          <p>THIS ISN'T A QUEEN FOR CEREMONY.</p>
+        </div>
+      </div>
+      <div class="led-foot">
+        <div class="sizes"><span class="tag" style="margin-right:4px">[ SIZES ]</span>
+          <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
+        <button class="directive snap" data-idle="[ SYSTEM DIRECTIVE: SUBMIT ]" data-hover="[ SYSTEM DIRECTIVE: SUBMIT ]" data-add>[ SYSTEM DIRECTIVE: SUBMIT ]</button>
+      </div>
+    </div>
+  </article>
+
+  <!-- 03 ROLL CALL (CHARCOAL SHIFT) — the names design: Tommy, Katie, Winston, Boudica -->
+  <article class="item item--dark" data-product="rollcall">
+    <div class="item-visual">
+      <span class="item-asset-ref tag">[ APPAREL // FLAT_LAY ]</span>
+      <div class="plate">
+        <img data-plate alt="Roll Call tee — Tommy, Katie, Winston & Boudica names roll-call type, white" src="assets/tee-tommy-white.jpg" />
+        <span class="plate-cnr">BS_003 // OVERHEAD</span>
+      </div>
+    </div>
+    <div class="item-ledger">
+      <div>
+        <div class="led-index tag">[ ENTRY_03 // ROLL CALL ]</div>
+        <h2 class="led-name chunk"><span class="the">THE</span> ROLL CALL</h2>
+        <div class="cw">
+          <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
+          <div class="cw-opts">
+            <button class="cw-opt snap" aria-pressed="false" data-cw="OXY_BLACK"   data-img="assets/tee-tommy-black.jpg" style="--dot:#0a0a0a">OXY_BLACK</button>
+            <button class="cw-opt snap" aria-pressed="true"  data-cw="CHALK_WHITE" data-img="assets/tee-tommy-white.jpg" style="--dot:#e7e7e2">CHALK_WHITE</button>
+          </div>
+        </div>
+        <div class="dossier">
+          <p class="hit">NO SYMBOLS REQUIRED. NO EMBLEMS NECESSARY.</p>
+          <p>JUST THE NAMES OF THOSE WHO REFUSED TO BACK DOWN.</p>
+          <p>THE REBEL. THE FIREBRAND. THE STATESMAN. THE QUEEN.</p>
+          <p class="hit">A ROLL CALL OF BRITISH STUBBORNNESS. THE CLASS IS IN SESSION.</p>
+        </div>
+      </div>
+      <div class="led-foot">
+        <div class="sizes"><span class="tag" style="margin-right:4px">[ SIZES ]</span>
+          <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
+        <button class="directive snap" data-idle="[ SYSTEM DIRECTIVE: SUBMIT ]" data-hover="[ SYSTEM DIRECTIVE: SUBMIT ]" data-add>[ SYSTEM DIRECTIVE: SUBMIT ]</button>
+      </div>
+    </div>
+  </article>
+
+  <!-- 04 THE FREQUENCY -->
+  <article class="item" data-product="frequency">
+    <div class="item-visual">
+      <span class="item-asset-ref tag">[ APPAREL // FLAT_LAY ]</span>
+      <div class="plate">
+        <img data-plate alt="The Frequency tee — RAF roundel target graphic, chalk white" src="assets/tee-roundel-navy.jpg" />
+        <span class="plate-cnr">BS_004 // OVERHEAD</span>
+      </div>
+    </div>
+    <div class="item-ledger">
+      <div>
+        <div class="led-index tag">[ ENTRY_04 // THE FREQUENCY ]</div>
+        <h2 class="led-name chunk"><span class="the">THE</span> FREQUENCY</h2>
+        <div class="cw">
+          <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
+          <div class="cw-opts">
+            <button class="cw-opt snap" aria-pressed="false" data-cw="OXY_BLACK"   data-img="assets/tee-roundel-black.jpg"    style="--dot:#0a0a0a">OXY_BLACK</button>
+            <button class="cw-opt snap" aria-pressed="true"  data-cw="CHALK_WHITE" data-img="assets/tee-roundel-navy.jpg"     style="--dot:#e7e7e2">CHALK_WHITE</button>
+            <button class="cw-opt snap" aria-pressed="false" data-cw="SYSTEM_NAVY" data-img="assets/tee-roundel-offwhite.jpg" style="--dot:#1f2a3d">SYSTEM_NAVY</button>
+          </div>
+        </div>
+        <div class="dossier">
+          <p class="hit">FROM A DISTANCE, A TARGET. UP CLOSE, PURE ATTITUDE.</p>
+          <p>BUILT FROM WITHIN THE SYSTEM IT REFUSES TO OBEY.</p>
+          <p>THE SIGNAL NEVER CHANGES. THE TRANSMISSION WAS NEVER AUTHORISED.</p>
+        </div>
+      </div>
+      <div class="led-foot">
+        <div class="sizes"><span class="tag" style="margin-right:4px">[ SIZES ]</span>
+          <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
+        <button class="directive snap" data-idle="[ SYSTEM DIRECTIVE: SUBMIT ]" data-hover="[ SYSTEM DIRECTIVE: SUBMIT ]" data-add>[ SYSTEM DIRECTIVE: SUBMIT ]</button>
+      </div>
+    </div>
+  </article>
 
 </main>
 
-<footer class="site-footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <span class="logo-mark">blitzspirit</span>
-        <p>Ironic, iconic designs printed in Britain on heavyweight cotton. Tumble dryers are for quitters.</p>
-      </div>
-      <div class="footer-col">
-        <h4>Shop</h4>
-        <ul>
-          <li><a href="collection.html">All products</a></li>
-          <li><a href="collection.html">T-shirts</a></li>
-          <li><a href="collection.html">Headwear</a></li>
-          <li><a href="#" data-open-signup>Gift cards</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Help</h4>
-        <ul>
-          <li><a href="help.html#delivery">Delivery &amp; returns</a></li>
-          <li><a href="help.html#size-guide">Size guide</a></li>
-          <li><a href="help.html#contact">Contact us</a></li>
-          <li><a href="help.html#faq">FAQ</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>The Brand</h4>
-        <ul>
-          <li><a href="story.html">Our story</a></li>
-          <li><a href="icons.html">The icons</a></li>
-          <li><a href="#">Instagram</a></li>
-          <li><a href="#">Facebook</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-base">
-      <span>&copy; 2026 BlitzSpirit.co.uk &mdash; Est. London</span>
-      <span>Visa &middot; Mastercard &middot; PayPal &middot; Apple Pay &middot; Shop Pay</span>
-    </div>
+<!-- BLOCK 3 — EQUIPMENT -->
+<section class="equipment" id="equipment">
+  <div class="section-divider tag">[ SECTION // 02 : EQUIPMENT ]</div>
+  <div class="eq-grid">
+    <button class="eq-cell snap" data-cap aria-pressed="true">
+      <span class="eq-ref">[ ASSET // utility-cap-black ]</span>
+      <div class="eq-plate"><img src="assets/cap-black.jpg" alt="Blitzspirit utility cap, oxy black" /></div>
+      <span class="eq-foot"><span><span class="eq-name">OXY_BLACK</span><br><span class="eq-id">SYS_HW_01</span></span><span class="eq-state sel">[ SELECTED ]</span></span>
+    </button>
+    <button class="eq-cell snap" data-cap aria-pressed="false">
+      <span class="eq-ref">[ ASSET // utility-cap-navy ]</span>
+      <div class="eq-plate"><img src="assets/cap-navy.jpg" alt="Blitzspirit utility cap, system navy" /></div>
+      <span class="eq-foot"><span><span class="eq-name">SYSTEM_NAVY</span><br><span class="eq-id">SYS_HW_02</span></span><span class="eq-state">[ STAGED ]</span></span>
+    </button>
+    <button class="eq-cell snap" data-cap aria-pressed="false">
+      <span class="eq-ref">[ ASSET // utility-cap-stone ]</span>
+      <div class="eq-plate"><img src="assets/cap-cream.jpg" alt="Blitzspirit utility cap, chalk stone" /></div>
+      <span class="eq-foot"><span><span class="eq-name">CHALK_STONE</span><br><span class="eq-id">SYS_HW_03</span></span><span class="eq-state">[ STAGED ]</span></span>
+    </button>
+  </div>
+  <div class="eq-allocate">
+    <button class="directive snap" data-idle="[ EXECUTE ORDER // ALLOCATE TO BAG ]" data-hover="[ ALLOCATE // CONFIRM ]" data-add>[ EXECUTE ORDER // ALLOCATE TO BAG ]</button>
+  </div>
+</section>
+
+<!-- FOOTER — closing concrete slab -->
+<footer class="outro">
+  <div class="outro-foot">
+    <div class="rule">------------------------------------------------------------------</div>
+    <div class="copyright">© 2026 BLITZSPIRIT SYSTEM CO. // ALL RIGHTS RESERVED // SECURITY OVERRIDE PRIMED.</div>
+    <div class="rule">------------------------------------------------------------------</div>
   </div>
 </footer>
 
-<script src="main.js" defer></script>
+<script>
+(function () {
+  "use strict";
+
+  /* Colourway: swap plate image + label instantly */
+  document.querySelectorAll(".item").forEach(function (item) {
+    var opts = item.querySelectorAll(".cw-opt");
+    var img = item.querySelector("[data-plate]");
+    opts.forEach(function (opt) {
+      opt.addEventListener("click", function () {
+        opts.forEach(function (o) { o.setAttribute("aria-pressed", "false"); });
+        opt.setAttribute("aria-pressed", "true");
+        if (img && opt.dataset.img) img.src = opt.dataset.img;
+      });
+    });
+  });
+
+  /* Size pills */
+  document.querySelectorAll(".sizes").forEach(function (row) {
+    var pills = row.querySelectorAll(".size-pill");
+    pills.forEach(function (pill) {
+      pill.addEventListener("click", function () {
+        pills.forEach(function (p) { p.setAttribute("aria-pressed", "false"); });
+        pill.setAttribute("aria-pressed", "true");
+      });
+    });
+  });
+
+  /* Directive buttons: instant text swap */
+  document.querySelectorAll(".directive[data-hover]").forEach(function (btn) {
+    var idle = btn.dataset.idle, hover = btn.dataset.hover;
+    var on = function () { btn.textContent = hover; }, off = function () { btn.textContent = idle; };
+    btn.addEventListener("mouseenter", on); btn.addEventListener("mouseleave", off);
+    btn.addEventListener("focus", on); btn.addEventListener("blur", off);
+  });
+
+  /* Mini-cart drawer — staged ledger + frictionless open/close */
+  var cart = [];
+  var bagCount = document.getElementById("bagCount");
+  var drawer   = document.getElementById("cart");
+  var overlay  = document.getElementById("cartOverlay");
+  var itemsEl  = document.getElementById("cartItems");
+  var emptyEl  = document.getElementById("cartEmpty");
+  var totalEl  = document.getElementById("cartTotal");
+
+  function openCart()  { drawer.classList.add("open");    overlay.classList.add("open");    drawer.setAttribute("aria-hidden", "false"); }
+  function closeCart() { drawer.classList.remove("open"); overlay.classList.remove("open"); drawer.setAttribute("aria-hidden", "true"); }
+
+  document.getElementById("bagBtn").addEventListener("click", openCart);
+  document.getElementById("cartClose").addEventListener("click", closeCart);
+  overlay.addEventListener("click", closeCart);
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeCart(); });
+
+  function renderCart() {
+    bagCount.textContent = cart.length;
+    totalEl.textContent  = cart.length;
+    itemsEl.querySelectorAll(".cart-row").forEach(function (r) { r.remove(); });
+    emptyEl.style.display = cart.length ? "none" : "";
+    cart.forEach(function (it, i) {
+      var row = document.createElement("div");
+      row.className = "cart-row";
+      row.innerHTML =
+        '<div><div class="ci-name">' + it.name + '</div>' +
+        '<div class="ci-meta">SIZE: ' + it.size + ' / COLOUR: ' + it.colour + '</div></div>' +
+        '<button class="ci-rm snap" data-i="' + i + '">[ REMOVE ]</button>';
+      itemsEl.appendChild(row);
+    });
+    itemsEl.querySelectorAll(".ci-rm").forEach(function (b) {
+      b.addEventListener("click", function () { cart.splice(+b.dataset.i, 1); renderCart(); });
+    });
+  }
+
+  document.querySelectorAll("[data-add]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var item = btn.closest("[data-product]");
+      var nameEl = item ? item.querySelector(".led-name, .featured-name") : null;
+      var name = "ITEM", size = "OS", colour = "OS";
+      if (nameEl) {
+        name = nameEl.textContent.trim();
+        var ps = item.querySelector('.size-pill[aria-pressed="true"]'); if (ps) size = ps.textContent.trim();
+        var pc = item.querySelector('.cw-opt[aria-pressed="true"]');    if (pc) colour = pc.dataset.cw || pc.textContent.trim();
+      } else {
+        var cap = document.querySelector('.eq-cell[aria-pressed="true"] .eq-name');
+        name = "UTILITY CAP"; colour = cap ? cap.textContent.trim() : "OS";
+      }
+      cart.push({ name: name, size: size, colour: colour });
+      renderCart();
+      openCart();
+    });
+  });
+
+  renderCart();
+
+  /* Equipment cap selector */
+  var caps = document.querySelectorAll(".eq-cell");
+  caps.forEach(function (cell) {
+    cell.addEventListener("click", function () {
+      caps.forEach(function (c) {
+        c.setAttribute("aria-pressed", "false");
+        var s = c.querySelector(".eq-state"); s.textContent = "[ STAGED ]"; s.classList.remove("sel");
+      });
+      cell.setAttribute("aria-pressed", "true");
+      var s = cell.querySelector(".eq-state"); s.textContent = "[ SELECTED ]"; s.classList.add("sel");
+    });
+  });
+
+  /* Promo newsletter capture — instant confirmation, no backend */
+  var promoForm = document.querySelector(".promo-form");
+  if (promoForm) {
+    promoForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var email = document.getElementById("promo-email");
+      if (!email.value || !email.checkValidity()) { email.focus(); return; }
+      promoForm.innerHTML = '<div class="promo-cta tag promo-done">[ SECURED // YOU\'RE FIRST IN THE KNOW ]</div>';
+    });
+  }
+})();
+</script>
 </body>
 </html>
