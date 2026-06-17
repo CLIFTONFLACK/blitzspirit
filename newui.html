@@ -88,8 +88,8 @@ a { color:inherit; text-decoration:none; }
 }
 .hero-corner,.hero-foot { display:flex; justify-content:space-between; }
 .hero-title-wrap { margin:auto 0; text-align:center; }
-.asset-node { width:104px; height:104px; margin:0 auto var(--s3); border:2px dashed var(--line-bri); background:#000; overflow:hidden; position:relative; }
-.asset-node img { position:absolute; left:50%; top:-6px; width:175%; max-width:none; height:auto; transform:translateX(-50%); filter:invert(1); }
+.asset-node { width:104px; height:104px; margin:0 auto var(--s3); border:2px dashed var(--line-bri); background:#000; display:flex; align-items:center; justify-content:center; overflow:hidden; padding:10px; }
+.asset-node img { max-width:100%; max-height:100%; width:auto; height:auto; object-fit:contain; filter:invert(1); }
 .hero-logo { height:clamp(46px,8vw,96px); width:auto; margin:0 auto var(--s4); filter:drop-shadow(0 2px 18px rgba(0,0,0,.6)); }
 .hero h1 { color:#fff; font-size:clamp(3rem,11vw,9.5rem); max-width:18ch; margin:0 auto; text-shadow:0 2px 40px rgba(0,0,0,.5); }
 .hero-sub { margin-top:var(--s3); display:inline-block; border:1px solid var(--line-bri); padding:6px 14px; }
@@ -286,7 +286,7 @@ a { color:inherit; text-decoration:none; }
     <span class="tag tag-mute">LAT 51.5074° // LON 0.1278°</span>
   </div>
   <div class="hero-title-wrap">
-    <div class="asset-node"><img src="assets/skull-graphic.png" alt="" aria-hidden="true" /></div>
+    <div class="asset-node"><img src="assets/newui/skull-umbrella.png" alt="" aria-hidden="true" /></div>
     <img class="hero-logo" src="assets/newui/blitzspirit-stamp.png" alt="BLITZSPIRIT" />
     <h1 class="chunk">NOT HERE<br>TO BE LIKED.</h1>
     <div class="hero-sub tag">ISSUE_001 // CAPSULE LAUNCH</div>
@@ -476,20 +476,12 @@ a { color:inherit; text-decoration:none; }
   </div>
 </section>
 
-<!-- BLOCK 4 — OUTRO MONUMENT -->
+<!-- FOOTER — closing concrete slab -->
 <footer class="outro">
-  <div class="tag tag-mute">[ LOG // 005 : ROLL CALL ]</div>
-  <div class="rollcall">
-    <div class="rc-item"><span class="rc-name">THE REBEL.</span>     <span class="rc-meta">[ SYSTEM STATUS: 12 PIECES REMAINING IN STORAGE ]</span></div>
-    <div class="rc-item"><span class="rc-name">THE FIREBRAND.</span> <span class="rc-meta">[ SYSTEM STATUS: 07 PIECES REMAINING IN STORAGE ]</span></div>
-    <div class="rc-item"><span class="rc-name">THE STATESMAN.</span> <span class="rc-meta">[ SYSTEM STATUS: 04 PIECES REMAINING IN STORAGE ]</span></div>
-    <div class="rc-item"><span class="rc-name">THE QUEEN.</span>     <span class="rc-meta">[ SYSTEM STATUS: 19 PIECES REMAINING IN STORAGE ]</span></div>
-  </div>
   <div class="outro-foot">
     <div class="rule">------------------------------------------------------------------</div>
-    <div class="line">A ROLL CALL OF BRITISH STUBBORNNESS. THE CLASS IS IN SESSION.</div>
-    <div class="rule">------------------------------------------------------------------</div>
     <div class="copyright">© 2026 BLITZSPIRIT SYSTEM CO. // ALL RIGHTS RESERVED // SECURITY OVERRIDE PRIMED.</div>
+    <div class="rule">------------------------------------------------------------------</div>
   </div>
 </footer>
 
