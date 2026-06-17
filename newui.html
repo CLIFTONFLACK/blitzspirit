@@ -37,6 +37,7 @@
   --bone:#ECECEC; --bone-dim:#8A8A8A; --bone-mute:#5A5A5A;
   --plate:#EAE8E2;            /* neutral product plate — reads dark AND light garments */
   --signal:#FF0000;          /* the only accent — rationed */
+  --brand-red:#8B2020;       /* logo badge red — used for "THE" in product names */
   --tex-hero:url("assets/newui/hero-panel-concrete.jpg");
   --tex-char:url("assets/newui/dark-charcoal-concrete.jpg");
   --tex-crack:url("assets/newui/dark-cracked-concrete.jpg");
@@ -129,6 +130,7 @@ a { color:inherit; text-decoration:none; }
 .led-index { color:var(--bone-mute); margin-bottom:var(--s2); }
 .item--dark .led-index { color:var(--signal); }
 .led-name { color:#fff; font-size:clamp(2rem,4.5vw,3.7rem); margin-bottom:var(--s4); }
+.led-name .the { color:var(--brand-red); }
 
 .cw { border:1px solid var(--line); padding:var(--s2); margin-bottom:var(--s4); }
 .cw-label { display:block; margin-bottom:10px; }
@@ -313,7 +315,7 @@ a { color:inherit; text-decoration:none; }
     <div class="item-ledger">
       <div>
         <div class="led-index tag">[ ENTRY_01 // BOUDICA ]</div>
-        <h2 class="led-name chunk">BOUDICA</h2>
+        <h2 class="led-name chunk"><span class="the">THE</span> BOUDICA</h2>
         <div class="cw">
           <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
           <div class="cw-opts">
@@ -347,7 +349,7 @@ a { color:inherit; text-decoration:none; }
     <div class="item-ledger">
       <div>
         <div class="led-index tag">[ ENTRY_02 // THE ESTABLISHMENT ]</div>
-        <h2 class="led-name chunk">THE ESTABLISHMENT</h2>
+        <h2 class="led-name chunk"><span class="the">THE</span> ESTABLISHMENT</h2>
         <div class="cw">
           <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
           <div class="cw-opts">
@@ -380,7 +382,7 @@ a { color:inherit; text-decoration:none; }
     <div class="item-ledger">
       <div>
         <div class="led-index tag">[ ENTRY_03 // ROLL CALL ]</div>
-        <h2 class="led-name chunk">ROLL CALL</h2>
+        <h2 class="led-name chunk"><span class="the">THE</span> ROLL CALL</h2>
         <div class="cw">
           <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
           <div class="cw-opts">
@@ -415,7 +417,7 @@ a { color:inherit; text-decoration:none; }
     <div class="item-ledger">
       <div>
         <div class="led-index tag">[ ENTRY_04 // THE FREQUENCY ]</div>
-        <h2 class="led-name chunk">THE FREQUENCY</h2>
+        <h2 class="led-name chunk"><span class="the">THE</span> FREQUENCY</h2>
         <div class="cw">
           <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
           <div class="cw-opts">
