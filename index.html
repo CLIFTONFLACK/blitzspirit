@@ -84,7 +84,7 @@ a { color:inherit; text-decoration:none; }
 .hero {
   position:relative; min-height:100vh; display:flex; flex-direction:column; justify-content:space-between;
   padding:96px var(--s3) var(--s3);
-  background:linear-gradient(rgba(10,10,10,0.42),rgba(10,10,10,0.55)),var(--tex-hero-bg) center/cover no-repeat;
+  background:linear-gradient(rgba(10,10,10,0.36),rgba(10,10,10,0.47)),var(--tex-hero-bg) center/cover no-repeat;
   border-bottom:1px solid var(--line);
 }
 .hero-corner,.hero-foot { display:flex; justify-content:space-between; align-items:center; gap:var(--s3); }
@@ -182,8 +182,8 @@ a { color:inherit; text-decoration:none; }
 /* Ledger */
 .item-ledger { background:var(--panel); display:flex; flex-direction:column; justify-content:space-between; padding:clamp(24px,4vw,56px); }
 .item--dark .item-ledger { background:#0c0c0c; }
-.led-index { color:var(--bone-mute); margin-bottom:var(--s2); }
-.item--dark .led-index { color:var(--signal); }
+.led-index { display:inline-block; background:#fff; color:var(--signal); padding:4px 10px; margin-bottom:var(--s2); }
+.item--dark .led-index { background:#fff; color:var(--signal); }
 .led-name { color:#fff; font-size:clamp(2rem,4.5vw,3.7rem); margin-bottom:var(--s4); }
 .led-name .the { color:var(--brand-red); }
 
@@ -215,6 +215,10 @@ a { color:inherit; text-decoration:none; }
 .directive--red { border-color:var(--line-bri); color:var(--bone-dim); }
 .directive--red:hover { background:transparent; color:var(--signal); border-color:var(--signal); }
 .directive--flicker:hover { animation:flicker .45s infinite steps(1); }
+.actions { display:flex; gap:var(--s2); flex-wrap:wrap; }
+.actions .directive { flex:1 1 180px; width:auto; }
+.directive--ghost { border-color:var(--line-bri); color:var(--bone-dim); text-decoration:none; }
+.directive--ghost:hover { background:transparent; color:var(--bone); border-color:var(--bone); }
 @keyframes flicker { 0%,100%{opacity:1} 8%{opacity:.25} 10%{opacity:1} 20%{opacity:.6} 22%{opacity:1} 60%{opacity:1} 62%{opacity:.4} 64%{opacity:1} }
 
 /* ============================================================
@@ -338,9 +342,9 @@ a { color:inherit; text-decoration:none; }
 </aside>
 
 <header class="masthead">
-  <a href="#top" class="tag">[ <span class="mh-long">APPAREL_ARCHIVE // </span>ISSUE_001 ]</a>
+  <a href="#equipment" class="tag">[ THE STORE ]</a>
   <nav class="nodes">
-    <a href="#equipment" class="tag">[ EQUIPMENT ]</a>
+    <a href="#top" class="tag">[ <span class="mh-long">APPAREL_ARCHIVE // </span>ISSUE_001 ]</a>
     <button class="tag bag" id="bagBtn" aria-label="Bag">[ BAG (<b id="bagCount">0</b>) ]</button>
   </nav>
 </header>
@@ -363,17 +367,17 @@ a { color:inherit; text-decoration:none; }
   </div>
 </section>
 
-<!-- FEATURED PRODUCT — THE ESTABLISHMENT -->
-<section class="featured" data-product="establishment" aria-label="Featured product">
+<!-- ISSUE_000 LIMITED EDITION — THE ESTABLISHMENT (sole product in the range) -->
+<section class="featured" data-product="establishment" aria-label="Issue 000 limited edition">
   <div class="featured-visual">
-    <span class="item-asset-ref tag">[ FEATURED // ENTRY_02 ]</span>
+    <span class="item-asset-ref tag">[ ISSUE_000 // LIMITED EDITION ]</span>
     <div class="featured-plate">
       <img src="assets/tee-skull-black-colour.jpg" alt="The Establishment tee — bowler-hatted skull over crossed umbrellas" />
-      <span class="plate-cnr">BS_002 // FEATURED</span>
+      <span class="plate-cnr">BS_002 // ISSUE_000</span>
     </div>
   </div>
   <div class="featured-ledger">
-    <span class="featured-eyebrow">★ FEATURED RELEASE</span>
+    <span class="featured-eyebrow">★ ISSUE_000 // LIMITED EDITION</span>
     <h2 class="featured-name chunk"><span class="the">THE</span> ESTABLISHMENT</h2>
     <div class="dossier">
       <p class="hit">THE OLD GUARD IS GONE. THE UNIFORM REMAINS.</p>
@@ -384,7 +388,10 @@ a { color:inherit; text-decoration:none; }
       <div class="sizes"><span class="tag" style="margin-right:4px">[ SIZES ]</span>
         <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
       <button class="cw-opt snap" aria-pressed="true" data-cw="OXY_BLACK" style="display:none">OXY_BLACK</button>
-      <button class="directive snap" data-idle="[ SYSTEM DIRECTIVE: SUBMIT ]" data-hover="[ SYSTEM DIRECTIVE: SUBMIT ]" data-add>[ SYSTEM DIRECTIVE: SUBMIT ]</button>
+      <div class="actions">
+        <button class="directive snap" data-idle="[ ADD TO CART ]" data-hover="[ ADD TO CART ]" data-add>[ ADD TO CART ]</button>
+        <a class="directive directive--ghost snap" data-what href="icons.html">WHAT IS</a>
+      </div>
     </div>
   </div>
 </section>
@@ -439,7 +446,10 @@ a { color:inherit; text-decoration:none; }
       <div class="led-foot">
         <div class="sizes"><span class="tag" style="margin-right:4px">[ SIZES ]</span>
           <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
-        <button class="directive snap" data-idle="[ SYSTEM DIRECTIVE: SUBMIT ]" data-hover="[ SYSTEM DIRECTIVE: SUBMIT ]" data-add>[ SYSTEM DIRECTIVE: SUBMIT ]</button>
+        <div class="actions">
+          <button class="directive snap" data-idle="[ ADD TO CART ]" data-hover="[ ADD TO CART ]" data-add>[ ADD TO CART ]</button>
+          <a class="directive directive--ghost snap" data-what href="icons.html">WHAT IS</a>
+        </div>
       </div>
     </div>
   </article>
@@ -474,7 +484,10 @@ a { color:inherit; text-decoration:none; }
       <div class="led-foot">
         <div class="sizes"><span class="tag" style="margin-right:4px">[ SIZES ]</span>
           <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
-        <button class="directive snap" data-idle="[ SYSTEM DIRECTIVE: SUBMIT ]" data-hover="[ SYSTEM DIRECTIVE: SUBMIT ]" data-add>[ SYSTEM DIRECTIVE: SUBMIT ]</button>
+        <div class="actions">
+          <button class="directive snap" data-idle="[ ADD TO CART ]" data-hover="[ ADD TO CART ]" data-add>[ ADD TO CART ]</button>
+          <a class="directive directive--ghost snap" data-what href="icons.html">WHAT IS</a>
+        </div>
       </div>
     </div>
   </article>
@@ -509,7 +522,47 @@ a { color:inherit; text-decoration:none; }
       <div class="led-foot">
         <div class="sizes"><span class="tag" style="margin-right:4px">[ SIZES ]</span>
           <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
-        <button class="directive snap" data-idle="[ SYSTEM DIRECTIVE: SUBMIT ]" data-hover="[ SYSTEM DIRECTIVE: SUBMIT ]" data-add>[ SYSTEM DIRECTIVE: SUBMIT ]</button>
+        <div class="actions">
+          <button class="directive snap" data-idle="[ ADD TO CART ]" data-hover="[ ADD TO CART ]" data-add>[ ADD TO CART ]</button>
+          <a class="directive directive--ghost snap" data-what href="icons.html">WHAT IS</a>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- 05 THE CLERK — bowler-hatted skull over crossed umbrellas, charcoal print -->
+  <article class="item item--dark" data-product="clerk">
+    <div class="item-visual">
+      <span class="item-asset-ref tag">[ APPAREL // FLAT_LAY ]</span>
+      <div class="plate">
+        <img data-plate alt="The Clerk tee — bowler-hatted skull over crossed umbrellas, charcoal print, oxy black" src="assets/tee-clerk-black.jpg" />
+        <span class="plate-cnr">BS_005 // OVERHEAD</span>
+      </div>
+    </div>
+    <div class="item-ledger">
+      <div>
+        <div class="led-index tag">[ ENTRY_05 // THE CLERK ]</div>
+        <h2 class="led-name chunk"><span class="the">THE</span> CLERK</h2>
+        <div class="cw">
+          <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
+          <div class="cw-opts">
+            <button class="cw-opt snap" aria-pressed="true"  data-cw="OXY_BLACK"   data-img="assets/tee-clerk-black.jpg" style="--dot:#0a0a0a">OXY_BLACK</button>
+            <button class="cw-opt snap" aria-pressed="false" data-cw="CHALK_WHITE" data-img="assets/tee-clerk-white.jpg" style="--dot:#e7e7e2">CHALK_WHITE</button>
+          </div>
+        </div>
+        <div class="dossier">
+          <p class="hit">EVERY EMPIRE NEEDS A CLERK. THIS ONE STAYED PAST CLOSING.</p>
+          <p>BOWLER HAT. CROSSED BROLLIES. A LEDGER THAT WON'T BALANCE.</p>
+          <p>STILL AT THE DESK. STILL REFUSING TO BE ERASED.</p>
+        </div>
+      </div>
+      <div class="led-foot">
+        <div class="sizes"><span class="tag" style="margin-right:4px">[ SIZES ]</span>
+          <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
+        <div class="actions">
+          <button class="directive snap" data-idle="[ ADD TO CART ]" data-hover="[ ADD TO CART ]" data-add>[ ADD TO CART ]</button>
+          <a class="directive directive--ghost snap" data-what href="icons.html">WHAT IS</a>
+        </div>
       </div>
     </div>
   </article>
@@ -576,6 +629,13 @@ a { color:inherit; text-decoration:none; }
         pill.setAttribute("aria-pressed", "true");
       });
     });
+  });
+
+  /* Secondary "what is" buttons — label per product */
+  document.querySelectorAll("[data-what]").forEach(function (el) {
+    var item = el.closest("[data-product]");
+    var nameEl = item ? item.querySelector(".led-name, .featured-name") : null;
+    if (nameEl) el.textContent = "WHAT IS '" + nameEl.textContent.trim() + "'";
   });
 
   /* Directive buttons: instant text swap */
