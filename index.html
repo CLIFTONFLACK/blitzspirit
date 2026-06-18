@@ -38,6 +38,7 @@
   --signal:#FF0000;          /* the only accent — rationed */
   --brand-red:#8B2020;       /* logo badge red — used for "THE" in product names */
   --tex-hero:url("assets/newui/hero-panel-concrete.jpg");
+  --tex-hero-bg:url("assets/newui/hero-wall-v3.jpg");   /* dark metal-panel wall — homepage hero only */
   --tex-char:url("assets/newui/dark-charcoal-concrete.jpg");
   --tex-crack:url("assets/newui/dark-cracked-concrete.jpg");
   --mono: ui-monospace,"SF Mono",SFMono-Regular,Menlo,Monaco,Consolas,"Roboto Mono",monospace;
@@ -83,18 +84,28 @@ a { color:inherit; text-decoration:none; }
 .hero {
   position:relative; min-height:100vh; display:flex; flex-direction:column; justify-content:space-between;
   padding:96px var(--s3) var(--s3);
-  background:linear-gradient(rgba(8,8,8,0.50),rgba(8,8,8,0.58)),var(--tex-hero) center/cover no-repeat;
+  background:linear-gradient(rgba(10,10,10,0.42),rgba(10,10,10,0.55)),var(--tex-hero-bg) center/cover no-repeat;
   border-bottom:1px solid var(--line);
 }
-.hero-corner,.hero-foot { display:flex; justify-content:space-between; }
+.hero-corner,.hero-foot { display:flex; justify-content:space-between; align-items:center; gap:var(--s3); }
+/* torn sticker logo bursts off the wall in the top-left, per the v3 composite */
+.hero-logo { width:clamp(180px,26vw,340px); height:auto; filter:drop-shadow(2px 4px 10px rgba(0,0,0,.85)); }
 .hero-title-wrap { margin:auto 0; text-align:center; }
-.asset-node { margin:0 auto var(--s3); display:flex; align-items:center; justify-content:center; }
-.asset-node img { width:192px; height:auto; max-width:none; }
-.hero-logo { height:clamp(46px,8vw,96px); width:auto; margin:0 auto var(--s4); filter:drop-shadow(0 2px 18px rgba(0,0,0,.6)); }
-.hero h1 { color:#fff; font-size:clamp(3rem,11vw,9.5rem); max-width:18ch; margin:0 auto; text-shadow:0 2px 40px rgba(0,0,0,.5); }
-.hero-tagline { color:#fff; font-size:clamp(1rem,3.4vw,2.1rem); margin-top:var(--s3); text-shadow:0 2px 22px rgba(0,0,0,.6); }
-.hero-sub { margin-top:var(--s3); display:inline-block; border:1px solid var(--line-bri); padding:6px 14px; }
-.scrollcue { position:absolute; left:50%; bottom:14px; transform:translateX(-50%); font-size:10px; color:var(--bone-mute); letter-spacing:.3em; }
+.hero h1 {
+  color:#E6DECB; font-size:clamp(2.4rem,7vw,5.25rem);
+  max-width:22ch; margin:0 auto; text-shadow:0 2px 40px rgba(0,0,0,.6);
+}
+.hero-tagline {
+  color:#D8CFB9; font-size:clamp(0.95rem,2.4vw,1.5rem); letter-spacing:0.04em;
+  margin-top:var(--s4); text-shadow:0 2px 22px rgba(0,0,0,.7);
+}
+.hero-status { display:block; margin-top:var(--s2); }
+.hero-cta {
+  display:inline-block; margin-top:var(--s5); font-family:var(--mono);
+  font-size:13px; letter-spacing:0.28em; text-transform:uppercase; color:var(--bone);
+  transition:color .15s;
+}
+.hero-cta:hover,.hero-cta:focus-visible { color:var(--signal); }
 
 /* ============================================================
    4a. FEATURED PRODUCT — elevated showcase (The Establishment)
@@ -298,7 +309,6 @@ a { color:inherit; text-decoration:none; }
   .masthead { white-space:nowrap; font-size:9px; letter-spacing:.06em; }
   .masthead .nodes { gap:12px; }
   .mh-long { display:none; }              /* collapse to [ ISSUE_001 ] on phones */
-  .scrollcue { display:none; }            /* avoid overlap with hero foot tags */
   .promo-row { flex-direction:column; }
   .promo-submit { border-left:none; border-top:1px solid var(--bone-dim); padding:14px; }
 }
@@ -338,21 +348,19 @@ a { color:inherit; text-decoration:none; }
 <!-- BLOCK 1 — HERO -->
 <section class="hero" id="top">
   <div class="hero-corner">
+    <img class="hero-logo" src="assets/newui/blitzspirit-sticker.png" alt="BLITZSPIRIT" />
     <span class="tag tag-mute">SYS_REF // 47-CONCRETE-SEAMS</span>
-    <span class="tag tag-mute">LAT 51.5074° // LON 0.1278°</span>
   </div>
   <div class="hero-title-wrap">
-    <div class="asset-node"><img src="assets/newui/skull-umbrella.png" alt="" aria-hidden="true" /></div>
-    <img class="hero-logo" src="assets/newui/blitzspirit-stamp.png" alt="BLITZSPIRIT" />
-    <h1 class="chunk">GET YOUR<br>BACKBONE HERE</h1>
-    <div class="hero-tagline chunk">WE'RE NOT HERE TO BE LIKED.</div>
-    <div class="hero-sub tag">Heritage with teeth. Proud and Unapologetic.</div>
+    <h1 class="chunk">NOT HERE TO BE LIKED.</h1>
+    <div class="hero-tagline chunk">PROUD. UNAPOLOGETIC. OCCASIONALLY DIFFICULT.</div>
+    <div class="hero-status tag tag-mute">STATUS: UNMOVING // EST. 2026 // LAT 51.5074°</div>
+    <a class="hero-cta" href="collection.html">[ ENTER THE ARCHIVE ]</a>
   </div>
   <div class="hero-foot">
-    <span class="tag tag-mute">STATUS: UNMOVING / LOCKED</span>
     <span class="tag tag-mute">EST. 2026 // BRITISH STUBBORNNESS</span>
+    <span class="tag tag-mute">LON 0.1278°</span>
   </div>
-  <div class="scrollcue">↓ SCROLL TO ARCHIVE</div>
 </section>
 
 <!-- FEATURED PRODUCT — THE ESTABLISHMENT -->
