@@ -110,7 +110,8 @@
       var label = b.getAttribute('aria-label');
       var hint = document.querySelector('#colour-label .hint');
       if (hint) hint.textContent = label;
-      if (mainImg && colourMap[label]) { mainImg.src = colourMap[label]; mainImg.className = ''; }
+      var imgSrc = b.getAttribute('data-img') || colourMap[label];
+      if (mainImg && imgSrc) { mainImg.src = imgSrc; mainImg.className = ''; }
     });
   });
 

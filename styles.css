@@ -591,6 +591,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visibl
 .colour-opt span { position: absolute; inset: 5px; border-radius: 50%; }
 .colour-opt.black span { background: #111; }
 .colour-opt.offwhite span { background: var(--bone-bright); }
+.colour-opt.navy span { background: var(--navy); }
+.colour-opt.cream span { background: #e9ddbf; }
 .colour-opt[aria-pressed="true"] { border: 2px solid var(--blood-red); }
 .size-opts { display: flex; flex-wrap: wrap; gap: 10px; }
 .size-opt {
