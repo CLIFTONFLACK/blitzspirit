@@ -345,6 +345,7 @@ a { color:inherit; text-decoration:none; }
   <a href="#equipment" class="tag">[ THE STORE ]</a>
   <nav class="nodes">
     <a href="#top" class="tag">[ <span class="mh-long">APPAREL_ARCHIVE // </span>ISSUE_001 ]</a>
+    <a href="about.html" class="tag mh-long">[ ABOUT ]</a>
     <button class="tag bag" id="bagBtn" aria-label="Bag">[ BAG (<b id="bagCount">0</b>) ]</button>
   </nav>
 </header>
@@ -631,11 +632,20 @@ a { color:inherit; text-decoration:none; }
     });
   });
 
-  /* Secondary "what is" buttons — label per product */
+  /* Secondary "what is" buttons — label + route per product */
+  var whatUrls = {
+    establishment: "about.html",
+    boudica:       "product.html",
+    rollcall:      "product-roll-call.html",
+    frequency:     "product-roundel.html",
+    clerk:         "product-skull.html"
+  };
   document.querySelectorAll("[data-what]").forEach(function (el) {
     var item = el.closest("[data-product]");
     var nameEl = item ? item.querySelector(".led-name, .featured-name") : null;
     if (nameEl) el.textContent = "WHAT IS '" + nameEl.textContent.trim() + "'";
+    var key = item ? item.dataset.product : null;
+    if (key && whatUrls[key]) el.href = whatUrls[key];
   });
 
   /* Directive buttons: instant text swap */
