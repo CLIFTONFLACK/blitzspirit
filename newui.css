@@ -340,6 +340,7 @@ a { color:inherit; text-decoration:none; }
 .coll-plate img { width:100%; height:100%; object-fit:cover; transition:.3s ease; }
 .coll-card:hover .coll-plate img { transform:scale(1.03); }
 .coll-badge { position:absolute; top:10px; left:0; background:var(--signal); color:#fff; font-size:10px; letter-spacing:.15em; text-transform:uppercase; font-family:var(--mono); padding:4px 10px; }
+.coll-issue { position:absolute; top:0; right:0; background:rgba(10,10,10,.82); color:var(--bone-dim); font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; padding:6px 10px; border-left:1px solid var(--line-bri); border-bottom:1px solid var(--line-bri); }
 .coll-info { background:var(--panel); padding:var(--s2) var(--s3) var(--s3); flex:1; display:flex; flex-direction:column; gap:8px; border-top:1px solid var(--line); }
 .coll-name { color:#fff; font-size:clamp(1.3rem,2.2vw,1.8rem); line-height:.95; margin-top:4px; }
 .coll-name .the { color:var(--brand-red); }
