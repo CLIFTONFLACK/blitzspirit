@@ -53,7 +53,7 @@ a { color:inherit; text-decoration:none; }
 }
 .masthead .nodes { display:flex; gap:var(--s3); }
 .masthead .tag { color:#fff; font-size:13px; }
-.masthead .mh-long { color:var(--bone-mute); }
+.masthead .mh-long { color:var(--signal); }
 .masthead a:hover,.masthead button:hover { color:var(--bone); }
 .masthead .bag b { color:var(--signal); font-weight:400; }
 
