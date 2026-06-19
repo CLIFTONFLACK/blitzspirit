@@ -75,6 +75,11 @@ a { color:inherit; text-decoration:none; }
   backdrop-filter:blur(2px); border-bottom:1px solid var(--line);
 }
 .masthead .nodes { display:flex; gap:var(--s3); }
+.nodes--left { display:flex; gap:var(--s3); align-items:center; overflow:hidden; min-width:0; }
+.nodes--right { display:flex; gap:var(--s2); align-items:center; flex-shrink:0; }
+.mh-long { color:var(--bone-mute); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:none; }
+.mh-social { display:flex; align-items:center; color:var(--bone-dim); line-height:1; }
+.mh-social:hover { color:var(--bone); }
 .masthead a:hover,.masthead button:hover { color:var(--bone); }
 .masthead .bag b { color:var(--signal); font-weight:400; }
 
@@ -329,6 +334,7 @@ a { color:inherit; text-decoration:none; }
 .dossier .what-link:hover { border-color:var(--signal); color:var(--signal); }
 .item--dark .dossier .what-link { border-color:rgba(255,255,255,.15); color:var(--bone-mute); }
 .item--dark .dossier .what-link:hover { border-color:var(--signal); color:var(--signal); }
+@media (min-width:1100px) { .mh-long { display:inline; } }
 </style>
 </head>
 <body>
@@ -351,11 +357,16 @@ a { color:inherit; text-decoration:none; }
 </aside>
 
 <header class="masthead">
-  <a href="#equipment" class="tag">[ THE STORE ]</a>
-  <nav class="nodes">
-    <a href="collection.html" class="tag">[ ACCESSORIES ]</a>
-    <a href="about.html" class="tag mh-long">[ ABOUT ]</a>
-    <button class="tag bag" id="bagBtn" aria-label="Bag">[ BAG (<b id="bagCount">0</b>) ]</button>
+  <nav class="nodes nodes--left">
+    <a href="index.html" class="tag">[ BLITZSPIRIT // ISSUE_001 ]</a>
+    <a href="about.html" class="tag">[ ABOUT ]</a>
+    <a href="collection.html" class="tag">[ THE COLLECTIONS ]</a>
+    <span class="tag mh-long">[ LATEST COLLECTION // ISSUE_001 ]</span>
+  </nav>
+  <nav class="nodes nodes--right">
+    <a href="#" class="tag mh-social" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+    <a href="#" class="tag mh-social" aria-label="X" target="_blank" rel="noopener noreferrer"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.74l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+    <button class="tag bag" id="bagBtn" aria-label="Open bag">[ BAG (<b id="bagCount">0</b>) ]</button>
   </nav>
 </header>
 
@@ -402,7 +413,7 @@ a { color:inherit; text-decoration:none; }
           <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
       </div>
       <div class="actions">
-        <button class="directive snap" data-idle="[ ADD TO CART ]" data-hover="[ ADD TO CART ]" data-add>[ ADD TO CART ]</button>
+        <button class="directive snap" data-idle="[ ADD TO BAG ]" data-hover="[ ADD TO BAG ]" data-add>[ ADD TO BAG ]</button>
       </div>
     </div>
   </div>
@@ -462,7 +473,7 @@ a { color:inherit; text-decoration:none; }
             <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
         </div>
         <div class="actions">
-          <button class="directive snap" data-idle="[ ADD TO CART ]" data-hover="[ ADD TO CART ]" data-add>[ ADD TO CART ]</button>
+          <button class="directive snap" data-idle="[ ADD TO BAG ]" data-hover="[ ADD TO BAG ]" data-add>[ ADD TO BAG ]</button>
         </div>
       </div>
     </div>
@@ -502,7 +513,7 @@ a { color:inherit; text-decoration:none; }
             <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
         </div>
         <div class="actions">
-          <button class="directive snap" data-idle="[ ADD TO CART ]" data-hover="[ ADD TO CART ]" data-add>[ ADD TO CART ]</button>
+          <button class="directive snap" data-idle="[ ADD TO BAG ]" data-hover="[ ADD TO BAG ]" data-add>[ ADD TO BAG ]</button>
         </div>
       </div>
     </div>
@@ -542,7 +553,7 @@ a { color:inherit; text-decoration:none; }
             <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
         </div>
         <div class="actions">
-          <button class="directive snap" data-idle="[ ADD TO CART ]" data-hover="[ ADD TO CART ]" data-add>[ ADD TO CART ]</button>
+          <button class="directive snap" data-idle="[ ADD TO BAG ]" data-hover="[ ADD TO BAG ]" data-add>[ ADD TO BAG ]</button>
         </div>
       </div>
     </div>
@@ -581,7 +592,7 @@ a { color:inherit; text-decoration:none; }
             <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
         </div>
         <div class="actions">
-          <button class="directive snap" data-idle="[ ADD TO CART ]" data-hover="[ ADD TO CART ]" data-add>[ ADD TO CART ]</button>
+          <button class="directive snap" data-idle="[ ADD TO BAG ]" data-hover="[ ADD TO BAG ]" data-add>[ ADD TO BAG ]</button>
         </div>
       </div>
     </div>

@@ -26,10 +26,15 @@
 </aside>
 
 <header class="masthead">
-  <a href="index.html" class="tag">[ BLITZSPIRIT // ISSUE_001 ]</a>
-  <nav class="nodes">
-    <a href="collection.html" class="tag">[ ACCESSORIES ]</a>
+  <nav class="nodes nodes--left">
+    <a href="index.html" class="tag">[ BLITZSPIRIT // ISSUE_001 ]</a>
     <a href="about.html" class="tag">[ ABOUT ]</a>
+    <a href="collection.html" class="tag">[ THE COLLECTIONS ]</a>
+    <span class="tag mh-long">[ LATEST COLLECTION // ISSUE_001 ]</span>
+  </nav>
+  <nav class="nodes nodes--right">
+    <a href="#" class="tag mh-social" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+    <a href="#" class="tag mh-social" aria-label="X" target="_blank" rel="noopener noreferrer"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.74l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
     <button class="tag bag" id="bagBtn" aria-label="Open bag">[ BAG (<b id="bagCount">0</b>) ]</button>
   </nav>
 </header>
@@ -102,7 +107,7 @@
 
       <div class="actions">
         <button class="directive" data-add>[ ALLOCATE TO BAG ]</button>
-        <a href="index.html" class="directive directive--ghost">[ VIEW FULL ARCHIVE ]</a>
+        <a href="collection.html" class="directive directive--ghost">[ EVALUATE THE FULL COLLECTION ]</a>
       </div>
 
       <hr class="sep-line">
@@ -173,7 +178,7 @@
 
   <!-- CROSS-SELL -->
   <section class="cross-sell">
-    <div class="cs-head tag">[ SEE ALSO // ISSUE_001 // SAME_SPIRIT ]</div>
+    <div class="cs-head tag">[ RELATED_SHIRTS // AVAILABLE TODAY ]</div>
     <div class="cs-grid">
       <a href="product-establishment.html" class="cs-item">
         <div class="cs-plate">
@@ -232,6 +237,29 @@
     <span class="tag">[ NOT HERE TO BE LIKED ]</span>
   </div>
 </footer>
+
+<!-- CAP PAIRING MODAL -->
+<div class="cap-modal-overlay" id="capModalOverlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="capModalHeading">
+  <div class="cap-modal">
+    <div class="cap-modal-ref tag">[ INTEL // SUGGESTED_PAIRING // AUTO_TRIGGER_3S ]</div>
+    <button class="cap-modal-close snap" id="capModalClose" aria-label="Close modal">[ × ]</button>
+    <div class="cap-modal-body">
+      <a href="product-cap.html" class="cap-modal-visual">
+        <img src="assets/cap-black.jpg" alt="The Cap — OXY_BLACK">
+      </a>
+      <div class="cap-modal-info">
+        <div class="led-index tag" style="display:inline-block;margin-bottom:12px;">[ EQUIPMENT // THE_CAP ]</div>
+        <h2 class="chunk cap-modal-name" id="capModalHeading"><span class="the">THE</span> CAP</h2>
+        <p class="cap-modal-price tag">£22.00 // INC. VAT</p>
+        <p class="cap-modal-copy">Your shirt needs a cap. Stiff upper brim. BlitzSpirit embroidered on the front — no typographic cowardice. OXY_BLACK / SYSTEM_NAVY / CHALK_STONE.</p>
+        <div class="cap-modal-actions">
+          <button class="directive snap" id="capModalAdd">[ ADD TO BAG ]</button>
+          <button class="directive directive--ghost snap" id="capModalDecide">[ DECIDE LATER ]</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
 (function(){
@@ -311,6 +339,27 @@
       if(img && mainImg){ mainImg.src = img.src; }
     });
   });
+
+  /* ---- cap pairing modal ---- */
+  var capOverlay = document.getElementById("capModalOverlay");
+  if(capOverlay){
+    function openCapModal(){ capOverlay.setAttribute("aria-hidden","false"); }
+    function closeCapModal(){ capOverlay.setAttribute("aria-hidden","true"); }
+    document.getElementById("capModalClose").addEventListener("click", closeCapModal);
+    document.getElementById("capModalDecide").addEventListener("click", closeCapModal);
+    capOverlay.addEventListener("click", function(e){ if(e.target===capOverlay) closeCapModal(); });
+    document.getElementById("capModalAdd").addEventListener("click", function(){
+      var capKey = "THE CAP / OXY_BLACK";
+      var existing = cart.find(function(i){return i.name===capKey;});
+      if(existing){ existing.qty++; } else { cart.push({name:capKey,qty:1,price:22}); }
+      renderCart();
+      closeCapModal();
+      openCart();
+    });
+    if(!sessionStorage.getItem("capPairShown")){
+      setTimeout(function(){ openCapModal(); sessionStorage.setItem("capPairShown","1"); }, 3000);
+    }
+  }
 })();
 </script>
 </body>
