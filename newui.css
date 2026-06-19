@@ -283,6 +283,38 @@ a { color:inherit; text-decoration:none; }
 .pdp-promo-submit { border:none; border-left:1px solid var(--bone-dim); background:var(--signal); color:#fff; font-family:var(--mono); font-size:12px; letter-spacing:.16em; text-transform:uppercase; padding:0 24px; cursor:pointer; }
 .pdp-promo-submit:hover { background:#fff; color:var(--ink); }
 
+/* 11. COLLECTION PAGE */
+.coll-header { padding:var(--s7) var(--s3) var(--s4); border-bottom:1px solid var(--line); background:linear-gradient(rgba(10,10,10,.82),rgba(10,10,10,.9)),var(--tex-char) center/cover no-repeat; }
+.coll-header-inner { max-width:1280px; margin:0 auto; display:flex; align-items:flex-end; justify-content:space-between; gap:var(--s4); flex-wrap:wrap; }
+.coll-title { color:#fff; font-size:clamp(2.8rem,6vw,5rem); line-height:.92; }
+.coll-meta-col { display:flex; flex-direction:column; gap:var(--s1); align-items:flex-end; }
+
+.coll-filter { border-bottom:1px solid var(--line); background:var(--panel-2); position:sticky; top:45px; z-index:30; }
+.coll-filter-inner { max-width:1280px; margin:0 auto; display:flex; align-items:stretch; }
+.coll-tab { padding:14px 28px; font-size:11px; letter-spacing:.2em; text-transform:uppercase; font-family:var(--mono); color:var(--bone-dim); border-right:1px solid var(--line); cursor:pointer; background:none; }
+.coll-tab:hover { color:var(--bone); background:rgba(255,255,255,.04); }
+.coll-tab.active { color:var(--signal); background:var(--panel); }
+.coll-count { margin-left:auto; padding:14px 24px; color:var(--bone-mute); font-size:11px; letter-spacing:.1em; text-transform:uppercase; font-family:var(--mono); border-left:1px solid var(--line); }
+
+.coll-grid-wrap { max-width:1280px; margin:0 auto; }
+.coll-grid { display:grid; grid-template-columns:repeat(3,1fr); border-left:1px solid var(--line); }
+.coll-card { border-right:1px solid var(--line); border-bottom:1px solid var(--line); display:flex; flex-direction:column; }
+.coll-card[hidden] { display:none; }
+.coll-card-ref { padding:6px 14px; border-bottom:1px solid var(--line); background:var(--panel-2); display:flex; justify-content:space-between; align-items:center; }
+.coll-plate { background:var(--plate); aspect-ratio:3/4; overflow:hidden; position:relative; }
+.coll-plate img { width:100%; height:100%; object-fit:cover; transition:.3s ease; }
+.coll-card:hover .coll-plate img { transform:scale(1.03); }
+.coll-badge { position:absolute; top:10px; left:0; background:var(--signal); color:#fff; font-size:10px; letter-spacing:.15em; text-transform:uppercase; font-family:var(--mono); padding:4px 10px; }
+.coll-info { background:var(--panel); padding:var(--s2) var(--s3) var(--s3); flex:1; display:flex; flex-direction:column; gap:8px; border-top:1px solid var(--line); }
+.coll-name { color:#fff; font-size:clamp(1.3rem,2.2vw,1.8rem); line-height:.95; margin-top:4px; }
+.coll-name .the { color:var(--brand-red); }
+.coll-price { color:var(--bone-dim); font-size:11px; letter-spacing:.12em; text-transform:uppercase; font-family:var(--mono); }
+.coll-dots { display:flex; gap:5px; align-items:center; margin:2px 0 8px; }
+.coll-dot { display:inline-block; width:10px; height:10px; background:var(--dot,#333); border:1px solid rgba(255,255,255,.2); }
+.coll-dot[title="CHALK_WHITE"],.coll-dot[title="CHALK_STONE"] { border-color:rgba(0,0,0,.25); }
+.coll-cta { display:block; border:1px solid var(--line-bri); padding:12px var(--s2); font-size:11px; letter-spacing:.15em; text-transform:uppercase; font-family:var(--mono); color:var(--bone-dim); text-align:center; margin-top:auto; }
+.coll-cta:hover { border-color:var(--signal); color:var(--signal); }
+
 /* 10. RESPONSIVE */
 @media (max-width:860px) {
   .pdp { grid-template-columns:1fr; min-height:0; }
@@ -300,6 +332,11 @@ a { color:inherit; text-decoration:none; }
   .editorial-block + .editorial-block { border-top:1px solid var(--line); }
   .pdp-promo-row { flex-direction:column; }
   .pdp-promo-submit { border-left:none; border-top:1px solid var(--bone-dim); padding:14px; }
+  .coll-grid { grid-template-columns:repeat(2,1fr); }
+  .coll-meta-col { align-items:flex-start; }
+}
+@media (max-width:540px) {
+  .coll-grid { grid-template-columns:1fr; }
 }
 @media (max-width:480px) {
   .cs-grid { grid-template-columns:1fr; }

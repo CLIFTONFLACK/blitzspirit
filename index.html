@@ -182,9 +182,9 @@ a { color:inherit; text-decoration:none; }
 /* Ledger */
 .item-ledger { background:var(--panel); display:flex; flex-direction:column; justify-content:space-between; padding:clamp(24px,4vw,56px); }
 .item--dark .item-ledger { background:#0c0c0c; }
-.led-index { display:inline-block; background:#fff; color:var(--signal); padding:4px 10px; margin-bottom:var(--s2); }
+.led-index { display:inline-block; background:#fff; color:var(--signal); padding:4px 10px; margin-bottom:var(--s3); }
 .item--dark .led-index { background:#fff; color:var(--signal); }
-.led-name { color:#fff; font-size:clamp(2rem,4.5vw,3.7rem); margin-bottom:var(--s4); }
+.led-name { color:#fff; font-size:clamp(2rem,4.5vw,3.7rem); margin-bottom:var(--s3); }
 .led-name .the { color:var(--brand-red); }
 
 .cw { border:1px solid var(--line); padding:var(--s2); margin-bottom:var(--s4); }
@@ -197,14 +197,14 @@ a { color:inherit; text-decoration:none; }
 .item--dark .cw-opt[aria-pressed="true"] { background:var(--signal); color:#fff; border-color:var(--signal); }
 
 .dossier { background:linear-gradient(rgba(205,205,205,.92),rgba(188,188,188,.92)),var(--tex-hero) center/cover; border:1px solid rgba(0,0,0,.4); padding:var(--s3); }
-.dossier p { text-transform:uppercase; letter-spacing:.04em; color:#2a2722; }
+.dossier p { font-family:"ChunkFive",Georgia,serif; text-transform:uppercase; letter-spacing:.01em; color:#2a2722; font-size:clamp(.9rem,1.8vw,1.1rem); line-height:1.15; }
 .dossier p + p { margin-top:6px; }
 .dossier .hit { color:#0a0a0a; }
 .item--dark .dossier { background:linear-gradient(rgba(10,10,10,.6),rgba(10,10,10,.78)),var(--tex-char) center/cover; border:1px solid #000; }
 .item--dark .dossier p { color:var(--bone-dim); }
 .item--dark .dossier .hit { color:#fff; }
 
-.led-foot { margin-top:var(--s4); }
+.led-foot { margin-top:var(--s2); }
 .sizes { display:flex; align-items:center; gap:10px; margin-bottom:var(--s2); flex-wrap:wrap; }
 .size-pill { border:1px solid var(--line-bri); padding:7px 13px; font-size:12px; color:var(--bone-dim); min-width:40px; text-align:center; }
 .size-pill:hover { border-color:var(--bone-dim); color:var(--bone); }
@@ -353,7 +353,7 @@ a { color:inherit; text-decoration:none; }
 <header class="masthead">
   <a href="#equipment" class="tag">[ THE STORE ]</a>
   <nav class="nodes">
-    <a href="#top" class="tag">[ <span class="mh-long">APPAREL_ARCHIVE // </span>ISSUE_001 ]</a>
+    <a href="collection.html" class="tag">[ ACCESSORIES ]</a>
     <a href="about.html" class="tag mh-long">[ ABOUT ]</a>
     <button class="tag bag" id="bagBtn" aria-label="Bag">[ BAG (<b id="bagCount">0</b>) ]</button>
   </nav>
