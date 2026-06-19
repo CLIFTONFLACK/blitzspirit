@@ -36,7 +36,7 @@
   --bone:#ECECEC; --bone-dim:#8A8A8A; --bone-mute:#5A5A5A;
   --plate:#EAE8E2;            /* neutral product plate â€" reads dark AND light garments */
   --signal:#FF0000;          /* the only accent â€" rationed */
-  --brand-red:#8B2020;       /* logo badge red â€" used for "THE" in product names */
+  --brand-red:#C23030;       /* logo badge red â€" used for "THE" in product names */
   --tex-hero:url("assets/newui/hero-panel-concrete.jpg");
   --tex-hero-bg:url("assets/newui/hero-wall-v3.jpg");   /* dark metal-panel wall â€" homepage hero only */
   --tex-char:url("assets/newui/dark-charcoal-concrete.jpg");
@@ -124,7 +124,7 @@ a { color:inherit; text-decoration:none; }
 .featured-plate img { width:100%; height:100%; object-fit:contain; }
 .featured-plate .plate-cnr { position:absolute; bottom:8px; right:10px; font-size:9px; letter-spacing:.1em; color:#9a958c; }
 .featured-ledger { background:var(--panel); display:flex; flex-direction:column; justify-content:center; gap:var(--s3); padding:clamp(28px,5vw,72px); }
-.featured-eyebrow { align-self:flex-start; border:1px solid var(--signal); color:var(--signal); padding:6px 13px; font-size:11px; letter-spacing:.2em; text-transform:uppercase; }
+.featured-eyebrow { display:inline-block; border:1px solid var(--signal); color:var(--signal); padding:6px 13px; font-size:11px; letter-spacing:.2em; text-transform:uppercase; margin-bottom:var(--s3); }
 .featured-name { color:#E6DECB; font-size:clamp(1.9rem,3.6vw,3rem); margin:0; line-height:.95; }
 .featured-name .the { color:var(--brand-red); }
 .featured .dossier { background:linear-gradient(rgba(205,205,205,.92),rgba(188,188,188,.92)),var(--tex-hero) center/cover; border:1px solid rgba(0,0,0,.4); padding:var(--s3); }
@@ -404,15 +404,13 @@ a { color:inherit; text-decoration:none; }
     </div>
   </div>
   <div class="featured-ledger">
-    <span class="featured-eyebrow">★ ISSUE_000 // LIMITED EDITION</span>
-    <h2 class="featured-name chunk"><span class="the">THE</span> ESTABLISHMENT</h2>
     <div class="dossier">
+      <span class="featured-eyebrow">★ ISSUE_000 // LIMITED EDITION</span>
+      <h2 class="featured-name chunk"><span class="the">THE</span> ESTABLISHMENT</h2>
       <p class="hit">THE OLD GUARD IS GONE. THE UNIFORM REMAINS.</p>
       <p>A BOWLER HAT. AN UMBRELLA.</p>
       <p>A GRIN BUILT FOR THE FRONT ROW, NOT THE FRONT BENCH.</p>
       <a class="what-link" data-what href="product-establishment.html">WHAT IS</a>
-    </div>
-    <div class="featured-foot">
       <div class="cw-size-wrap">
         <button class="cw-opt snap" aria-pressed="true" data-cw="OXY_BLACK" style="display:none">OXY_BLACK</button>
         <div class="sizes"><span class="tag" style="margin-right:4px">[ SIZES ]</span>
