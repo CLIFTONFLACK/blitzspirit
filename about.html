@@ -3,227 +3,173 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>About BlitzSpirit — Urban Fashion With a Backbone</title>
-<meta name="description" content="BlitzSpirit started with a bowler hat on a t-shirt in 2008. Ironic, iconic British heritage designs on heavyweight cotton. Small. Made here. Built to last.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bevan&family=Oswald:wght@500;600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<title>About — BlitzSpirit ISSUE_001</title>
+<meta name="description" content="BlitzSpirit — ironic, iconic British designs. Where it started, what we make, what it means.">
+<link rel="stylesheet" href="newui.css">
 </head>
 <body>
 
-<p class="announce">Free UK delivery over &pound;40 &nbsp;&mdash;&nbsp; No nonsense. No fuss.</p>
-
-<header class="site-header">
-  <div class="container header-inner">
-    <a class="logo" href="index.html" aria-label="BlitzSpirit home">
-      <span class="logo-mark">blitzspirit</span>
-    </a>
-    <nav class="main-nav" aria-label="Main navigation">
-      <div class="nav-item has-dropdown">
-        <a href="collection.html">Quartermasters</a>
-        <div class="nav-dropdown">
-          <a href="collection.html">T&#8209;Shirts</a>
-          <a href="collection.html">Caps</a>
-          <a href="collection.html">Gift Cards</a>
-        </div>
-      </div>
-      <a href="icons.html">The Icons</a>
-      <a href="story.html">The Story</a>
-      <a href="about.html" aria-current="page">About</a>
-    </nav>
-    <div class="header-icons">
-      <button type="button" class="nav-toggle" aria-label="Menu">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-      </button>
-      <button type="button" aria-label="Search">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-      </button>
-      <a href="#" aria-label="Account">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg>
-      </a>
-      <a href="#" class="cart-link" aria-label="Basket, 0 items">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 7h12l1.2 13H4.8L6 7Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></svg>
-        <span class="cart-count" aria-hidden="true">0</span>
-      </a>
-    </div>
+<div class="cart-overlay" id="cartOverlay"></div>
+<aside class="cart-drawer" id="cart" aria-hidden="true" aria-label="Current bag">
+  <div class="cart-head">
+    <span class="tag">[ SYSTEM_LEDGER // CURRENT_BAG ]</span>
+    <button class="cart-close snap" id="cartClose">[ CLOSE ]</button>
   </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty" id="cartEmpty">[ LEDGER EMPTY // NO ASSETS ALLOCATED ]</div>
+  </div>
+  <div class="cart-foot">
+    <div class="cart-sum"><span class="tag">[ ITEMS ]</span><b id="cartTotal">0</b></div>
+    <button class="cart-checkout snap">[ PROCEED TO SECURE CHECKOUT ]</button>
+    <p class="cart-note">Routes to encrypted payment at checkout.</p>
+  </div>
+</aside>
+
+<header class="masthead">
+  <a href="index.html" class="tag">[ BLITZSPIRIT // ISSUE_001 ]</a>
+  <nav class="nodes">
+    <a href="index.html#equipment" class="tag">[ ARCHIVE ]</a>
+    <button class="tag bag" id="bagBtn" aria-label="Open bag">[ BAG (<b id="bagCount">0</b>) ]</button>
+  </nav>
 </header>
 
-<main>
+<main style="padding-top:48px;">
 
-  <!-- PAGE HERO -->
-  <section class="page-hero">
-    <div class="hero-bg" style="background-image:url('assets/heritage-blitz-boy.jpg'); opacity:0.18;" aria-hidden="true"></div>
-    <div class="container" style="position:relative; z-index:2;">
-      <p class="eyebrow reveal">About BlitzSpirit</p>
-      <h1 class="display reveal">Small British brand.<br>Heavyweight cotton.<br>No fuss.</h1>
-      <p class="lede reveal">We started with a bowler hat on a t-shirt. We&rsquo;re still at it.</p>
+  <!-- HERO -->
+  <section class="about-hero">
+    <div>
+      <div class="led-index tag" style="display:inline-block;margin-bottom:16px;">[ SYSTEM_DOSSIER // ABOUT_BLITZSPIRIT ]</div>
+      <h1 class="chunk" style="color:#fff;font-size:clamp(3rem,9vw,8rem);line-height:0.9;margin-bottom:24px;">
+        <span style="color:var(--brand-red);">NOT HERE</span><br>TO BE LIKED.
+      </h1>
+      <p class="tag" style="color:var(--bone-dim);max-width:52ch;line-height:1.8;">
+        [ IRONIC // ICONIC // BRITISH // EST. 2008 // LONDON // HEAVYWEIGHT COTTON // PRINTED IN THE UK ]
+      </p>
     </div>
   </section>
 
   <!-- HOW IT STARTED -->
-  <section class="section">
-    <div class="container">
-
-      <article class="icon-feature reveal">
-        <div class="feature-media">
-          <img src="assets/bowler-splash.jpg" alt="Early BlitzSpirit design from 2008 — the original bowler-hatted skull with red splash" loading="lazy">
-        </div>
-        <div class="feature-copy">
-          <p class="num">EST. 2008 &mdash; LONDON</p>
-          <h2 class="display">How it started.</h2>
-          <hr class="rule-red">
-          <p style="color:var(--bone-dim); max-width:52ch;">
-            It started with the bowler-hatted skull. London, 2008 &mdash; a small run, no plan, word of mouth. The design landed because it said something without explaining itself. That&rsquo;s still the test.
-          </p>
-          <p style="color:var(--bone-dim); max-width:52ch;">
-            The brand went quiet for a while. Came back harder. New designs, same idea: take something genuinely British &mdash; a battle queen, a mod target, a gent who won&rsquo;t be rattled &mdash; and put it on a tee that wears better the longer you have it.
-          </p>
-          <p class="attitude"><strong>The characters were already there. We just put them on cotton.</strong></p>
-        </div>
-      </article>
-
-      <!-- WHAT WE MAKE -->
-      <article class="icon-feature flip reveal">
-        <div class="feature-media">
-          <img src="assets/blitz-def.jpg" alt="Heritage image — British resilience and defiance in the Blitz era" loading="lazy">
-        </div>
-        <div class="feature-copy">
-          <p class="num">THE PRODUCT</p>
-          <h2 class="display">What we make.</h2>
-          <hr class="rule-red">
-          <p style="color:var(--bone-dim); max-width:52ch;">
-            220gsm heavyweight ringspun cotton. Printed in Britain. Ribbed crew neck, taped shoulders, the kind of weight that holds its shape after a hundred washes.
-          </p>
-          <p style="color:var(--bone-dim); max-width:52ch;">
-            We don&rsquo;t do seasonal. We don&rsquo;t do trends. When a design makes the cut, it stays until it doesn&rsquo;t make sense any more &mdash; which hasn&rsquo;t happened yet.
-          </p>
-          <p style="color:var(--bone-dim); max-width:52ch;">
-            Tumble dryers are for quitters.
-          </p>
-          <div class="meta-row" style="margin-top:24px;">
-            <span>220gsm heavyweight cotton</span><span>Printed in Britain</span><span>30-day returns</span>
-          </div>
-          <div class="hero-ctas" style="margin-top:28px;">
-            <a class="btn btn-primary" href="collection.html">Shop the full range</a>
-          </div>
-        </div>
-      </article>
-
-      <!-- THE PHILOSOPHY -->
-      <article class="icon-feature reveal">
-        <div class="feature-media">
-          <img src="assets/heritage-blitz-boy.jpg" alt="Blitz-era London street scene — life carries on" loading="lazy">
-        </div>
-        <div class="feature-copy">
-          <p class="num">THE NAME</p>
-          <h2 class="display">What it means.</h2>
-          <hr class="rule-red">
-          <p style="color:var(--bone-dim); max-width:52ch;">
-            Blitz spirit: what you need when your back is against the wall. Not a stiff upper lip &mdash; that&rsquo;s the mask. Blitz spirit is what&rsquo;s underneath. The decision to carry on, find the funny side, put the kettle on and sort it out.
-          </p>
-          <p style="color:var(--bone-dim); max-width:52ch;">
-            It&rsquo;s not nostalgia. Boudica proved it in AD 60. The mods proved it in 1964. The City gent walking to work through rubble in 1940 proved it. Same character, different century.
-          </p>
-          <p style="color:var(--bone-dim); max-width:52ch;">
-            That&rsquo;s what the brand is. One idea, four designs (and counting), on the best cotton we could find.
-          </p>
-          <div class="hero-ctas" style="margin-top:28px;">
-            <a class="btn btn-ghost" href="story.html">Read the full story &rarr;</a>
-          </div>
-        </div>
-      </article>
-
+  <div class="about-block">
+    <div class="about-visual">
+      <img src="assets/tee-skull-black-colour.jpg" alt="The Establishment — colour skull tee, 2008 origin design">
     </div>
-  </section>
+    <div class="about-copy">
+      <div class="led-index tag" style="display:inline-block;margin-bottom:16px;">[ FILE_001 // HOW_IT_STARTED ]</div>
+      <h2 class="chunk">How it started.</h2>
+      <p>London, 2008. A bowler hat. A skull. Two crossed umbrellas. The original Skull & Brollies tee came out of a simple question: <span class="hit">what does British stoicism actually look like on a t-shirt?</span></p>
+      <p>Not a bulldog. Not a Union Jack slapped on a cheap blank. Something that meant something — with a proper character behind it. Somebody who'd been through it and kept their composure. The city gent who walked to work through the Blitz and dared it to make him late.</p>
+      <p>That first design became BlitzSpirit. The name stuck because the spirit stuck. Eighteen years later, same question, same answer — <span class="hit">just better cotton</span>.</p>
+    </div>
+  </div>
 
-  <!-- BRAND VALUES STRIP -->
-  <section class="section" style="border-top:1px solid var(--khaki-line); border-bottom:1px solid var(--khaki-line); padding:56px 0;">
-    <div class="container">
-      <div class="reveal" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:40px;">
+  <!-- WHAT WE MAKE -->
+  <div class="about-block" style="min-height:0;">
+    <div class="about-copy" style="border-right:1px solid var(--line);border-left:none;">
+      <div class="led-index tag" style="display:inline-block;margin-bottom:16px;">[ FILE_002 // WHAT_WE_MAKE ]</div>
+      <h2 class="chunk">What we make.</h2>
+      <p>Heavyweight t-shirts. 220gsm ring-spun cotton. Screen printed in Britain with water-based inks that won't crack, fade, or apologise. Cut unisex so they sit right on any frame.</p>
+      <p>Each design has a <span class="hit">backbone story</span>. Boudica — the original guardian, nineteen centuries before anyone coined the phrase. The Frequency — a mod target built entirely from the word blitzspirit. The Roll Call — Tommy, Katie, Winston & Boudica, set like a band line-up because that's what they are.</p>
+      <p>Nothing here is decoration. Every character has previous. <span class="hit">Read up before you wear one.</span></p>
+    </div>
+    <div class="about-visual">
+      <img src="assets/tee-boudica-black.jpg" alt="The Boudica tee — warrior queen">
+    </div>
+  </div>
+
+  <!-- VALUES GRID -->
+  <div class="values-grid">
+    <div class="value-cell">
+      <div class="value-num tag">[ 01 ]</div>
+      <h3 class="value-head chunk">No filler.</h3>
+      <p class="value-body">Every design earns its place. No trend-chasing. No decorative nonsense. If there's no story, there's no tee.</p>
+    </div>
+    <div class="value-cell">
+      <div class="value-num tag">[ 02 ]</div>
+      <h3 class="value-head chunk">Made properly.</h3>
+      <p class="value-body">220gsm. UK printers. Water-based inks. No fast-fashion shortcuts. Tumble dryers are for quitters.</p>
+    </div>
+    <div class="value-cell">
+      <div class="value-num tag">[ 03 ]</div>
+      <h3 class="value-head chunk">Ironic. Iconic.</h3>
+      <p class="value-body">We take the piss gently. We take the history seriously. The two aren't mutually exclusive — they never were.</p>
+    </div>
+    <div class="value-cell">
+      <div class="value-num tag">[ 04 ]</div>
+      <h3 class="value-head chunk">No manifesto.</h3>
+      <p class="value-body">This isn't a political project. It's a British one. The blitz spirit belongs to everyone — always did.</p>
+    </div>
+  </div>
+
+  <!-- WHAT IT MEANS -->
+  <section style="background:linear-gradient(rgba(10,10,10,.82),rgba(10,10,10,.82)),url('assets/newui/dark-charcoal-concrete.jpg') center/cover; border-bottom:1px solid var(--line); padding:var(--s7) var(--s3);">
+    <div style="max-width:760px; margin:0 auto;">
+      <div class="led-index tag" style="display:inline-block;margin-bottom:var(--s3);">[ FILE_003 // WHAT_IT_MEANS ]</div>
+      <h2 class="chunk" style="color:#fff;font-size:clamp(2rem,5vw,4rem);margin-bottom:var(--s4);">
+        <span style="color:var(--brand-red);">What</span> it means.
+      </h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s4);">
         <div>
-          <p class="num" style="font-size:13px;">01</p>
-          <h3 class="display" style="font-size:clamp(22px, 3vw, 28px); margin-bottom:12px;">Made here</h3>
-          <p style="color:var(--bone-dim); font-size:15px; line-height:1.6;">Designed in London. Printed in Britain. No detours.</p>
+          <p style="color:var(--bone-dim);font-size:12px;letter-spacing:.05em;text-transform:uppercase;line-height:1.8;">
+            The blitz spirit isn't nostalgia. It's not bunting and Churchill quotes on a tea towel. It's a <span style="color:var(--bone);">specific quality</span> — the ability to be cheerful in adversity, practical under pressure, and fundamentally unimpressed by things that are trying very hard to impress you.
+          </p>
         </div>
         <div>
-          <p class="num" style="font-size:13px;">02</p>
-          <h3 class="display" style="font-size:clamp(22px, 3vw, 28px); margin-bottom:12px;">Built to last</h3>
-          <p style="color:var(--bone-dim); font-size:15px; line-height:1.6;">220gsm heavyweight cotton. Tumble dryers are for quitters.</p>
+          <p style="color:var(--bone-dim);font-size:12px;letter-spacing:.05em;text-transform:uppercase;line-height:1.8;">
+            It shows up in a skull wearing a bowler hat. In a mod target built from a single word. In a typographic roll call that's set like a setlist because <span style="color:var(--bone);">the names deserve the stage</span>. That's what we make. That's why it works.
+          </p>
         </div>
-        <div>
-          <p class="num" style="font-size:13px;">03</p>
-          <h3 class="display" style="font-size:clamp(22px, 3vw, 28px); margin-bottom:12px;">Small by choice</h3>
-          <p style="color:var(--bone-dim); font-size:15px; line-height:1.6;">Small runs. No warehouse. When it&rsquo;s gone, it&rsquo;s gone.</p>
-        </div>
-        <div>
-          <p class="num" style="font-size:13px;">04</p>
-          <h3 class="display" style="font-size:clamp(22px, 3vw, 28px); margin-bottom:12px;">No lecture</h3>
-          <p style="color:var(--bone-dim); font-size:15px; line-height:1.6;">The brand presents itself. The customer decides. That&rsquo;s it.</p>
-        </div>
+      </div>
+      <div style="margin-top:var(--s4);">
+        <a href="index.html#equipment" class="directive" style="display:inline-block;width:auto;padding:18px 32px;">[ VIEW THE ARCHIVE ]</a>
       </div>
     </div>
   </section>
 
   <!-- NEWSLETTER -->
-  <section class="newsletter section">
-    <div class="container inner">
-      <p class="eyebrow">Dispatches</p>
-      <h2 class="display">Wakey wakey.</h2>
-      <p>Join the Home Guard: first word on new drops, restocks and stories worth telling &mdash; plus 10&#37; off your first order. No spam. That would be nonsense.</p>
-      <form action="#" method="post" data-newsletter>
-        <label for="newsletter-email">Email address</label>
-        <input id="newsletter-email" type="email" name="email" placeholder="YOUR@EMAIL.CO.UK" required>
-        <button class="btn btn-primary" type="submit">Sign up</button>
+  <section class="newsletter">
+    <div class="nws-inner">
+      <div class="led-index tag" style="display:inline-block;margin-bottom:var(--s2);">[ DISPATCHES // HOME_GUARD ]</div>
+      <h2 class="chunk" style="font-size:clamp(2rem,4vw,3rem);color:#fff;margin-bottom:var(--s2);">Wakey wakey.</h2>
+      <p>First word on new drops, restocks and stories worth telling — plus 10% off your first order. No spam. That would be nonsense.</p>
+      <form class="nws-row" action="#" method="post">
+        <input class="nws-input" type="email" name="email" placeholder="YOUR@EMAIL.CO.UK" required>
+        <button class="nws-submit" type="submit">[ SEND IT ]</button>
       </form>
     </div>
   </section>
 
 </main>
 
-<footer class="site-footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <span class="logo-mark">blitzspirit</span>
-        <p>Ironic, iconic designs printed in Britain on heavyweight cotton. Tumble dryers are for quitters.</p>
-      </div>
-      <div class="footer-col">
-        <h4>Shop</h4>
-        <ul>
-          <li><a href="collection.html">All products</a></li>
-          <li><a href="collection.html">T-shirts</a></li>
-          <li><a href="collection.html">Headwear</a></li>
-          <li><a href="#" data-open-signup>Gift cards</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Help</h4>
-        <ul>
-          <li><a href="help.html#delivery">Delivery &amp; returns</a></li>
-          <li><a href="help.html#size-guide">Size guide</a></li>
-          <li><a href="help.html#contact">Contact us</a></li>
-          <li><a href="help.html#faq">FAQ</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>The Brand</h4>
-        <ul>
-          <li><a href="about.html" aria-current="page">About us</a></li>
-          <li><a href="story.html">Our story</a></li>
-          <li><a href="icons.html">The icons</a></li>
-          <li><a href="#">Instagram</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-base">
-      <span>&copy; 2026 BlitzSpirit.co.uk &mdash; Est. London</span>
-      <span>Visa &middot; Mastercard &middot; PayPal &middot; Apple Pay &middot; Shop Pay</span>
-    </div>
-  </div>
+<footer class="outro">
+  <div class="rule">---------------------------------------------------------------------</div>
+  <p class="copyright">© 2026 BLITZSPIRIT SYSTEM CO. // ALL RIGHTS RESERVED // SECURITY OVERRIDE PRIMED.</p>
 </footer>
 
-<script src="main.js" defer></script>
+<script>
+(function () {
+  "use strict";
+  var cart = [];
+  var bagCount = document.getElementById('bagCount');
+  var drawer = document.getElementById('cart');
+  var overlay = document.getElementById('cartOverlay');
+  var itemsEl = document.getElementById('cartItems');
+  var emptyEl = document.getElementById('cartEmpty');
+  var totalEl = document.getElementById('cartTotal');
+  function openCart() { drawer.classList.add('open'); overlay.classList.add('open'); drawer.setAttribute('aria-hidden', 'false'); }
+  function closeCart() { drawer.classList.remove('open'); overlay.classList.remove('open'); drawer.setAttribute('aria-hidden', 'true'); }
+  document.getElementById('bagBtn').addEventListener('click', openCart);
+  document.getElementById('cartClose').addEventListener('click', closeCart);
+  overlay.addEventListener('click', closeCart);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeCart(); });
+  function renderCart() {
+    bagCount.textContent = cart.length;
+    totalEl.textContent = cart.length;
+    itemsEl.querySelectorAll('.cart-row').forEach(function (r) { r.remove(); });
+    emptyEl.style.display = cart.length ? 'none' : '';
+  }
+  renderCart();
+})();
+</script>
+
 </body>
 </html>
