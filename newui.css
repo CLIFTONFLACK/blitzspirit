@@ -348,8 +348,8 @@ a { color:inherit; text-decoration:none; }
 .coll-dots { display:flex; gap:5px; align-items:center; margin:2px 0 8px; }
 .coll-dot { display:inline-block; width:10px; height:10px; background:var(--dot,#333); border:1px solid rgba(255,255,255,.2); }
 .coll-dot[title="CHALK_WHITE"],.coll-dot[title="CHALK_STONE"] { border-color:rgba(0,0,0,.25); }
-.coll-cta { display:block; border:1px solid #0a0a0a; padding:12px var(--s2); font-size:11px; letter-spacing:.15em; text-transform:uppercase; font-family:var(--mono); color:#0a0a0a; text-align:center; margin-top:auto; }
-.coll-cta:hover { border-color:var(--signal); color:var(--signal); }
+.coll-cta { display:block; border:1px solid #fff; padding:12px var(--s2); font-size:11px; letter-spacing:.15em; text-transform:uppercase; font-family:var(--mono); color:#fff; text-align:center; margin-top:auto; }
+.coll-cta:hover { background:#fff; border-color:#0a0a0a; color:#0a0a0a; }
 
 /* 10. RESPONSIVE */
 @media (max-width:860px) {
