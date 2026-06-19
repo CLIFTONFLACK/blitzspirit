@@ -245,6 +245,9 @@ a { color:inherit; text-decoration:none; }
 .directive--ghost { border-color:var(--line-bri); color:var(--bone); text-decoration:none; }
 .directive--ghost:hover { background:transparent; color:var(--bone); border-color:var(--bone); }
 @keyframes flicker { 0%,100%{opacity:1} 8%{opacity:.25} 10%{opacity:1} 20%{opacity:.6} 22%{opacity:1} 60%{opacity:1} 62%{opacity:.4} 64%{opacity:1} }
+@keyframes signal-in { 0%{opacity:0;transform:translateY(4px)} 12%{opacity:1;transform:translateY(0)} 22%{opacity:.15} 32%{opacity:1} 48%{opacity:.6} 58%{opacity:1} 100%{opacity:1} }
+.dossier .hit { opacity:0; }
+.dossier .hit.hit--live { animation:signal-in .7s ease-out forwards; }
 
 /* ============================================================
    6. BLOCK 3 â€" RECOMMENDED CONDIMENT
@@ -572,9 +575,9 @@ a { color:inherit; text-decoration:none; }
         <div class="dossier">
           <div class="led-index tag">[ ★ ISSUE_001 // #05 // THE CLERK ]</div>
           <h2 class="led-name chunk"><span class="the">THE</span> CLERK</h2>
-          <p class="hit">EVERY EMPIRE NEEDS A CLERK. THIS ONE STAYED PAST CLOSING.</p>
-          <p>BOWLER HAT. CROSSED BROLLIES. A LEDGER THAT WON'T BALANCE.</p>
-          <p>STILL AT THE DESK. STILL REFUSING TO BE ERASED.</p>
+          <p class="hit">EMPIRES NEED CLERKS. THIS ONE STAYED PAST CLOSING.</p>
+          <p>BOWLER HAT. CROSSED BROLLIES. LEDGERS WON'T BALANCE.</p>
+          <p class="hit">STILL AT THE DESK. STILL REFUSING TO BE ERASED.</p>
           <a class="what-link" data-what href="product-skull.html">WHAT IS</a>
 
         <div class="cw-size-wrap">
@@ -756,6 +759,26 @@ a { color:inherit; text-decoration:none; }
       if (capImg && opt.dataset.img) { capImg.src = opt.dataset.img; capImg.alt = "The Cap — " + opt.dataset.cw; }
     });
   });
+
+  /* Signal-in animation on .hit paragraphs when scrolled into view */
+  var hitEls = document.querySelectorAll('.dossier .hit');
+  if ('IntersectionObserver' in window) {
+    var hitObs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          var el = e.target, delay = el.dataset.hitDelay || 0;
+          setTimeout(function(){ el.classList.add('hit--live'); }, +delay);
+          hitObs.unobserve(el);
+        }
+      });
+    }, { threshold: 0.1 });
+    hitEls.forEach(function(el, i) {
+      el.dataset.hitDelay = i * 120;
+      hitObs.observe(el);
+    });
+  } else {
+    hitEls.forEach(function(el){ el.classList.add('hit--live'); });
+  }
 
   /* Promo newsletter capture â€" instant confirmation, no backend */
   var promoForm = document.querySelector(".promo-form");
