@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>BLITZSPIRIT â€” Heritage With Teeth | British Apparel</title>
+<title>BLITZSPIRIT â€" Heritage With Teeth | British Apparel</title>
 <meta name="description" content="Proud and unapologetic British heritage apparel. Not here to be liked. The Boudica, The Establishment, Roll Call, The Frequency." />
 <link rel="canonical" href="https://blitzspirit.vercel.app/" />
 
 <!--
-  BLITZSPIRIT â€” homepage (brutalist "newui" build).
+  BLITZSPIRIT â€" homepage (brutalist "newui" build).
   Design system locked by client brief: ChunkFive + native monospace,
   border-radius:0, transition:0ms, 1px crisp borders, monochrome concrete,
   signal red rationed. Previous heritage homepage preserved at /heritage.html
@@ -18,7 +18,7 @@
 
 <style>
 /* ============================================================
-   0. FONTS â€” ChunkFive = display voice. Monospace = ledger.
+   0. FONTS â€" ChunkFive = display voice. Monospace = ledger.
    ============================================================ */
 @font-face {
   font-family: "ChunkFive";
@@ -34,11 +34,11 @@
 :root {
   --ink:#0A0A0A; --panel:#111; --panel-2:#181818; --line:#2a2a2a; --line-bri:#3a3a3a;
   --bone:#ECECEC; --bone-dim:#8A8A8A; --bone-mute:#5A5A5A;
-  --plate:#EAE8E2;            /* neutral product plate â€” reads dark AND light garments */
-  --signal:#FF0000;          /* the only accent â€” rationed */
-  --brand-red:#8B2020;       /* logo badge red â€” used for "THE" in product names */
+  --plate:#EAE8E2;            /* neutral product plate â€" reads dark AND light garments */
+  --signal:#FF0000;          /* the only accent â€" rationed */
+  --brand-red:#8B2020;       /* logo badge red â€" used for "THE" in product names */
   --tex-hero:url("assets/newui/hero-panel-concrete.jpg");
-  --tex-hero-bg:url("assets/newui/hero-wall-v3.jpg");   /* dark metal-panel wall â€” homepage hero only */
+  --tex-hero-bg:url("assets/newui/hero-wall-v3.jpg");   /* dark metal-panel wall â€" homepage hero only */
   --tex-char:url("assets/newui/dark-charcoal-concrete.jpg");
   --tex-crack:url("assets/newui/dark-cracked-concrete.jpg");
   --mono: ui-monospace,"SF Mono",SFMono-Regular,Menlo,Monaco,Consolas,"Roboto Mono",monospace;
@@ -46,7 +46,7 @@
 }
 
 /* ============================================================
-   2. RESET â€” brutalist: no softness anywhere
+   2. RESET â€" brutalist: no softness anywhere
    ============================================================ */
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; border-radius:0 !important; }
 html { scroll-behavior:smooth; }
@@ -86,7 +86,7 @@ a { color:inherit; text-decoration:none; }
 .masthead .bag b { color:var(--signal); font-weight:400; }
 
 /* ============================================================
-   4. BLOCK 1 â€” HERO
+   4. BLOCK 1 â€" HERO
    ============================================================ */
 .hero {
   position:relative; min-height:100vh; display:flex; flex-direction:column; justify-content:space-between;
@@ -115,7 +115,7 @@ a { color:inherit; text-decoration:none; }
 .hero-cta:hover,.hero-cta:focus-visible { color:var(--signal); }
 
 /* ============================================================
-   4a. FEATURED PRODUCT â€” elevated showcase (The Establishment)
+   4a. FEATURED PRODUCT â€" elevated showcase (The Establishment)
    ============================================================ */
 .featured { position:relative; display:grid; grid-template-columns:1.05fr 1fr; min-height:78vh; border-bottom:1px solid var(--line); }
 .featured-visual { position:relative; display:flex; align-items:center; justify-content:center; padding:var(--s6) var(--s5); border-right:1px solid var(--line);
@@ -134,7 +134,7 @@ a { color:inherit; text-decoration:none; }
 .featured-foot { display:flex; flex-direction:column; gap:var(--s3); }
 
 /* ============================================================
-   4b. PROMO â€” newsletter capture (Blitz milkman) â€” 2-col, no scrim
+   4b. PROMO â€" newsletter capture (Blitz milkman) â€" 2-col, no scrim
    ============================================================ */
 .promo {
   position:relative; padding:var(--s7) var(--s3); border-bottom:1px solid var(--line); overflow:hidden;
@@ -159,7 +159,7 @@ a { color:inherit; text-decoration:none; }
 .promo-done { color:var(--signal); }
 
 /* ============================================================
-   5. BLOCK 2 â€” APPAREL ARCHIVE (50/50)
+   5. BLOCK 2 â€" APPAREL ARCHIVE (50/50)
    ============================================================ */
 .archive { display:flex; flex-direction:column; }
 .item { display:grid; grid-template-columns:1fr 1fr; min-height:90vh; border-bottom:1px solid var(--line); }
@@ -175,7 +175,7 @@ a { color:inherit; text-decoration:none; }
 .item-asset-ref { position:absolute; top:var(--s3); left:var(--s3); z-index:2; }
 .item--dark .item-asset-ref { color:var(--bone-dim); }
 
-/* Product plate â€” white catalogue card; image swaps on colourway */
+/* Product plate â€" white catalogue card; image swaps on colourway */
 .plate {
   width:min(82%,420px); aspect-ratio:1/1.12; background:var(--plate);
   border:1px solid #0c0c0c; box-shadow:0 24px 60px rgba(0,0,0,.4);
@@ -229,7 +229,7 @@ a { color:inherit; text-decoration:none; }
 @keyframes flicker { 0%,100%{opacity:1} 8%{opacity:.25} 10%{opacity:1} 20%{opacity:.6} 22%{opacity:1} 60%{opacity:1} 62%{opacity:.4} 64%{opacity:1} }
 
 /* ============================================================
-   6. BLOCK 3 â€” EQUIPMENT
+   6. BLOCK 3 â€" EQUIPMENT
    ============================================================ */
 .equipment { background:var(--panel); border-bottom:1px solid var(--line); padding:var(--s5) var(--s3); }
 .section-divider { border-bottom:1px solid var(--line); padding-bottom:var(--s2); margin-bottom:var(--s5); }
@@ -262,7 +262,7 @@ a { color:inherit; text-decoration:none; }
 .eq-allocate .directive { display:inline-block; width:auto; min-width:300px; }
 
 /* ============================================================
-   7. BLOCK 4 â€” OUTRO MONUMENT
+   7. BLOCK 4 â€" OUTRO MONUMENT
    ============================================================ */
 .outro { text-align:center; padding:var(--s7) var(--s3); background:linear-gradient(rgba(6,6,6,.78),rgba(6,6,6,.88)),var(--tex-crack) center/cover no-repeat; }
 .rollcall { display:flex; flex-direction:column; gap:var(--s4); margin:var(--s5) 0; }
@@ -276,7 +276,7 @@ a { color:inherit; text-decoration:none; }
 .copyright { margin-top:var(--s4); font-size:10px; color:var(--bone-mute); letter-spacing:.16em; }
 
 /* ============================================================
-   8. MINI-CART DRAWER â€” frictionless transactional utility
+   8. MINI-CART DRAWER â€" frictionless transactional utility
    ============================================================ */
 .cart-overlay { position:fixed; inset:0; background:rgba(0,0,0,.72); z-index:60; opacity:0; visibility:hidden; transition:opacity 150ms ease; }
 .cart-overlay.open { opacity:1; visibility:visible; }
@@ -372,9 +372,9 @@ a { color:inherit; text-decoration:none; }
   </nav>
 </header>
 
-<svg xmlns=”http://www.w3.org/2000/svg” style=”display:none;position:absolute” aria-hidden=”true”><defs><filter id=”sharpen” x=”0” y=”0” width=”100%” height=”100%” color-interpolation-filters=”linearRGB”><feConvolveMatrix order=”3” preserveAlpha=”true” kernelMatrix=”0 -0.5 0 -0.5 3 -0.5 0 -0.5 0”/></filter></defs></svg>
-<!-- BLOCK 1 â€” HERO -->
-<section class=”hero” id=”top”>
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none;position:absolute" aria-hidden="true"><defs><filter id="sharpen" x="0" y="0" width="100%" height="100%" color-interpolation-filters="linearRGB"><feConvolveMatrix order="3" preserveAlpha="true" kernelMatrix="0 -0.5 0 -0.5 3 -0.5 0 -0.5 0"/></filter></defs></svg>
+<!-- BLOCK 1 â€" HERO -->
+<section class="hero" id="top">
   <div class="hero-corner">
     <img class="hero-logo" src="assets/newui/blitzspirit-sticker.png" alt="BLITZSPIRIT" />
     <span class="tag tag-mute">SYS_REF // 47-CONCRETE-SEAMS</span>
@@ -391,12 +391,12 @@ a { color:inherit; text-decoration:none; }
   </div>
 </section>
 
-<!-- ISSUE_000 LIMITED EDITION â€” THE ESTABLISHMENT (sole product in the range) -->
+<!-- ISSUE_000 LIMITED EDITION â€" THE ESTABLISHMENT (sole product in the range) -->
 <section class="featured" data-product="establishment" aria-label="Issue 000 limited edition">
   <div class="featured-visual">
     <span class="item-asset-ref tag">[ ISSUE_000 // LIMITED EDITION ]</span>
     <div class="featured-plate">
-      <img src="assets/tee-skull-black-colour.jpg" alt="The Establishment tee â€” bowler-hatted skull over crossed umbrellas" />
+      <img src="assets/tee-skull-black-colour.jpg" alt="The Establishment tee â€" bowler-hatted skull over crossed umbrellas" />
       <span class="plate-cnr">BS_002 // ISSUE_000</span>
     </div>
   </div>
@@ -422,7 +422,7 @@ a { color:inherit; text-decoration:none; }
   </div>
 </section>
 
-<!-- PROMO â€” NEWSLETTER CAPTURE -->
+<!-- PROMO â€" NEWSLETTER CAPTURE -->
 <section class="promo" aria-label="Newsletter signup">
   <div class="promo-inner">
     <div class="promo-text">
@@ -440,7 +440,7 @@ a { color:inherit; text-decoration:none; }
   </div>
 </section>
 
-<!-- BLOCK 2 â€” APPAREL ARCHIVE -->
+<!-- BLOCK 2 â€" APPAREL ARCHIVE -->
 <main class="archive">
 
   <!-- 01 BOUDICA -->
@@ -448,7 +448,7 @@ a { color:inherit; text-decoration:none; }
     <div class="item-visual">
       <span class="item-asset-ref tag">[ APPAREL // FLAT_LAY ]</span>
       <div class="plate">
-        <img data-plate alt="Boudica tee â€” Britannia with trident and Union Jack shield, chalk white" src="assets/tee-boudica-offwhite.jpg" />
+        <img data-plate alt="Boudica tee â€" Britannia with trident and Union Jack shield, chalk white" src="assets/tee-boudica-offwhite.jpg" />
         <span class="plate-cnr">BS_001 // OVERHEAD</span>
       </div>
     </div>
@@ -487,7 +487,7 @@ a { color:inherit; text-decoration:none; }
     <div class="item-visual">
       <span class="item-asset-ref tag">[ APPAREL // FLAT_LAY ]</span>
       <div class="plate">
-        <img data-plate alt="Roll Call tee â€” Tommy, Katie, Winston & Boudica names roll-call type, white" src="assets/tee-tommy-white.jpg" />
+        <img data-plate alt="Roll Call tee â€" Tommy, Katie, Winston & Boudica names roll-call type, white" src="assets/tee-tommy-white.jpg" />
         <span class="plate-cnr">BS_003 // OVERHEAD</span>
       </div>
     </div>
@@ -527,7 +527,7 @@ a { color:inherit; text-decoration:none; }
     <div class="item-visual">
       <span class="item-asset-ref tag">[ APPAREL // FLAT_LAY ]</span>
       <div class="plate">
-        <img data-plate alt="The Frequency tee â€” RAF roundel target graphic, chalk white" src="assets/tee-roundel-navy.jpg" />
+        <img data-plate alt="The Frequency tee â€" RAF roundel target graphic, chalk white" src="assets/tee-roundel-navy.jpg" />
         <span class="plate-cnr">BS_004 // OVERHEAD</span>
       </div>
     </div>
@@ -567,7 +567,7 @@ a { color:inherit; text-decoration:none; }
     <div class="item-visual">
       <span class="item-asset-ref tag">[ APPAREL // FLAT_LAY ]</span>
       <div class="plate">
-        <img data-plate alt="The Clerk tee â€” bowler-hatted skull over crossed umbrellas, charcoal print, oxy black" src="assets/tee-clerk-black.jpg" />
+        <img data-plate alt="The Clerk tee â€" bowler-hatted skull over crossed umbrellas, charcoal print, oxy black" src="assets/tee-clerk-black.jpg" />
         <span class="plate-cnr">BS_005 // OVERHEAD</span>
       </div>
     </div>
@@ -603,7 +603,7 @@ a { color:inherit; text-decoration:none; }
 
 </main>
 
-<!-- BLOCK 3 â€” EQUIPMENT -->
+<!-- BLOCK 3 â€" EQUIPMENT -->
 <section class="equipment" id="equipment">
   <div class="section-divider tag">[ SECTION // 02 : EQUIPMENT ]</div>
   <div class="eq-grid">
@@ -628,7 +628,7 @@ a { color:inherit; text-decoration:none; }
   </div>
 </section>
 
-<!-- FOOTER â€” closing concrete slab -->
+<!-- FOOTER â€" closing concrete slab -->
 <footer class="outro">
   <div class="outro-foot">
     <div class="rule">------------------------------------------------------------------</div>
@@ -665,7 +665,7 @@ a { color:inherit; text-decoration:none; }
     });
   });
 
-  /* Secondary "what is" buttons â€” label + route per product */
+  /* Secondary "what is" buttons â€" label + route per product */
   var whatUrls = {
     establishment: "product-establishment.html",
     boudica:       "product.html",
@@ -689,7 +689,7 @@ a { color:inherit; text-decoration:none; }
     btn.addEventListener("focus", on); btn.addEventListener("blur", off);
   });
 
-  /* Mini-cart drawer â€” staged ledger + frictionless open/close */
+  /* Mini-cart drawer â€" staged ledger + frictionless open/close */
   var cart = [];
   var bagCount = document.getElementById("bagCount");
   var drawer   = document.getElementById("cart");
@@ -759,7 +759,7 @@ a { color:inherit; text-decoration:none; }
     });
   });
 
-  /* Promo newsletter capture â€” instant confirmation, no backend */
+  /* Promo newsletter capture â€" instant confirmation, no backend */
   var promoForm = document.querySelector(".promo-form");
   if (promoForm) {
     promoForm.addEventListener("submit", function (e) {

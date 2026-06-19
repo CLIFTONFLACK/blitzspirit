@@ -1,12 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BlitzSpirit — Admin</title>
+  <title>BlitzSpirit â€" Admin</title>
   <link rel="stylesheet" href="styles.css">
   <style>
-    /* Admin-specific layout — tokens from styles.css */
+    /* Admin-specific layout â€" tokens from styles.css */
     .admin-header { border-bottom: 1px solid var(--khaki-line); padding: 48px 0 32px; margin-bottom: 40px; }
     .admin-header h1 { font-family: var(--font-display); font-size: clamp(28px, 4vw, 48px); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
     .admin-header .badge { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.22em; color: var(--blood-red); text-transform: uppercase; margin-bottom: 8px; }
@@ -160,9 +160,9 @@
 
       <!-- Stats -->
       <div class="admin-stats">
-        <div class="stat pending"><span>Pending</span><strong id="count-pending">—</strong></div>
-        <div class="stat applied"><span>Applied</span><strong id="count-applied">—</strong></div>
-        <div class="stat dismissed"><span>Dismissed</span><strong id="count-dismissed">—</strong></div>
+        <div class="stat pending"><span>Pending</span><strong id="count-pending">â€"</strong></div>
+        <div class="stat applied"><span>Applied</span><strong id="count-applied">â€"</strong></div>
+        <div class="stat dismissed"><span>Dismissed</span><strong id="count-dismissed">â€"</strong></div>
       </div>
 
       <!-- Toolbar -->
@@ -283,7 +283,7 @@
     function loadFeedback() {
       adminApi('list')
         .then(function(r) {
-          if (r.status === 401) { toast('Session expired — signing out.'); setTimeout(disconnect, 1500); return null; }
+          if (r.status === 401) { toast('Session expired â€" signing out.'); setTimeout(disconnect, 1500); return null; }
           if (!r.ok) { toast('Could not load feedback.'); return null; }
           return r.json();
         })
@@ -321,7 +321,7 @@
         return '<tr data-id="' + f.id + '">' +
           '<td class="cell-date">' + fmt(f.created_at) + '</td>' +
           '<td class="cell-page">' + escHtml(f.page || '') + '</td>' +
-          '<td class="cell-theme"><span class="theme-pill ' + (f.theme || '') + '">' + (f.theme || '—') + '</span></td>' +
+          '<td class="cell-theme"><span class="theme-pill ' + (f.theme || '') + '">' + (f.theme || 'â€"') + '</span></td>' +
           '<td class="cell-comment">' + feedbackCell(f) + '</td>' +
           '<td class="cell-status"><span class="status-pill ' + f.status + '">' + f.status + '</span></td>' +
           '<td class="cell-actions">' +
@@ -347,12 +347,12 @@
         html += '<span class="approved-tag">&#10003; queued</span>';
       }
       if (type === 'edit' && f.quote) {
-        html += '<span class="cell-quote">“' + escHtml(f.quote) + '”</span>';
-        html += '<span style="color:var(--khaki-gold)"> → </span>';
+        html += '<span class="cell-quote">â€œ' + escHtml(f.quote) + 'â€</span>';
+        html += '<span style="color:var(--khaki-gold)"> â†’ </span>';
         html += '<span class="cell-repl">' + escHtml(f.replacement || '') + '</span>';
       } else if (type === 'comment' && f.quote) {
-        html += '<span class="cell-quote">“' + escHtml(f.quote) + '”</span>';
-        var note = (f.comment || '').replace('“' + f.quote + '”\n\n', '').trim();
+        html += '<span class="cell-quote">â€œ' + escHtml(f.quote) + 'â€</span>';
+        var note = (f.comment || '').replace('â€œ' + f.quote + 'â€\n\n', '').trim();
         if (note) html += '<div class="cell-note">' + escHtml(note) + '</div>';
       } else {
         html += escHtml(f.comment || '');
@@ -370,10 +370,10 @@
 
       var isApprove = action === 'approve';
       var update = isApprove ? { id: id, approved: true } : { id: id, status: action };
-      var successMsg = isApprove ? 'Approved — processor will action on next run.' : (action === 'applied' ? 'Marked applied.' : 'Dismissed.');
+      var successMsg = isApprove ? 'Approved â€" processor will action on next run.' : (action === 'applied' ? 'Marked applied.' : 'Dismissed.');
 
       adminApi('update', update).then(function(r) {
-        if (r.status === 401) { toast('Session expired — signing out.'); setTimeout(disconnect, 1500); return; }
+        if (r.status === 401) { toast('Session expired â€" signing out.'); setTimeout(disconnect, 1500); return; }
         if (r.ok) {
           var item = allFeedback.find(function(f) { return f.id === id; });
           if (item) { if (isApprove) { item.approved = true; } else { item.status = action; } }
@@ -404,7 +404,7 @@
       btn.textContent = 'Queuing...';
 
       adminApi('run').then(function(r) {
-        if (r.status === 401) { toast('Session expired — signing out.'); setTimeout(disconnect, 1500); return; }
+        if (r.status === 401) { toast('Session expired â€" signing out.'); setTimeout(disconnect, 1500); return; }
         if (r.ok) {
           toast('Queued. Processor will pick this up on the next hourly run.');
         } else {
@@ -427,3 +427,4 @@
   </script>
 </body>
 </html>
+
