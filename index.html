@@ -121,7 +121,7 @@ a { color:inherit; text-decoration:none; }
 .featured-name { color:#fff; font-size:clamp(2.6rem,6.2vw,5rem); margin:0; line-height:.95; }
 .featured-name .the { color:var(--brand-red); }
 .featured .dossier { background:linear-gradient(rgba(205,205,205,.92),rgba(188,188,188,.92)),var(--tex-hero) center/cover; border:1px solid rgba(0,0,0,.4); padding:var(--s3); }
-.featured .dossier p { text-transform:uppercase; letter-spacing:.04em; color:#2a2722; }
+.featured .dossier p { font-family:"ChunkFive",Georgia,serif; text-transform:uppercase; letter-spacing:.01em; color:#2a2722; font-size:clamp(.9rem,1.8vw,1.1rem); line-height:1.15; }
 .featured .dossier p + p { margin-top:6px; }
 .featured .dossier .hit { color:#0a0a0a; }
 .featured-foot { display:flex; flex-direction:column; gap:var(--s3); }
@@ -320,6 +320,15 @@ a { color:inherit; text-decoration:none; }
   html { scroll-behavior:auto; }
   .directive--flicker:hover { animation:none; }
 }
+/* CW + sizes side-by-side */
+.cw-size-wrap { display:flex; gap:var(--s2); flex-wrap:wrap; align-items:flex-start; margin-bottom:var(--s3); }
+.cw-size-wrap .cw { flex:1 1 170px; margin-bottom:0; }
+.cw-size-wrap .sizes { margin-bottom:0; align-self:flex-end; }
+/* What-is link inside dossier */
+.dossier .what-link { display:block; margin-top:var(--s3); border:1px solid rgba(0,0,0,.3); padding:12px var(--s2); font-size:11px; letter-spacing:.15em; text-transform:uppercase; color:#3a3530; text-align:center; font-family:var(--mono); }
+.dossier .what-link:hover { border-color:var(--signal); color:var(--signal); }
+.item--dark .dossier .what-link { border-color:rgba(255,255,255,.15); color:var(--bone-mute); }
+.item--dark .dossier .what-link:hover { border-color:var(--signal); color:var(--signal); }
 </style>
 </head>
 <body>
@@ -384,14 +393,16 @@ a { color:inherit; text-decoration:none; }
       <p class="hit">THE OLD GUARD IS GONE. THE UNIFORM REMAINS.</p>
       <p>A BOWLER HAT. AN UMBRELLA.</p>
       <p>A GRIN BUILT FOR THE FRONT ROW, NOT THE FRONT BENCH.</p>
+      <a class="what-link" data-what href="product-establishment.html">WHAT IS</a>
     </div>
     <div class="featured-foot">
-      <div class="sizes"><span class="tag" style="margin-right:4px">[ SIZES ]</span>
-        <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
-      <button class="cw-opt snap" aria-pressed="true" data-cw="OXY_BLACK" style="display:none">OXY_BLACK</button>
+      <div class="cw-size-wrap">
+        <button class="cw-opt snap" aria-pressed="true" data-cw="OXY_BLACK" style="display:none">OXY_BLACK</button>
+        <div class="sizes"><span class="tag" style="margin-right:4px">[ SIZES ]</span>
+          <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
+      </div>
       <div class="actions">
         <button class="directive snap" data-idle="[ ADD TO CART ]" data-hover="[ ADD TO CART ]" data-add>[ ADD TO CART ]</button>
-        <a class="directive directive--ghost snap" data-what href="icons.html">WHAT IS</a>
       </div>
     </div>
   </div>
@@ -429,33 +440,35 @@ a { color:inherit; text-decoration:none; }
     </div>
     <div class="item-ledger">
       <div>
-        <div class="led-index tag">[ ★ ISSUE_001 // ENTRY_01 // BOUDICA ]</div>
+        <div class="led-index tag">[ ★ ISSUE_001 // #01 // BOUDICA ]</div>
         <h2 class="led-name chunk"><span class="the">THE</span> BOUDICA</h2>
-        <div class="cw">
-          <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
-          <div class="cw-opts">
-            <button class="cw-opt snap" aria-pressed="false" data-cw="OXY_BLACK"   data-img="assets/tee-boudica-black.jpg"    style="--dot:#0a0a0a">OXY_BLACK</button>
-            <button class="cw-opt snap" aria-pressed="true"  data-cw="CHALK_WHITE" data-img="assets/tee-boudica-offwhite.jpg" style="--dot:#e7e7e2">CHALK_WHITE</button>
-          </div>
-        </div>
         <div class="dossier">
           <p class="hit">BOUDICA DOESN'T ASK. SHE DOESN'T EXPLAIN.</p>
           <p>SHE STANDS. UNBOWED. UNBROKEN. UNFORGIVING.</p>
           <p>THIS ISN'T A QUEEN FOR CEREMONY.</p>
+          <a class="what-link" data-what href="product.html">WHAT IS</a>
         </div>
       </div>
       <div class="led-foot">
-        <div class="sizes"><span class="tag" style="margin-right:4px">[ SIZES ]</span>
-          <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
+        <div class="cw-size-wrap">
+          <div class="cw">
+            <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
+            <div class="cw-opts">
+              <button class="cw-opt snap" aria-pressed="false" data-cw="OXY_BLACK"   data-img="assets/tee-boudica-black.jpg"    style="--dot:#0a0a0a">OXY_BLACK</button>
+              <button class="cw-opt snap" aria-pressed="true"  data-cw="CHALK_WHITE" data-img="assets/tee-boudica-offwhite.jpg" style="--dot:#e7e7e2">CHALK_WHITE</button>
+            </div>
+          </div>
+          <div class="sizes"><span class="tag" style="margin-right:4px">[ SIZES ]</span>
+            <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
+        </div>
         <div class="actions">
           <button class="directive snap" data-idle="[ ADD TO CART ]" data-hover="[ ADD TO CART ]" data-add>[ ADD TO CART ]</button>
-          <a class="directive directive--ghost snap" data-what href="icons.html">WHAT IS</a>
         </div>
       </div>
     </div>
   </article>
 
-  <!-- 03 ROLL CALL (CHARCOAL SHIFT) — the names design: Tommy, Katie, Winston, Boudica -->
+  <!-- 03 ROLL CALL (CHARCOAL SHIFT) -->
   <article class="item item--dark" data-product="rollcall">
     <div class="item-visual">
       <span class="item-asset-ref tag">[ APPAREL // FLAT_LAY ]</span>
@@ -466,28 +479,30 @@ a { color:inherit; text-decoration:none; }
     </div>
     <div class="item-ledger">
       <div>
-        <div class="led-index tag">[ ★ ISSUE_001 // ENTRY_03 // ROLL CALL ]</div>
+        <div class="led-index tag">[ ★ ISSUE_001 // #03 // ROLL CALL ]</div>
         <h2 class="led-name chunk"><span class="the">THE</span> ROLL CALL</h2>
-        <div class="cw">
-          <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
-          <div class="cw-opts">
-            <button class="cw-opt snap" aria-pressed="false" data-cw="OXY_BLACK"   data-img="assets/tee-tommy-black.jpg" style="--dot:#0a0a0a">OXY_BLACK</button>
-            <button class="cw-opt snap" aria-pressed="true"  data-cw="CHALK_WHITE" data-img="assets/tee-tommy-white.jpg" style="--dot:#e7e7e2">CHALK_WHITE</button>
-          </div>
-        </div>
         <div class="dossier">
           <p class="hit">NO SYMBOLS REQUIRED. NO EMBLEMS NECESSARY.</p>
           <p>JUST THE NAMES OF THOSE WHO REFUSED TO BACK DOWN.</p>
           <p>THE REBEL. THE FIREBRAND. THE STATESMAN. THE QUEEN.</p>
           <p class="hit">A ROLL CALL OF BRITISH STUBBORNNESS. THE CLASS IS IN SESSION.</p>
+          <a class="what-link" data-what href="product-roll-call.html">WHAT IS</a>
         </div>
       </div>
       <div class="led-foot">
-        <div class="sizes"><span class="tag" style="margin-right:4px">[ SIZES ]</span>
-          <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
+        <div class="cw-size-wrap">
+          <div class="cw">
+            <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
+            <div class="cw-opts">
+              <button class="cw-opt snap" aria-pressed="false" data-cw="OXY_BLACK"   data-img="assets/tee-tommy-black.jpg" style="--dot:#0a0a0a">OXY_BLACK</button>
+              <button class="cw-opt snap" aria-pressed="true"  data-cw="CHALK_WHITE" data-img="assets/tee-tommy-white.jpg" style="--dot:#e7e7e2">CHALK_WHITE</button>
+            </div>
+          </div>
+          <div class="sizes"><span class="tag" style="margin-right:4px">[ SIZES ]</span>
+            <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
+        </div>
         <div class="actions">
           <button class="directive snap" data-idle="[ ADD TO CART ]" data-hover="[ ADD TO CART ]" data-add>[ ADD TO CART ]</button>
-          <a class="directive directive--ghost snap" data-what href="icons.html">WHAT IS</a>
         </div>
       </div>
     </div>
@@ -504,34 +519,36 @@ a { color:inherit; text-decoration:none; }
     </div>
     <div class="item-ledger">
       <div>
-        <div class="led-index tag">[ ★ ISSUE_001 // ENTRY_04 // THE FREQUENCY ]</div>
+        <div class="led-index tag">[ ★ ISSUE_001 // #04 // THE FREQUENCY ]</div>
         <h2 class="led-name chunk"><span class="the">THE</span> FREQUENCY</h2>
-        <div class="cw">
-          <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
-          <div class="cw-opts">
-            <button class="cw-opt snap" aria-pressed="false" data-cw="OXY_BLACK"   data-img="assets/tee-roundel-black.jpg"    style="--dot:#0a0a0a">OXY_BLACK</button>
-            <button class="cw-opt snap" aria-pressed="true"  data-cw="CHALK_WHITE" data-img="assets/tee-roundel-navy.jpg"     style="--dot:#e7e7e2">CHALK_WHITE</button>
-            <button class="cw-opt snap" aria-pressed="false" data-cw="SYSTEM_NAVY" data-img="assets/tee-roundel-offwhite.jpg" style="--dot:#1f2a3d">SYSTEM_NAVY</button>
-          </div>
-        </div>
         <div class="dossier">
           <p class="hit">FROM A DISTANCE, A TARGET. UP CLOSE, PURE ATTITUDE.</p>
           <p>BUILT FROM WITHIN THE SYSTEM IT REFUSES TO OBEY.</p>
           <p>THE SIGNAL NEVER CHANGES. THE TRANSMISSION WAS NEVER AUTHORISED.</p>
+          <a class="what-link" data-what href="product-roundel.html">WHAT IS</a>
         </div>
       </div>
       <div class="led-foot">
-        <div class="sizes"><span class="tag" style="margin-right:4px">[ SIZES ]</span>
-          <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
+        <div class="cw-size-wrap">
+          <div class="cw">
+            <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
+            <div class="cw-opts">
+              <button class="cw-opt snap" aria-pressed="false" data-cw="OXY_BLACK"   data-img="assets/tee-roundel-black.jpg"    style="--dot:#0a0a0a">OXY_BLACK</button>
+              <button class="cw-opt snap" aria-pressed="true"  data-cw="CHALK_WHITE" data-img="assets/tee-roundel-navy.jpg"     style="--dot:#e7e7e2">CHALK_WHITE</button>
+              <button class="cw-opt snap" aria-pressed="false" data-cw="SYSTEM_NAVY" data-img="assets/tee-roundel-offwhite.jpg" style="--dot:#1f2a3d">SYSTEM_NAVY</button>
+            </div>
+          </div>
+          <div class="sizes"><span class="tag" style="margin-right:4px">[ SIZES ]</span>
+            <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
+        </div>
         <div class="actions">
           <button class="directive snap" data-idle="[ ADD TO CART ]" data-hover="[ ADD TO CART ]" data-add>[ ADD TO CART ]</button>
-          <a class="directive directive--ghost snap" data-what href="icons.html">WHAT IS</a>
         </div>
       </div>
     </div>
   </article>
 
-  <!-- 05 THE CLERK — bowler-hatted skull over crossed umbrellas, charcoal print -->
+  <!-- 05 THE CLERK -->
   <article class="item item--dark" data-product="clerk">
     <div class="item-visual">
       <span class="item-asset-ref tag">[ APPAREL // FLAT_LAY ]</span>
@@ -542,27 +559,29 @@ a { color:inherit; text-decoration:none; }
     </div>
     <div class="item-ledger">
       <div>
-        <div class="led-index tag">[ ★ ISSUE_001 // ENTRY_05 // THE CLERK ]</div>
+        <div class="led-index tag">[ ★ ISSUE_001 // #05 // THE CLERK ]</div>
         <h2 class="led-name chunk"><span class="the">THE</span> CLERK</h2>
-        <div class="cw">
-          <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
-          <div class="cw-opts">
-            <button class="cw-opt snap" aria-pressed="true"  data-cw="OXY_BLACK"   data-img="assets/tee-clerk-black.jpg" style="--dot:#0a0a0a">OXY_BLACK</button>
-            <button class="cw-opt snap" aria-pressed="false" data-cw="CHALK_WHITE" data-img="assets/tee-clerk-white.jpg" style="--dot:#e7e7e2">CHALK_WHITE</button>
-          </div>
-        </div>
         <div class="dossier">
           <p class="hit">EVERY EMPIRE NEEDS A CLERK. THIS ONE STAYED PAST CLOSING.</p>
           <p>BOWLER HAT. CROSSED BROLLIES. A LEDGER THAT WON'T BALANCE.</p>
           <p>STILL AT THE DESK. STILL REFUSING TO BE ERASED.</p>
+          <a class="what-link" data-what href="product-skull.html">WHAT IS</a>
         </div>
       </div>
       <div class="led-foot">
-        <div class="sizes"><span class="tag" style="margin-right:4px">[ SIZES ]</span>
-          <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
+        <div class="cw-size-wrap">
+          <div class="cw">
+            <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
+            <div class="cw-opts">
+              <button class="cw-opt snap" aria-pressed="true"  data-cw="OXY_BLACK"   data-img="assets/tee-clerk-black.jpg" style="--dot:#0a0a0a">OXY_BLACK</button>
+              <button class="cw-opt snap" aria-pressed="false" data-cw="CHALK_WHITE" data-img="assets/tee-clerk-white.jpg" style="--dot:#e7e7e2">CHALK_WHITE</button>
+            </div>
+          </div>
+          <div class="sizes"><span class="tag" style="margin-right:4px">[ SIZES ]</span>
+            <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
+        </div>
         <div class="actions">
           <button class="directive snap" data-idle="[ ADD TO CART ]" data-hover="[ ADD TO CART ]" data-add>[ ADD TO CART ]</button>
-          <a class="directive directive--ghost snap" data-what href="icons.html">WHAT IS</a>
         </div>
       </div>
     </div>
@@ -634,7 +653,7 @@ a { color:inherit; text-decoration:none; }
 
   /* Secondary "what is" buttons — label + route per product */
   var whatUrls = {
-    establishment: "about.html",
+    establishment: "product-establishment.html",
     boudica:       "product.html",
     rollcall:      "product-roll-call.html",
     frequency:     "product-roundel.html",
