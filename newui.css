@@ -331,9 +331,9 @@ a { color:inherit; text-decoration:none; }
 .coll-tab.active { color:var(--signal); background:var(--panel); }
 .coll-count { margin-left:auto; padding:14px 24px; color:var(--bone-mute); font-size:11px; letter-spacing:.1em; text-transform:uppercase; font-family:var(--mono); border-left:1px solid var(--line); }
 
-.coll-grid-wrap { max-width:1280px; margin:0 auto; }
-.coll-grid { display:grid; grid-template-columns:repeat(3,1fr); border-left:1px solid var(--line); }
-.coll-card { border-right:1px solid var(--line); border-bottom:1px solid var(--line); display:flex; flex-direction:column; }
+.coll-grid-wrap { max-width:960px; margin:0 auto; padding:var(--s3); }
+.coll-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.coll-card { border:1px solid var(--line); display:flex; flex-direction:column; }
 .coll-card[hidden] { display:none; }
 .coll-card-ref { padding:6px 14px; border-bottom:1px solid var(--line); background:var(--panel-2); display:flex; justify-content:space-between; align-items:center; }
 .coll-plate { background:var(--plate); aspect-ratio:3/4; overflow:hidden; position:relative; }
