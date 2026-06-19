@@ -211,7 +211,25 @@ a { color:inherit; text-decoration:none; }
 .item--dark .dossier p { color:var(--bone); }
 .item--dark .dossier .hit { color:#fff; }
 
-.led-foot { margin-top:var(--s2); }
+/* selectors + CTA inside dossier — light cards invert to dark text */
+.dossier .cw-size-wrap { margin-top:var(--s3); }
+.dossier .cw { border-color:rgba(0,0,0,.2); }
+.dossier .cw-label { color:#2a2722; }
+.dossier .sizes { border-color:rgba(0,0,0,.2); }
+.dossier .size-pill { color:#2a2722; border-color:rgba(0,0,0,.25); }
+.dossier .size-pill:hover { border-color:#0a0a0a; color:#0a0a0a; }
+.dossier .size-pill[aria-pressed="true"] { background:#2a2722; color:var(--bone); border-color:#2a2722; }
+.dossier .directive { color:#2a2722; border-color:rgba(0,0,0,.3); margin-top:var(--s2); }
+.dossier .directive:hover { background:#2a2722; color:var(--bone); border-color:#2a2722; }
+/* dark cards restore light-text scheme */
+.item--dark .dossier .cw-label { color:var(--bone); }
+.item--dark .dossier .sizes { border-color:var(--line); }
+.item--dark .dossier .size-pill { color:var(--bone); border-color:var(--line-bri); }
+.item--dark .dossier .size-pill:hover { border-color:var(--bone); color:var(--bone); }
+.item--dark .dossier .size-pill[aria-pressed="true"] { background:var(--bone); color:var(--ink); border-color:var(--bone); }
+.item--dark .dossier .directive { color:var(--bone); border-color:var(--bone-dim); }
+.item--dark .dossier .directive:hover { background:var(--bone); color:var(--ink); border-color:var(--bone); }
+
 .sizes { display:flex; align-items:center; gap:10px; margin-bottom:var(--s2); flex-wrap:wrap; }
 .size-pill { border:1px solid var(--line-bri); padding:7px 13px; font-size:12px; color:var(--bone); min-width:40px; text-align:center; }
 .size-pill:hover { border-color:var(--bone); color:var(--bone); }
@@ -449,7 +467,7 @@ a { color:inherit; text-decoration:none; }
       
       <div class="plate">
         <img data-plate alt="Boudica tee â€" Britannia with trident and Union Jack shield, chalk white" src="assets/tee-boudica-offwhite.jpg" />
-        <span class="plate-cnr">BS_001 // OVERHEAD</span>
+        <span class="plate-cnr">#01 // THE BOUDICA</span>
       </div>
     </div>
     <div class="item-ledger">
@@ -461,9 +479,7 @@ a { color:inherit; text-decoration:none; }
           <p>SHE STANDS. UNBOWED. UNBROKEN. UNFORGIVING.</p>
           <p>THIS ISN'T A QUEEN FOR CEREMONY.</p>
           <a class="what-link" data-what href="product.html">WHAT IS</a>
-        </div>
-      </div>
-      <div class="led-foot">
+
         <div class="cw-size-wrap">
           <div class="cw">
             <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
@@ -478,6 +494,7 @@ a { color:inherit; text-decoration:none; }
         <div class="actions">
           <button class="directive snap" data-idle="[ ADD TO BAG ]" data-hover="[ ADD TO BAG ]" data-add>[ ADD TO BAG ]</button>
         </div>
+        </div>
       </div>
     </div>
   </article>
@@ -488,7 +505,7 @@ a { color:inherit; text-decoration:none; }
       
       <div class="plate">
         <img data-plate alt="Roll Call tee â€" Tommy, Katie, Winston & Boudica names roll-call type, white" src="assets/tee-tommy-white.jpg" />
-        <span class="plate-cnr">BS_003 // OVERHEAD</span>
+        <span class="plate-cnr">#03 // THE ROLL CALL</span>
       </div>
     </div>
     <div class="item-ledger">
@@ -501,9 +518,7 @@ a { color:inherit; text-decoration:none; }
           <p>THE REBEL. THE FIREBRAND. THE STATESMAN. THE QUEEN.</p>
           <p class="hit">A ROLL CALL OF BRITISH STUBBORNNESS. THE CLASS IS IN SESSION.</p>
           <a class="what-link" data-what href="product-roll-call.html">WHAT IS</a>
-        </div>
-      </div>
-      <div class="led-foot">
+
         <div class="cw-size-wrap">
           <div class="cw">
             <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
@@ -518,6 +533,7 @@ a { color:inherit; text-decoration:none; }
         <div class="actions">
           <button class="directive snap" data-idle="[ ADD TO BAG ]" data-hover="[ ADD TO BAG ]" data-add>[ ADD TO BAG ]</button>
         </div>
+        </div>
       </div>
     </div>
   </article>
@@ -528,7 +544,7 @@ a { color:inherit; text-decoration:none; }
       
       <div class="plate">
         <img data-plate alt="The Frequency tee â€" RAF roundel target graphic, chalk white" src="assets/tee-roundel-navy.jpg" />
-        <span class="plate-cnr">BS_004 // OVERHEAD</span>
+        <span class="plate-cnr">#04 // THE FREQUENCY</span>
       </div>
     </div>
     <div class="item-ledger">
@@ -540,9 +556,7 @@ a { color:inherit; text-decoration:none; }
           <p>BUILT FROM WITHIN THE SYSTEM IT REFUSES TO OBEY.</p>
           <p>THE SIGNAL NEVER CHANGES. THE TRANSMISSION WAS NEVER AUTHORISED.</p>
           <a class="what-link" data-what href="product-roundel.html">WHAT IS</a>
-        </div>
-      </div>
-      <div class="led-foot">
+
         <div class="cw-size-wrap">
           <div class="cw">
             <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
@@ -558,6 +572,7 @@ a { color:inherit; text-decoration:none; }
         <div class="actions">
           <button class="directive snap" data-idle="[ ADD TO BAG ]" data-hover="[ ADD TO BAG ]" data-add>[ ADD TO BAG ]</button>
         </div>
+        </div>
       </div>
     </div>
   </article>
@@ -568,7 +583,7 @@ a { color:inherit; text-decoration:none; }
       
       <div class="plate">
         <img data-plate alt="The Clerk tee â€" bowler-hatted skull over crossed umbrellas, charcoal print, oxy black" src="assets/tee-clerk-black.jpg" />
-        <span class="plate-cnr">BS_005 // OVERHEAD</span>
+        <span class="plate-cnr">#05 // THE CLERK</span>
       </div>
     </div>
     <div class="item-ledger">
@@ -580,9 +595,7 @@ a { color:inherit; text-decoration:none; }
           <p>BOWLER HAT. CROSSED BROLLIES. A LEDGER THAT WON'T BALANCE.</p>
           <p>STILL AT THE DESK. STILL REFUSING TO BE ERASED.</p>
           <a class="what-link" data-what href="product-skull.html">WHAT IS</a>
-        </div>
-      </div>
-      <div class="led-foot">
+
         <div class="cw-size-wrap">
           <div class="cw">
             <span class="cw-label tag">[ COLOURWAY SELECTOR ]</span>
@@ -596,6 +609,7 @@ a { color:inherit; text-decoration:none; }
         </div>
         <div class="actions">
           <button class="directive snap" data-idle="[ ADD TO BAG ]" data-hover="[ ADD TO BAG ]" data-add>[ ADD TO BAG ]</button>
+        </div>
         </div>
       </div>
     </div>
