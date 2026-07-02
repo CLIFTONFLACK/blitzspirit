@@ -1,0 +1,7 @@
+mutation {
+  strapline: metafieldDefinitionCreate(definition: {name: "Strapline", namespace: "custom", key: "strapline", type: "single_line_text_field", ownerType: PRODUCT, access: {storefront: PUBLIC_READ}}) { createdDefinition { id } userErrors { field message code } }
+  dossier: metafieldDefinitionCreate(definition: {name: "Dossier", namespace: "custom", key: "dossier", type: "rich_text_field", ownerType: PRODUCT, access: {storefront: PUBLIC_READ}}) { createdDefinition { id } userErrors { field message code } }
+  issue: metafieldDefinitionCreate(definition: {name: "Issue", namespace: "custom", key: "issue", type: "single_line_text_field", ownerType: PRODUCT, access: {storefront: PUBLIC_READ}}) { createdDefinition { id } userErrors { field message code } }
+  index_ref: metafieldDefinitionCreate(definition: {name: "Index ref", namespace: "custom", key: "index_ref", type: "single_line_text_field", ownerType: PRODUCT, access: {storefront: PUBLIC_READ}}) { createdDefinition { id } userErrors { field message code } }
+  limited: metafieldDefinitionCreate(definition: {name: "Limited", namespace: "custom", key: "limited", type: "boolean", ownerType: PRODUCT, access: {storefront: PUBLIC_READ}}) { createdDefinition { id } userErrors { field message code } }
+}

@@ -1,0 +1,17 @@
+mutation SeedProduct($input: ProductSetInput!) {
+  productSet(synchronous: true, input: $input) {
+    product {
+      id
+      title
+      handle
+      status
+      options { name optionValues { name } }
+      variants(first: 60) {
+        nodes { id title price sku selectedOptions { name value } image { id } }
+      }
+      media(first: 12) { nodes { ... on MediaImage { id image { url } } } }
+      metafields(first: 12, namespace: "custom") { nodes { key type } }
+    }
+    userErrors { field message code }
+  }
+}

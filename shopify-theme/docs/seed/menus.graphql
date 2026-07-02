@@ -1,0 +1,24 @@
+mutation {
+  main: menuUpdate(
+    id: "gid://shopify/Menu/260007461118",
+    title: "Main menu",
+    handle: "main-menu",
+    items: [
+      { title: "HOME", type: FRONTPAGE },
+      { title: "ABOUT", type: PAGE, resourceId: "gid://shopify/Page/137061335294" },
+      { title: "THE COLLECTIONS", type: HTTP, url: "/collections/all" }
+    ]
+  ) { menu { handle items { title } } userErrors { field message } }
+
+  footer: menuUpdate(
+    id: "gid://shopify/Menu/260007493886",
+    title: "Footer menu",
+    handle: "footer",
+    items: [
+      { title: "ABOUT", type: PAGE, resourceId: "gid://shopify/Page/137061335294" },
+      { title: "SIZE GUIDE", type: HTTP, url: "/pages/help#size-guide" },
+      { title: "RETURNS", type: HTTP, url: "/pages/help#returns" },
+      { title: "CONTACT", type: HTTP, url: "/pages/help#contact" }
+    ]
+  ) { menu { handle items { title } } userErrors { field message } }
+}

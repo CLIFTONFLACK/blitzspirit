@@ -1,0 +1,7 @@
+mutation {
+  about: pageCreate(page: {title: "About", handle: "about", templateSuffix: "about", isPublished: true, body: ""}) { page { id handle templateSuffix } userErrors { field message } }
+  story: pageCreate(page: {title: "The Story", handle: "story", templateSuffix: "story", isPublished: true, body: ""}) { page { id handle templateSuffix } userErrors { field message } }
+  help: pageCreate(page: {title: "Help", handle: "help", templateSuffix: "help", isPublished: true, body: ""}) { page { id handle templateSuffix } userErrors { field message } }
+  icons: pageCreate(page: {title: "The Icons", handle: "icons", templateSuffix: "icons", isPublished: true, body: ""}) { page { id handle templateSuffix } userErrors { field message } }
+  linkbio: pageCreate(page: {title: "Link in Bio", handle: "link-in-bio", templateSuffix: "link-in-bio", isPublished: true, body: ""}) { page { id handle templateSuffix } userErrors { field message } }
+}
