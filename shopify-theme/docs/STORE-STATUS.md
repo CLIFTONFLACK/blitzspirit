@@ -12,9 +12,9 @@ Basic plan, GBP, UK, owner cloofhouse@gmail.com. Currently **password-protected
 
 | Item | Detail |
 |---|---|
-| Theme uploaded | "BlitzSpirit ISSUE_001" (#160035635454), **unpublished** (Dawn still live). Preview: https://blitzspirit-2.myshopify.com?preview_theme_id=160035635454 · Editor: /admin/themes/160035635454/editor |
+| Theme **LIVE** | "BlitzSpirit ISSUE_001" (#160035635454) published as the live theme (2026-07-02). Editor: /admin/themes/160035635454/editor |
 | Metafield definitions | `custom.strapline`, `custom.dossier` (rich text), `custom.issue`, `custom.index_ref`, `custom.limited` — all storefront-visible |
-| 6 products (**DRAFT**) | The Boudica (£28), The Establishment (£28, limited), The Roll Call (£26), The Frequency (£28), The Clerk (£28), The Cap (£22) |
+| 6 products **ACTIVE** | The Boudica (£28), The Establishment (£28, limited), The Roll Call (£26), The Frequency (£28), The Clerk (£28), The Cap (£22) — all Active and published to the Online Store |
 | Variants + SKUs | Colour×Size per catalogue (Boudica S–XXL, other tees S–XL, Cap colour-only). SKUs `BS-<CODE>-<COLOUR>-<SIZE>`. Inventory **tracked, policy CONTINUE** (buyable at 0 stock) |
 | Variant images | Each colourway photo pulled from vercel.app → Shopify CDN and set as the variant image (colour-swap works). Media READY on all 6 |
 | Product metafields | strapline, issue, index_ref, limited, and dossier rich-text (bold = `.hit`) set on every product |
@@ -25,8 +25,8 @@ Basic plan, GBP, UK, owner cloofhouse@gmail.com. Currently **password-protected
 
 ## ⛔ Remaining — owner must do in Admin (going-live / billable / policy)
 
-1. **Activate products**: Products → select all 6 → set **Active** (safe — store is password-gated). They're Draft so they won't show until flipped. *(I can do this on your say-so.)*
-2. **Publish the theme**: preview it first (link above); when happy, Online Store → Themes → Publish "BlitzSpirit ISSUE_001". *(Theme publish is blocked via API for safety — do it in admin, or ask me to run `shopify theme publish`.)*
+1. ~~Activate products~~ — **DONE** (all 6 Active + on Online Store).
+2. ~~Publish the theme~~ — **DONE** (ISSUE_001 is live).
 3. **Taxes**: Settings → Taxes → **"All prices include tax"** ON (theme shows "// INC. VAT" only when this is set; prices were entered VAT-inclusive).
 4. **Shipping**: Settings → Shipping → UK zone: **£3.95 tracked, free over £40** (matches the theme's free-shipping bar).
 5. **Policies**: Settings → Policies — returns (30-day), privacy, terms, shipping. Required for UK distance selling *and* TikTok Shop verification.
