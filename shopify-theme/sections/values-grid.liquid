@@ -1,0 +1,81 @@
+{% comment %}
+  values-grid — 4-up numbered values grid (values-grid family, per about.html).
+  Cell numbers are automatic from block order: [ 01 ] … [ 04 ].
+{% endcomment %}
+
+{%- if section.blocks.size > 0 -%}
+  <div class="values-grid" data-section-id="{{ section.id }}">
+    {%- for block in section.blocks -%}
+      <div class="value-cell" {{ block.shopify_attributes }}>
+        <p class="value-num tag">[ {{ forloop.index | prepend: '0' | slice: -2, 2 }} ]</p>
+        {%- if block.settings.heading != blank -%}
+          <h3 class="value-head chunk">{{ block.settings.heading | escape }}</h3>
+        {%- endif -%}
+        {%- if block.settings.body != blank -%}
+          <p class="value-body">{{ block.settings.body | escape }}</p>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Values grid",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "cell",
+      "name": "Value cell",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        },
+        {
+          "type": "textarea",
+          "id": "body",
+          "label": "Body"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Values grid",
+      "blocks": [
+        {
+          "type": "cell",
+          "settings": {
+            "heading": "No filler.",
+            "body": "Every design earns its place. No trend-chasing. No decorative nonsense. If there’s no story, there’s no tee."
+          }
+        },
+        {
+          "type": "cell",
+          "settings": {
+            "heading": "Made properly.",
+            "body": "220gsm. UK printers. Water-based inks. No fast-fashion shortcuts. Tumble dryers are for quitters."
+          }
+        },
+        {
+          "type": "cell",
+          "settings": {
+            "heading": "Ironic. Iconic.",
+            "body": "We take the piss gently. We take the history seriously. The two aren’t mutually exclusive — they never were."
+          }
+        },
+        {
+          "type": "cell",
+          "settings": {
+            "heading": "No manifesto.",
+            "body": "This isn’t a political project. It’s a British one. The blitz spirit belongs to everyone — always did."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

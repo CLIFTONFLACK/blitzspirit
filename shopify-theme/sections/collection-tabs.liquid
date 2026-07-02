@@ -1,0 +1,118 @@
+{% comment %}
+  collection-tabs — sticky filter strip below the masthead.
+
+  Tabs are REAL LINKS (zero JS, SEO-crawlable). Each "tab" block is
+  either "link to all products" (/collections/all) or a collection
+  picker; active state derives from collection.handle and carries
+  aria-current="page". A tab whose picked collection doesn't exist
+  yet is hidden on the storefront and hinted in the theme editor.
+
+  Framework classes (.coll-filter/.coll-filter-inner/.coll-tab/
+  .coll-count + sticky positioning) live in theme.css.
+{% endcomment %}
+
+{%- liquid
+  assign has_live_tab = false
+  for block in section.blocks
+    if block.settings.link_all or block.settings.collection != blank
+      assign has_live_tab = true
+      break
+    endif
+  endfor
+-%}
+
+{%- if has_live_tab or request.design_mode -%}
+  <div class="coll-filter" data-section-id="{{ section.id }}">
+    <div class="coll-filter-inner">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign tab_url = blank
+          assign tab_active = false
+          assign tab_label = block.settings.label | escape | default: 'TAB'
+
+          if block.settings.link_all
+            assign tab_url = routes.all_products_collection_url
+            if collection.handle == 'all'
+              assign tab_active = true
+            endif
+          elsif block.settings.collection != blank
+            assign tab_url = block.settings.collection.url
+            if collection.handle == block.settings.collection.handle
+              assign tab_active = true
+            endif
+          endif
+        -%}
+        {%- if tab_url != blank -%}
+          <a
+            href="{{ tab_url }}"
+            class="coll-tab snap{% if tab_active %} active{% endif %}"
+            {% if tab_active %}aria-current="page"{% endif %}
+            {{ block.shopify_attributes }}
+          >[ {{ tab_label }} ]</a>
+        {%- elsif request.design_mode -%}
+          <span class="coll-tab coll-tab--hint" {{ block.shopify_attributes }}>[ {{ tab_label }} — PICK A COLLECTION ]</span>
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if section.settings.show_count and collection != blank -%}
+        <span class="coll-count">[ {{ 'cart.item_count' | t: count: collection.products_count }} ]</span>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+.coll-tab--hint { color: var(--bone-mute); cursor: default; }
+.coll-count { white-space: nowrap; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Collection tabs",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_count",
+      "label": "Show item count",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "ALL"
+        },
+        {
+          "type": "checkbox",
+          "id": "link_all",
+          "label": "Link to all products",
+          "default": false,
+          "info": "Overrides the collection choice and links to /collections/all."
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection",
+          "info": "The tab stays hidden on the storefront until a collection is chosen (unless \"Link to all products\" is on)."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Collection tabs",
+      "blocks": [
+        { "type": "tab", "settings": { "label": "ALL", "link_all": true } },
+        { "type": "tab", "settings": { "label": "T-SHIRTS", "collection": "t-shirts" } },
+        { "type": "tab", "settings": { "label": "CAPS", "collection": "caps" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

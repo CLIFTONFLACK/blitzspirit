@@ -1,0 +1,144 @@
+{% comment %}
+  structured-data — JSON-LD.
+  - Organization: sitewide (social sameAs from settings).
+  - Product + per-variant Offers: product pages.
+  - BreadcrumbList: product + collection pages.
+  Rendered from layout/theme.liquid <head>.
+{% endcomment %}
+
+{%- liquid
+  assign social_join = ''
+  if settings.social_instagram != blank
+    assign social_join = social_join | append: settings.social_instagram | append: '|'
+  endif
+  if settings.social_tiktok != blank
+    assign social_join = social_join | append: settings.social_tiktok | append: '|'
+  endif
+  if settings.social_x != blank
+    assign social_join = social_join | append: settings.social_x | append: '|'
+  endif
+  if settings.social_facebook != blank
+    assign social_join = social_join | append: settings.social_facebook | append: '|'
+  endif
+  assign social_links = social_join | split: '|'
+-%}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": {{ shop.name | json }},
+    "url": {{ shop.url | json }}
+    {%- if settings.favicon != blank -%}
+      ,
+      "logo": {{ settings.favicon | image_url: width: 500 | prepend: 'https:' | json }}
+    {%- endif -%}
+    {%- if social_links.size > 0 -%}
+      ,
+      "sameAs": [
+        {%- for link in social_links -%}
+          {{ link | json }}{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ]
+    {%- endif -%}
+  }
+</script>
+
+{%- if request.page_type == 'product' and product != blank -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": {{ product.title | json }},
+      "url": {{ request.origin | append: product.url | json }},
+      {%- if product.featured_image != blank -%}
+        "image": [
+          {{ product.featured_image | image_url: width: 1200 | prepend: 'https:' | json }}
+        ],
+      {%- endif -%}
+      "description": {{ product.description | strip_html | json }},
+      {%- if product.selected_or_first_available_variant.sku != blank -%}
+        "sku": {{ product.selected_or_first_available_variant.sku | json }},
+      {%- endif -%}
+      "brand": {
+        "@type": "Brand",
+        "name": {{ product.vendor | json }}
+      },
+      "offers": [
+        {%- for variant in product.variants -%}
+          {
+            "@type": "Offer",
+            {%- if variant.sku != blank -%}
+              "sku": {{ variant.sku | json }},
+            {%- endif -%}
+            "name": {{ variant.title | json }},
+            "url": {{ request.origin | append: variant.url | json }},
+            "price": {{ variant.price | divided_by: 100.00 | json }},
+            "priceCurrency": {{ shop.currency | json }},
+            "availability": {% if variant.available %}"https://schema.org/InStock"{% else %}"https://schema.org/OutOfStock"{% endif %}
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": {{ shop.name | json }},
+          "item": {{ shop.url | json }}
+        }
+        {%- assign crumb_collection = collection | default: product.collections.first -%}
+        {%- if crumb_collection != blank -%}
+          ,
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": {{ crumb_collection.title | json }},
+            "item": {{ request.origin | append: crumb_collection.url | json }}
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": {{ product.title | json }},
+            "item": {{ request.origin | append: product.url | json }}
+          }
+        {%- else -%}
+          ,
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": {{ product.title | json }},
+            "item": {{ request.origin | append: product.url | json }}
+          }
+        {%- endif -%}
+      ]
+    }
+  </script>
+{%- endif -%}
+
+{%- if request.page_type == 'collection' and collection != blank -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": {{ shop.name | json }},
+          "item": {{ shop.url | json }}
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": {{ collection.title | json }},
+          "item": {{ request.origin | append: collection.url | json }}
+        }
+      ]
+    }
+  </script>
+{%- endif -%}

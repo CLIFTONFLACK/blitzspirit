@@ -1,0 +1,50 @@
+{% comment %}
+  plate — the white catalogue product well.
+
+  Params:
+    image:    {Object} image object (required for a picture; blank-safe)
+    ref_text: {String} corner reference tag, e.g. 'BS_001 // PDP' (optional)
+    alt:      {String} alt text override (falls back to image.alt) (optional)
+    sizes:    {String} sizes attribute (optional; sensible 50/50 default)
+    priority: {Boolean} true = above the fold: eager + fetchpriority high
+              (default false = lazy)
+
+  Usage:
+    {% render 'plate', image: product.featured_image, ref_text: 'BS_001 // PDP', priority: true %}
+    {% render 'plate', image: item.image, alt: item.title, sizes: '(min-width: 860px) 50vw, 100vw' %}
+{% endcomment %}
+
+{%- liquid
+  assign img_sizes = sizes | default: '(min-width: 860px) 50vw, 100vw'
+  assign img_alt = alt | default: image.alt | default: ''
+-%}
+
+<div class="plate">
+  {%- if image != blank -%}
+    <img
+      data-plate
+      src="{{ image | image_url: width: 800 }}"
+      srcset="
+        {{ image | image_url: width: 400 }} 400w,
+        {{ image | image_url: width: 600 }} 600w,
+        {{ image | image_url: width: 800 }} 800w,
+        {{ image | image_url: width: 1200 }} 1200w
+      "
+      sizes="{{ img_sizes }}"
+      alt="{{ img_alt | escape }}"
+      width="{{ image.width }}"
+      height="{{ image.height }}"
+      {% if priority %}
+        loading="eager"
+        fetchpriority="high"
+      {% else %}
+        loading="lazy"
+      {% endif %}
+    >
+  {%- else -%}
+    {{ 'product-1' | placeholder_svg_tag: 'plate__placeholder' }}
+  {%- endif -%}
+  {%- if ref_text != blank -%}
+    <span class="plate-cnr">{{ ref_text }}</span>
+  {%- endif -%}
+</div>

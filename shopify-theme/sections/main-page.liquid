@@ -1,0 +1,68 @@
+{% comment %}
+  main-page — generic page body: page.content in a readable dossier-like
+  typographic column. The page-hero section above it carries the title.
+{% endcomment %}
+
+<div class="main-page" data-section-id="{{ section.id }}">
+  {%- if page.content != blank -%}
+    <div class="main-page-body rte">
+      {{ page.content }}
+    </div>
+  {%- elsif request.design_mode -%}
+    <p class="tag tag-mute main-page-empty">[ NO CONTENT YET // WRITE THE PAGE IN ADMIN ]</p>
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+.main-page { padding: var(--s5) var(--s3) var(--s6); border-bottom: 1px solid var(--line); }
+.main-page-body { max-width: 720px; margin: 0 auto; }
+.main-page-empty { max-width: 720px; margin: 0 auto; border: 1px dashed var(--line); padding: var(--s4); text-align: center; }
+.main-page-body h2,
+.main-page-body h3,
+.main-page-body h4 {
+  font-family: var(--display-font);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 0.95;
+  color: #fff;
+  margin: var(--s4) 0 var(--s2);
+}
+.main-page-body h2 { font-size: clamp(1.6rem, 3.5vw, 2.4rem); }
+.main-page-body h3 { font-size: clamp(1.3rem, 2.8vw, 1.8rem); }
+.main-page-body h4 { font-size: clamp(1.1rem, 2.2vw, 1.4rem); }
+.main-page-body p {
+  color: var(--bone);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  line-height: 1.8;
+  margin-bottom: var(--s2);
+}
+.main-page-body ul,
+.main-page-body ol { margin: 0 0 var(--s2) 20px; color: var(--bone); font-size: 13px; line-height: 1.8; }
+.main-page-body a { color: var(--bone); border-bottom: 1px solid var(--signal); }
+.main-page-body a:hover { color: var(--signal); }
+.main-page-body strong { color: #fff; font-weight: 400; }
+.main-page-body em { font-style: normal; color: #fff; }
+.main-page-body blockquote {
+  border-left: 2px solid var(--signal);
+  padding: var(--s2) var(--s3);
+  margin: var(--s3) 0;
+  background: var(--panel);
+  color: var(--bone-dim);
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+}
+.main-page-body img { border: 1px solid var(--line); margin: var(--s3) 0; }
+.main-page-body hr { border: none; border-top: 1px solid var(--line); margin: var(--s4) 0; }
+.main-page-body table { width: 100%; border-collapse: collapse; margin: var(--s3) 0; font-size: 12px; }
+.main-page-body th,
+.main-page-body td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; color: var(--bone); }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Page",
+  "settings": []
+}
+{% endschema %}

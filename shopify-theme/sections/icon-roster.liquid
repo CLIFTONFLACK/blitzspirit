@@ -1,0 +1,261 @@
+{% comment %}
+  icon-roster — the Icons "files" gallery, restyled brutalist.
+  Alternating 50/50 rows: plate-framed image on concrete, copy panel with
+  FILE num tag, chunk heading, dossier description, meta row and CTA.
+  Copy defaults carry the live icons.html files (Boudica, The Roundel,
+  Skull & Brollies, The Roll Call).
+{% endcomment %}
+
+<div class="roster" data-section-id="{{ section.id }}">
+  {%- for block in section.blocks -%}
+    {%- assign flip = false -%}
+    {%- assign mod = forloop.index | modulo: 2 -%}
+    {%- if mod == 0 -%}{%- assign flip = true -%}{%- endif -%}
+
+    <article
+      class="about-block roster-item{% if flip %} roster-item--flip{% endif %}"
+      {% if block.settings.heading != blank %}id="{{ block.settings.heading | handleize }}"{% endif %}
+      {{ block.shopify_attributes }}
+    >
+      <div class="about-visual roster-visual">
+        <div class="roster-plate">
+          {% render 'plate',
+            image: block.settings.image,
+            ref_text: block.settings.num,
+            alt: block.settings.heading,
+            sizes: '(min-width: 860px) 50vw, 100vw'
+          %}
+        </div>
+      </div>
+
+      <div class="about-copy roster-copy">
+        {%- if block.settings.num != blank -%}
+          <p class="led-index tag roster-num">[ {{ block.settings.num | escape }} ]</p>
+        {%- endif -%}
+
+        {%- if block.settings.heading != blank -%}
+          <h2 class="chunk roster-head">{{ block.settings.heading | escape }}</h2>
+        {%- endif -%}
+
+        <hr class="roster-rule" aria-hidden="true">
+
+        {%- if block.settings.description != blank -%}
+          <div class="roster-body">{{ block.settings.description }}</div>
+        {%- endif -%}
+
+        {%- assign has_meta = false -%}
+        {%- if block.settings.meta_1 != blank or block.settings.meta_2 != blank or block.settings.meta_3 != blank -%}
+          {%- assign has_meta = true -%}
+        {%- endif -%}
+        {%- if has_meta -%}
+          <div class="roster-meta tag">
+            {%- if block.settings.meta_1 != blank -%}<span>{{ block.settings.meta_1 | escape }}</span>{%- endif -%}
+            {%- if block.settings.meta_2 != blank -%}<span>{{ block.settings.meta_2 | escape }}</span>{%- endif -%}
+            {%- if block.settings.meta_3 != blank -%}<span>{{ block.settings.meta_3 | escape }}</span>{%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if block.settings.cta_label != blank and block.settings.cta_link != blank -%}
+          <div class="roster-cta">
+            <a href="{{ block.settings.cta_link }}" class="directive snap">{{ block.settings.cta_label | escape }}</a>
+          </div>
+        {%- endif -%}
+      </div>
+    </article>
+  {%- endfor -%}
+
+  {%- if section.settings.note_text != blank -%}
+    <aside class="roster-note">
+      <div class="roster-note-body">{{ section.settings.note_text }}</div>
+      {%- if section.settings.note_cta_label != blank -%}
+        <button type="button" class="directive snap roster-note-cta" data-open-signup>
+          {{ section.settings.note_cta_label | escape }}
+        </button>
+      {%- endif -%}
+    </aside>
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+.roster-item { scroll-margin-top: 64px; }
+.roster-item .roster-num { display: inline-block; margin-bottom: 0; align-self: flex-start; }
+.roster-plate { width: min(88%, 460px); margin: 0 auto; }
+.roster-plate .plate { aspect-ratio: 1 / 1.12; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35); }
+.roster-plate .plate__placeholder { width: 100%; height: 100%; opacity: 0.35; }
+.roster-head { color: #fff; }
+.roster-rule { border: none; border-top: 2px solid var(--signal); width: 64px; margin: 0; }
+.roster-body p {
+  color: var(--bone);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1.75;
+  max-width: 52ch;
+}
+.roster-body p + p { margin-top: var(--s2); }
+.roster-body em { font-style: normal; color: #fff; }
+.roster-body strong { font-weight: 400; color: #fff; }
+.roster-body p:last-child strong { color: var(--signal); }
+.roster-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  color: var(--bone-mute);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 10px 0;
+}
+.roster-cta .directive { display: inline-block; width: auto; padding: 16px 28px; }
+.roster-note {
+  border-bottom: 1px solid var(--line);
+  background: var(--panel-2);
+  padding: var(--s5) var(--s3);
+  text-align: center;
+}
+.roster-note-body { max-width: 56ch; margin: 0 auto; }
+.roster-note-body p {
+  color: var(--bone-dim);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.8;
+}
+.roster-note-cta { display: inline-block; width: auto; padding: 14px 28px; margin-top: var(--s3); }
+
+@media (min-width: 861px) {
+  .roster-item--flip .roster-visual { order: 2; border-right: none; border-left: 1px solid var(--line); }
+  .roster-item--flip .roster-copy { order: 1; }
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Icon roster",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "note_text",
+      "label": "Archive note",
+      "info": "Optional closing note under the files.",
+      "default": "<p>FROM THE ARCHIVE — The bowler-hatted gent first appeared on a BlitzSpirit tee back in 2008. Some characters refuse to stay retired. More files will be declassified as new designs drop — join the Home Guard to get them first.</p>"
+    },
+    {
+      "type": "text",
+      "id": "note_cta_label",
+      "label": "Archive note button",
+      "info": "Opens the signup modal. Leave blank to hide.",
+      "default": "[ JOIN THE HOME GUARD ]"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "icon",
+      "name": "Icon file",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "num",
+          "label": "File tag",
+          "default": "FILE 01 / AD 60"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Name"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "The file",
+          "info": "The last paragraph reads as the attitude line — bold it."
+        },
+        {
+          "type": "text",
+          "id": "meta_1",
+          "label": "Meta — colours"
+        },
+        {
+          "type": "text",
+          "id": "meta_2",
+          "label": "Meta — material"
+        },
+        {
+          "type": "text",
+          "id": "meta_3",
+          "label": "Meta — extra",
+          "info": "Optional third slot (e.g. print type)."
+        },
+        {
+          "type": "text",
+          "id": "cta_label",
+          "label": "Button label",
+          "default": "[ CHOOSE THIS ICON ]"
+        },
+        {
+          "type": "url",
+          "id": "cta_link",
+          "label": "Button link",
+          "info": "Point at the product."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Icon roster",
+      "blocks": [
+        {
+          "type": "icon",
+          "settings": {
+            "num": "FILE 01 / AD 60",
+            "heading": "Boudica",
+            "description": "<p>Queen of the Iceni. When Rome — the largest military machine on Earth — broke its word, burned her lands and bet she’d kneel, she raised East Anglia and burned <em>their</em> cities instead. Londinium learned her name the hard way.</p><p>Our Boudica carries the trident and the shield because she was never just a rebel — she’s the original guardian of these islands. The first and fiercest entry in the blitz spirit ledger, nineteen centuries before anyone coined the phrase.</p><p><strong>She doesn’t ask. She doesn’t explain. She stands.</strong></p>",
+            "meta_1": "Colours: Black / Off White",
+            "meta_2": "220gsm heavyweight",
+            "cta_label": "[ CHOOSE BOUDICA ]"
+          }
+        },
+        {
+          "type": "icon",
+          "settings": {
+            "num": "FILE 02 / 1940 → 1964",
+            "heading": "The Roundel",
+            "description": "<p>It started on the wings of Spitfires — the RAF roundel, painted over Kent in the summer of 1940. A generation later the mods lifted it onto parkas and scooters and made it the sharpest mark in British street culture. Same circle, same defiance, better tailoring.</p><p>Ours plays the long game: from a distance it’s a classic mod target. Up close, every ring is <em>built entirely from the word blitzspirit</em>, repeated like a drumbeat. No extra logo. No signature. Just the brand, in the brand.</p><p><strong>A mod icon. Closer look. Same spirit.</strong></p>",
+            "meta_1": "Colours: Black / Navy / Off White",
+            "meta_2": "220gsm heavyweight",
+            "cta_label": "[ CHOOSE THE ROUNDEL ]"
+          }
+        },
+        {
+          "type": "icon",
+          "settings": {
+            "num": "FILE 03 / THE CITY GENT",
+            "heading": "Skull & Brollies",
+            "description": "<p>The bowler hat and the umbrella: the most polite uniform ever invented. The man who wore it queued properly, apologised when you stepped on <em>his</em> foot — and walked to work through rubble with the morning paper under his arm, daring the Luftwaffe to make him late.</p><p>Cross the brollies like cutlasses, put the skull under the brim, and you get the truth of him: courtesy is not weakness. It’s the Jolly Roger of good manners — <em>politely menacing since the Blitz</em>.</p><p><strong>Keep calm. With teeth.</strong></p>",
+            "meta_1": "Colour or mono print",
+            "meta_2": "Black / Off White",
+            "cta_label": "[ CHOOSE SKULL & BROLLIES ]"
+          }
+        },
+        {
+          "type": "icon",
+          "settings": {
+            "num": "FILE 04 / THE ROLL CALL",
+            "heading": "Tommy, Katie, Winston & Boudica.",
+            "description": "<p><strong>Tommy</strong> — every lad who shouldered a pack and went. <strong>Katie</strong> — every woman who ran the switchboards, drove the ambulances and built the bombers. <strong>Winston</strong> — the growl on the wireless when it mattered most. <strong>Boudica</strong> — the one who started it all.</p><p>Set like a band line-up, because that’s what they are: the greatest line-up these islands ever fielded. If you know, you know — and if someone asks, you get to tell the whole story.</p><p><strong>The roll call. Answer your name.</strong></p>",
+            "meta_1": "Colours: White / Black",
+            "meta_2": "Soft-hand typographic print",
+            "cta_label": "[ CHOOSE THE ROLL CALL ]"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

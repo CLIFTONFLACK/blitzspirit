@@ -1,0 +1,130 @@
+{% comment %}
+  promo-band — newsletter capture over the full-bleed milkman artwork
+  (index.html PROMO block, 1:1 port).
+
+  The band image is section-owned: --promo-image is set on the wrapper
+  (theme.css §12c .promo::before consumes it). Image setting falls back
+  to the packaged promo-milkman.jpg asset.
+
+  The form is rendered by snippets/newsletter-form.liquid (owned by
+  workstream E) with class_prefix: 'promo' so it emits the
+  .promo-row/-input/-submit family from theme.css §12c. It renders
+  {% form 'customer' %} (contact[email]), carries its own
+  visually-hidden label + error handling, posts natively without JS,
+  and shows success_text on form.posted_successfully?.
+{% endcomment %}
+
+{%- liquid
+  if section.settings.image != blank
+    assign promo_image_url = section.settings.image | image_url: width: 2000
+  else
+    assign promo_image_url = 'promo-milkman.jpg' | asset_url
+  endif
+-%}
+
+<section
+  class="promo"
+  data-section-id="{{ section.id }}"
+  style="--promo-image: url('{{ promo_image_url }}')"
+>
+  <div class="promo-inner">
+    <div class="promo-text">
+      {%- if section.settings.tag != blank -%}
+        <div class="promo-tag tag">{{ section.settings.tag | escape }}</div>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="promo-title chunk">{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <p class="promo-sub">{{ section.settings.subheading | escape }}</p>
+      {%- endif -%}
+
+      <div class="promo-form">
+        {%- if section.settings.lead_line != blank -%}
+          <p class="promo-cta tag">{{ section.settings.lead_line | escape }}</p>
+        {%- endif -%}
+        {% render 'newsletter-form',
+          id: section.id,
+          button_label: section.settings.button_label,
+          success_text: section.settings.success_text,
+          placeholder: section.settings.placeholder,
+          tags: 'newsletter,backbone10',
+          class_prefix: 'promo'
+        %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+.promo .nlf-success-line {
+  color: var(--signal);
+  text-shadow: 0 1px 5px #000;
+}
+.promo .nlf-error {
+  color: #fff;
+  text-shadow: 0 1px 5px #000;
+  margin-bottom: var(--s1);
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Promo band",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Band image",
+      "info": "Falls back to the packaged milkman artwork"
+    },
+    {
+      "type": "text",
+      "id": "tag",
+      "label": "Tag",
+      "default": "[ DISPATCH // STAND BY ]"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "GOT MORE BOTTLE THAN THE MILKMAN"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Put the kettle on, time for a nice cup of tea!"
+    },
+    {
+      "type": "text",
+      "id": "lead_line",
+      "label": "Lead line",
+      "default": "ENTER YOUR EMAIL ADDRESS TO BE THE FIRST IN THE KNOW"
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Email placeholder",
+      "default": "NAME@DOMAIN.CO.UK"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "[ NOTIFY ME ]"
+    },
+    {
+      "type": "text",
+      "id": "success_text",
+      "label": "Success message",
+      "default": "[ SECURED // YOU'RE FIRST IN THE KNOW ]"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promo band"
+    }
+  ]
+}
+{% endschema %}

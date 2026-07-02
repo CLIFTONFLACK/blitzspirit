@@ -1,0 +1,245 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "BlitzSpirit ISSUE_001",
+    "theme_version": "1.0.0",
+    "theme_author": "BlitzSpirit System Co.",
+    "theme_documentation_url": "https://blitzspirit.vercel.app/",
+    "theme_support_url": "https://blitzspirit.vercel.app/help.html"
+  },
+  {
+    "name": "Brand colours",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "The ISSUE_001 token set. Defaults match the design-locked static site — change with extreme caution."
+      },
+      {
+        "type": "color",
+        "id": "color_ink",
+        "label": "Ink (page background)",
+        "default": "#0A0A0A"
+      },
+      {
+        "type": "color",
+        "id": "color_panel",
+        "label": "Panel",
+        "default": "#111111"
+      },
+      {
+        "type": "color",
+        "id": "color_panel_2",
+        "label": "Panel 2 (raised)",
+        "default": "#181818"
+      },
+      {
+        "type": "color",
+        "id": "color_line",
+        "label": "Line (borders)",
+        "default": "#2a2a2a"
+      },
+      {
+        "type": "color",
+        "id": "color_line_bri",
+        "label": "Line bright",
+        "default": "#3a3a3a"
+      },
+      {
+        "type": "color",
+        "id": "color_bone",
+        "label": "Bone (body text)",
+        "default": "#ECECEC"
+      },
+      {
+        "type": "color",
+        "id": "color_bone_dim",
+        "label": "Bone dim",
+        "default": "#8A8A8A"
+      },
+      {
+        "type": "color",
+        "id": "color_bone_mute",
+        "label": "Bone mute",
+        "default": "#5A5A5A"
+      },
+      {
+        "type": "color",
+        "id": "color_plate",
+        "label": "Plate (product well)",
+        "default": "#EAE8E2"
+      },
+      {
+        "type": "color",
+        "id": "color_signal",
+        "label": "Signal red (rationed accent)",
+        "default": "#FF0000"
+      },
+      {
+        "type": "color",
+        "id": "color_brand_red",
+        "label": "Brand red (THE in product names)",
+        "default": "#8B2020"
+      }
+    ]
+  },
+  {
+    "name": "Textures",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Concrete textures behind panels and heroes. Leave empty to use the theme's built-in ISSUE_001 textures — uploads here override them site-wide."
+      },
+      {
+        "type": "image_picker",
+        "id": "texture_hero",
+        "label": "Hero panel concrete (light plate backdrop)"
+      },
+      {
+        "type": "image_picker",
+        "id": "texture_hero_bg",
+        "label": "Hero wall (homepage hero backdrop)"
+      },
+      {
+        "type": "image_picker",
+        "id": "texture_char",
+        "label": "Dark charcoal concrete"
+      },
+      {
+        "type": "image_picker",
+        "id": "texture_crack",
+        "label": "Dark cracked concrete (outro)"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Display voice is ChunkFive (bundled). Body/UI is the native monospace stack and is not configurable."
+      },
+      {
+        "type": "checkbox",
+        "id": "use_custom_font",
+        "label": "Use a custom display font",
+        "info": "Replaces ChunkFive for headings and display copy.",
+        "default": false
+      },
+      {
+        "type": "font_picker",
+        "id": "custom_display_font",
+        "label": "Custom display font",
+        "default": "assistant_n4"
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_free_shipping_bar",
+        "label": "Show free-shipping progress bar",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "free_shipping_threshold",
+        "label": "Free shipping threshold",
+        "info": "Order value (in the store currency) that unlocks free UK delivery. Must match your shipping settings.",
+        "min": 0,
+        "max": 200,
+        "step": 5,
+        "unit": "GBP",
+        "default": 40
+      },
+      {
+        "type": "textarea",
+        "id": "cart_note",
+        "label": "Cart footer note",
+        "default": "Interface drops away at checkout // routes to native encrypted payment."
+      }
+    ]
+  },
+  {
+    "name": "Marketing",
+    "settings": [
+      {
+        "type": "text",
+        "id": "discount_code",
+        "label": "Signup discount code",
+        "info": "Must exist as a real discount in the store admin or the modal promises a dud.",
+        "default": "BACKBONE10"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_signup_modal",
+        "label": "Enable signup modal",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "modal_delay",
+        "label": "Modal delay",
+        "min": 4,
+        "max": 60,
+        "step": 1,
+        "unit": "s",
+        "default": 16
+      },
+      {
+        "type": "range",
+        "id": "modal_suppress_days",
+        "label": "Suppress after seen",
+        "info": "Days before the modal may show again after being dismissed.",
+        "min": 1,
+        "max": 30,
+        "step": 1,
+        "unit": "d",
+        "default": 7
+      },
+      {
+        "type": "checkbox",
+        "id": "modal_exit_intent",
+        "label": "Also trigger on exit intent",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Social",
+    "settings": [
+      {
+        "type": "text",
+        "id": "social_instagram",
+        "label": "Instagram URL"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok",
+        "label": "TikTok URL"
+      },
+      {
+        "type": "text",
+        "id": "social_x",
+        "label": "X URL"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook",
+        "label": "Facebook URL"
+      }
+    ]
+  },
+  {
+    "name": "Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon",
+        "info": "Will be scaled down to 32 x 32px. Also used as the social-share image fallback."
+      }
+    ]
+  }
+]

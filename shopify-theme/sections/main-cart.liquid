@@ -1,0 +1,181 @@
+{% comment %}
+  main-cart — the full /cart page (workstream A).
+  This is the no-JS path: a native {% form 'cart' %} with
+  name="updates[]" quantity inputs, [ UPDATE ] and [ CHECKOUT ]
+  submits, and url_to_remove links. Works with JavaScript disabled.
+
+  Free-shipping bar: free-shipping-bar snippet (.fsb-* CSS ships in
+  sections/cart-drawer's stylesheet, aggregated theme-wide).
+{% endcomment %}
+
+<section class="main-cart" data-section-id="{{ section.id }}">
+  <header class="main-cart-head">
+    <div>
+      <div class="tag tag-mute main-cart-kicker">[ {{ 'cart.title' | t }} ]</div>
+      <h1 class="chunk main-cart-title">{{ section.settings.heading | escape }}</h1>
+    </div>
+    <span class="tag main-cart-count">[ {{ 'cart.item_count' | t: count: cart.item_count }} ]</span>
+  </header>
+
+  {%- if cart == empty -%}
+    <div class="cart-empty">[ {{ 'cart.empty' | t }} ]</div>
+    <a href="{{ routes.all_products_collection_url }}" class="directive snap main-cart-continue">[ {{ 'general.404.link' | t }} ]</a>
+  {%- else -%}
+    {% render 'free-shipping-bar' %}
+
+    {%- form 'cart', cart, class: 'main-cart-form' -%}
+      <div class="main-cart-lines">
+        {%- for item in cart.items -%}
+          <div class="main-cart-row">
+            <a href="{{ item.url }}" class="main-cart-plate" tabindex="-1" aria-hidden="true">
+              {%- if item.image != blank -%}
+                {%- assign thumb_h = 128 | divided_by: item.image.aspect_ratio | round -%}
+                <img
+                  src="{{ item.image | image_url: width: 128 }}"
+                  srcset="{{ item.image | image_url: width: 128 }} 1x, {{ item.image | image_url: width: 256 }} 2x"
+                  alt=""
+                  width="128"
+                  height="{{ thumb_h }}"
+                  loading="lazy"
+                >
+              {%- endif -%}
+            </a>
+
+            <div class="main-cart-info">
+              <div class="ci-name"><a href="{{ item.url }}">{{ item.product.title | escape }}</a></div>
+              {%- unless item.product.has_only_default_variant -%}
+                <div class="ci-meta">
+                  {%- for option in item.options_with_values -%}
+                    {{- option.name | upcase | escape }}: {{ option.value | upcase | escape }}{% unless forloop.last %} / {% endunless -%}
+                  {%- endfor -%}
+                </div>
+              {%- endunless -%}
+              <a href="{{ item.url_to_remove }}" class="ci-rm snap">[ {{ 'cart.remove' | t }} ]</a>
+            </div>
+
+            <div class="main-cart-qty">
+              <label class="visually-hidden" for="CartQty-{{ forloop.index }}">{{ 'cart.quantity' | t }}</label>
+              <input
+                id="CartQty-{{ forloop.index }}"
+                class="main-cart-qty-input"
+                type="number"
+                name="updates[]"
+                value="{{ item.quantity }}"
+                min="0"
+                inputmode="numeric"
+              >
+            </div>
+
+            <div class="main-cart-price">{% render 'price', price: item.final_line_price %}</div>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      <div class="main-cart-foot">
+        <div class="cart-sum">
+          <span>[ {{ 'cart.subtotal' | t }} ]</span>
+          <b data-cart-subtotal>{{ cart.total_price | money }}</b>
+        </div>
+        <div class="main-cart-actions">
+          <button type="submit" name="update" class="directive snap">[ {{ 'cart.update' | t }} ]</button>
+          <button type="submit" name="checkout" class="cart-checkout snap">[ {{ 'cart.checkout' | t }} ]</button>
+        </div>
+        {%- if settings.cart_note != blank -%}
+          <p class="cart-note">{{ settings.cart_note | escape }}</p>
+        {%- endif -%}
+      </div>
+    {%- endform -%}
+  {%- endif -%}
+</section>
+
+{% stylesheet %}
+.main-cart {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--s7) var(--s3);
+}
+.main-cart-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--s3);
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: var(--s3);
+  margin-bottom: var(--s4);
+}
+.main-cart-kicker { display: block; margin-bottom: var(--s2); }
+.main-cart-title {
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  color: var(--cream);
+}
+.main-cart-count { color: var(--bone-mute); }
+.main-cart-lines {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+  margin-bottom: var(--s3);
+}
+.main-cart-row {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  padding: var(--s2);
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto auto;
+  gap: var(--s2);
+  align-items: center;
+}
+.main-cart-plate {
+  width: 64px;
+  height: 64px;
+  background: var(--plate);
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.main-cart-plate img { width: 100%; height: 100%; object-fit: contain; }
+.main-cart-info { min-width: 0; }
+.main-cart-info .ci-rm { display: inline-block; margin-top: 8px; }
+.main-cart-qty-input {
+  width: 64px;
+  background: var(--ink);
+  border: 1px solid var(--line);
+  color: var(--bone);
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 8px;
+  text-align: center;
+}
+.main-cart-qty-input:focus { border-color: var(--bone); }
+.main-cart-price { text-align: right; font-size: 11px; letter-spacing: 0.08em; }
+.main-cart-foot { border-top: 1px solid var(--line); padding-top: var(--s3); }
+.main-cart-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s2);
+  margin-top: var(--s2);
+}
+.main-cart-continue { max-width: 420px; margin: var(--s3) auto 0; }
+@media (max-width: 640px) {
+  .main-cart-row { grid-template-columns: 64px minmax(0, 1fr); }
+  .main-cart-qty { grid-column: 2; }
+  .main-cart-price { grid-column: 2; text-align: left; }
+  .main-cart-actions { grid-template-columns: 1fr; }
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Cart",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Full Ledger."
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,71 @@
+{
+  "sections": {
+    "hero": {
+      "type": "collection-hero",
+      "blocks": {
+        "meta-1": {
+          "type": "meta_tag",
+          "settings": {
+            "text": "[ T-SHIRTS + CAPS ]"
+          }
+        },
+        "meta-2": {
+          "type": "meta_tag",
+          "settings": {
+            "text": "[ FREE UK DELIVERY OVER £40 ]"
+          }
+        },
+        "meta-3": {
+          "type": "meta_tag",
+          "settings": {
+            "text": "[ SCREEN PRINTED IN BRITAIN ]"
+          }
+        }
+      },
+      "block_order": ["meta-1", "meta-2", "meta-3"],
+      "settings": {
+        "tag_line": "[ SYSTEM_LEDGER // FULL_KIT // ISSUE_001 ]",
+        "fallback_title": "Full Kit."
+      }
+    },
+    "tabs": {
+      "type": "collection-tabs",
+      "blocks": {
+        "tab-all": {
+          "type": "tab",
+          "settings": {
+            "label": "ALL",
+            "link_all": true
+          }
+        },
+        "tab-tshirts": {
+          "type": "tab",
+          "settings": {
+            "label": "T-SHIRTS",
+            "collection": "t-shirts"
+          }
+        },
+        "tab-caps": {
+          "type": "tab",
+          "settings": {
+            "label": "CAPS",
+            "collection": "caps"
+          }
+        }
+      },
+      "block_order": ["tab-all", "tab-tshirts", "tab-caps"],
+      "settings": {
+        "show_count": true
+      }
+    },
+    "grid": {
+      "type": "main-collection-grid",
+      "settings": {
+        "products_per_page": 12,
+        "columns_desktop": "3",
+        "show_badge": true
+      }
+    }
+  },
+  "order": ["hero", "tabs", "grid"]
+}

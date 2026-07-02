@@ -1,0 +1,116 @@
+{% comment %}
+  main-article — a single DISPATCH. Mono date/author tag, chunk title,
+  optional feature image, readable body column, back link.
+  Comments deliberately omitted (dispatches are one-way radio).
+{% endcomment %}
+
+<article class="main-article" data-section-id="{{ section.id }}">
+  <header class="main-article-head">
+    <p class="led-index tag">
+      [ {{ section.settings.index_tag | escape }} // {{ article.published_at | date: '%d.%m.%Y' }}
+      {%- if section.settings.show_author and article.author != blank %} // {{ article.author | upcase | escape }}{% endif %} ]
+    </p>
+    <h1 class="chunk main-article-title">{{ article.title | escape }}</h1>
+  </header>
+
+  {%- if article.image != blank -%}
+    <div class="main-article-media">
+      <img
+        src="{{ article.image | image_url: width: 1200 }}"
+        srcset="
+          {{ article.image | image_url: width: 600 }} 600w,
+          {{ article.image | image_url: width: 900 }} 900w,
+          {{ article.image | image_url: width: 1200 }} 1200w
+        "
+        sizes="(min-width: 900px) 860px, 100vw"
+        alt="{{ article.image.alt | default: article.title | escape }}"
+        width="{{ article.image.width }}"
+        height="{{ article.image.height }}"
+        loading="eager"
+        fetchpriority="high"
+      >
+    </div>
+  {%- endif -%}
+
+  <div class="main-article-body rte">
+    {{ article.content }}
+  </div>
+
+  {%- if blog != blank -%}
+    <footer class="main-article-foot">
+      <a href="{{ blog.url }}" class="tag main-article-back">{{ section.settings.back_label | escape }}</a>
+    </footer>
+  {%- endif -%}
+</article>
+
+{% stylesheet %}
+.main-article { padding: 96px var(--s3) var(--s6); border-bottom: 1px solid var(--line); }
+.main-article-head { max-width: 720px; margin: 0 auto var(--s4); }
+.main-article-title { color: #fff; font-size: clamp(2rem, 6vw, 4rem); line-height: 0.92; margin-top: var(--s2); }
+.main-article-media { max-width: 860px; margin: 0 auto var(--s4); }
+.main-article-media img { width: 100%; height: auto; border: 1px solid var(--line); }
+.main-article-body { max-width: 720px; margin: 0 auto; }
+.main-article-body h2,
+.main-article-body h3 {
+  font-family: var(--display-font);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 0.95;
+  color: #fff;
+  margin: var(--s4) 0 var(--s2);
+}
+.main-article-body h2 { font-size: clamp(1.6rem, 3.5vw, 2.4rem); }
+.main-article-body h3 { font-size: clamp(1.3rem, 2.8vw, 1.8rem); }
+.main-article-body p {
+  color: var(--bone);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  line-height: 1.8;
+  margin-bottom: var(--s2);
+}
+.main-article-body ul,
+.main-article-body ol { margin: 0 0 var(--s2) 20px; color: var(--bone); font-size: 13px; line-height: 1.8; }
+.main-article-body a { color: var(--bone); border-bottom: 1px solid var(--signal); }
+.main-article-body a:hover { color: var(--signal); }
+.main-article-body strong { color: #fff; font-weight: 400; }
+.main-article-body blockquote {
+  border-left: 2px solid var(--signal);
+  padding: var(--s2) var(--s3);
+  margin: var(--s3) 0;
+  background: var(--panel);
+  color: var(--bone-dim);
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+}
+.main-article-body img { border: 1px solid var(--line); margin: var(--s3) 0; }
+.main-article-foot { max-width: 720px; margin: var(--s5) auto 0; border-top: 1px solid var(--line); padding-top: var(--s3); }
+.main-article-back { color: var(--bone); }
+.main-article-back:hover { color: var(--signal); }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Article",
+  "settings": [
+    {
+      "type": "text",
+      "id": "index_tag",
+      "label": "Index tag",
+      "default": "DISPATCH"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Show author",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "back_label",
+      "label": "Back link label",
+      "default": "[ ← ALL DISPATCHES ]"
+    }
+  ]
+}
+{% endschema %}

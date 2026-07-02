@@ -1,0 +1,90 @@
+{% comment %}
+  main-404 — brutalist "Bombed out." error page over --tex-crack.
+
+  Eyebrow tag, huge .chunk title + lede from locales (general.404.*),
+  two directives: all-products collection + back to the homepage.
+  Directive labels are schema defaults (no locale keys yet — flagged
+  for Phase 2).
+{% endcomment %}
+
+<div class="main-404" data-section-id="{{ section.id }}">
+  <div class="main-404-inner">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="tag main-404-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+    {%- endif -%}
+    <h1 class="chunk main-404-title">{{ 'general.404.title' | t }}</h1>
+    <p class="main-404-lede">{{ 'general.404.subtext' | t }}</p>
+    <div class="main-404-actions">
+      <a href="{{ routes.all_products_collection_url }}" class="directive snap">
+        [ {{ section.settings.primary_label | escape | default: 'CHOOSE THE COLLECTION' }} ]
+      </a>
+      <a href="{{ routes.root_url }}" class="directive directive--ghost snap">
+        [ {{ section.settings.secondary_label | escape | default: 'BACK TO BASE' }} ]
+      </a>
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+.main-404 {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--s7) var(--s3);
+  text-align: center;
+  border-bottom: 1px solid var(--line);
+  background:
+    linear-gradient(rgba(10, 10, 10, 0.85), rgba(10, 10, 10, 0.92)),
+    var(--tex-crack) center/cover no-repeat;
+}
+.main-404-inner {
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s3);
+}
+.main-404-eyebrow {
+  color: var(--signal);
+  border: 1px solid var(--signal);
+  padding: 6px 13px;
+  letter-spacing: 0.2em;
+}
+.main-404-title { color: #fff; font-size: clamp(3rem, 10vw, 6.5rem); line-height: 0.9; }
+.main-404-lede { color: var(--bone-dim); font-size: 14px; line-height: 1.7; max-width: 46ch; }
+.main-404-actions {
+  display: flex;
+  gap: var(--s2);
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: var(--s2);
+}
+.main-404-actions .directive { display: inline-block; width: auto; padding: 16px 32px; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "404",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow tag",
+      "default": "[ ERROR 404 ]"
+    },
+    {
+      "type": "text",
+      "id": "primary_label",
+      "label": "Primary link label",
+      "default": "CHOOSE THE COLLECTION"
+    },
+    {
+      "type": "text",
+      "id": "secondary_label",
+      "label": "Secondary link label",
+      "default": "BACK TO BASE"
+    }
+  ]
+}
+{% endschema %}

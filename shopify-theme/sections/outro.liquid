@@ -1,0 +1,137 @@
+{% comment %}
+  outro — closing concrete slab footer (workstream A).
+
+  Merges both static-site footer variants:
+  - collection.html: .outro-inner with nav links + strapline tag
+  - index.html: .outro-foot with rule / copyright / rule
+
+  Settings: footer menu (link_list), strapline tag, copyright line
+  (blank falls back to a dynamic year + shop name), optional payment
+  icons row (shop.enabled_payment_types).
+  Blocks: `rule` (ascii rule line) and `text` (mono tag line) for
+  free-form composition above the copyright foot.
+{% endcomment %}
+
+<footer class="outro" data-section-id="{{ section.id }}">
+  <div class="outro-inner">
+    {%- if section.settings.menu != blank and section.settings.menu.links.size > 0 -%}
+      <nav class="outro-nav">
+        {%- for link in section.settings.menu.links -%}
+          <a href="{{ link.url }}" class="tag"{% if link.current %} aria-current="page"{% endif %}>[ {{ link.title | upcase | escape }} ]</a>
+        {%- endfor -%}
+      </nav>
+    {%- endif -%}
+
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'rule' -%}
+          <div class="rule" aria-hidden="true" {{ block.shopify_attributes }}>------------------------------------------------------------------</div>
+        {%- when 'text' -%}
+          {%- if block.settings.text != blank -%}
+            <div class="outro-text tag" {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</div>
+          {%- endif -%}
+      {%- endcase -%}
+    {%- endfor -%}
+
+    {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+      <ul class="outro-payments">
+        {%- for type in shop.enabled_payment_types -%}
+          <li>{{ type | payment_type_svg_tag }}</li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if section.settings.strapline != blank -%}
+      <span class="tag outro-strap">{{ section.settings.strapline | escape }}</span>
+    {%- endif -%}
+  </div>
+
+  <div class="outro-foot">
+    <div class="rule" aria-hidden="true">------------------------------------------------------------------</div>
+    <div class="copyright">
+      {%- if section.settings.copyright != blank -%}
+        {{ section.settings.copyright | escape }}
+      {%- else -%}
+        &copy; {{ 'now' | date: '%Y' }} {{ shop.name | upcase | escape }}
+      {%- endif -%}
+    </div>
+    <div class="rule" aria-hidden="true">------------------------------------------------------------------</div>
+  </div>
+</footer>
+
+{% stylesheet %}
+.outro-text { color: var(--bone-dim); }
+.outro-payments {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.outro-payments svg {
+  display: block;
+  height: 24px;
+  width: auto;
+  filter: grayscale(1);
+  opacity: 0.7;
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Outro",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Footer menu",
+      "default": "footer"
+    },
+    {
+      "type": "text",
+      "id": "strapline",
+      "label": "Strapline tag",
+      "default": "[ NOT HERE TO BE LIKED ]"
+    },
+    {
+      "type": "text",
+      "id": "copyright",
+      "label": "Copyright line",
+      "info": "Leave empty for an automatic year + shop name.",
+      "default": "© 2026 BLITZSPIRIT SYSTEM CO. // ALL RIGHTS RESERVED // SECURITY OVERRIDE PRIMED."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "info": "Renders the store's enabled payment methods, desaturated to fit the design.",
+      "default": false
+    }
+  ],
+  "max_blocks": 6,
+  "blocks": [
+    {
+      "type": "rule",
+      "name": "Rule line",
+      "settings": []
+    },
+    {
+      "type": "text",
+      "name": "Text line",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "[ EST. 2026 // BRITISH STUBBORNNESS ]"
+        }
+      ]
+    }
+  ],
+  "enabled_on": {
+    "groups": ["footer"]
+  }
+}
+{% endschema %}

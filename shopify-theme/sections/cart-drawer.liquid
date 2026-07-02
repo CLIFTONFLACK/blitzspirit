@@ -1,0 +1,181 @@
+{% comment %}
+  cart-drawer — the SYSTEM_LEDGER mini-cart (workstream A).
+  Statically rendered from layout/theme.liquid via {% section %}, so
+  its Section Rendering API id is the FILE NAME: `cart-drawer`.
+
+  cart.js contract (docs/CONTRACTS.md §5):
+  - #CartDrawer is the innerHTML-swap target — everything inside the
+    <aside> re-renders wholesale from the sections response; state
+    (`.open`, aria-hidden, inert) lives on the <aside> itself and on
+    [data-cart-overlay], both untouched by the swap.
+  - Hooks: [data-cart-overlay], [data-cart-close], [data-cart-items],
+    [data-cart-subtotal], [data-cart-error].
+  - The drawer ships `inert` + aria-hidden; cart.js lifts both when
+    opening. No-JS users never interact with it (offscreen) — they
+    use the /cart page (sections/main-cart).
+
+  Free-shipping bar: global settings show_free_shipping_bar /
+  free_shipping_threshold via the free-shipping-bar snippet; the
+  .fsb-* CSS lives in the stylesheet below (aggregated theme-wide,
+  reused by main-cart).
+{% endcomment %}
+
+<div class="cart-overlay" data-cart-overlay hidden></div>
+<aside
+  class="cart-drawer"
+  id="CartDrawer"
+  data-section-id="{{ section.id }}"
+  role="dialog"
+  aria-modal="true"
+  aria-label="{{ 'cart.title' | t }}"
+  aria-hidden="true"
+  tabindex="-1"
+  inert
+>
+  <div class="cart-head">
+    <span class="tag">[ {{ 'cart.title' | t }} ]</span>
+    <button type="button" class="cart-close snap" data-cart-close aria-label="{{ 'accessibility.close_cart' | t }}">[ {{ 'general.close' | t }} ]</button>
+  </div>
+
+  {% render 'free-shipping-bar' %}
+
+  <div class="cart-error" data-cart-error role="alert" hidden></div>
+
+  <div class="cart-items" data-cart-items>
+    {%- if cart == empty -%}
+      <div class="cart-empty">[ {{ 'cart.empty' | t }} ]</div>
+    {%- else -%}
+      {%- for item in cart.items -%}
+        {% render 'cart-drawer-line', item: item %}
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+
+  <div class="cart-foot">
+    <div class="cart-sum">
+      <span>[ {{ 'cart.subtotal' | t }} ]</span>
+      <b data-cart-subtotal>{{ cart.total_price | money }}</b>
+    </div>
+    <form action="{{ routes.cart_url }}" method="post">
+      <button
+        type="submit"
+        name="checkout"
+        class="cart-checkout snap"
+        {% if cart == empty %}disabled{% endif %}
+      >[ {{ 'cart.checkout' | t }} ]</button>
+    </form>
+    <a href="{{ routes.cart_url }}" class="cart-view snap">[ {{ 'cart.view_bag' | t }} ]</a>
+    {%- if settings.cart_note != blank -%}
+      <p class="cart-note">{{ settings.cart_note | escape }}</p>
+    {%- endif -%}
+  </div>
+</aside>
+
+{% stylesheet %}
+/* Scroll lock while the ledger is open (toggled by cart.js). */
+body.cart-open { overflow: hidden; }
+
+/* Line items extend theme.css §4 .cart-row with a plate thumb column. */
+.cart-drawer .cart-row {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+  align-items: start;
+}
+.ci-plate {
+  width: 64px;
+  height: 64px;
+  background: var(--plate);
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.ci-plate img { width: 100%; height: 100%; object-fit: contain; }
+.ci-body { min-width: 0; }
+.ci-name a:hover { color: var(--signal); }
+.ci-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s2);
+  margin-top: 10px;
+}
+.ci-qty { display: inline-flex; align-items: stretch; border: 1px solid var(--line); }
+.ci-qty-btn {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bone-dim);
+  font-size: 13px;
+  line-height: 1;
+}
+.ci-qty-btn:hover { color: #fff; }
+.ci-qty-val {
+  min-width: 26px;
+  padding: 0 4px;
+  text-align: center;
+  font-size: 11px;
+  line-height: 26px;
+  color: var(--bone);
+  border-left: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+}
+.ci-price { font-size: 11px; letter-spacing: 0.08em; color: var(--bone); }
+
+/* Inline error region (sold out etc. — Shopify's description text). */
+.cart-error {
+  border: 1px solid var(--signal);
+  color: var(--signal);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 10px var(--s2);
+  margin-bottom: var(--s2);
+}
+
+/* View full ledger link under the checkout directive. */
+.cart-view {
+  display: block;
+  text-align: center;
+  margin-top: 10px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+}
+.cart-view:hover { color: #fff; }
+
+/* Free-shipping progress (.fsb-*) — shared with sections/main-cart. */
+.fsb { margin-bottom: var(--s3); }
+.fsb-msg {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+  margin-bottom: 8px;
+}
+.fsb-msg--ok { color: var(--bone); }
+.fsb-track { height: 4px; border: 1px solid var(--line); background: var(--panel); }
+.fsb-fill {
+  height: 100%;
+  width: var(--fsb-pct, 0%);
+  background: var(--signal);
+  transition: width 150ms ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .fsb-fill { transition: none; }
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Cart drawer",
+  "settings": []
+}
+{% endschema %}

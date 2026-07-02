@@ -1,0 +1,37 @@
+{% comment %}
+  price — brutalist money display.
+
+  Accepts EITHER:
+    product: {Object} product — uses product.price / product.compare_at_price
+    price:   {Number} raw money value in the smallest currency unit
+
+  Appends "// INC. VAT" only when cart.taxes_included.
+  Compare-at prices render struck-through with the current price in signal red.
+
+  Usage:
+    {% render 'price', product: product %}
+    {% render 'price', price: variant.price %}
+{% endcomment %}
+
+{%- liquid
+  if product != blank
+    assign price_value = product.price
+    assign compare_value = product.compare_at_price
+  else
+    assign price_value = price
+    assign compare_value = nil
+  endif
+
+  assign on_sale = false
+  if compare_value != blank and compare_value > price_value
+    assign on_sale = true
+  endif
+-%}
+
+<span class="price{% if on_sale %} price--sale{% endif %}">
+  {%- if on_sale -%}
+    <s class="price__compare">{{ compare_value | money }}</s>
+  {%- endif -%}
+  <span class="price__current" data-price>{{ price_value | money }}</span>
+  {%- if cart.taxes_included %} <span class="price__vat">{{ 'products.inc_vat' | t }}</span>{% endif -%}
+</span>

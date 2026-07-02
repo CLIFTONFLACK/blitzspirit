@@ -1,0 +1,13 @@
+# BlitzSpirit ISSUE_001 — theme-check configuration
+# Extends Shopify's recommended defaults. Deliberate suppressions are
+# documented inline; do not silence a check without a reason.
+
+root: .
+extends: theme-check:recommended
+
+ignore:
+  - docs/*
+  - node_modules/*
+
+# Phase-0 stubs intentionally ship empty JS modules that Phase 1 fills in.
+# No checks are disabled globally; keep it strict.

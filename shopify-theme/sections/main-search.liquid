@@ -1,0 +1,204 @@
+{% comment %}
+  main-search — brutalist storefront search.
+
+  - Header tag + .chunk heading (shows search.terms when performed).
+  - GET form to routes.search_url; a ?type= filter is preserved via a
+    hidden input when the current search is type-scoped (search.types).
+  - Results paginated: products render via the product-card snippet in
+    a card grid; articles/pages render as tag-styled ledger rows.
+  - Empty state uses schema-default copy (no locale key yet — flagged
+    for Phase 2).
+{% endcomment %}
+
+{%- liquid
+  assign per_page = section.settings.results_per_page | default: 12
+-%}
+
+<div class="main-search" data-section-id="{{ section.id }}">
+  <header class="main-search-head">
+    {%- if section.settings.tag_line != blank -%}
+      <p class="tag main-search-eyebrow">{{ section.settings.tag_line | escape }}</p>
+    {%- endif -%}
+    {%- if search.performed and search.terms != blank -%}
+      <h1 class="chunk main-search-title">“{{ search.terms | escape }}”</h1>
+    {%- else -%}
+      <h1 class="chunk main-search-title">{{ 'search.title' | t }}</h1>
+    {%- endif -%}
+
+    <form action="{{ routes.search_url }}" method="get" role="search" class="main-search-form">
+      <label class="visually-hidden" for="SearchInput">{{ 'search.placeholder' | t }}</label>
+      <div class="main-search-bar">
+        <input
+          id="SearchInput"
+          class="main-search-input"
+          type="search"
+          name="q"
+          value="{{ search.terms | escape }}"
+          placeholder="{{ 'search.placeholder' | t }}"
+          autocomplete="off"
+        >
+        {%- if search.performed and search.types.size > 0 and search.types.size < 3 -%}
+          <input type="hidden" name="type" value="{{ search.types | join: ',' }}">
+        {%- endif -%}
+        <button type="submit" class="main-search-submit snap">[ {{ 'search.submit' | t }} ]</button>
+      </div>
+    </form>
+
+    {%- if search.performed -%}
+      <p class="tag tag-mute main-search-count">[ {{ 'search.results_with_count' | t: count: search.results_count }} ]</p>
+    {%- endif -%}
+  </header>
+
+  {%- if search.performed -%}
+    {%- if search.results_count == 0 -%}
+      <div class="main-search-empty">
+        <p class="tag main-search-empty-tag">{{ section.settings.empty_heading | escape }}</p>
+        {%- if section.settings.empty_text != blank -%}
+          <p class="main-search-empty-text">{{ section.settings.empty_text | escape }}</p>
+        {%- endif -%}
+      </div>
+    {%- else -%}
+      {%- paginate search.results by per_page -%}
+        {%- assign product_results = search.results | where: 'object_type', 'product' -%}
+        {%- assign other_count = search.results.size | minus: product_results.size -%}
+
+        {%- if product_results.size > 0 -%}
+          <div class="main-search-grid">
+            {%- for item in product_results -%}
+              {% render 'product-card', product: item, show_badge: true %}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        {%- if other_count > 0 -%}
+          <div class="main-search-rows">
+            {%- for item in search.results -%}
+              {%- unless item.object_type == 'product' -%}
+                <a href="{{ item.url }}" class="main-search-row snap">
+                  <span class="tag tag-mute main-search-row-type">[ {{ item.object_type | upcase }} ]</span>
+                  <span class="main-search-row-title">{{ item.title | escape }}</span>
+                  <span class="main-search-row-arrow" aria-hidden="true">{% render 'icon', name: 'arrow' %}</span>
+                </a>
+              {%- endunless -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        {%- render 'pagination', paginate: paginate -%}
+      {%- endpaginate -%}
+    {%- endif -%}
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+.main-search { max-width: 1027px; margin: 0 auto; padding: var(--s6) var(--s3) var(--s5); }
+.main-search-head { margin-bottom: var(--s4); }
+.main-search-eyebrow { margin-bottom: var(--s2); }
+.main-search-title {
+  color: #fff;
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  line-height: 0.92;
+  margin-bottom: var(--s3);
+  overflow-wrap: anywhere;
+}
+.main-search-bar { display: flex; border: 1px solid var(--bone-dim); background: rgba(0, 0, 0, 0.3); max-width: 640px; }
+.main-search-input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 16px;
+}
+.main-search-input::placeholder { color: var(--bone-mute); }
+.main-search-input:focus { outline: none; }
+.main-search-submit {
+  border: none;
+  border-left: 1px solid var(--bone-dim);
+  background: var(--signal);
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 0 24px;
+  white-space: nowrap;
+}
+.main-search-submit:hover { background: #fff; color: var(--ink); }
+.main-search-count { display: block; margin-top: var(--s2); }
+.main-search-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; grid-auto-rows: 1fr; }
+.main-search-rows { margin-top: var(--s4); border: 1px solid var(--line); }
+.main-search-grid + .main-search-rows { margin-top: var(--s4); }
+.main-search-row {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  padding: 14px var(--s2);
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+}
+.main-search-rows .main-search-row:last-child { border-bottom: none; }
+.main-search-row:hover { background: var(--panel-2); }
+.main-search-row-type { flex-shrink: 0; }
+.main-search-row-title {
+  color: var(--bone);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  flex: 1;
+  min-width: 0;
+}
+.main-search-row-arrow { display: inline-flex; color: var(--bone-mute); }
+.main-search-row:hover .main-search-row-arrow { color: var(--signal); }
+.main-search-empty { border: 1px solid var(--line); background: var(--panel); padding: var(--s6) var(--s3); text-align: center; }
+.main-search-empty-tag { margin-bottom: var(--s2); }
+.main-search-empty-text { color: var(--bone-dim); font-size: 13px; line-height: 1.6; max-width: 52ch; margin: 0 auto; }
+@media (max-width: 860px) {
+  .main-search-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 540px) {
+  .main-search-grid { grid-template-columns: 1fr; }
+  .main-search-bar { flex-direction: column; }
+  .main-search-submit { border-left: none; border-top: 1px solid var(--bone-dim); padding: 14px; }
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Search",
+  "settings": [
+    {
+      "type": "text",
+      "id": "tag_line",
+      "label": "Header tag",
+      "default": "[ SEARCH // THE LEDGER ]"
+    },
+    {
+      "type": "range",
+      "id": "results_per_page",
+      "label": "Results per page",
+      "min": 6,
+      "max": 24,
+      "step": 3,
+      "default": 12
+    },
+    {
+      "type": "text",
+      "id": "empty_heading",
+      "label": "Empty state tag",
+      "default": "[ NOTHING FILED UNDER THAT ]"
+    },
+    {
+      "type": "text",
+      "id": "empty_text",
+      "label": "Empty state text",
+      "default": "Try a different word. Or put the kettle on and start again."
+    }
+  ]
+}
+{% endschema %}

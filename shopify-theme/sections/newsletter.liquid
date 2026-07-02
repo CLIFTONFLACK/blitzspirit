@@ -1,0 +1,85 @@
+{% comment %}
+  newsletter — generic DISPATCHES capture band (.nws-* family, per about.html).
+  Form is the shared newsletter-form snippet ({% form 'customer' %},
+  tags newsletter,backbone10; success shows settings.discount_code).
+{% endcomment %}
+
+{%- capture nlf_id -%}Newsletter-{{ section.id }}{%- endcapture -%}
+
+<section class="newsletter" data-section-id="{{ section.id }}">
+  <div class="nws-inner">
+    {%- if section.settings.index_tag != blank -%}
+      <p class="led-index tag nws-index">[ {{ section.settings.index_tag | escape }} ]</p>
+    {%- endif -%}
+
+    {%- if section.settings.heading != blank -%}
+      <h2 class="chunk nws-head">{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+
+    {%- if section.settings.body != blank -%}
+      <p>{{ section.settings.body | escape }}</p>
+    {%- endif -%}
+
+    {% render 'newsletter-form',
+      id: nlf_id,
+      button_label: section.settings.button_label
+    %}
+  </div>
+</section>
+
+{% stylesheet %}
+.newsletter .nws-index { display: inline-block; margin-bottom: var(--s2); }
+.newsletter .nws-head { font-size: clamp(2rem, 4vw, 3rem); }
+
+/* Shared newsletter-form snippet states (.nlf-*) — the snippet renders in
+   this band, the homepage promo band, the signup modal and the password
+   splash; these rules are global via the aggregated section stylesheet. */
+.nlf-success {
+  border: 1px solid var(--signal);
+  padding: var(--s3);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+}
+.nlf-success-line { color: #fff; letter-spacing: 0.16em; }
+.nlf-code { color: var(--signal); }
+.nlf-error { color: var(--signal); margin-bottom: var(--s1); }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "index_tag",
+      "label": "Index tag",
+      "default": "DISPATCHES // HOME_GUARD"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Wakey wakey."
+    },
+    {
+      "type": "textarea",
+      "id": "body",
+      "label": "Copy",
+      "default": "First word on new drops, restocks and stories worth telling — plus 10% off your first order. No spam. That would be nonsense."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "[ SEND IT ]"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter"
+    }
+  ]
+}
+{% endschema %}

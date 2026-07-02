@@ -1,0 +1,142 @@
+{% comment %}
+  hero — full-viewport concrete hero (index.html BLOCK 1, 1:1 port).
+  Floating sticker logo (image setting, asset fallback), corner system
+  tag, ChunkFive headline, tagline, status line, CTA, hero-foot tag.
+  Framework CSS lives in theme.css §12a (incl. sticker-float keyframes
+  and the prefers-reduced-motion guard). The wall texture defaults to
+  var(--tex-hero-bg) from css-variables; a section image setting
+  overrides it via a scoped custom property.
+{% endcomment %}
+
+{%- liquid
+  assign cta_url = section.settings.cta_link | default: routes.all_products_collection_url
+-%}
+
+<section
+  class="hero"
+  data-section-id="{{ section.id }}"
+  {%- if section.settings.background_image != blank %}
+  style="--tex-hero-bg: url('{{ section.settings.background_image | image_url: width: 2400 }}')"
+  {%- endif %}
+>
+  <div class="hero-corner">
+    {%- if section.settings.sticker_image != blank -%}
+      <img
+        class="hero-logo"
+        src="{{ section.settings.sticker_image | image_url: width: 600 }}"
+        srcset="
+          {{ section.settings.sticker_image | image_url: width: 300 }} 300w,
+          {{ section.settings.sticker_image | image_url: width: 600 }} 600w,
+          {{ section.settings.sticker_image | image_url: width: 1020 }} 1020w
+        "
+        sizes="(min-width: 1310px) 510px, 39vw"
+        alt="{{ section.settings.sticker_image.alt | default: shop.name | escape }}"
+        width="{{ section.settings.sticker_image.width }}"
+        height="{{ section.settings.sticker_image.height }}"
+        loading="eager"
+        fetchpriority="high"
+      >
+    {%- else -%}
+      <img
+        class="hero-logo"
+        src="{{ 'blitzspirit-sticker.png' | asset_url }}"
+        alt="{{ shop.name | escape }}"
+        width="585"
+        height="250"
+        loading="eager"
+        fetchpriority="high"
+      >
+    {%- endif -%}
+    {%- if section.settings.corner_tag != blank -%}
+      <span class="tag tag-mute">{{ section.settings.corner_tag | escape }}</span>
+    {%- endif -%}
+  </div>
+
+  <div class="hero-title-wrap">
+    {%- if section.settings.heading != blank -%}
+      <h1 class="chunk">{{ section.settings.heading | escape }}</h1>
+    {%- endif -%}
+    {%- if section.settings.tagline != blank -%}
+      <div class="hero-tagline chunk">{{ section.settings.tagline | escape }}</div>
+    {%- endif -%}
+    {%- if section.settings.status_line != blank -%}
+      <div class="hero-status tag tag-mute">{{ section.settings.status_line | escape }}</div>
+    {%- endif -%}
+    {%- if section.settings.cta_label != blank -%}
+      <a class="hero-cta" href="{{ cta_url }}">{{ section.settings.cta_label | escape }}</a>
+    {%- endif -%}
+  </div>
+
+  <div class="hero-foot">
+    {%- if section.settings.foot_text != blank -%}
+      <span class="tag tag-mute">{{ section.settings.foot_text | escape }}</span>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background wall texture",
+      "info": "Overrides the hero wall texture from theme settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "sticker_image",
+      "label": "Sticker logo",
+      "info": "Falls back to the packaged BLITZSPIRIT sticker"
+    },
+    {
+      "type": "text",
+      "id": "corner_tag",
+      "label": "Corner system tag",
+      "default": "SYS_REF // 47-CONCRETE-SEAMS"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Headline",
+      "default": "NOT HERE TO BE LIKED."
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "PROUD. UNAPOLOGETIC. OCCASIONALLY DIFFICULT."
+    },
+    {
+      "type": "text",
+      "id": "status_line",
+      "label": "Status line",
+      "default": "STATUS: UNMOVING // PROCESS: UNFILTERED // OUTPUT: UNITY"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA label",
+      "default": "[ SEE THE COLLECTION ]"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA link",
+      "info": "Defaults to the all-products collection"
+    },
+    {
+      "type": "text",
+      "id": "foot_text",
+      "label": "Foot tag",
+      "default": "EST. 2026 // BRITISH STUBBORNNESS"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero"
+    }
+  ]
+}
+{% endschema %}

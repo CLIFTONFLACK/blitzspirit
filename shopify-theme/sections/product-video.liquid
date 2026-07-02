@@ -1,0 +1,86 @@
+{% comment %}
+  product-video — [ ASSET // VIDEO ] band (Workstream B).
+
+  Source priority (never a broken player):
+    1. product.metafields.custom.video (file_reference) — only when the
+       referenced file is actually a video (guarded on .sources).
+    2. Section video setting.
+    3. Brutalist placeholder frame, ported from product.html:
+       "[ ▶ PLAY ]" + "[ VIDEO ASSET PENDING // UPLOAD TO ACTIVATE ]".
+{% endcomment %}
+
+{%- liquid
+  assign mf_video = product.metafields.custom.video.value
+  assign has_mf_video = false
+  if mf_video != blank and mf_video.sources != blank
+    assign has_mf_video = true
+  endif
+-%}
+
+<section class="pdp-video" data-section-id="{{ section.id }}">
+  <div class="video-label tag">[ {{ section.settings.label | escape }} ]</div>
+
+  {%- if has_mf_video -%}
+    <div class="video-frame video-frame--live">
+      {{ mf_video | video_tag: controls: true, preload: 'metadata' }}
+    </div>
+  {%- elsif section.settings.video != blank -%}
+    <div class="video-frame video-frame--live">
+      {{ section.settings.video | video_tag: controls: true, preload: 'metadata' }}
+    </div>
+  {%- else -%}
+    <div class="video-frame">
+      <span class="video-play tag">[ {{ section.settings.play_label | escape }} ]</span>
+      <span class="video-meta tag">[ {{ section.settings.pending_label | escape }} ]</span>
+    </div>
+  {%- endif -%}
+</section>
+
+{% stylesheet %}
+.video-frame--live { padding: 0; background: #000; }
+.video-frame--live video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+/* The placeholder play chip is decorative — no false affordance. */
+.video-frame:not(.video-frame--live) .video-play { cursor: default; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product video",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label",
+      "default": "ASSET // VIDEO // BEHIND_THE_PRINT"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Fallback video",
+      "info": "Used when the product has no video metafield. Leave both empty for the placeholder frame."
+    },
+    {
+      "type": "text",
+      "id": "play_label",
+      "label": "Placeholder play text",
+      "default": "▶ PLAY"
+    },
+    {
+      "type": "text",
+      "id": "pending_label",
+      "label": "Placeholder status text",
+      "default": "VIDEO ASSET PENDING // UPLOAD TO ACTIVATE"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product video"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,197 @@
+{% comment %}
+  featured-product — the ISSUE_000 50/50 elevated showcase
+  (index.html "THE ESTABLISHMENT" band, 1:1 port).
+
+  LEFT:  signal-outlined plate (plate snippet; eager — first plate on
+         the page). RIGHT: dossier ledger — eyebrow/issue tag, title,
+         dossier copy (richtext override → strapline/custom.dossier/
+         description fallback — same chain as snippets/dossier.liquid,
+         inlined because that snippet emits its own .dossier wrapper
+         and this panel wraps eyebrow + name + form in one), price,
+         and a REAL buy form per the <product-form> contract in
+         docs/CONTRACTS.md.
+
+  Framework CSS lives in theme.css §12b; the signal outline + price
+  styling for the snippet-rendered .plate ship in the stylesheet below.
+  Onboarding: no product selected → placeholder plate + neutral copy.
+{% endcomment %}
+
+{%- liquid
+  assign product = section.settings.product
+
+  assign issue_text = section.settings.issue_override
+  if issue_text == blank
+    assign issue_text = product.metafields.custom.issue | default: 'ISSUE_000 // LIMITED EDITION'
+  endif
+
+  assign title_up = product.title | upcase
+  assign title_first4 = title_up | slice: 0, 4
+
+  assign strapline = product.metafields.custom.strapline
+  assign dossier_meta = product.metafields.custom.dossier
+-%}
+
+<section class="featured" data-section-id="{{ section.id }}">
+  <div class="featured-visual">
+    <span class="item-asset-ref tag">[ {{ issue_text | escape }} ]</span>
+    {% render 'plate',
+      image: product.featured_image,
+      ref_text: section.settings.plate_ref,
+      alt: product.title,
+      priority: true,
+      sizes: '(min-width: 860px) 42vw, 84vw'
+    %}
+  </div>
+
+  <div class="featured-ledger">
+    <div class="dossier">
+      <span class="featured-eyebrow">★ {{ issue_text | escape }}</span>
+
+      {%- if product != blank -%}
+        <h2 class="featured-name chunk">
+          {%- if title_first4 == 'THE ' -%}
+            <span class="the">THE</span> {{ title_up | remove_first: 'THE ' }}
+          {%- else -%}
+            {{ title_up }}
+          {%- endif -%}
+        </h2>
+
+        {%- if section.settings.dossier != blank -%}
+          {{ section.settings.dossier }}
+        {%- else -%}
+          {%- if strapline != blank -%}
+            <p>
+              <span class="hit">// {{ title_up }}</span>
+              &mdash; {{ strapline | escape }}
+            </p>
+          {%- endif -%}
+          {%- if dossier_meta != blank -%}
+            {{ dossier_meta | metafield_tag }}
+          {%- elsif product.description != blank -%}
+            <div class="dossier-desc">{{ product.description }}</div>
+          {%- endif -%}
+        {%- endif -%}
+
+        {%- if section.settings.what_label != blank -%}
+          <a class="what-link snap" href="{{ product.url }}">
+            {{- section.settings.what_label | escape }} '{{ title_up }}'
+          </a>
+        {%- endif -%}
+
+        <div class="featured-price tag">{% render 'price', product: product %}</div>
+
+        <product-form data-section-id="{{ section.id }}">
+          {%- form 'product', product -%}
+            <input
+              type="hidden"
+              name="id"
+              value="{{ product.selected_or_first_available_variant.id }}"
+            >
+
+            {%- unless product.has_only_default_variant -%}
+              <div class="cw-size-wrap">
+                {%- for option in product.options_with_values -%}
+                  {% render 'option-pills', option: option, option_index: option.position %}
+                {%- endfor -%}
+              </div>
+            {%- endunless -%}
+
+            <script type="application/json" data-variant-json>
+              {{ product.variants | json }}
+            </script>
+
+            <div class="actions">
+              <button
+                type="submit"
+                name="add"
+                class="directive snap"
+                {% unless product.available %}disabled{% endunless %}
+              >
+                {%- if product.available -%}
+                  [ {{ 'products.add_to_cart' | t }} ]
+                {%- else -%}
+                  [ {{ 'products.sold_out' | t }} ]
+                {%- endif -%}
+              </button>
+            </div>
+          {%- endform -%}
+        </product-form>
+      {%- else -%}
+        <h2 class="featured-name chunk">FEATURED PRODUCT</h2>
+        {%- if section.settings.dossier != blank -%}
+          {{ section.settings.dossier }}
+        {%- else -%}
+          <p>SELECT A PRODUCT IN THE THEME EDITOR TO POPULATE THIS SHOWCASE.</p>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+.featured-visual .plate {
+  width: min(84%, 500px);
+  aspect-ratio: 1 / 1.12;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.7);
+  outline: 2px solid var(--signal);
+  outline-offset: 10px;
+}
+.featured-visual .plate svg {
+  width: 100%;
+  height: 100%;
+}
+.featured .dossier .featured-price {
+  display: block;
+  margin: var(--s3) 0 0;
+  color: var(--dossier-ink);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+}
+.featured .dossier strong {
+  font-weight: 400;
+  color: #0a0a0a;
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Featured product",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "text",
+      "id": "issue_override",
+      "label": "Issue tag override",
+      "info": "Falls back to the product's custom.issue metafield, then ISSUE_000 // LIMITED EDITION"
+    },
+    {
+      "type": "richtext",
+      "id": "dossier",
+      "label": "Dossier copy override",
+      "info": "Falls back to the product's custom.dossier metafield, then its description"
+    },
+    {
+      "type": "text",
+      "id": "what_label",
+      "label": "Product link label",
+      "default": "WHAT IS",
+      "info": "Rendered as WHAT IS 'PRODUCT NAME' — leave blank to hide the link"
+    },
+    {
+      "type": "text",
+      "id": "plate_ref",
+      "label": "Plate corner reference",
+      "default": "BS_002 // ISSUE_000"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured product"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,44 @@
+{% comment %}
+  swatch — maps merchant-friendly colour option values to the
+  brutalist display names + hex dots.
+
+  Params:
+    value: {String} colour option value, e.g. 'Black', 'Off-White'
+
+  Map (unknown values fall through to upcased value / grey):
+    Black     → OXY_BLACK   #0a0a0a
+    Off-White → CHALK_WHITE #e7e7e2
+    White     → CHALK_WHITE #f5f5f2
+    Navy      → SYSTEM_NAVY #1f2a3d
+    Stone     → CHALK_STONE #e8dfc0
+
+  Output: <span class="dot" style="--dot:#…"></span><span class="cw-name">LABEL</span>
+  (inside .coll-dots the .cw-name is hidden by theme.css — dot only)
+
+  Usage:
+    {% render 'swatch', value: value %}
+{% endcomment %}
+
+{%- liquid
+  assign cw_label = value | upcase
+  assign cw_hex = '#777'
+
+  case value
+    when 'Black'
+      assign cw_label = 'OXY_BLACK'
+      assign cw_hex = '#0a0a0a'
+    when 'Off-White'
+      assign cw_label = 'CHALK_WHITE'
+      assign cw_hex = '#e7e7e2'
+    when 'White'
+      assign cw_label = 'CHALK_WHITE'
+      assign cw_hex = '#f5f5f2'
+    when 'Navy'
+      assign cw_label = 'SYSTEM_NAVY'
+      assign cw_hex = '#1f2a3d'
+    when 'Stone'
+      assign cw_label = 'CHALK_STONE'
+      assign cw_hex = '#e8dfc0'
+  endcase
+-%}
+<span class="dot" style="--dot:{{ cw_hex }}"></span><span class="cw-name">{{ cw_label }}</span>

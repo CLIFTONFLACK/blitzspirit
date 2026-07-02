@@ -1,0 +1,86 @@
+{% comment %}
+  css-variables — the ONLY inline CSS in the theme.
+  Emits :root design tokens from theme settings (defaults = static-site values
+  from newui.css), the ChunkFive @font-face, and texture custom properties.
+  image_picker settings cannot carry defaults, so textures fall back to the
+  theme-owned copies in assets/.
+
+  Consumed by assets/theme.css and every per-section {% stylesheet %}.
+{% endcomment %}
+
+{%- liquid
+  if settings.texture_hero != blank
+    assign tex_hero = settings.texture_hero | image_url: width: 2000
+  else
+    assign tex_hero = 'hero-panel-concrete.jpg' | asset_url
+  endif
+
+  if settings.texture_hero_bg != blank
+    assign tex_hero_bg = settings.texture_hero_bg | image_url: width: 2000
+  else
+    assign tex_hero_bg = 'hero-wall-v3.jpg' | asset_url
+  endif
+
+  if settings.texture_char != blank
+    assign tex_char = settings.texture_char | image_url: width: 2000
+  else
+    assign tex_char = 'dark-charcoal-concrete.jpg' | asset_url
+  endif
+
+  if settings.texture_crack != blank
+    assign tex_crack = settings.texture_crack | image_url: width: 2000
+  else
+    assign tex_crack = 'dark-cracked-concrete.jpg' | asset_url
+  endif
+-%}
+
+<style>
+  @font-face {
+    font-family: 'ChunkFive';
+    src: url('{{ 'chunkfive.woff2' | asset_url }}') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  {%- if settings.use_custom_font and settings.custom_display_font != blank %}
+  {{ settings.custom_display_font | font_face: font_display: 'swap' }}
+  {%- endif %}
+
+  :root {
+    /* Colour tokens (settings-driven; defaults = newui.css) */
+    --ink: {{ settings.color_ink | default: '#0A0A0A' }};
+    --panel: {{ settings.color_panel | default: '#111111' }};
+    --panel-2: {{ settings.color_panel_2 | default: '#181818' }};
+    --line: {{ settings.color_line | default: '#2a2a2a' }};
+    --line-bri: {{ settings.color_line_bri | default: '#3a3a3a' }};
+    --bone: {{ settings.color_bone | default: '#ECECEC' }};
+    --bone-dim: {{ settings.color_bone_dim | default: '#8A8A8A' }};
+    --bone-mute: {{ settings.color_bone_mute | default: '#5A5A5A' }};
+    --plate: {{ settings.color_plate | default: '#EAE8E2' }};
+    --signal: {{ settings.color_signal | default: '#FF0000' }};
+    --brand-red: {{ settings.color_brand_red | default: '#8B2020' }};
+
+    /* Texture tokens (image_picker with asset fallbacks) */
+    --tex-hero: url('{{ tex_hero }}');
+    --tex-hero-bg: url('{{ tex_hero_bg }}');
+    --tex-char: url('{{ tex_char }}');
+    --tex-crack: url('{{ tex_crack }}');
+
+    /* Type stacks */
+    --mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, 'Roboto Mono', monospace;
+    {%- if settings.use_custom_font and settings.custom_display_font != blank %}
+    --display-font: {{ settings.custom_display_font.family }}, {{ settings.custom_display_font.fallback_families }};
+    {%- else %}
+    --display-font: 'ChunkFive', Georgia, serif;
+    {%- endif %}
+
+    /* Spacing scale */
+    --s1: 8px;
+    --s2: 16px;
+    --s3: 24px;
+    --s4: 32px;
+    --s5: 48px;
+    --s6: 64px;
+    --s7: 96px;
+  }
+</style>

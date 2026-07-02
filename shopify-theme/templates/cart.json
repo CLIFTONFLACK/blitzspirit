@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-cart",
+      "settings": {
+        "heading": "Full Ledger."
+      }
+    },
+    "cross_sell": {
+      "type": "cross-sell",
+      "settings": {
+        "use_recommendations": false
+      }
+    }
+  },
+  "order": ["main", "cross_sell"]
+}

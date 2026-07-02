@@ -1,0 +1,46 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {}
+    },
+    "featured": {
+      "type": "featured-product",
+      "settings": {}
+    },
+    "promo": {
+      "type": "promo-band",
+      "settings": {}
+    },
+    "archive": {
+      "type": "apparel-archive",
+      "blocks": {
+        "item_1": {
+          "type": "item",
+          "settings": {}
+        },
+        "item_2": {
+          "type": "item",
+          "settings": {}
+        },
+        "item_3": {
+          "type": "item",
+          "settings": {}
+        },
+        "item_4": {
+          "type": "item",
+          "settings": {}
+        }
+      },
+      "block_order": ["item_1", "item_2", "item_3", "item_4"],
+      "settings": {
+        "auto_alternate": true
+      }
+    },
+    "equipment": {
+      "type": "equipment-feature",
+      "settings": {}
+    }
+  },
+  "order": ["hero", "featured", "promo", "archive", "equipment"]
+}

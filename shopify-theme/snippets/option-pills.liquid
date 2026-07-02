@@ -1,0 +1,60 @@
+{% comment %}
+  option-pills — aria-pressed button group for product options.
+  Used for BOTH colour (.cw-opt + swatch) and size (.size-pill).
+  product-form.js reads data-option-index / data-value to resolve
+  the selected variant.
+
+  Params:
+    option:       {Object} product option object (option_with_values)
+    option_index: {Number} 1-based option position (option.position)
+
+  The value matching option.selected_value (first available variant's
+  value by default) renders pressed.
+
+  Usage:
+    {% for option in product.options_with_values %}
+      {% render 'option-pills', option: option, option_index: option.position %}
+    {% endfor %}
+{% endcomment %}
+
+{%- liquid
+  assign name_down = option.name | downcase
+  assign is_colour = false
+  if name_down == 'colour' or name_down == 'color'
+    assign is_colour = true
+  endif
+-%}
+
+{%- if is_colour -%}
+  <div class="cw" data-option-group data-option-index="{{ option_index }}">
+    <span class="cw-label tag">[ {{ 'products.choose_colour' | t }} ]</span>
+    <div class="cw-opts">
+      {%- for value in option.values -%}
+        <button
+          type="button"
+          class="cw-opt snap"
+          aria-pressed="{% if value == option.selected_value %}true{% else %}false{% endif %}"
+          data-option-index="{{ option_index }}"
+          data-value="{{ value | escape }}"
+        >
+          {%- render 'swatch', value: value -%}
+        </button>
+      {%- endfor -%}
+    </div>
+  </div>
+{%- else -%}
+  <div class="sizes" data-option-group data-option-index="{{ option_index }}">
+    <span class="tag" style="margin-right:4px">[ {{ 'products.choose_size' | t }} ]</span>
+    {%- for value in option.values -%}
+      <button
+        type="button"
+        class="size-pill snap"
+        aria-pressed="{% if value == option.selected_value %}true{% else %}false{% endif %}"
+        data-option-index="{{ option_index }}"
+        data-value="{{ value | escape }}"
+      >
+        {{- value | escape -}}
+      </button>
+    {%- endfor -%}
+  </div>
+{%- endif -%}

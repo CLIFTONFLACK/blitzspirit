@@ -1,0 +1,116 @@
+{% comment %}
+  main-blog — the DISPATCHES index. Tag rows: mono date, chunk title,
+  excerpt. Paginated.
+{% endcomment %}
+
+<div class="main-blog" data-section-id="{{ section.id }}">
+  <header class="main-blog-head">
+    {%- if section.settings.index_tag != blank -%}
+      <p class="led-index tag">[ {{ section.settings.index_tag | escape }} ]</p>
+    {%- endif -%}
+    <h1 class="chunk main-blog-title">{{ blog.title | escape }}</h1>
+  </header>
+
+  {%- paginate blog.articles by section.settings.per_page -%}
+    {%- if blog.articles.size > 0 -%}
+      <div class="main-blog-list">
+        {%- for article in blog.articles -%}
+          <article class="main-blog-row">
+            <p class="tag main-blog-date">
+              [ {{ article.published_at | date: '%d.%m.%Y' }}
+              {%- if section.settings.show_author and article.author != blank %} // {{ article.author | upcase | escape }}{% endif %} ]
+            </p>
+            <h2 class="chunk main-blog-row-title">
+              <a href="{{ article.url }}">{{ article.title | escape }}</a>
+            </h2>
+            {%- assign excerpt = article.excerpt_or_content | strip_html | truncate: 180 -%}
+            {%- if excerpt != blank -%}
+              <p class="main-blog-excerpt">{{ excerpt }}</p>
+            {%- endif -%}
+            <a href="{{ article.url }}" class="tag main-blog-more">{{ section.settings.read_more_label | escape }}</a>
+          </article>
+        {%- endfor -%}
+      </div>
+
+      {%- if paginate.pages > 1 -%}
+        {% render 'pagination', paginate: paginate %}
+      {%- endif -%}
+    {%- else -%}
+      <p class="tag tag-mute main-blog-empty">{{ section.settings.empty_text | escape }}</p>
+    {%- endif -%}
+  {%- endpaginate -%}
+</div>
+
+{% stylesheet %}
+.main-blog { padding: 96px var(--s3) var(--s6); border-bottom: 1px solid var(--line); }
+.main-blog-head { max-width: 860px; margin: 0 auto var(--s5); }
+.main-blog-title { color: #fff; font-size: clamp(2.4rem, 7vw, 5rem); line-height: 0.92; margin-top: var(--s2); }
+.main-blog-list { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; }
+.main-blog-row { border: 1px solid var(--line); background: var(--panel); padding: var(--s3); }
+.main-blog-row + .main-blog-row { margin-top: -1px; }
+.main-blog-row:hover { background: var(--panel-2); }
+.main-blog-date { color: var(--bone-mute); margin-bottom: var(--s1); }
+.main-blog-row-title { font-size: clamp(1.4rem, 3.5vw, 2.2rem); margin-bottom: var(--s1); }
+.main-blog-row-title a { color: #fff; }
+.main-blog-row-title a:hover { color: var(--signal); }
+.main-blog-excerpt {
+  color: var(--bone-dim);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1.75;
+  max-width: 62ch;
+  margin-bottom: var(--s2);
+}
+.main-blog-more { color: var(--bone); }
+.main-blog-more:hover { color: var(--signal); }
+.main-blog-empty {
+  max-width: 860px;
+  margin: 0 auto;
+  border: 1px dashed var(--line);
+  padding: var(--s5) var(--s3);
+  text-align: center;
+  display: block;
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Blog",
+  "settings": [
+    {
+      "type": "text",
+      "id": "index_tag",
+      "label": "Index tag",
+      "default": "DISPATCHES // FIELD_REPORTS"
+    },
+    {
+      "type": "range",
+      "id": "per_page",
+      "label": "Dispatches per page",
+      "min": 4,
+      "max": 24,
+      "step": 2,
+      "default": 12
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Show author",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "read_more_label",
+      "label": "Read link label",
+      "default": "[ READ THE DISPATCH ]"
+    },
+    {
+      "type": "text",
+      "id": "empty_text",
+      "label": "Empty state",
+      "default": "[ NOTHING DECLASSIFIED YET // FIRST DISPATCH IMMINENT ]"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,16 @@
+{
+  "type": "footer",
+  "name": "Footer group",
+  "sections": {
+    "outro": {
+      "type": "outro",
+      "settings": {
+        "menu": "footer",
+        "strapline": "[ NOT HERE TO BE LIKED ]",
+        "copyright": "© 2026 BLITZSPIRIT SYSTEM CO. // ALL RIGHTS RESERVED // SECURITY OVERRIDE PRIMED.",
+        "show_payment_icons": false
+      }
+    }
+  },
+  "order": ["outro"]
+}

@@ -1,0 +1,235 @@
+{% comment %}
+  apparel-archive — the alternating 50/50 "item" rows
+  (index.html BLOCK 2 APPAREL ARCHIVE, 1:1 port).
+
+  Blocks (type "item", max 8): product picker, optional dossier
+  richtext override, optional index label override, force_dark.
+  Section setting auto_alternate (default true) computes light/dark
+  from the row position when force_dark is unset — matching the
+  source: row 2, 4, … render .item--dark.
+
+  Each row is a REAL buy form per the <product-form> contract in
+  docs/CONTRACTS.md (option pills, hidden id, variant JSON, add
+  button). Dossier copy fallback chain: block override →
+  custom.dossier metafield → product description.
+  Framework CSS lives in theme.css §12d. Onboarding: an empty block
+  renders a placeholder plate + neutral copy.
+{% endcomment %}
+
+<div class="archive" data-section-id="{{ section.id }}">
+  {%- for block in section.blocks -%}
+    {%- liquid
+      assign product = block.settings.product
+
+      assign row_dark = false
+      if block.settings.force_dark
+        assign row_dark = true
+      elsif section.settings.auto_alternate
+        assign row_mod = forloop.index | modulo: 2
+        if row_mod == 0
+          assign row_dark = true
+        endif
+      endif
+
+      assign index_label = block.settings.index_label
+      if index_label == blank
+        assign index_label = product.metafields.custom.index_ref
+      endif
+      if index_label == blank
+        assign index_label = forloop.index | prepend: '#0'
+      endif
+
+      assign issue_text = product.metafields.custom.issue | default: 'ISSUE_001'
+
+      assign title_up = product.title | upcase
+      assign title_first4 = title_up | slice: 0, 4
+
+      assign plate_ref = index_label | append: ' // '
+      if product != blank
+        assign plate_ref = plate_ref | append: title_up
+      else
+        assign plate_ref = plate_ref | append: 'UNASSIGNED'
+      endif
+    -%}
+
+    <article
+      class="item{% if row_dark %} item--dark{% endif %}"
+      data-product-wrap
+      {{ block.shopify_attributes }}
+    >
+      <div class="item-visual">
+        {% render 'plate',
+          image: product.featured_image,
+          ref_text: plate_ref,
+          alt: product.title,
+          sizes: '(min-width: 860px) 41vw, 82vw'
+        %}
+      </div>
+
+      <div class="item-ledger">
+        <div>
+          <div class="dossier">
+            {%- if product != blank -%}
+              <div class="led-index tag">
+                [ ★ {{ issue_text | escape }} // {{ index_label | escape }} // {{ title_up }} ]
+              </div>
+              <h2 class="led-name chunk">
+                {%- if title_first4 == 'THE ' -%}
+                  <span class="the">THE</span> {{ title_up | remove_first: 'THE ' }}
+                {%- else -%}
+                  {{ title_up }}
+                {%- endif -%}
+              </h2>
+
+              {%- if block.settings.dossier != blank -%}
+                {{ block.settings.dossier }}
+              {%- elsif product.metafields.custom.dossier != blank -%}
+                {{ product.metafields.custom.dossier | metafield_tag }}
+              {%- elsif product.description != blank -%}
+                {{ product.description }}
+              {%- endif -%}
+
+              {%- if section.settings.what_label != blank -%}
+                <a class="what-link snap" href="{{ product.url }}">
+                  {{- section.settings.what_label | escape }} '{{ title_up }}'
+                </a>
+              {%- endif -%}
+
+              <product-form data-section-id="{{ section.id }}">
+                {%- form 'product', product -%}
+                  <input
+                    type="hidden"
+                    name="id"
+                    value="{{ product.selected_or_first_available_variant.id }}"
+                  >
+
+                  {%- unless product.has_only_default_variant -%}
+                    <div class="cw-size-wrap">
+                      {%- for option in product.options_with_values -%}
+                        {% render 'option-pills', option: option, option_index: option.position %}
+                      {%- endfor -%}
+                    </div>
+                  {%- endunless -%}
+
+                  <script type="application/json" data-variant-json>
+                    {{ product.variants | json }}
+                  </script>
+
+                  <div class="item-price tag">{% render 'price', product: product %}</div>
+
+                  <div class="actions">
+                    <button
+                      type="submit"
+                      name="add"
+                      class="directive snap"
+                      {% unless product.available %}disabled{% endunless %}
+                    >
+                      {%- if product.available -%}
+                        [ {{ 'products.add_to_cart' | t }} ]
+                      {%- else -%}
+                        [ {{ 'products.sold_out' | t }} ]
+                      {%- endif -%}
+                    </button>
+                  </div>
+                {%- endform -%}
+              </product-form>
+            {%- else -%}
+              <div class="led-index tag">[ ★ {{ index_label | escape }} // UNASSIGNED ]</div>
+              <h2 class="led-name chunk">AWAITING PRODUCT</h2>
+              <p>SELECT A PRODUCT FOR THIS ROW IN THE THEME EDITOR.</p>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </article>
+  {%- endfor -%}
+</div>
+
+{% stylesheet %}
+.item-visual .plate svg {
+  width: 100%;
+  height: 100%;
+}
+.item .dossier .item-price {
+  display: block;
+  margin: var(--s3) 0 0;
+  color: var(--dossier-ink);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+}
+.item--dark .dossier .item-price {
+  color: var(--bone);
+}
+.item .dossier strong {
+  font-weight: 400;
+  color: #0a0a0a;
+}
+.item--dark .dossier strong {
+  color: #fff;
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Apparel archive",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "auto_alternate",
+      "label": "Alternate light/dark rows",
+      "default": true,
+      "info": "Every second row renders dark; Force dark row overrides this per block"
+    },
+    {
+      "type": "text",
+      "id": "what_label",
+      "label": "Product link label",
+      "default": "WHAT IS",
+      "info": "Rendered as WHAT IS 'PRODUCT NAME' — leave blank to hide the links"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "richtext",
+          "id": "dossier",
+          "label": "Dossier copy override",
+          "info": "Falls back to the product's custom.dossier metafield, then its description"
+        },
+        {
+          "type": "text",
+          "id": "index_label",
+          "label": "Index label override",
+          "info": "Falls back to the product's custom.index_ref metafield, then the row number (#01…)"
+        },
+        {
+          "type": "checkbox",
+          "id": "force_dark",
+          "label": "Force dark row",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Apparel archive",
+      "blocks": [
+        { "type": "item" },
+        { "type": "item" },
+        { "type": "item" },
+        { "type": "item" }
+      ]
+    }
+  ]
+}
+{% endschema %}

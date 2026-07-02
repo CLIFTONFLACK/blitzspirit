@@ -1,0 +1,39 @@
+{% comment %}
+  dossier — the light concrete dossier panel (PDP + archive rows).
+
+  Params:
+    product: {Object} product (required)
+
+  Behaviour:
+    - Lead line from product.metafields.custom.strapline rendered as
+      "// TITLE — strapline" with the title in a .hit span.
+    - Body from product.metafields.custom.dossier (rich_text via
+      metafield_tag; bold in the rich text takes the .hit treatment
+      via CSS: .dossier strong).
+    - Falls back to product.description when the dossier metafield
+      is blank. Renders nothing at all when there is no copy.
+
+  Usage:
+    {% render 'dossier', product: product %}
+{% endcomment %}
+
+{%- liquid
+  assign dossier_strap = product.metafields.custom.strapline
+  assign dossier_rich = product.metafields.custom.dossier
+-%}
+
+{%- if dossier_strap != blank or dossier_rich != blank or product.description != blank -%}
+  <div class="dossier">
+    {%- if dossier_strap != blank -%}
+      <p>
+        <span class="hit">// {{ product.title | upcase | escape }}</span>
+        &mdash; {{ dossier_strap | escape }}
+      </p>
+    {%- endif -%}
+    {%- if dossier_rich != blank -%}
+      {{ dossier_rich | metafield_tag }}
+    {%- elsif product.description != blank -%}
+      <div class="dossier-desc">{{ product.description }}</div>
+    {%- endif -%}
+  </div>
+{%- endif -%}

@@ -1,0 +1,85 @@
+{
+  "sections": {
+    "hero": {
+      "type": "page-hero",
+      "settings": {
+        "index_tag": "SYSTEM_DOSSIER",
+        "show_page_ref": true,
+        "heading": "Every design has\na backbone story.",
+        "red_first_line": true,
+        "heading_size": "lg"
+      },
+      "blocks": {
+        "meta-1": { "type": "meta_tag", "settings": { "text": "NOTHING HERE IS DECORATION" } },
+        "meta-2": { "type": "meta_tag", "settings": { "text": "FOUR FILES" } },
+        "meta-3": { "type": "meta_tag", "settings": { "text": "ALL WITH PREVIOUS" } },
+        "meta-4": { "type": "meta_tag", "settings": { "text": "READ UP BEFORE YOU WEAR ONE" } }
+      },
+      "block_order": ["meta-1", "meta-2", "meta-3", "meta-4"]
+    },
+    "roster": {
+      "type": "icon-roster",
+      "settings": {
+        "note_text": "<p>FROM THE ARCHIVE — The bowler-hatted gent first appeared on a BlitzSpirit tee back in 2008. Some characters refuse to stay retired. More files will be declassified as new designs drop — join the Home Guard to get them first.</p>",
+        "note_cta_label": "[ JOIN THE HOME GUARD ]"
+      },
+      "blocks": {
+        "boudica": {
+          "type": "icon",
+          "settings": {
+            "num": "FILE 01 / AD 60",
+            "heading": "Boudica",
+            "description": "<p>Queen of the Iceni. When Rome — the largest military machine on Earth — broke its word, burned her lands and bet she’d kneel, she raised East Anglia and burned <em>their</em> cities instead. Londinium learned her name the hard way.</p><p>Our Boudica carries the trident and the shield because she was never just a rebel — she’s the original guardian of these islands. The first and fiercest entry in the blitz spirit ledger, nineteen centuries before anyone coined the phrase.</p><p><strong>She doesn’t ask. She doesn’t explain. She stands.</strong></p>",
+            "meta_1": "Colours: Black / Off White",
+            "meta_2": "220gsm heavyweight",
+            "cta_label": "[ CHOOSE BOUDICA ]"
+          }
+        },
+        "roundel": {
+          "type": "icon",
+          "settings": {
+            "num": "FILE 02 / 1940 → 1964",
+            "heading": "The Roundel",
+            "description": "<p>It started on the wings of Spitfires — the RAF roundel, painted over Kent in the summer of 1940. A generation later the mods lifted it onto parkas and scooters and made it the sharpest mark in British street culture. Same circle, same defiance, better tailoring.</p><p>Ours plays the long game: from a distance it’s a classic mod target. Up close, every ring is <em>built entirely from the word blitzspirit</em>, repeated like a drumbeat. No extra logo. No signature. Just the brand, in the brand.</p><p><strong>A mod icon. Closer look. Same spirit.</strong></p>",
+            "meta_1": "Colours: Black / Navy / Off White",
+            "meta_2": "220gsm heavyweight",
+            "cta_label": "[ CHOOSE THE ROUNDEL ]"
+          }
+        },
+        "skull-brollies": {
+          "type": "icon",
+          "settings": {
+            "num": "FILE 03 / THE CITY GENT",
+            "heading": "Skull & Brollies",
+            "description": "<p>The bowler hat and the umbrella: the most polite uniform ever invented. The man who wore it queued properly, apologised when you stepped on <em>his</em> foot — and walked to work through rubble with the morning paper under his arm, daring the Luftwaffe to make him late.</p><p>Cross the brollies like cutlasses, put the skull under the brim, and you get the truth of him: courtesy is not weakness. It’s the Jolly Roger of good manners — <em>politely menacing since the Blitz</em>.</p><p><strong>Keep calm. With teeth.</strong></p>",
+            "meta_1": "Colour or mono print",
+            "meta_2": "Black / Off White",
+            "cta_label": "[ CHOOSE SKULL & BROLLIES ]"
+          }
+        },
+        "roll-call": {
+          "type": "icon",
+          "settings": {
+            "num": "FILE 04 / THE ROLL CALL",
+            "heading": "Tommy, Katie, Winston & Boudica.",
+            "description": "<p><strong>Tommy</strong> — every lad who shouldered a pack and went. <strong>Katie</strong> — every woman who ran the switchboards, drove the ambulances and built the bombers. <strong>Winston</strong> — the growl on the wireless when it mattered most. <strong>Boudica</strong> — the one who started it all.</p><p>Set like a band line-up, because that’s what they are: the greatest line-up these islands ever fielded. If you know, you know — and if someone asks, you get to tell the whole story.</p><p><strong>The roll call. Answer your name.</strong></p>",
+            "meta_1": "Colours: White / Black",
+            "meta_2": "Soft-hand typographic print",
+            "cta_label": "[ CHOOSE THE ROLL CALL ]"
+          }
+        }
+      },
+      "block_order": ["boudica", "roundel", "skull-brollies", "roll-call"]
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "index_tag": "DISPATCHES // HOME_GUARD",
+        "heading": "Wakey wakey.",
+        "body": "Join the Home Guard: first word on new drops, restocks and stories worth telling — plus 10% off your first order. No spam. That would be nonsense.",
+        "button_label": "[ SIGN UP ]"
+      }
+    }
+  },
+  "order": ["hero", "roster", "newsletter"]
+}

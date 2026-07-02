@@ -1,0 +1,177 @@
+{% comment %}
+  signup-modal — the lead-gen dialog. Statically rendered from
+  layout/theme.liquid via {% section 'signup-modal' %}.
+
+  modal.js contract (docs/CONTRACTS.md §6):
+  - wrapper #SignupModal carries data-enabled / data-delay (s) /
+    data-suppress-days / data-exit-intent / data-discount-code
+  - localStorage keys (verbatim, shared with the old static site):
+    bs_signed_up = '1' once subscribed (never show again),
+    bs_modal_seen = Date.now() on dismiss (suppress for data-suppress-days)
+  - the newsletter-form snippet's success block carries
+    [data-signup-success]; when it renders inside this dialog after the
+    customer form posts, modal.js reopens the dialog to show it and sets
+    bs_signed_up.
+{% endcomment %}
+
+{%- if settings.enable_signup_modal -%}
+  <dialog
+    class="signup-modal"
+    id="SignupModal"
+    data-section-id="{{ section.id }}"
+    data-enabled="true"
+    data-delay="{{ settings.modal_delay | default: 16 }}"
+    data-suppress-days="{{ settings.modal_suppress_days | default: 7 }}"
+    data-exit-intent="{% if settings.modal_exit_intent %}true{% else %}false{% endif %}"
+    data-discount-code="{{ settings.discount_code | escape }}"
+    aria-labelledby="SignupModalHeading"
+  >
+    <div class="signup-inner">
+      <span class="frame-tick frame-tick--tl" aria-hidden="true"></span>
+      <span class="frame-tick frame-tick--br" aria-hidden="true"></span>
+
+      <button type="button" class="signup-close snap" data-modal-close aria-label="{{ 'accessibility.close_dialog' | t }}">
+        {% render 'icon', name: 'close' %}
+      </button>
+
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="led-index tag signup-eyebrow">[ {{ section.settings.eyebrow | escape }} ]</p>
+      {%- endif -%}
+
+      <h2 class="chunk signup-head" id="SignupModalHeading">{{ section.settings.heading | escape }}</h2>
+
+      {%- if section.settings.subheading != blank -%}
+        <p class="signup-sub tag">{{ section.settings.subheading | escape }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.body != blank -%}
+        <p class="signup-body">{{ section.settings.body | escape }}</p>
+      {%- endif -%}
+
+      {% render 'newsletter-form',
+        id: 'SignupModalForm',
+        button_label: section.settings.button_label
+      %}
+
+      <button type="button" class="signup-dismiss snap" data-modal-close>
+        {{ section.settings.dismiss_label | escape }}
+      </button>
+
+      <button type="button" class="directive snap signup-carry" data-modal-close>
+        {{ section.settings.carry_on_label | escape }}
+      </button>
+    </div>
+  </dialog>
+{%- endif -%}
+
+{% stylesheet %}
+dialog.signup-modal {
+  background: var(--panel);
+  border: 1px solid var(--line-bri);
+  padding: 0;
+  width: min(520px, calc(100% - 32px));
+  color: var(--bone);
+}
+dialog.signup-modal::backdrop { background: rgba(10, 10, 10, 0.88); }
+.signup-inner {
+  position: relative;
+  padding: var(--s5) var(--s4) var(--s4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+  text-align: left;
+}
+.frame-tick { position: absolute; width: 14px; height: 14px; border: 2px solid var(--signal); }
+.frame-tick--tl { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+.frame-tick--br { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+.signup-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  padding: 8px;
+  color: var(--bone);
+  line-height: 0;
+}
+.signup-close:hover { color: var(--signal); }
+.signup-eyebrow { display: inline-block; margin-bottom: 0; align-self: flex-start; }
+.signup-head { color: #fff; font-size: clamp(1.8rem, 5vw, 2.6rem); }
+.signup-sub { color: var(--signal); }
+.signup-body {
+  color: var(--bone-dim);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1.75;
+}
+.signup-dismiss {
+  align-self: center;
+  margin-top: var(--s1);
+  color: var(--bone-mute);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.signup-dismiss:hover { color: var(--signal); }
+.signup-carry { display: none; }
+.signup-inner:has([data-signup-success]) .signup-carry { display: block; }
+.signup-inner:has([data-signup-success]) .signup-dismiss,
+.signup-inner:has([data-signup-success]) .signup-body,
+.signup-inner:has([data-signup-success]) .signup-sub { display: none; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Signup modal",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Timing, suppression and the discount code live in Theme settings → Marketing."
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "DISPATCHES"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Join the Home Guard."
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Take 10% off your first order."
+    },
+    {
+      "type": "textarea",
+      "id": "body",
+      "label": "Body",
+      "default": "First word on new drops and restocks, stories worth telling, and a code for 10% off. No spam — that would be nonsense."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "[ SIGN ME UP ]"
+    },
+    {
+      "type": "text",
+      "id": "dismiss_label",
+      "label": "Dismiss label",
+      "default": "No thanks — I’ll pay full price"
+    },
+    {
+      "type": "text",
+      "id": "carry_on_label",
+      "label": "Success close button",
+      "default": "[ CARRY ON SHOPPING ]"
+    }
+  ]
+}
+{% endschema %}

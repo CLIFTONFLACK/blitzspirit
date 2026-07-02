@@ -1,0 +1,37 @@
+{% comment %}
+  free-shipping-bar — SYSTEM_LEDGER free-shipping progress (.fsb-*,
+  workstream A). Shared by sections/cart-drawer and sections/main-cart;
+  the .fsb-* CSS ships in cart-drawer's {% stylesheet %}.
+
+  No params — reads the global settings show_free_shipping_bar and
+  free_shipping_threshold (whole currency units; Liquid multiplies by
+  100 for cents) plus cart.total_price. Renders nothing when disabled
+  or the threshold is zero.
+
+  The remaining amount is server-formatted via the money filter;
+  locales/cart.free_shipping_away holds no currency symbol.
+{% endcomment %}
+
+{%- if settings.show_free_shipping_bar and settings.free_shipping_threshold > 0 -%}
+  {%- liquid
+    assign fsb_threshold = settings.free_shipping_threshold | times: 100
+    assign fsb_remaining = fsb_threshold | minus: cart.total_price
+    assign fsb_pct = 100
+    if cart.total_price < fsb_threshold
+      assign fsb_pct = cart.total_price | times: 100 | divided_by: fsb_threshold
+    endif
+  -%}
+  <div class="fsb" data-cart-fsb style="--fsb-pct: {{ fsb_pct }}%">
+    <span class="fsb-msg{% if fsb_remaining <= 0 %} fsb-msg--ok{% endif %}">
+      {%- if fsb_remaining > 0 -%}
+        {%- assign fsb_amount = fsb_remaining | money -%}
+        [ {{ 'cart.free_shipping_away' | t: amount: fsb_amount }} ]
+      {%- else -%}
+        [ {{ 'cart.free_shipping_ok' | t }} ]
+      {%- endif -%}
+    </span>
+    <div class="fsb-track" aria-hidden="true">
+      <div class="fsb-fill"></div>
+    </div>
+  </div>
+{%- endif -%}

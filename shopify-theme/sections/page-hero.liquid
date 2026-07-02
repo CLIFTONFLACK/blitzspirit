@@ -1,0 +1,155 @@
+{% comment %}
+  page-hero — dark charcoal page header (about-hero family, per about.html).
+  Index tag auto-appends the page title as a SYSTEM ref; headline supports a
+  red first line via a newline split ("NOT HERE" / "TO BE LIKED.").
+{% endcomment %}
+
+{%- liquid
+  assign heading = section.settings.heading | default: page.title
+  assign heading_lines = heading | newline_to_br | split: '<br />'
+
+  assign page_ref = ''
+  if section.settings.show_page_ref and page.title != blank
+    assign page_ref = page.title | upcase | replace: ' ', '_'
+  endif
+-%}
+
+<section
+  class="about-hero page-hero page-hero--{{ section.settings.heading_size }}"
+  data-section-id="{{ section.id }}"
+  {% if section.settings.texture != blank %}
+    style="--ph-tex: url('{{ section.settings.texture | image_url: width: 1800 }}')"
+  {% endif %}
+>
+  <div>
+    {%- if section.settings.index_tag != blank or page_ref != blank -%}
+      <p class="led-index tag ph-index">
+        [ {{ section.settings.index_tag | escape }}
+        {%- if section.settings.index_tag != blank and page_ref != blank %} // {% endif -%}
+        {{ page_ref }} ]
+      </p>
+    {%- endif -%}
+
+    {%- if heading != blank -%}
+      <h1 class="chunk ph-head">
+        {%- for line in heading_lines -%}
+          {%- assign line_text = line | strip -%}
+          {%- if line_text == blank -%}{%- continue -%}{%- endif -%}
+          {%- if forloop.first and section.settings.red_first_line and heading_lines.size > 1 -%}
+            <span class="ph-red">{{ line_text }}</span>
+          {%- else -%}
+            {{ line_text }}
+          {%- endif -%}
+          {%- unless forloop.last -%}<br>{%- endunless -%}
+        {%- endfor -%}
+      </h1>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <p class="tag ph-meta">
+        [
+        {%- for block in section.blocks -%}
+          {%- if block.settings.text != blank %} {{ block.settings.text | escape }}
+            {%- unless forloop.last %} //{% endunless -%}
+          {%- endif -%}
+        {%- endfor %} ]
+      </p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+.page-hero {
+  background:
+    linear-gradient(rgba(10, 10, 10, 0.6), rgba(10, 10, 10, 0.76)),
+    var(--ph-tex, var(--tex-char)) center/cover no-repeat;
+}
+.page-hero .ph-index { margin-bottom: 16px; }
+.page-hero .ph-head {
+  color: #fff;
+  font-size: clamp(3rem, 9vw, 8rem);
+  line-height: 0.9;
+  margin-bottom: 24px;
+}
+.page-hero--lg .ph-head { font-size: clamp(2.2rem, 6vw, 4.5rem); }
+.page-hero .ph-red { color: var(--brand-red); }
+.page-hero .ph-meta {
+  color: var(--bone-dim);
+  max-width: 60ch;
+  line-height: 1.8;
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Page hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "index_tag",
+      "label": "Index tag",
+      "info": "Rendered as [ TAG // PAGE_TITLE ]. Leave blank to show the page ref only.",
+      "default": "SYSTEM_DOSSIER"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_page_ref",
+      "label": "Append page title to the index tag",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Headline",
+      "info": "Leave blank to use the page title. New lines become line breaks; with the option below on, the first line prints brand red."
+    },
+    {
+      "type": "checkbox",
+      "id": "red_first_line",
+      "label": "Red first line",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Headline size",
+      "options": [
+        { "value": "xl", "label": "Extra large" },
+        { "value": "lg", "label": "Large" }
+      ],
+      "default": "xl"
+    },
+    {
+      "type": "image_picker",
+      "id": "texture",
+      "label": "Backdrop texture override",
+      "info": "Leave empty to use the global dark charcoal concrete."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "meta_tag",
+      "name": "Meta tag segment",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Segment",
+          "info": "Segments join into one bracketed row: [ A // B // C ]"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 10,
+  "presets": [
+    {
+      "name": "Page hero",
+      "blocks": [
+        { "type": "meta_tag", "settings": { "text": "IRONIC" } },
+        { "type": "meta_tag", "settings": { "text": "ICONIC" } },
+        { "type": "meta_tag", "settings": { "text": "BRITISH" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

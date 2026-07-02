@@ -1,0 +1,117 @@
+{% comment %}
+  collection-hero — dark charcoal collection header over --tex-char
+  (image_picker override via --coll-hero-tex custom property).
+
+  Left column: tag line (supports a literal {{ collection.title }}
+  placeholder), huge .chunk title from collection.title (setting
+  fallback), optional collection.description lede.
+  Right column: meta tag blocks (.coll-meta-col).
+
+  Framework classes (.coll-header/.coll-header-inner/.coll-title/
+  .coll-meta-col) live in theme.css; only hero-specific extras ship
+  in the {% stylesheet %} below.
+{% endcomment %}
+
+{%- liquid
+  assign hero_title = collection.title | default: section.settings.fallback_title
+  if hero_title == blank
+    assign hero_title = 'Full Kit.'
+  endif
+
+  assign coll_title_esc = collection.title | escape
+  assign tag_line = section.settings.tag_line | escape | replace: '{{ collection.title }}', coll_title_esc
+-%}
+
+<div
+  class="coll-header{% if section.settings.texture_override != blank %} coll-header--custom{% endif %}"
+  data-section-id="{{ section.id }}"
+  {%- if section.settings.texture_override != blank %}
+  style="--coll-hero-tex: url('{{ section.settings.texture_override | image_url: width: 2000 }}')"
+  {%- endif %}
+>
+  <div class="coll-header-inner">
+    <div class="coll-header-main">
+      {%- if tag_line != blank -%}
+        <p class="tag coll-hero-tag">{{ tag_line }}</p>
+      {%- endif -%}
+      <h1 class="chunk coll-title">{{ hero_title | escape }}</h1>
+      {%- if collection.description != blank -%}
+        <div class="coll-hero-desc">{{ collection.description }}</div>
+      {%- endif -%}
+    </div>
+    {%- if section.blocks.size > 0 -%}
+      <div class="coll-meta-col">
+        {%- for block in section.blocks -%}
+          {%- if block.settings.text != blank -%}
+            <span class="tag" {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</span>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+.coll-hero-tag { margin-bottom: var(--s2); }
+.coll-header--custom {
+  background:
+    linear-gradient(rgba(10, 10, 10, 0.82), rgba(10, 10, 10, 0.9)),
+    var(--coll-hero-tex) center/cover no-repeat;
+}
+.coll-hero-desc { max-width: 52ch; margin-top: var(--s2); color: var(--bone-dim); font-size: 13px; line-height: 1.6; }
+.coll-hero-desc p { margin: 0 0 var(--s1); }
+.coll-hero-desc p:last-child { margin-bottom: 0; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Collection hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "tag_line",
+      "label": "Tag line",
+      "default": "[ SYSTEM_LEDGER // FULL_KIT // ISSUE_001 ]",
+      "info": "Use {{ collection.title }} to insert the collection title."
+    },
+    {
+      "type": "text",
+      "id": "fallback_title",
+      "label": "Fallback title",
+      "default": "Full Kit.",
+      "info": "Shown when no collection title is available."
+    },
+    {
+      "type": "image_picker",
+      "id": "texture_override",
+      "label": "Background texture override",
+      "info": "Falls back to the charcoal concrete texture."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "meta_tag",
+      "name": "Meta tag",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "[ SCREEN PRINTED IN BRITAIN ]"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Collection hero",
+      "blocks": [
+        { "type": "meta_tag", "settings": { "text": "[ T-SHIRTS + CAPS ]" } },
+        { "type": "meta_tag", "settings": { "text": "[ FREE UK DELIVERY OVER £40 ]" } },
+        { "type": "meta_tag", "settings": { "text": "[ SCREEN PRINTED IN BRITAIN ]" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,90 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "issue_tag": {
+          "type": "issue_tag",
+          "settings": {}
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "stock": {
+          "type": "stock",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {}
+        },
+        "dossier": {
+          "type": "dossier",
+          "settings": {}
+        },
+        "field_manual": {
+          "type": "field_manual",
+          "settings": {}
+        },
+        "trust_note": {
+          "type": "trust_note",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "issue_tag",
+        "title",
+        "price",
+        "stock",
+        "variant_picker",
+        "buy_buttons",
+        "dossier",
+        "field_manual",
+        "trust_note"
+      ],
+      "settings": {}
+    },
+    "video": {
+      "type": "product-video",
+      "settings": {}
+    },
+    "editorial": {
+      "type": "product-editorial",
+      "blocks": {
+        "editorial_origin": {
+          "type": "editorial",
+          "settings": {}
+        },
+        "editorial_craft": {
+          "type": "editorial",
+          "settings": {
+            "tag": "TEXT_02 // THE_CRAFT",
+            "heading": "The Craft.",
+            "body": "<p>220gsm ring-spun cotton. Water-based screen print, applied in Britain. Soft hand-feel that improves with washing. No cracking, no fading, no apologies. Wash inside out at 30°C — tumble dryers are for quitters. [PLACEHOLDER — REPLACE WITH FINAL COPY]</p>",
+            "cta_label": "VIEW SIZE GUIDE"
+          }
+        }
+      },
+      "block_order": ["editorial_origin", "editorial_craft"],
+      "settings": {}
+    },
+    "cross_sell": {
+      "type": "cross-sell",
+      "settings": {}
+    },
+    "promo": {
+      "type": "promo-band",
+      "settings": {}
+    }
+  },
+  "order": ["main", "video", "editorial", "cross_sell", "promo"]
+}

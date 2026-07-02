@@ -1,0 +1,102 @@
+{% comment %}
+  masthead — fixed header (workstream A).
+
+  Left: link_list menu (fallback: HOME / ABOUT / THE COLLECTIONS) plus
+  the "long tag" (signal red, hidden below 1100px by theme.css §3/§13).
+  Right: social icons from global settings, optional account link
+  (default off), and the [ BAG (n) ] toggle.
+
+  cart.js contract: the wrapper keeps data-section-id (used as the
+  Section Rendering API id after add-to-cart) and [data-cart-count] is
+  the live count target. The bag link is a real /cart anchor so no-JS
+  users land on the full ledger page.
+
+  Mobile: matches the static site — the nav compresses at 860/480px
+  (theme.css §13); the newui design has no hamburger drawer.
+{% endcomment %}
+
+{%- assign menu = section.settings.menu -%}
+
+<header class="masthead" data-section-id="{{ section.id }}">
+  <nav class="nodes nodes--left" aria-label="{{ 'general.menu' | t }}">
+    {%- if menu != blank and menu.links.size > 0 -%}
+      {%- for link in menu.links -%}
+        <a href="{{ link.url }}" class="tag"{% if link.current %} aria-current="page"{% endif %}>[ {{ link.title | upcase | escape }} ]</a>
+      {%- endfor -%}
+    {%- else -%}
+      <a href="{{ routes.root_url }}" class="tag"{% if request.path == routes.root_url %} aria-current="page"{% endif %}>[ {{ 'general.home' | t }} ]</a>
+      {%- if pages.about != blank and pages.about.url != blank -%}
+        <a href="{{ pages.about.url }}" class="tag">[ {{ pages.about.title | upcase | escape }} ]</a>
+      {%- endif -%}
+      <a href="{{ routes.all_products_collection_url }}" class="tag">[ THE COLLECTIONS ]</a>
+    {%- endif -%}
+    {%- if section.settings.long_tag != blank -%}
+      <span class="tag mh-long">{{ section.settings.long_tag | escape }}</span>
+    {%- endif -%}
+  </nav>
+
+  <div class="nodes nodes--right">
+    {%- if settings.social_instagram != blank -%}
+      <a href="{{ settings.social_instagram }}" class="tag mh-social" aria-label="{{ 'general.social.instagram' | t }}" target="_blank" rel="noopener noreferrer">
+        {%- render 'icon', name: 'instagram' -%}
+      </a>
+    {%- endif -%}
+    {%- if settings.social_tiktok != blank -%}
+      <a href="{{ settings.social_tiktok }}" class="tag mh-social" aria-label="{{ 'general.social.tiktok' | t }}" target="_blank" rel="noopener noreferrer">
+        {%- render 'icon', name: 'tiktok' -%}
+      </a>
+    {%- endif -%}
+    {%- if settings.social_x != blank -%}
+      <a href="{{ settings.social_x }}" class="tag mh-social" aria-label="{{ 'general.social.x' | t }}" target="_blank" rel="noopener noreferrer">
+        {%- render 'icon', name: 'x' -%}
+      </a>
+    {%- endif -%}
+    {%- if settings.social_facebook != blank -%}
+      <a href="{{ settings.social_facebook }}" class="tag mh-social" aria-label="{{ 'general.social.facebook' | t }}" target="_blank" rel="noopener noreferrer">
+        {%- render 'icon', name: 'facebook' -%}
+      </a>
+    {%- endif -%}
+    {%- if section.settings.show_account and shop.customer_accounts_enabled -%}
+      <a href="{{ routes.account_url }}" class="tag">[ ACCOUNT ]</a>
+    {%- endif -%}
+    <a
+      href="{{ routes.cart_url }}"
+      class="tag bag"
+      data-cart-toggle
+      aria-controls="CartDrawer"
+      aria-expanded="false"
+    >[ BAG (<b data-cart-count>{{ cart.item_count }}</b>) ]</a>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Masthead",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Navigation menu",
+      "info": "Falls back to HOME / ABOUT / THE COLLECTIONS when empty.",
+      "default": "main-menu"
+    },
+    {
+      "type": "text",
+      "id": "long_tag",
+      "label": "Long tag",
+      "info": "Signal-red status line. Hidden below 1100px.",
+      "default": "[ LATEST COLLECTION // ISSUE_001 ]"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_account",
+      "label": "Show account link",
+      "info": "Requires customer accounts to be enabled in store settings.",
+      "default": false
+    }
+  ],
+  "enabled_on": {
+    "groups": ["header"]
+  }
+}
+{% endschema %}

@@ -1,0 +1,154 @@
+{% comment %}
+  announcement-bar — signal-red band above the masthead (workstream A).
+
+  Blocks: up to 3 "message" blocks (text + optional link). One message
+  renders static; two or three rotate via a CSS-only opacity cycle
+  (6s per message, no JS). Reduced-motion users see only the first
+  message. Blank messages are skipped; zero messages renders nothing.
+
+  The band is fixed at the top of the viewport; the masthead (also
+  fixed, theme.css §3) is pushed down 28px via the body:has() rule in
+  the stylesheet below whenever the band is present.
+{% endcomment %}
+
+{%- liquid
+  assign msg_count = 0
+  for block in section.blocks
+    if block.settings.text != blank
+      assign msg_count = msg_count | plus: 1
+    endif
+  endfor
+-%}
+
+{%- if msg_count > 0 -%}
+  <div class="announcement-bar announcement-bar--n{{ msg_count }}" data-section-id="{{ section.id }}">
+    {%- assign msg_index = 0 -%}
+    {%- for block in section.blocks -%}
+      {%- if block.settings.text != blank -%}
+        <p class="announcement-bar__msg" style="--ann-i: {{ msg_index }}" {{ block.shopify_attributes }}>
+          {%- if block.settings.link != blank -%}
+            <a href="{{ block.settings.link }}">{{ block.settings.text | escape }}</a>
+          {%- else -%}
+            {{ block.settings.text | escape }}
+          {%- endif -%}
+        </p>
+        {%- assign msg_index = msg_index | plus: 1 -%}
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+.announcement-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 55;
+  height: 28px;
+  background: var(--signal);
+  overflow: hidden;
+}
+.announcement-bar__msg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0 var(--s2);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.announcement-bar__msg a { color: #fff; }
+.announcement-bar__msg a:hover { text-decoration: underline; }
+
+/* The fixed masthead (theme.css §3, top:0) drops below the band
+   whenever the band exists on the page. Browsers without :has()
+   degrade gracefully (band sits behind the translucent masthead). */
+body:has(.announcement-bar) .masthead { top: 28px; }
+
+/* CSS-only rotation — 6s per message, opacity cycle, no JS. */
+.announcement-bar--n2 .announcement-bar__msg,
+.announcement-bar--n3 .announcement-bar__msg { opacity: 0; }
+.announcement-bar--n2 .announcement-bar__msg {
+  animation: announcement-cycle-2 12s infinite;
+  animation-delay: calc(var(--ann-i) * 6s);
+}
+.announcement-bar--n3 .announcement-bar__msg {
+  animation: announcement-cycle-3 18s infinite;
+  animation-delay: calc(var(--ann-i) * 6s);
+}
+@keyframes announcement-cycle-2 {
+  0% { opacity: 0; }
+  4% { opacity: 1; }
+  46% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 0; }
+}
+@keyframes announcement-cycle-3 {
+  0% { opacity: 0; }
+  3% { opacity: 1; }
+  30% { opacity: 1; }
+  33.33% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+@media (max-width: 480px) {
+  .announcement-bar__msg { font-size: 9px; letter-spacing: 0.1em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .announcement-bar__msg { animation: none !important; }
+  .announcement-bar--n2 .announcement-bar__msg:first-child,
+  .announcement-bar--n3 .announcement-bar__msg:first-child { opacity: 1; }
+  .announcement-bar--n2 .announcement-bar__msg:not(:first-child),
+  .announcement-bar--n3 .announcement-bar__msg:not(:first-child) { display: none; }
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "max_blocks": 3,
+  "settings": [],
+  "blocks": [
+    {
+      "type": "message",
+      "name": "Message",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Message",
+          "default": "FREE UK DELIVERY OVER £40 — NO NONSENSE. NO FUSS."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (optional)"
+        }
+      ]
+    }
+  ],
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "presets": [
+    {
+      "name": "Announcement bar",
+      "blocks": [
+        {
+          "type": "message"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,254 @@
+{% comment %}
+  link-in-bio — the /pages/links destination for the IG/TikTok bio URL.
+  Mobile-first narrow column: sticker header, big brutalist directive
+  buttons (blocks: link), compact product cards (blocks: product) and a
+  social icon row (blocks: social_row, urls from global settings).
+  Replaces Linktree — zero commission, on-brand.
+{% endcomment %}
+
+<div class="lib" data-section-id="{{ section.id }}">
+  <header class="lib-head">
+    {%- if section.settings.sticker != blank -%}
+      <img
+        class="lib-sticker"
+        src="{{ section.settings.sticker | image_url: width: 600 }}"
+        srcset="{{ section.settings.sticker | image_url: width: 400 }} 400w, {{ section.settings.sticker | image_url: width: 600 }} 600w"
+        sizes="(min-width: 480px) 320px, 70vw"
+        alt="{{ section.settings.sticker.alt | default: shop.name | escape }}"
+        width="{{ section.settings.sticker.width }}"
+        height="{{ section.settings.sticker.height }}"
+        loading="eager"
+      >
+    {%- else -%}
+      <img
+        class="lib-sticker"
+        src="{{ 'blitzspirit-sticker.png' | asset_url }}"
+        alt="{{ shop.name | escape }}"
+        width="585"
+        height="250"
+        loading="eager"
+      >
+    {%- endif -%}
+
+    {%- if section.settings.heading != blank -%}
+      <h1 class="chunk lib-heading">{{ section.settings.heading | escape }}</h1>
+    {%- endif -%}
+
+    {%- if section.settings.sub != blank -%}
+      <p class="tag lib-sub">[ {{ section.settings.sub | escape }} ]</p>
+    {%- endif -%}
+  </header>
+
+  <div class="lib-stack">
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'link' -%}
+          {%- if block.settings.label != blank and block.settings.url != blank -%}
+            <a href="{{ block.settings.url }}" class="directive snap lib-link" {{ block.shopify_attributes }}>
+              <span class="lib-link-label">{{ block.settings.label | escape }}</span>
+              {%- if block.settings.badge != blank -%}
+                <span class="lib-badge tag">{{ block.settings.badge | escape }}</span>
+              {%- endif -%}
+            </a>
+          {%- endif -%}
+
+        {%- when 'product' -%}
+          {%- if block.settings.product != blank -%}
+            <div class="lib-product" {{ block.shopify_attributes }}>
+              {% render 'product-card', product: block.settings.product, show_badge: true %}
+            </div>
+          {%- elsif request.design_mode -%}
+            <div class="lib-product lib-product--empty tag tag-mute" {{ block.shopify_attributes }}>
+              [ PICK A PRODUCT ]
+            </div>
+          {%- endif -%}
+
+        {%- when 'social_row' -%}
+          {%- assign has_social = false -%}
+          {%- if settings.social_instagram != blank or settings.social_tiktok != blank or settings.social_x != blank or settings.social_facebook != blank -%}
+            {%- assign has_social = true -%}
+          {%- endif -%}
+          {%- if has_social -%}
+            <div class="lib-social" {{ block.shopify_attributes }}>
+              {%- if settings.social_instagram != blank -%}
+                <a href="{{ settings.social_instagram }}" class="lib-social-link" target="_blank" rel="noopener" aria-label="{{ 'general.social.instagram' | t }}">
+                  {% render 'icon', name: 'instagram' %}
+                </a>
+              {%- endif -%}
+              {%- if settings.social_tiktok != blank -%}
+                <a href="{{ settings.social_tiktok }}" class="lib-social-link" target="_blank" rel="noopener" aria-label="{{ 'general.social.tiktok' | t }}">
+                  {% render 'icon', name: 'tiktok' %}
+                </a>
+              {%- endif -%}
+              {%- if settings.social_x != blank -%}
+                <a href="{{ settings.social_x }}" class="lib-social-link" target="_blank" rel="noopener" aria-label="{{ 'general.social.x' | t }}">
+                  {% render 'icon', name: 'x' %}
+                </a>
+              {%- endif -%}
+              {%- if settings.social_facebook != blank -%}
+                <a href="{{ settings.social_facebook }}" class="lib-social-link" target="_blank" rel="noopener" aria-label="{{ 'general.social.facebook' | t }}">
+                  {% render 'icon', name: 'facebook' %}
+                </a>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% stylesheet %}
+.lib {
+  max-width: 460px;
+  margin: 0 auto;
+  padding: var(--s5) var(--s3) var(--s6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+}
+.lib-head { text-align: center; display: flex; flex-direction: column; align-items: center; gap: var(--s2); }
+.lib-sticker { width: min(70%, 320px); height: auto; filter: drop-shadow(2px 4px 10px rgba(0, 0, 0, 0.85)); }
+.lib-heading { color: #fff; font-size: clamp(1.6rem, 6vw, 2.2rem); }
+.lib-sub { color: var(--bone-dim); }
+.lib-stack { display: flex; flex-direction: column; gap: var(--s2); }
+.lib-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s2);
+  position: relative;
+}
+.lib-badge {
+  position: absolute;
+  top: -8px;
+  right: -6px;
+  background: var(--signal);
+  color: #fff;
+  padding: 3px 8px;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+}
+.lib-product--empty {
+  border: 1px dashed var(--line);
+  padding: var(--s4);
+  text-align: center;
+}
+.lib-social { display: flex; justify-content: center; gap: var(--s3); padding: var(--s2) 0; }
+.lib-social-link { color: var(--bone); padding: 10px; line-height: 0; border: 1px solid var(--line); }
+.lib-social-link:hover { color: var(--signal); border-color: var(--signal); }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Link in bio",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "sticker",
+      "label": "Sticker / logo",
+      "info": "Leave empty to use the bundled BlitzSpirit sticker."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Wakey wakey."
+    },
+    {
+      "type": "text",
+      "id": "sub",
+      "label": "Sub tag",
+      "default": "IRONIC // ICONIC // BRITISH"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Link button",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "URL"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge",
+          "info": "Optional corner flash, e.g. NEW"
+        }
+      ]
+    },
+    {
+      "type": "product",
+      "name": "Product card",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ]
+    },
+    {
+      "type": "social_row",
+      "name": "Social icons",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Shows the profiles set in Theme settings → Social."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Link in bio",
+      "blocks": [
+        {
+          "type": "link",
+          "settings": {
+            "label": "[ SHOP ISSUE_001 ]",
+            "url": "/collections/all",
+            "badge": "NEW"
+          }
+        },
+        {
+          "type": "link",
+          "settings": {
+            "label": "[ THE ICONS — READ THE FILES ]",
+            "url": "/pages/icons"
+          }
+        },
+        {
+          "type": "link",
+          "settings": {
+            "label": "[ THE STORY ]",
+            "url": "/pages/story"
+          }
+        },
+        {
+          "type": "link",
+          "settings": {
+            "label": "[ HELP // SIZE GUIDE ]",
+            "url": "/pages/help"
+          }
+        },
+        {
+          "type": "product",
+          "settings": {}
+        },
+        {
+          "type": "social_row",
+          "settings": {}
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

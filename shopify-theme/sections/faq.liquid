@@ -1,0 +1,347 @@
+{% comment %}
+  faq — the field-manual accordion (help page). Native <details>/<summary>,
+  zero JS. Every block gets an anchor id (override or heading handle) so the
+  old deep links keep working: #delivery, #returns, #size-guide, #care,
+  #faq, #contact. The size_table block renders the S–3XL measurement table
+  from a pipe-format textarea (one row per line: "S|46|69|20").
+{% endcomment %}
+
+<div class="faq" data-section-id="{{ section.id }}">
+  <div class="faq-inner">
+    {%- if section.settings.index_tag != blank -%}
+      <p class="led-index tag faq-index">[ {{ section.settings.index_tag | escape }} ]</p>
+    {%- endif -%}
+    {%- if section.settings.intro != blank -%}
+      <p class="faq-intro">{{ section.settings.intro | escape }}</p>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="faq-list">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign anchor = block.settings.anchor
+            if anchor == blank
+              assign anchor = block.settings.heading | handleize
+            endif
+          -%}
+
+          {%- case block.type -%}
+            {%- when 'qa' -%}
+              <details
+                class="faq-item"
+                {% if anchor != blank %}id="{{ anchor }}"{% endif %}
+                {% if block.settings.open %}open{% endif %}
+                {{ block.shopify_attributes }}
+              >
+                <summary class="faq-q">
+                  <span class="faq-q-text">{{ block.settings.heading | escape }}</span>
+                  <span class="faq-marker tag" aria-hidden="true"></span>
+                </summary>
+                {%- if block.settings.body != blank -%}
+                  <div class="faq-a">{{ block.settings.body }}</div>
+                {%- endif -%}
+              </details>
+
+            {%- when 'size_table' -%}
+              <details
+                class="faq-item faq-item--table"
+                {% if anchor != blank %}id="{{ anchor }}"{% endif %}
+                {% if block.settings.open %}open{% endif %}
+                {{ block.shopify_attributes }}
+              >
+                <summary class="faq-q">
+                  <span class="faq-q-text">{{ block.settings.heading | escape }}</span>
+                  <span class="faq-marker tag" aria-hidden="true"></span>
+                </summary>
+                <div class="faq-a">
+                  {%- if block.settings.intro != blank -%}
+                    <p>{{ block.settings.intro | escape }}</p>
+                  {%- endif -%}
+                  {%- if block.settings.rows != blank -%}
+                    {%- liquid
+                      assign table_cols = block.settings.columns | split: '|'
+                      assign table_rows = block.settings.rows | strip | newline_to_br | split: '<br />'
+                    -%}
+                    <table class="faq-table">
+                      <caption class="visually-hidden">{{ block.settings.heading | escape }}</caption>
+                      {%- if block.settings.columns != blank -%}
+                        <thead>
+                          <tr>
+                            {%- for col in table_cols -%}
+                              <th scope="col">{{ col | strip | escape }}</th>
+                            {%- endfor -%}
+                          </tr>
+                        </thead>
+                      {%- endif -%}
+                      <tbody>
+                        {%- for table_row in table_rows -%}
+                          {%- assign row_text = table_row | strip -%}
+                          {%- if row_text == blank -%}{%- continue -%}{%- endif -%}
+                          {%- assign cells = row_text | split: '|' -%}
+                          <tr>
+                            {%- for cell in cells -%}
+                              {%- if forloop.first -%}
+                                <th scope="row">{{ cell | strip | escape }}</th>
+                              {%- else -%}
+                                <td>{{ cell | strip | escape }}</td>
+                              {%- endif -%}
+                            {%- endfor -%}
+                          </tr>
+                        {%- endfor -%}
+                      </tbody>
+                    </table>
+                  {%- endif -%}
+                </div>
+              </details>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+.faq { padding: var(--s5) var(--s3) var(--s6); border-bottom: 1px solid var(--line); }
+.faq-inner { max-width: 760px; margin: 0 auto; }
+.faq-index { display: inline-block; }
+.faq-intro {
+  color: var(--bone-dim);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1.8;
+  max-width: 60ch;
+  margin-bottom: var(--s4);
+}
+.faq-list { display: flex; flex-direction: column; gap: var(--s2); }
+.faq-item { border: 1px solid var(--line); background: var(--panel); scroll-margin-top: 64px; }
+.faq-item[open] { border-color: var(--line-bri); }
+.faq-q {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--s2);
+  padding: var(--s2) var(--s3);
+  cursor: pointer;
+  list-style: none;
+  color: #fff;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.faq-q::-webkit-details-marker { display: none; }
+.faq-q:hover .faq-q-text { color: var(--bone); }
+.faq-marker::after { content: '[ + ]'; color: var(--signal); white-space: nowrap; }
+.faq-item[open] .faq-marker::after { content: '[ – ]'; }
+.faq-a { padding: 0 var(--s3) var(--s3); border-top: 1px solid var(--line); padding-top: var(--s2); }
+.faq-a p {
+  color: var(--bone-dim);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1.8;
+  max-width: 60ch;
+}
+.faq-a p + p { margin-top: var(--s2); }
+.faq-a strong { font-weight: 400; color: var(--bone); }
+.faq-a em { font-style: normal; color: var(--bone); }
+.faq-a a { color: var(--bone); border-bottom: 1px solid var(--signal); }
+.faq-a a:hover { color: var(--signal); }
+.faq-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--s2);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.faq-table th,
+.faq-table td {
+  border: 1px solid var(--line);
+  padding: 8px 12px;
+  text-align: left;
+  color: var(--bone);
+  font-weight: 400;
+}
+.faq-table thead th { background: var(--panel-2); color: #fff; }
+.faq-table tbody th { color: var(--signal); }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "FAQ",
+  "settings": [
+    {
+      "type": "text",
+      "id": "index_tag",
+      "label": "Index tag",
+      "default": "FIELD_MANUAL // STRAIGHT_ANSWERS"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Intro",
+      "default": "Straight answers, no run-around. If it’s not covered here, write to us — a human reads everything."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "qa",
+      "name": "Q&A",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Question / heading"
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Answer"
+        },
+        {
+          "type": "text",
+          "id": "anchor",
+          "label": "Anchor id",
+          "info": "For deep links like /pages/help#returns. Defaults to the heading."
+        },
+        {
+          "type": "checkbox",
+          "id": "open",
+          "label": "Open by default",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "size_table",
+      "name": "Size table",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Size guide"
+        },
+        {
+          "type": "textarea",
+          "id": "intro",
+          "label": "Intro",
+          "default": "Classic unisex fit on 220gsm heavyweight cotton. True to size — size up for an easier drape. Measurements in cm, garment laid flat."
+        },
+        {
+          "type": "text",
+          "id": "columns",
+          "label": "Column headers",
+          "info": "Pipe-separated: Size|Chest|Length|Sleeve",
+          "default": "Size|Chest (pit to pit)|Length|Sleeve"
+        },
+        {
+          "type": "textarea",
+          "id": "rows",
+          "label": "Rows",
+          "info": "One row per line, cells pipe-separated: S|46|69|20",
+          "default": "S|46|69|20\nM|51|72|21\nL|56|74|22\nXL|61|76|23\n2XL|66|78|24\n3XL|71|80|25"
+        },
+        {
+          "type": "text",
+          "id": "anchor",
+          "label": "Anchor id",
+          "default": "size-guide"
+        },
+        {
+          "type": "checkbox",
+          "id": "open",
+          "label": "Open by default",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ",
+      "blocks": [
+        {
+          "type": "qa",
+          "settings": {
+            "heading": "Delivery",
+            "anchor": "delivery",
+            "open": true,
+            "body": "<p><strong>UK:</strong> £3.95 tracked, <strong>free over £40</strong>. Orders dispatch within 48 hours and typically land in 2–4 working days. We’ve moved parcels through worse.</p><p><strong>International:</strong> Yes. Tracked worldwide shipping calculated at checkout; duties shown upfront, no doorstep surprises. Mind the Channel.</p>"
+          }
+        },
+        {
+          "type": "qa",
+          "settings": {
+            "heading": "Returns",
+            "anchor": "returns",
+            "body": "<p><strong>30 days, no quibble.</strong> Quibbling would be nonsense. Unworn, unwashed, tags on — send it back and we’ll refund or exchange, your call.</p><p>Wrong size? Exchanges ship free. Faulty print or seam? We replace it, no fuss — and we’ll want a word with the printer.</p>"
+          }
+        },
+        {
+          "type": "size_table",
+          "settings": {
+            "heading": "Size guide",
+            "anchor": "size-guide",
+            "open": false
+          }
+        },
+        {
+          "type": "qa",
+          "settings": {
+            "heading": "Care",
+            "anchor": "care",
+            "body": "<p>Wash cold, inside out. Hang dry — tumble dryers are for quitters. The distressed prints are meant to age with you; they’ll look better at year five than day one, like most things with backbone.</p>"
+          }
+        },
+        {
+          "type": "qa",
+          "settings": {
+            "heading": "Where are the shirts printed?",
+            "anchor": "faq",
+            "body": "<p>Printed in Britain on ethically sourced heavyweight cotton blanks. Built to outlast fashion — and most governments.</p>"
+          }
+        },
+        {
+          "type": "qa",
+          "settings": {
+            "heading": "Is this a political brand?",
+            "body": "<p>No. It’s a t-shirt brand with a skull in a bowler hat. Read into that what you like.</p>"
+          }
+        },
+        {
+          "type": "qa",
+          "settings": {
+            "heading": "When do new designs drop?",
+            "body": "<p>New files are declassified every few months. Join the Home Guard for first access — subscribers get 48 hours before anyone else.</p>"
+          }
+        },
+        {
+          "type": "qa",
+          "settings": {
+            "heading": "Do you restock sold-out colours?",
+            "body": "<p>Usually, but slowly — we print in small runs to keep quality up and landfill down. Sign up to be notified the moment a restock lands.</p>"
+          }
+        },
+        {
+          "type": "qa",
+          "settings": {
+            "heading": "Can I use my BACKBONE10 code on sale items?",
+            "body": "<p>Yes. We’re defiant, not difficult.</p>"
+          }
+        },
+        {
+          "type": "qa",
+          "settings": {
+            "heading": "Contact",
+            "anchor": "contact",
+            "body": "<p>Email <a href=\"mailto:hq@blitzspirit.co.uk\">hq@blitzspirit.co.uk</a> — a human answers within one working day. For order queries, include your order number and we’ll sort it without a fuss.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,88 @@
+{
+  "sections": {
+    "hero": {
+      "type": "page-hero",
+      "settings": {
+        "index_tag": "SYSTEM_DOSSIER",
+        "show_page_ref": true,
+        "heading": "Blitz spirit is what you need\nwhen your back is against the wall.",
+        "red_first_line": true,
+        "heading_size": "lg"
+      },
+      "blocks": {
+        "meta-1": {
+          "type": "meta_tag",
+          "settings": { "text": "FACED WITH ADVERSITY, YOU DIG DEEP, CARRY ON — AND STICK THE KETTLE ON" }
+        }
+      },
+      "block_order": ["meta-1"]
+    },
+    "split-1940": {
+      "type": "about-split",
+      "settings": {
+        "index_tag": "FILE_001 // 1940_WHERE_IT_STARTED",
+        "heading": "The bombs fell. The kettle went on.",
+        "body": "<p>Fifty-seven consecutive nights of bombing. Whole streets gone by morning. And the response of ordinary Londoners — telephonists, bus drivers, shopkeepers, kids — was to get up, dust off, and <em>carry on out of sheer bloody-mindedness</em>.</p><p>They called it blitz spirit: the attitude of a city that refused to be told when it was beaten. The pubs stayed open, mostly. The pint was had.</p><p><em>“There was one thing about which there was never any doubt. The courage, the unconquerable grit and stamina of our people. Upon that rock, all stand unshakeable.”</em> — Winston Churchill</p>",
+        "image_ref": "FILE_001 // LONDON_1940",
+        "image_side": "left"
+      }
+    },
+    "split-today": {
+      "type": "about-split",
+      "settings": {
+        "index_tag": "FILE_002 // SAME_SPIRIT_FEWER_BOMBS",
+        "heading": "Still at it.",
+        "body": "<p>The designs carry the attitude: Boudica with her trident, a skull in a bowler hat, a roundel built letter by letter from the brand name. Heritage with a straight face and a raised eyebrow — <em>ironic and iconic</em>, never costume-party.</p><p>And backbone has no postcode. If you’ve ever been up against it and dug deep, you already know the feeling — the shirt just gets there first.</p><p><em>“The Blitz, the weather, the economy, the queue at the pub — none of these will keep me down. I will get my pint, no matter what.”</em> — A regular, undefeated.</p>",
+        "image_ref": "FILE_002 // STILL_AT_IT",
+        "image_side": "right",
+        "cta_label": "[ CHOOSE THE COLLECTION ]",
+        "cta_link": "/collections/all"
+      }
+    },
+    "house-rules": {
+      "type": "values-grid",
+      "settings": {},
+      "blocks": {
+        "rule-1": {
+          "type": "cell",
+          "settings": {
+            "heading": "Not here to be liked.",
+            "body": "Never were."
+          }
+        },
+        "rule-2": {
+          "type": "cell",
+          "settings": {
+            "heading": "Come on then.",
+            "body": "Whatever it is."
+          }
+        },
+        "rule-3": {
+          "type": "cell",
+          "settings": {
+            "heading": "Wakey wakey.",
+            "body": "The kettle’s on."
+          }
+        },
+        "rule-4": {
+          "type": "cell",
+          "settings": {
+            "heading": "Keep your humour.",
+            "body": "If you can laugh at it, it hasn’t won. No nonsense. No fuss."
+          }
+        }
+      },
+      "block_order": ["rule-1", "rule-2", "rule-3", "rule-4"]
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "index_tag": "DISPATCHES // HOME_GUARD",
+        "heading": "Wakey wakey.",
+        "body": "Join the Home Guard: first word on new drops, restocks and stories worth telling — plus 10% off your first order. No spam. That would be nonsense.",
+        "button_label": "[ SIGN UP ]"
+      }
+    }
+  },
+  "order": ["hero", "split-1940", "split-today", "house-rules", "newsletter"]
+}

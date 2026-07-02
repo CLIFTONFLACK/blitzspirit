@@ -1,0 +1,122 @@
+{
+  "sections": {
+    "hero": {
+      "type": "page-hero",
+      "settings": {
+        "index_tag": "FIELD_MANUAL",
+        "show_page_ref": true,
+        "heading": "",
+        "red_first_line": false,
+        "heading_size": "xl"
+      },
+      "blocks": {
+        "meta-1": { "type": "meta_tag", "settings": { "text": "STRAIGHT ANSWERS" } },
+        "meta-2": { "type": "meta_tag", "settings": { "text": "NO RUN-AROUND" } },
+        "meta-3": { "type": "meta_tag", "settings": { "text": "A HUMAN READS EVERYTHING" } }
+      },
+      "block_order": ["meta-1", "meta-2", "meta-3"]
+    },
+    "faq": {
+      "type": "faq",
+      "settings": {
+        "index_tag": "FIELD_MANUAL // STRAIGHT_ANSWERS",
+        "intro": "Straight answers, no run-around. If it’s not covered here, write to us — a human reads everything."
+      },
+      "blocks": {
+        "delivery": {
+          "type": "qa",
+          "settings": {
+            "heading": "Delivery",
+            "anchor": "delivery",
+            "open": true,
+            "body": "<p><strong>UK:</strong> £3.95 tracked, <strong>free over £40</strong>. Orders dispatch within 48 hours and typically land in 2–4 working days. We’ve moved parcels through worse.</p><p><strong>International:</strong> Yes. Tracked worldwide shipping calculated at checkout; duties shown upfront, no doorstep surprises. Mind the Channel.</p>"
+          }
+        },
+        "returns": {
+          "type": "qa",
+          "settings": {
+            "heading": "Returns",
+            "anchor": "returns",
+            "body": "<p><strong>30 days, no quibble.</strong> Quibbling would be nonsense. Unworn, unwashed, tags on — send it back and we’ll refund or exchange, your call.</p><p>Wrong size? Exchanges ship free. Faulty print or seam? We replace it, no fuss — and we’ll want a word with the printer.</p>"
+          }
+        },
+        "size-guide": {
+          "type": "size_table",
+          "settings": {
+            "heading": "Size guide",
+            "intro": "Classic unisex fit on 220gsm heavyweight cotton. True to size — size up for an easier drape. Measurements in cm, garment laid flat.",
+            "columns": "Size|Chest (pit to pit)|Length|Sleeve",
+            "rows": "S|46|69|20\nM|51|72|21\nL|56|74|22\nXL|61|76|23\n2XL|66|78|24\n3XL|71|80|25",
+            "anchor": "size-guide",
+            "open": false
+          }
+        },
+        "care": {
+          "type": "qa",
+          "settings": {
+            "heading": "Care",
+            "anchor": "care",
+            "body": "<p>Wash cold, inside out. Hang dry — tumble dryers are for quitters. The distressed prints are meant to age with you; they’ll look better at year five than day one, like most things with backbone.</p>"
+          }
+        },
+        "faq-printed": {
+          "type": "qa",
+          "settings": {
+            "heading": "Where are the shirts printed?",
+            "anchor": "faq",
+            "body": "<p>Printed in Britain on ethically sourced heavyweight cotton blanks. Built to outlast fashion — and most governments.</p>"
+          }
+        },
+        "faq-political": {
+          "type": "qa",
+          "settings": {
+            "heading": "Is this a political brand?",
+            "body": "<p>No. It’s a t-shirt brand with a skull in a bowler hat. Read into that what you like.</p>"
+          }
+        },
+        "faq-drops": {
+          "type": "qa",
+          "settings": {
+            "heading": "When do new designs drop?",
+            "body": "<p>New files are declassified every few months. Join the Home Guard for first access — subscribers get 48 hours before anyone else.</p>"
+          }
+        },
+        "faq-restock": {
+          "type": "qa",
+          "settings": {
+            "heading": "Do you restock sold-out colours?",
+            "body": "<p>Usually, but slowly — we print in small runs to keep quality up and landfill down. Sign up to be notified the moment a restock lands.</p>"
+          }
+        },
+        "faq-code": {
+          "type": "qa",
+          "settings": {
+            "heading": "Can I use my BACKBONE10 code on sale items?",
+            "body": "<p>Yes. We’re defiant, not difficult.</p>"
+          }
+        },
+        "contact": {
+          "type": "qa",
+          "settings": {
+            "heading": "Contact",
+            "anchor": "contact",
+            "body": "<p>Email <a href=\"mailto:hq@blitzspirit.co.uk\">hq@blitzspirit.co.uk</a> — a human answers within one working day. For order queries, include your order number and we’ll sort it without a fuss.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "delivery",
+        "returns",
+        "size-guide",
+        "care",
+        "faq-printed",
+        "faq-political",
+        "faq-drops",
+        "faq-restock",
+        "faq-code",
+        "contact"
+      ]
+    }
+  },
+  "order": ["hero", "faq"]
+}

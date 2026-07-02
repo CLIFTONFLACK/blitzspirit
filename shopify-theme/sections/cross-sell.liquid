@@ -1,0 +1,198 @@
+{% comment %}
+  cross-sell — "GOOD COMPANY — PAIR IT WITH" (Workstream B).
+
+  - use_recommendations (default ON): renders the Product
+    Recommendations API result. First paint emits a hidden
+    [data-recommendations] stub + a tiny self-contained script that
+    fetches this same section via
+    /recommendations/products?section_id=…&product_id=…&limit=4&intent=related
+    and swaps the fresh (recommendations.performed) HTML in.
+  - Manual "product" blocks augment the grid (recommended duplicates
+    are skipped) and are the entire content when recommendations are
+    off or unavailable (e.g. on the cart page, where there is no
+    product object).
+  - Cards render via the shared product-card snippet (.coll-card).
+  - Renders nothing at all when there is nothing to show.
+{% endcomment %}
+
+{%- liquid
+  assign manual_count = 0
+  for block in section.blocks
+    if block.settings.product != blank
+      assign manual_count = manual_count | plus: 1
+    endif
+  endfor
+
+  assign use_recs = section.settings.use_recommendations
+  if product == blank
+    assign use_recs = false
+  endif
+
+  assign rec_count = 0
+  if use_recs and recommendations.performed
+    assign rec_count = recommendations.products_count
+  endif
+
+  assign show_section = true
+  if use_recs == false and manual_count == 0
+    assign show_section = false
+  endif
+  if use_recs and recommendations.performed and rec_count == 0 and manual_count == 0
+    assign show_section = false
+  endif
+
+  assign pending = false
+  if use_recs and recommendations.performed == false
+    assign pending = true
+  endif
+-%}
+
+{%- if show_section -%}
+  <section
+    class="cross-sell"
+    data-cross-sell
+    data-section-id="{{ section.id }}"
+    {% if pending and manual_count == 0 %}hidden{% endif %}
+  >
+    <div class="cs-head">
+      <span class="tag">[ {{ section.settings.heading | escape }} ]</span>
+      {%- if section.settings.show_view_all -%}
+        <a href="{{ routes.all_products_collection_url }}" class="tag cs-view-all">
+          [ {{ section.settings.view_all_label | escape }} ]
+        </a>
+      {%- endif -%}
+    </div>
+
+    <div class="cross-sell-grid">
+      {%- if use_recs and recommendations.performed -%}
+        {%- for rec_product in recommendations.products limit: 4 -%}
+          {% render 'product-card', product: rec_product, show_badge: true %}
+        {%- endfor -%}
+      {%- endif -%}
+
+      {%- for block in section.blocks -%}
+        {%- assign manual_product = block.settings.product -%}
+        {%- if manual_product != blank -%}
+          {%- assign is_dupe = false -%}
+          {%- if use_recs and recommendations.performed -%}
+            {%- for rec_product in recommendations.products limit: 4 -%}
+              {%- if rec_product.id == manual_product.id -%}
+                {%- assign is_dupe = true -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+          {%- unless is_dupe -%}
+            <div class="cross-sell-cell" {{ block.shopify_attributes }}>
+              {% render 'product-card', product: manual_product, show_badge: true %}
+            </div>
+          {%- endunless -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    {%- if pending -%}
+      <div
+        data-recommendations
+        data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=4&intent=related"
+        hidden
+      ></div>
+      <script>
+        (function () {
+          var mount = document.querySelector('#shopify-section-{{ section.id }} [data-recommendations]');
+          if (!mount || mount.dataset.loaded) return;
+          mount.dataset.loaded = 'true';
+          var host = mount.closest('[data-cross-sell]');
+          var run = function () {
+            fetch(mount.dataset.url)
+              .then(function (response) { return response.text(); })
+              .then(function (text) {
+                var holder = document.createElement('div');
+                holder.innerHTML = text;
+                var fresh = holder.querySelector('[data-cross-sell]');
+                if (fresh && fresh.querySelector('.coll-card')) {
+                  host.innerHTML = fresh.innerHTML;
+                  host.hidden = false;
+                } else if (!host.querySelector('.coll-card')) {
+                  host.hidden = true;
+                }
+              })
+              .catch(function () { /* keep manual/fallback content */ });
+          };
+          if ('requestIdleCallback' in window) {
+            window.requestIdleCallback(run);
+          } else {
+            window.setTimeout(run, 0);
+          }
+        })();
+      </script>
+    {%- endif -%}
+  </section>
+{%- endif -%}
+
+{% stylesheet %}
+.cs-view-all:hover { color: var(--signal); }
+.cross-sell-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+.cross-sell-cell { display: contents; }
+@media (max-width: 1100px) {
+  .cross-sell-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 540px) {
+  .cross-sell-grid { grid-template-columns: 1fr; }
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Cross-sell",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "GOOD COMPANY — PAIR IT WITH"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_recommendations",
+      "label": "Use Shopify product recommendations",
+      "info": "Fills the grid automatically on product pages. Manual products below augment or replace it.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show view-all link",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "View-all label",
+      "default": "VIEW ALL →"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Manual product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Cross-sell"
+    }
+  ]
+}
+{% endschema %}

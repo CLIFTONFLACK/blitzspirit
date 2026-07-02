@@ -1,0 +1,135 @@
+{% comment %}
+  main-collection-grid — paginated brutalist product grid.
+
+  - Cards via the product-card snippet (.coll-card family, theme.css).
+  - Desktop column count (3/4) via --coll-cols custom property; the
+    2-col/1-col breakpoints stay owned by theme.css (≤860 / ≤540).
+  - Empty state when the collection has no products.
+  - Onboarding state (placeholder cards) when no collection object is
+    available, e.g. previewing the section outside a collection.
+{% endcomment %}
+
+{%- liquid
+  assign per_page = section.settings.products_per_page | default: 12
+  assign cols = section.settings.columns_desktop | default: '3'
+-%}
+
+<div class="coll-grid-wrap" data-section-id="{{ section.id }}">
+  {%- if collection == blank -%}
+    {%- if request.design_mode -%}
+      <p class="tag tag-mute coll-grid-hint">[ THIS SECTION FILLS FROM THE COLLECTION IT SITS ON — PLACEHOLDERS FOR NOW ]</p>
+    {%- endif -%}
+    <div class="coll-grid" style="--coll-cols: {{ cols }}">
+      {%- for i in (1..6) -%}
+        <article class="coll-card coll-card--placeholder">
+          <div class="coll-plate">
+            {%- assign ph_name = 'product-' | append: forloop.index -%}
+            {{ ph_name | placeholder_svg_tag: 'coll-placeholder-svg' }}
+            <span class="coll-issue">[ ISSUE_001 ]</span>
+          </div>
+          <div class="coll-info">
+            <h3 class="chunk coll-name"><span class="the">THE</span> PLACEHOLDER</h3>
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+  {%- elsif collection.products_count == 0 -%}
+    <div class="coll-empty">
+      <h2 class="chunk coll-empty-title">{{ section.settings.empty_heading | escape }}</h2>
+      {%- if section.settings.empty_text != blank -%}
+        <p class="coll-empty-text">{{ section.settings.empty_text | escape }}</p>
+      {%- endif -%}
+      <a href="{{ routes.all_products_collection_url }}" class="directive directive--ghost snap coll-empty-link">
+        [ {{ 'general.404.link' | t }} ]
+      </a>
+    </div>
+  {%- else -%}
+    {%- paginate collection.products by per_page -%}
+      <div class="coll-grid" style="--coll-cols: {{ cols }}">
+        {%- for product in collection.products -%}
+          {% render 'product-card', product: product, show_badge: section.settings.show_badge %}
+        {%- endfor -%}
+      </div>
+      {%- render 'pagination', paginate: paginate -%}
+    {%- endpaginate -%}
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+@media (min-width: 861px) {
+  .coll-grid-wrap .coll-grid { grid-template-columns: repeat(var(--coll-cols, 3), 1fr); }
+}
+.coll-grid-hint { display: block; margin-bottom: var(--s2); }
+.coll-placeholder-svg { width: 100%; height: 100%; display: block; background: var(--plate); }
+.coll-placeholder-svg svg { width: 100%; height: 100%; }
+.coll-empty {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  padding: var(--s6) var(--s3);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s2);
+}
+.coll-empty-title { color: var(--cream); font-size: clamp(2.2rem, 5vw, 3.5rem); line-height: 0.92; }
+.coll-empty-text {
+  color: var(--bone-dim);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  max-width: 52ch;
+}
+.coll-empty-link { width: auto; padding: 16px 32px; margin-top: var(--s2); }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Collection grid",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 6,
+      "max": 24,
+      "step": 3,
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "options": [
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "label": "Show LIMITED EDITION badges",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "empty_heading",
+      "label": "Empty state heading",
+      "default": "Bombed out."
+    },
+    {
+      "type": "text",
+      "id": "empty_text",
+      "label": "Empty state text",
+      "default": "Nothing filed under this yet."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection grid"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,148 @@
+{% comment %}
+  equipment-feature — RECOMMENDED CONDIMENT cap cross-sell
+  (index.html BLOCK 3, 1:1 port).
+
+  Centered .condiment-inner layout: label tag, plate image (plate
+  snippet — gives product-form.js its [data-plate] swap hook), issue
+  tag, name, colourway pills, price, ADD TO BAG. The buy form follows
+  the <product-form> contract in docs/CONTRACTS.md; a Colour-only
+  product renders only colour pills (absent options auto-hide).
+  Framework CSS lives in theme.css §12e. Onboarding: no product →
+  placeholder plate + neutral copy.
+{% endcomment %}
+
+{%- liquid
+  assign product = section.settings.product
+  assign title_up = product.title | upcase
+  assign title_first4 = title_up | slice: 0, 4
+-%}
+
+<section class="equipment" data-section-id="{{ section.id }}">
+  <div class="condiment-inner">
+    {%- if section.settings.label != blank -%}
+      <div class="condiment-label tag">{{ section.settings.label | escape }}</div>
+    {%- endif -%}
+
+    <div class="condiment-body">
+      <div class="condiment-visual">
+        {% render 'plate',
+          image: product.featured_image,
+          alt: product.title,
+          sizes: '(min-width: 640px) 45vw, 100vw'
+        %}
+      </div>
+
+      <div class="condiment-info">
+        {%- if section.settings.issue_tag != blank -%}
+          <div class="condiment-issue tag">[ {{ section.settings.issue_tag | escape }} ]</div>
+        {%- endif -%}
+
+        {%- if product != blank -%}
+          <h2 class="chunk condiment-name">
+            {%- if title_first4 == 'THE ' -%}
+              <span class="the">THE</span> {{ title_up | remove_first: 'THE ' }}
+            {%- else -%}
+              {{ title_up }}
+            {%- endif -%}
+          </h2>
+
+          <product-form data-section-id="{{ section.id }}">
+            {%- form 'product', product -%}
+              <input
+                type="hidden"
+                name="id"
+                value="{{ product.selected_or_first_available_variant.id }}"
+              >
+
+              {%- unless product.has_only_default_variant -%}
+                <div class="condiment-cw">
+                  {%- for option in product.options_with_values -%}
+                    {% render 'option-pills', option: option, option_index: option.position %}
+                  {%- endfor -%}
+                </div>
+              {%- endunless -%}
+
+              <script type="application/json" data-variant-json>
+                {{ product.variants | json }}
+              </script>
+
+              <div class="condiment-price tag">{% render 'price', product: product %}</div>
+
+              <div class="actions">
+                <button
+                  type="submit"
+                  name="add"
+                  class="directive snap"
+                  {% unless product.available %}disabled{% endunless %}
+                >
+                  {%- if product.available -%}
+                    [ {{ 'products.add_to_cart' | t }} ]
+                  {%- else -%}
+                    [ {{ 'products.sold_out' | t }} ]
+                  {%- endif -%}
+                </button>
+              </div>
+            {%- endform -%}
+          </product-form>
+        {%- else -%}
+          <h2 class="chunk condiment-name">AWAITING EQUIPMENT</h2>
+          <p class="condiment-note tag tag-mute">SELECT A PRODUCT IN THE THEME EDITOR.</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+.equipment .plate {
+  width: 100%;
+  aspect-ratio: 1 / 1.12;
+  border-color: var(--line);
+  padding: var(--s4);
+}
+.equipment .plate svg {
+  width: 100%;
+  height: 100%;
+}
+.condiment-visual .plate img {
+  background: none;
+  border: none;
+  padding: 0;
+}
+.condiment-issue {
+  margin-bottom: var(--s2);
+}
+.condiment-note {
+  display: block;
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Equipment feature",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Section label",
+      "default": "[ RECOMMENDED CONDIMENT ]"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "text",
+      "id": "issue_tag",
+      "label": "Issue tag",
+      "default": "ISSUE_001 // EQUIPMENT"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Equipment feature"
+    }
+  ]
+}
+{% endschema %}

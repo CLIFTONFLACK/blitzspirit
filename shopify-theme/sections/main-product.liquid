@@ -1,0 +1,536 @@
+{% comment %}
+  main-product — the ISSUE_001 PDP (Workstream B).
+
+  Layout (ported from product.html / product-cap.html):
+    breadcrumb → 50/50 grid: LEFT sticky gallery (ref tag, plate frames,
+    thumbnails) / RIGHT ledger built from ordered blocks.
+
+  <product-form> contract (docs/CONTRACTS.md §4):
+    - input[name="id"], option buttons [data-option-index][data-value]
+      with aria-pressed, script[data-variant-json], add button
+      .directive[name="add"], [data-price], [data-stock], [data-plate].
+    - Money is NEVER formatted in JS: every variant's price is
+      pre-rendered server-side in a hidden span keyed by
+      data-variant-price="<variant id>" inside the [data-price]
+      container; product-form.js only toggles [hidden].
+    - The plate swap uses the same pattern: one plate frame per image
+      media ([data-plate-frame][data-media-id][data-image-id]),
+      toggled via [hidden] so srcset/width/height survive.
+    - data-product-wrap on the section root is the JS lookup scope.
+    - No-JS: the form posts natively; a <noscript> variant <select>
+      overrides the hidden id input (last field wins).
+{% endcomment %}
+
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign issue_val = product.metafields.custom.issue | default: 'ISSUE_001'
+  assign index_ref = product.metafields.custom.index_ref
+  assign crumb_collection = collection | default: product.collections.first
+
+  if index_ref != blank
+    assign plate_ref = index_ref | upcase | append: ' // PDP'
+  else
+    assign plate_ref = 'PDP'
+  endif
+
+  assign current_media_id = current_variant.featured_media.id | default: product.featured_media.id
+
+  assign image_media_count = 0
+  for media in product.media
+    if media.media_type == 'image'
+      assign image_media_count = image_media_count | plus: 1
+    endif
+  endfor
+-%}
+
+<section class="pdp-wrap" data-product-wrap data-section-id="{{ section.id }}">
+
+  <nav class="pdp-breadcrumb" aria-label="Breadcrumb">
+    <a href="{{ routes.root_url }}" class="tag">[ {{ shop.name | upcase | escape }} ]</a>
+    <span class="tag sep" aria-hidden="true">//</span>
+    {%- if crumb_collection != blank -%}
+      <a href="{{ crumb_collection.url }}" class="tag">[ {{ crumb_collection.title | upcase | escape }} ]</a>
+      <span class="tag sep" aria-hidden="true">//</span>
+    {%- endif -%}
+    <span class="tag crumb-current" aria-current="page">[ {{ product.title | upcase | escape }} ]</span>
+  </nav>
+
+  <div class="pdp">
+
+    <div class="pdp-gallery">
+      <div class="pdp-ref tag">
+        [ {{ section.settings.gallery_ref | default: 'ASSET // FLAT_LAY' }}{% if index_ref != blank %} // {{ index_ref | upcase }}{% endif %} ]
+      </div>
+
+      {%- if image_media_count > 0 -%}
+        {%- for media in product.media -%}
+          {%- if media.media_type == 'image' -%}
+            {%- assign is_current = false -%}
+            {%- if media.id == current_media_id -%}
+              {%- assign is_current = true -%}
+            {%- endif -%}
+            <div
+              data-plate-frame
+              data-media-id="{{ media.id }}"
+              data-image-id="{{ media.preview_image.id }}"
+              {% unless is_current %}hidden{% endunless %}
+            >
+              {%- if is_current -%}
+                {% render 'plate', image: media.preview_image, ref_text: plate_ref, alt: product.title, priority: true, sizes: '(min-width: 860px) 42vw, 92vw' %}
+              {%- else -%}
+                {% render 'plate', image: media.preview_image, ref_text: plate_ref, alt: product.title, sizes: '(min-width: 860px) 42vw, 92vw' %}
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- else -%}
+        <div data-plate-frame>
+          {% render 'plate', ref_text: plate_ref, alt: product.title %}
+        </div>
+      {%- endif -%}
+
+      {%- if image_media_count > 1 -%}
+        <div class="pdp-thumbs">
+          {%- for media in product.media -%}
+            {%- if media.media_type == 'image' -%}
+              <button
+                type="button"
+                class="pdp-thumb snap"
+                data-thumb
+                data-media-id="{{ media.id }}"
+                data-image-id="{{ media.preview_image.id }}"
+                aria-pressed="{% if media.id == current_media_id %}true{% else %}false{% endif %}"
+                aria-label="{{ media.preview_image.alt | default: product.title | escape }}"
+              >
+                <img
+                  src="{{ media.preview_image | image_url: width: 144 }}"
+                  alt=""
+                  width="144"
+                  height="{{ 144 | divided_by: media.preview_image.aspect_ratio | round }}"
+                  loading="lazy"
+                >
+              </button>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="pdp-ledger">
+      <product-form data-section-id="{{ section.id }}" data-url-update>
+        {%- assign fold_stock_into_price = false -%}
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+
+            {%- when '@app' -%}
+              {% render block %}
+
+            {%- when 'issue_tag' -%}
+              <div class="pdp-issue" {{ block.shopify_attributes }}>
+                <div class="led-index tag">[ &#9733; {{ issue_val | upcase }}{% if index_ref != blank %} // {{ index_ref | upcase }}{% endif %} ]</div>
+              </div>
+
+            {%- when 'title' -%}
+              {%- assign title_up = product.title | upcase -%}
+              {%- assign title_first4 = title_up | slice: 0, 4 -%}
+              <h1 class="led-name chunk pdp-name" {{ block.shopify_attributes }}>
+                {%- if title_first4 == 'THE ' -%}
+                  <span class="the">THE</span> {{ title_up | remove_first: 'THE ' | escape }}
+                {%- else -%}
+                  {{ title_up | escape }}
+                {%- endif -%}
+              </h1>
+
+            {%- when 'price' -%}
+              {%- assign next_block = section.blocks[forloop.index] -%}
+              <div class="pdp-price-row" {{ block.shopify_attributes }}>
+                <span class="pdp-price tag" data-price>
+                  {%- for variant in product.variants -%}
+                    <span
+                      class="price{% if variant.compare_at_price > variant.price %} price--sale{% endif %}"
+                      data-variant-price="{{ variant.id }}"
+                      {% unless variant.id == current_variant.id %}hidden{% endunless %}
+                    >
+                      {%- if variant.compare_at_price > variant.price -%}
+                        <s class="price__compare">{{ variant.compare_at_price | money }}</s>
+                      {%- endif -%}
+                      <span class="price__current">{{ variant.price | money }}</span>
+                      {%- if cart.taxes_included %} <span class="price__vat">{{ 'products.inc_vat' | t }}</span>{% endif -%}
+                      {%- if variant.unit_price_measurement -%}
+                        <span class="price__unit">
+                          {{- variant.unit_price | money }} /
+                          {% if variant.unit_price_measurement.reference_value != 1 %}{{ variant.unit_price_measurement.reference_value }}{% endif %}{{ variant.unit_price_measurement.reference_unit -}}
+                        </span>
+                      {%- endif -%}
+                    </span>
+                  {%- endfor -%}
+                </span>
+                {%- if next_block.type == 'stock' -%}
+                  {%- assign fold_stock_into_price = true -%}
+                  <span
+                    class="pdp-stock tag"
+                    data-stock
+                    data-state="{% if current_variant.available %}in-stock{% else %}sold-out{% endif %}"
+                    data-label-in-stock="[ {{ 'products.in_stock' | t }} ]"
+                    data-label-sold-out="[ {{ 'products.sold_out' | t }} ]"
+                    {{ next_block.shopify_attributes }}
+                  >
+                    {%- if current_variant.available -%}
+                      [ {{ 'products.in_stock' | t }} ]
+                    {%- else -%}
+                      [ {{ 'products.sold_out' | t }} ]
+                    {%- endif -%}
+                  </span>
+                {%- endif -%}
+              </div>
+
+            {%- when 'stock' -%}
+              {%- if fold_stock_into_price -%}
+                {%- assign fold_stock_into_price = false -%}
+              {%- else -%}
+                <div class="pdp-stock-row" {{ block.shopify_attributes }}>
+                  <span
+                    class="pdp-stock tag"
+                    data-stock
+                    data-state="{% if current_variant.available %}in-stock{% else %}sold-out{% endif %}"
+                    data-label-in-stock="[ {{ 'products.in_stock' | t }} ]"
+                    data-label-sold-out="[ {{ 'products.sold_out' | t }} ]"
+                  >
+                    {%- if current_variant.available -%}
+                      [ {{ 'products.in_stock' | t }} ]
+                    {%- else -%}
+                      [ {{ 'products.sold_out' | t }} ]
+                    {%- endif -%}
+                  </span>
+                </div>
+              {%- endif -%}
+
+            {%- when 'variant_picker' -%}
+              {%- unless product.has_only_default_variant -%}
+                <div class="pdp-options" {{ block.shopify_attributes }}>
+                  {%- assign size_guide_done = false -%}
+                  {%- for option in product.options_with_values -%}
+                    {%- if option.values.size > 1 -%}
+                      {% render 'option-pills', option: option, option_index: option.position %}
+                      {%- assign option_down = option.name | downcase -%}
+                      {%- if option_down != 'colour' and option_down != 'color' and size_guide_done == false and section.settings.size_guide_page != blank -%}
+                        <a href="{{ section.settings.size_guide_page.url }}" class="tag tag-mute pdp-size-guide">
+                          [ {{ section.settings.size_guide_label | default: 'SIZE GUIDE' }} ]
+                        </a>
+                        {%- assign size_guide_done = true -%}
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              {%- endunless -%}
+
+            {%- when 'buy_buttons' -%}
+              <div class="pdp-buy" {{ block.shopify_attributes }}>
+                {%- form 'product', product -%}
+                  <input type="hidden" name="id" value="{{ current_variant.id }}">
+
+                  {%- unless product.has_only_default_variant -%}
+                    <noscript>
+                      <select name="id" class="pdp-variant-select" aria-label="{{ product.title | escape }}">
+                        {%- for variant in product.variants -%}
+                          <option
+                            value="{{ variant.id }}"
+                            {% if variant.id == current_variant.id %}selected{% endif %}
+                            {% unless variant.available %}disabled{% endunless %}
+                          >
+                            {{ variant.title | escape }}{% unless variant.available %} &mdash; {{ 'products.sold_out' | t }}{% endunless %}
+                          </option>
+                        {%- endfor -%}
+                      </select>
+                    </noscript>
+                  {%- endunless -%}
+
+                  {%- if section.settings.show_quantity -%}
+                    <div class="pdp-qty">
+                      <span class="tag tag-mute">[ {{ 'cart.quantity' | t }} ]</span>
+                      <div class="qty-box">
+                        <button type="button" class="qty-btn snap" data-qty-minus aria-label="Decrease quantity">&minus;</button>
+                        <input
+                          class="qty-input"
+                          type="number"
+                          name="quantity"
+                          value="1"
+                          min="1"
+                          inputmode="numeric"
+                          autocomplete="off"
+                          aria-label="{{ 'cart.quantity' | t }}"
+                        >
+                        <button type="button" class="qty-btn snap" data-qty-plus aria-label="Increase quantity">+</button>
+                      </div>
+                    </div>
+                  {%- endif -%}
+
+                  <div class="actions">
+                    <button
+                      type="submit"
+                      name="add"
+                      class="directive snap"
+                      {% unless current_variant.available %}disabled{% endunless %}
+                    >
+                      <span data-add-label {% unless current_variant.available %}hidden{% endunless %}>[ {{ 'products.add_to_cart' | t }} ]</span>
+                      <span data-sold-label {% if current_variant.available %}hidden{% endif %}>[ {{ 'products.sold_out' | t }} ]</span>
+                    </button>
+                    <a href="{{ crumb_collection.url | default: routes.all_products_collection_url }}" class="directive directive--ghost snap">
+                      [ {{ section.settings.collection_link_label | default: 'EVALUATE THE FULL COLLECTION' }} ]
+                    </a>
+                  </div>
+
+                  {%- if section.settings.show_dynamic_checkout -%}
+                    {{ form | payment_button }}
+                  {%- endif -%}
+                {%- endform -%}
+              </div>
+
+            {%- when 'dossier' -%}
+              {%- if product.metafields.custom.dossier != blank or product.metafields.custom.strapline != blank or product.description != blank -%}
+                <div class="pdp-dossier" {{ block.shopify_attributes }}>
+                  <hr class="sep-line">
+                  {% render 'dossier', product: product %}
+                </div>
+              {%- endif -%}
+
+            {%- when 'field_manual' -%}
+              <div class="pdp-field-manual" {{ block.shopify_attributes }}>
+                {% render 'field-manual', product: product, care: section.settings.fm_care, delivery: section.settings.fm_delivery %}
+              </div>
+
+            {%- when 'trust_note' -%}
+              {%- if block.settings.text != blank -%}
+                <p class="tag tag-mute pdp-trust" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+              {%- endif -%}
+
+            {%- when 'custom_liquid' -%}
+              {%- if block.settings.custom_liquid != blank -%}
+                <div class="pdp-custom-liquid" {{ block.shopify_attributes }}>
+                  {{ block.settings.custom_liquid }}
+                </div>
+              {%- endif -%}
+
+          {%- endcase -%}
+        {%- endfor -%}
+
+        <script type="application/json" data-variant-json>
+          {{ product.variants | json }}
+        </script>
+      </product-form>
+    </div>
+
+  </div>
+</section>
+
+{% stylesheet %}
+.pdp-wrap [hidden] { display: none !important; }
+
+/* Ledger blocks flow inside <product-form>; mirror the ledger's rhythm. */
+product-form { display: block; }
+.pdp-ledger product-form { display: flex; flex-direction: column; gap: var(--s3); }
+
+.pdp-ledger .pdp-name { font-size: clamp(2.2rem, 5vw, 4rem); margin-bottom: 0; }
+.pdp-issue .led-index { margin-bottom: 0; }
+
+.pdp-stock-row { display: flex; justify-content: flex-end; }
+.pdp-stock[data-state="sold-out"] { color: var(--bone-mute); }
+
+.price__unit { display: block; font-size: 10px; letter-spacing: 0.08em; color: var(--bone-mute); }
+
+/* Plate frames — one per image media, toggled via [hidden]. */
+[data-plate-frame] { display: contents; }
+[data-plate-frame][hidden] { display: none !important; }
+.pdp-gallery .plate {
+  width: 100%;
+  max-width: 500px;
+  aspect-ratio: 1/1.12;
+  margin: 0 auto;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+}
+
+.pdp-size-guide { display: inline-block; margin-top: 6px; }
+.pdp-size-guide:hover { color: var(--signal); }
+
+.pdp-buy form { display: flex; flex-direction: column; gap: var(--s2); }
+.pdp-variant-select {
+  width: 100%;
+  background: var(--panel-2);
+  color: var(--bone);
+  border: 1px solid var(--line-bri);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 12px;
+}
+
+.pdp-qty { display: flex; align-items: center; gap: var(--s2); }
+.qty-box { display: flex; border: 1px solid var(--line-bri); }
+.qty-btn { width: 44px; padding: 10px 0; text-align: center; color: var(--bone); font-size: 15px; }
+.qty-btn:hover { background: var(--panel-2); }
+.qty-input {
+  width: 56px;
+  background: transparent;
+  border: none;
+  border-left: 1px solid var(--line-bri);
+  border-right: 1px solid var(--line-bri);
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 13px;
+  text-align: center;
+  padding: 10px 0;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+.qty-input::-webkit-outer-spin-button,
+.qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+/* Dossier rich text: bold carries the .hit treatment; wrappers keep
+   the 28px paragraph rhythm from theme.css. */
+.dossier strong,
+.dossier b { font-weight: 400; color: #0a0a0a; }
+.dossier > p + div { margin-top: 28px; }
+
+/* Field manual COLOURWAYS auto-row reuses the swatch snippet for its
+   display-name map — dots off, labels on. */
+.fm-val--cw .dot { display: none; }
+.fm-val--cw .cw-name { color: inherit; }
+
+.pdp-trust { margin: 0; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product",
+  "settings": [
+    {
+      "type": "text",
+      "id": "gallery_ref",
+      "label": "Gallery reference tag",
+      "info": "The product's index ref metafield is appended automatically.",
+      "default": "ASSET // FLAT_LAY"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quantity",
+      "label": "Show quantity stepper",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dynamic_checkout",
+      "label": "Show dynamic checkout buttons",
+      "info": "Buy-it-now buttons styled by the payment provider, not the theme.",
+      "default": false
+    },
+    {
+      "type": "page",
+      "id": "size_guide_page",
+      "label": "Size guide page",
+      "info": "Linked beside the size option when set."
+    },
+    {
+      "type": "text",
+      "id": "size_guide_label",
+      "label": "Size guide label",
+      "default": "SIZE GUIDE // STANDARD UNISEX CUT"
+    },
+    {
+      "type": "text",
+      "id": "collection_link_label",
+      "label": "Collection link label",
+      "default": "EVALUATE THE FULL COLLECTION"
+    },
+    {
+      "type": "header",
+      "content": "Field manual defaults"
+    },
+    {
+      "type": "paragraph",
+      "content": "Used for the auto-generated CARE and DELIVERY rows when a product has no field_manual metafield entries."
+    },
+    {
+      "type": "text",
+      "id": "fm_care",
+      "label": "Care row",
+      "default": "30°C // INSIDE OUT // NO TUMBLE — TUMBLE DRYERS ARE FOR QUITTERS"
+    },
+    {
+      "type": "text",
+      "id": "fm_delivery",
+      "label": "Delivery row",
+      "default": "FREE UK OVER £40 // 2–5 WORKING DAYS"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "issue_tag",
+      "name": "Issue tag",
+      "limit": 1
+    },
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "Price",
+      "limit": 1
+    },
+    {
+      "type": "stock",
+      "name": "Stock status",
+      "limit": 1
+    },
+    {
+      "type": "variant_picker",
+      "name": "Variant picker",
+      "limit": 1
+    },
+    {
+      "type": "buy_buttons",
+      "name": "Buy buttons",
+      "limit": 1
+    },
+    {
+      "type": "dossier",
+      "name": "Dossier",
+      "limit": 1
+    },
+    {
+      "type": "field_manual",
+      "name": "Field manual",
+      "limit": 1
+    },
+    {
+      "type": "trust_note",
+      "name": "Trust note",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "30-day no-quibble returns — that would be nonsense."
+        }
+      ]
+    },
+    {
+      "type": "custom_liquid",
+      "name": "Custom Liquid",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "Custom Liquid"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

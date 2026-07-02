@@ -1,0 +1,85 @@
+{% comment %}
+  newsletter-form — THE shared email-capture form ({% form 'customer' %}).
+  Rendered by: newsletter section, promo-band (homepage), signup-modal,
+  main-password (waitlist). Keep this interface stable — other
+  workstreams code against it.
+
+  Params:
+    id            {String}  REQUIRED — unique id base. The <form> gets this id,
+                            the email input gets "{id}-email", the wrapper gets
+                            "{id}-wrap" (used as the return_to anchor so the
+                            page lands back at the form after the POST).
+    button_label  {String}  optional — submit label. Default "[ SIGN UP ]".
+    success_text  {String}  optional — overrides the default success copy.
+                            Default: newsletter.success locale
+                            ("WELCOME TO THE HOME GUARD.") + the discount code
+                            line from settings.discount_code (blank-guarded).
+    placeholder   {String}  optional — email placeholder.
+                            Default "YOUR@EMAIL.CO.UK".
+    tags          {String}  optional — contact[tags] value.
+                            Default "newsletter,backbone10".
+    class_prefix  {String}  optional — CSS family for the input row:
+                            "nws" (default) or "promo" (theme.css already ships
+                            both .nws-row/-input/-submit and .promo-* variants).
+
+  Success detection hook: the success block carries [data-signup-success].
+  modal.js reads it on load — sets localStorage bs_signed_up and, when the
+  block is inside the signup dialog, reopens the dialog to show it.
+
+  Anchor-scroll note: a hidden return_to input sends the customer back to
+  "{{ request.path }}#{id}-wrap", so the browser scrolls to the form (with
+  its success or error state) instead of jumping to the top of the page.
+
+  Usage:
+    {% render 'newsletter-form', id: 'NewsletterBand', button_label: '[ SEND IT ]' %}
+    {% render 'newsletter-form', id: 'PromoBand', class_prefix: 'promo', success_text: confirmation_string %}
+{% endcomment %}
+
+{%- liquid
+  assign nlf_id = id | default: 'NewsletterForm'
+  assign nlf_button = button_label | default: '[ SIGN UP ]'
+  assign nlf_placeholder = placeholder | default: 'YOUR@EMAIL.CO.UK'
+  assign nlf_tags = tags | default: 'newsletter,backbone10'
+  assign nlf_prefix = class_prefix | default: 'nws'
+-%}
+
+<div class="nlf" id="{{ nlf_id }}-wrap">
+  {%- form 'customer', id: nlf_id, class: 'nlf-form' -%}
+    {%- if form.posted_successfully? -%}
+      <div class="nlf-success" data-signup-success role="status">
+        {%- if success_text != blank -%}
+          <p class="nlf-success-line tag">{{ success_text }}</p>
+        {%- else -%}
+          <p class="nlf-success-line tag">{{ 'newsletter.success' | t }}</p>
+          {%- if settings.discount_code != blank -%}
+            <p class="nlf-code tag">{{ 'newsletter.code_line' | t: code: settings.discount_code }}</p>
+          {%- endif -%}
+        {%- endif -%}
+      </div>
+    {%- else -%}
+      <input type="hidden" name="contact[tags]" value="{{ nlf_tags | escape }}">
+      <input type="hidden" name="return_to" value="{{ request.path }}#{{ nlf_id }}-wrap">
+      {%- if form.errors -%}
+        <p class="nlf-error tag" role="alert">
+          [ {{ form.errors.translated_fields.email }} {{ form.errors.messages.email }} ]
+        </p>
+      {%- endif -%}
+      <label class="visually-hidden" for="{{ nlf_id }}-email">{{ 'newsletter.label' | t }}</label>
+      <div class="{{ nlf_prefix }}-row">
+        <input
+          id="{{ nlf_id }}-email"
+          class="{{ nlf_prefix }}-input"
+          type="email"
+          name="contact[email]"
+          value="{{ form.email }}"
+          placeholder="{{ nlf_placeholder | escape }}"
+          autocomplete="email"
+          autocorrect="off"
+          autocapitalize="off"
+          required
+        >
+        <button class="{{ nlf_prefix }}-submit snap" type="submit" name="commit">{{ nlf_button }}</button>
+      </div>
+    {%- endif -%}
+  {%- endform -%}
+</div>

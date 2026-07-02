@@ -1,0 +1,78 @@
+{% comment %}
+  field-manual — the [ FIELD_MANUAL // TECHNICAL_SPEC ] table.
+
+  Params:
+    product:  {Object} product (required)
+    care:     {String} shared CARE default row (optional; auto-rows only)
+    delivery: {String} shared DELIVERY default row (optional; auto-rows only)
+
+  Behaviour:
+    - When product.metafields.custom.field_manual (list of spec_row
+      metaobjects: label / value) has entries, renders those rows
+      verbatim, in order.
+    - Otherwise builds auto-rows so bare products still get a manual:
+        ENTRY      = index_ref + title
+        ISSUE      = custom.issue (default ISSUE_001)
+        COLOURWAYS = colour option values via the swatch snippet
+                     (dots hidden by CSS — labels only)
+        CARE       = `care` param (section setting)
+        DELIVERY   = `delivery` param (section setting)
+
+  Usage:
+    {% render 'field-manual', product: product, care: section.settings.fm_care, delivery: section.settings.fm_delivery %}
+{% endcomment %}
+
+{%- liquid
+  assign fm_rows = product.metafields.custom.field_manual.value
+  assign fm_issue = product.metafields.custom.issue | default: 'ISSUE_001'
+  assign fm_index_ref = product.metafields.custom.index_ref
+  assign fm_colour_option = product.options_by_name['Colour']
+  if fm_colour_option == blank
+    assign fm_colour_option = product.options_by_name['Color']
+  endif
+-%}
+
+<div class="field-manual">
+  <div class="fm-head tag">[ FIELD_MANUAL // TECHNICAL_SPEC ]</div>
+
+  {%- if fm_rows != blank and fm_rows.size > 0 -%}
+    {%- for row in fm_rows -%}
+      <div class="fm-row">
+        <span class="fm-key">{{ row.label | upcase }}</span>
+        <span class="fm-val">{{ row.value }}</span>
+      </div>
+    {%- endfor -%}
+  {%- else -%}
+    <div class="fm-row">
+      <span class="fm-key">ENTRY</span>
+      <span class="fm-val">{% if fm_index_ref != blank %}{{ fm_index_ref | upcase }} // {% endif %}{{ product.title | upcase | escape }}</span>
+    </div>
+    <div class="fm-row">
+      <span class="fm-key">ISSUE</span>
+      <span class="fm-val">{{ fm_issue | upcase }}</span>
+    </div>
+    {%- if fm_colour_option != blank -%}
+      <div class="fm-row">
+        <span class="fm-key">COLOURWAYS</span>
+        <span class="fm-val fm-val--cw">
+          {%- for value in fm_colour_option.values -%}
+            {%- render 'swatch', value: value -%}
+            {%- unless forloop.last %} / {% endunless -%}
+          {%- endfor -%}
+        </span>
+      </div>
+    {%- endif -%}
+    {%- if care != blank -%}
+      <div class="fm-row">
+        <span class="fm-key">CARE</span>
+        <span class="fm-val">{{ care }}</span>
+      </div>
+    {%- endif -%}
+    {%- if delivery != blank -%}
+      <div class="fm-row">
+        <span class="fm-key">DELIVERY</span>
+        <span class="fm-val">{{ delivery }}</span>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+</div>

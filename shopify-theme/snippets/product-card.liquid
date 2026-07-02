@@ -1,0 +1,84 @@
+{% comment %}
+  product-card — brutalist collection card (.coll-card family).
+
+  Params:
+    product:    {Object} product (required)
+    show_badge: {Boolean} show the LIMITED badge when
+                product.metafields.custom.limited is true (optional)
+
+  Behaviour:
+    - Plate image; hover swaps to the second media image if present.
+    - [ ISSUE ] corner from product.metafields.custom.issue
+      (blank-guarded, defaults to ISSUE_001).
+    - Colour dots from product.options_by_name['Colour'].values via
+      the swatch snippet (labels hidden by .coll-dots CSS).
+    - Price via the price snippet; [ VIEW PRODUCT ] link.
+
+  Usage:
+    {% render 'product-card', product: product, show_badge: true %}
+{% endcomment %}
+
+{%- liquid
+  assign issue_tag = product.metafields.custom.issue | default: 'ISSUE_001'
+  assign title_up = product.title | upcase
+  assign title_first4 = title_up | slice: 0, 4
+  assign colour_option = product.options_by_name['Colour']
+  if colour_option == blank
+    assign colour_option = product.options_by_name['Color']
+  endif
+-%}
+
+<article class="coll-card">
+  <a href="{{ product.url }}" class="coll-plate">
+    {%- if product.featured_image != blank -%}
+      <img
+        src="{{ product.featured_image | image_url: width: 600 }}"
+        srcset="
+          {{ product.featured_image | image_url: width: 400 }} 400w,
+          {{ product.featured_image | image_url: width: 600 }} 600w,
+          {{ product.featured_image | image_url: width: 800 }} 800w
+        "
+        sizes="(min-width: 860px) 33vw, (min-width: 540px) 50vw, 100vw"
+        alt="{{ product.featured_image.alt | default: product.title | escape }}"
+        width="{{ product.featured_image.width }}"
+        height="{{ product.featured_image.height }}"
+        loading="lazy"
+      >
+      {%- if product.images[1] != blank -%}
+        <img
+          class="coll-img--hover"
+          src="{{ product.images[1] | image_url: width: 600 }}"
+          alt=""
+          width="{{ product.images[1].width }}"
+          height="{{ product.images[1].height }}"
+          loading="lazy"
+          aria-hidden="true"
+        >
+      {%- endif -%}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag }}
+    {%- endif -%}
+    {%- if show_badge and product.metafields.custom.limited -%}
+      <span class="coll-badge">LIMITED EDITION</span>
+    {%- endif -%}
+    <span class="coll-issue">[ {{ issue_tag }} ]</span>
+  </a>
+  <div class="coll-info">
+    <h3 class="chunk coll-name">
+      {%- if title_first4 == 'THE ' -%}
+        <span class="the">THE</span> {{ title_up | remove_first: 'THE ' }}
+      {%- else -%}
+        {{ title_up }}
+      {%- endif -%}
+    </h3>
+    {%- if colour_option != blank -%}
+      <div class="coll-dots">
+        {%- for value in colour_option.values -%}
+          {%- render 'swatch', value: value -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+    <span class="coll-price">{% render 'price', product: product %}</span>
+    <a href="{{ product.url }}" class="coll-cta snap">[ {{ 'products.view' | t }} ]</a>
+  </div>
+</article>

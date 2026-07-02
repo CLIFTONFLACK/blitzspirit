@@ -1,0 +1,138 @@
+{% comment %}
+  product-editorial — 2-col editorial text blocks (Workstream B).
+
+  Source priority:
+    1. product.metafields.custom.editorial — list of editorial_block
+       metaobjects (fields: heading, body). Tags are auto-numbered
+       [ TEXT_01 ] … in list order.
+    2. Section blocks (type "editorial": tag / heading / richtext body /
+       optional CTA) — the editable fallback for bare products.
+
+  Renders nothing when both sources are empty.
+{% endcomment %}
+
+{%- liquid
+  assign editorial_items = product.metafields.custom.editorial.value
+  assign has_items = false
+  if editorial_items != blank and editorial_items.size > 0
+    assign has_items = true
+  endif
+-%}
+
+{%- if has_items or section.blocks.size > 0 -%}
+  <section class="pdp-editorial" data-section-id="{{ section.id }}">
+    <div class="editorial-grid">
+      {%- if has_items -%}
+        {%- for item in editorial_items -%}
+          <div class="editorial-block">
+            <div class="led-index tag editorial-tag">[ TEXT_{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }} ]</div>
+            {%- if item.heading != blank -%}
+              <h2 class="chunk editorial-head">{{ item.heading | escape }}</h2>
+            {%- endif -%}
+            {%- if item.body != blank -%}
+              <div class="editorial-body">{{ item.body | newline_to_br }}</div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for block in section.blocks -%}
+          <div class="editorial-block" {{ block.shopify_attributes }}>
+            {%- if block.settings.tag != blank -%}
+              <div class="led-index tag editorial-tag">[ {{ block.settings.tag | escape }} ]</div>
+            {%- endif -%}
+            {%- if block.settings.heading != blank -%}
+              <h2 class="chunk editorial-head">{{ block.settings.heading | escape }}</h2>
+            {%- endif -%}
+            {%- if block.settings.body != blank -%}
+              <div class="editorial-body">{{ block.settings.body }}</div>
+            {%- endif -%}
+            {%- if block.settings.cta_label != blank and block.settings.cta_link != blank -%}
+              <a href="{{ block.settings.cta_link }}" class="directive directive--ghost editorial-cta snap">
+                [ {{ block.settings.cta_label | escape }} ]
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </section>
+{%- endif -%}
+
+{% stylesheet %}
+.editorial-tag { display: inline-block; margin-bottom: 16px; }
+.editorial-body p + p { margin-top: 12px; }
+.editorial-cta {
+  display: inline-block;
+  width: auto;
+  padding: 14px 24px;
+  margin-top: 24px;
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product editorial",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Products with an editorial metafield (custom.editorial) render that instead of these blocks."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "editorial",
+      "name": "Editorial block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "Index tag",
+          "default": "TEXT_01 // THE_ORIGIN"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "The Origin."
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Body",
+          "default": "<p>Every entry in the archive starts with a story worth retelling — the people who kept their nerve when it mattered. This is where this one began. [PLACEHOLDER — REPLACE WITH FINAL COPY]</p>"
+        },
+        {
+          "type": "text",
+          "id": "cta_label",
+          "label": "Link label",
+          "default": "READ THE FULL STORY"
+        },
+        {
+          "type": "url",
+          "id": "cta_link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product editorial",
+      "blocks": [
+        {
+          "type": "editorial"
+        },
+        {
+          "type": "editorial",
+          "settings": {
+            "tag": "TEXT_02 // THE_CRAFT",
+            "heading": "The Craft.",
+            "body": "<p>220gsm ring-spun cotton. Water-based screen print, applied in Britain. Soft hand-feel that improves with washing. No cracking, no fading, no apologies. Wash inside out at 30°C — tumble dryers are for quitters. [PLACEHOLDER — REPLACE WITH FINAL COPY]</p>",
+            "cta_label": "VIEW SIZE GUIDE"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,52 @@
+{
+  "sections": {
+    "main": {
+      "type": "link-in-bio",
+      "settings": {
+        "heading": "Wakey wakey.",
+        "sub": "IRONIC // ICONIC // BRITISH"
+      },
+      "blocks": {
+        "shop": {
+          "type": "link",
+          "settings": {
+            "label": "[ SHOP ISSUE_001 ]",
+            "url": "/collections/all",
+            "badge": "NEW"
+          }
+        },
+        "icons": {
+          "type": "link",
+          "settings": {
+            "label": "[ THE ICONS — READ THE FILES ]",
+            "url": "/pages/icons"
+          }
+        },
+        "story": {
+          "type": "link",
+          "settings": {
+            "label": "[ THE STORY ]",
+            "url": "/pages/story"
+          }
+        },
+        "help": {
+          "type": "link",
+          "settings": {
+            "label": "[ HELP // SIZE GUIDE ]",
+            "url": "/pages/help"
+          }
+        },
+        "featured": {
+          "type": "product",
+          "settings": {}
+        },
+        "social": {
+          "type": "social_row",
+          "settings": {}
+        }
+      },
+      "block_order": ["shop", "icons", "story", "help", "featured", "social"]
+    }
+  },
+  "order": ["main"]
+}

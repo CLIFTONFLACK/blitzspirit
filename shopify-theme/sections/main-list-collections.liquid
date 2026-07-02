@@ -1,0 +1,113 @@
+{% comment %}
+  main-list-collections — grid of collection tiles, paginated at 12.
+
+  Tile image: collection.featured_image → first product's featured
+  image → placeholder SVG. Tiles reuse the frozen .coll-card/.coll-plate/
+  .coll-info framework from theme.css for a consistent card look;
+  the page shell + grid (.list-coll-*) is owned here.
+{% endcomment %}
+
+<div class="list-coll" data-section-id="{{ section.id }}">
+  <header class="list-coll-head">
+    {%- if section.settings.tag_line != blank -%}
+      <p class="tag list-coll-tag">{{ section.settings.tag_line | escape }}</p>
+    {%- endif -%}
+    <h1 class="chunk list-coll-title">{{ section.settings.title | escape | default: 'The Collections.' }}</h1>
+  </header>
+
+  {%- paginate collections by 12 -%}
+    <div class="list-coll-grid">
+      {%- for collection in collections -%}
+        {%- liquid
+          assign tile_image = collection.featured_image
+          if tile_image == blank
+            assign tile_image = collection.products.first.featured_image
+          endif
+        -%}
+        <article class="coll-card">
+          <a href="{{ collection.url }}" class="coll-plate">
+            {%- if tile_image != blank -%}
+              <img
+                src="{{ tile_image | image_url: width: 600 }}"
+                srcset="
+                  {{ tile_image | image_url: width: 400 }} 400w,
+                  {{ tile_image | image_url: width: 600 }} 600w,
+                  {{ tile_image | image_url: width: 800 }} 800w
+                "
+                sizes="(min-width: 860px) 33vw, (min-width: 540px) 50vw, 100vw"
+                alt="{{ tile_image.alt | default: collection.title | escape }}"
+                width="{{ tile_image.width }}"
+                height="{{ tile_image.height }}"
+                loading="lazy"
+              >
+            {%- else -%}
+              {%- assign ph_index = forloop.index0 | modulo: 6 | plus: 1 -%}
+              {%- assign ph_name = 'collection-' | append: ph_index -%}
+              {{ ph_name | placeholder_svg_tag: 'list-coll-placeholder' }}
+            {%- endif -%}
+          </a>
+          <div class="coll-info">
+            <h2 class="chunk coll-name">{{ collection.title | upcase | escape }}</h2>
+            <span class="tag tag-mute list-coll-count">[ {{ 'cart.item_count' | t: count: collection.all_products_count }} ]</span>
+            <a href="{{ collection.url }}" class="coll-cta snap">[ {{ section.settings.view_label | escape | default: 'VIEW COLLECTION' }} ]</a>
+          </div>
+        </article>
+      {%- else -%}
+        <div class="list-coll-empty">
+          <p class="tag">{{ section.settings.empty_text | escape }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+    {%- render 'pagination', paginate: paginate -%}
+  {%- endpaginate -%}
+</div>
+
+{% stylesheet %}
+.list-coll { max-width: 1027px; margin: 0 auto; padding: var(--s5) var(--s3) var(--s4); }
+.list-coll-head { padding: var(--s4) 0 var(--s5); }
+.list-coll-tag { margin-bottom: var(--s2); }
+.list-coll-title { color: #fff; font-size: clamp(2.8rem, 6vw, 5rem); line-height: 0.92; }
+.list-coll-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; grid-auto-rows: 1fr; }
+.list-coll-count { display: block; margin: 2px 0 8px; }
+.list-coll-placeholder { width: 100%; height: 100%; display: block; background: var(--plate); }
+.list-coll-placeholder svg { width: 100%; height: 100%; }
+.list-coll-empty { grid-column: 1 / -1; border: 1px solid var(--line); background: var(--panel); padding: var(--s6) var(--s3); text-align: center; }
+@media (max-width: 860px) {
+  .list-coll-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 540px) {
+  .list-coll-grid { grid-template-columns: 1fr; }
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Collections list",
+  "settings": [
+    {
+      "type": "text",
+      "id": "tag_line",
+      "label": "Tag line",
+      "default": "[ SYSTEM_LEDGER // COLLECTIONS ]"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "The Collections."
+    },
+    {
+      "type": "text",
+      "id": "view_label",
+      "label": "Tile link label",
+      "default": "VIEW COLLECTION"
+    },
+    {
+      "type": "text",
+      "id": "empty_text",
+      "label": "Empty state text",
+      "default": "[ NOTHING FILED YET ]"
+    }
+  ]
+}
+{% endschema %}

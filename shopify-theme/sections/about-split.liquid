@@ -1,0 +1,150 @@
+{% comment %}
+  about-split — 50/50 FILE block (about-block family, per about.html).
+  Concrete visual with a plate-framed image on one side, panel copy on the
+  other. Emphasis (<em>) in the rich text renders as the "hit" highlight.
+  Band mode: with no image set, the storefront drops the visual column and
+  the copy spans full width (about.html FILE_003 pattern); the editor keeps
+  showing the plate placeholder so the image slot stays discoverable.
+{% endcomment %}
+
+{%- liquid
+  assign show_visual = true
+  if section.settings.image == blank and request.design_mode == false
+    assign show_visual = false
+  endif
+-%}
+<div
+  class="about-block as{% if section.settings.image_side == 'right' %} as--flip{% endif %}{% unless show_visual %} as--band{% endunless %}"
+  data-section-id="{{ section.id }}"
+>
+  {%- if show_visual -%}
+  <div class="about-visual as-visual">
+    <div class="as-plate">
+      {% render 'plate',
+        image: section.settings.image,
+        ref_text: section.settings.image_ref,
+        alt: section.settings.heading,
+        sizes: '(min-width: 860px) 50vw, 100vw'
+      %}
+    </div>
+  </div>
+  {%- endif -%}
+
+  <div class="about-copy as-copy">
+    {%- if section.settings.index_tag != blank -%}
+      <p class="led-index tag as-index">[ {{ section.settings.index_tag | escape }} ]</p>
+    {%- endif -%}
+
+    {%- if section.settings.heading != blank -%}
+      <h2 class="chunk">{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+
+    {%- if section.settings.body != blank -%}
+      <div class="as-body">{{ section.settings.body }}</div>
+    {%- endif -%}
+
+    {%- if section.settings.cta_label != blank and section.settings.cta_link != blank -%}
+      <div class="as-cta">
+        <a href="{{ section.settings.cta_link }}" class="directive snap">{{ section.settings.cta_label | escape }}</a>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+.as .as-index { display: inline-block; margin-bottom: 0; align-self: flex-start; }
+.as-plate { width: min(88%, 460px); margin: 0 auto; }
+.as-plate .plate { aspect-ratio: 1 / 1.12; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35); }
+.as-plate .plate__placeholder { width: 100%; height: 100%; opacity: 0.35; }
+.as-body p {
+  color: var(--bone);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1.75;
+  max-width: 52ch;
+}
+.as-body p + p { margin-top: var(--s2); }
+.as-body em { font-style: normal; color: #fff; }
+.as-body strong { font-weight: 400; color: #fff; }
+.as-body a { color: var(--bone); border-bottom: 1px solid var(--signal); }
+.as-body a:hover { color: var(--signal); }
+.as-cta { margin-top: var(--s2); }
+.as-cta .directive { display: inline-block; width: auto; padding: 18px 32px; }
+
+.as--band { grid-template-columns: 1fr; }
+.as--band .as-copy { max-width: 980px; }
+@media (min-width: 861px) {
+  .as--band .as-body { columns: 2; column-gap: var(--s4); }
+  .as--band .as-body p { break-inside: avoid; }
+}
+
+@media (min-width: 861px) {
+  .as--flip .as-visual { order: 2; border-right: none; border-left: 1px solid var(--line); }
+  .as--flip .as-copy { order: 1; }
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "About split",
+  "settings": [
+    {
+      "type": "text",
+      "id": "index_tag",
+      "label": "Index tag",
+      "default": "FILE_001 // HOW_IT_STARTED"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "How it started."
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Body",
+      "info": "Italics render as the bright \"hit\" highlight.",
+      "default": "<p>London, 2008. A bowler hat. A skull. Two crossed umbrellas. The original Skull &amp; Brollies tee came out of a simple question: <em>what does British stoicism actually look like on a t-shirt?</em></p><p>Not a bulldog. Not a Union Jack slapped on a cheap blank. Something that meant something — with a proper character behind it. Somebody who’d been through it and kept their composure. The city gent who walked to work through the Blitz and dared it to make him late.</p><p>That first design became BlitzSpirit. The name stuck because the spirit stuck. Eighteen years later, same question, same answer — <em>just better cotton</em>.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "image_ref",
+      "label": "Plate corner ref",
+      "info": "Small reference tag in the plate corner, e.g. FILE_001 // ARCHIVE"
+    },
+    {
+      "type": "select",
+      "id": "image_side",
+      "label": "Image side",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button label",
+      "info": "Optional, e.g. [ VIEW THE ARCHIVE ]"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "About split"
+    }
+  ]
+}
+{% endschema %}

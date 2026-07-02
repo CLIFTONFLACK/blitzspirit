@@ -1,0 +1,46 @@
+{% comment %}
+  pagination — mono ledger style: [ PREV ] 01 // 02 [ NEXT ]
+
+  Params:
+    paginate: {Object} the paginate object (must be rendered inside
+              a {% paginate %} block)
+
+  Usage:
+    {% paginate collection.products by 12 %}
+      ...
+      {% render 'pagination', paginate: paginate %}
+    {% endpaginate %}
+{% endcomment %}
+
+{%- if paginate.pages > 1 -%}
+  <nav class="pagination tag" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
+    {%- if paginate.previous -%}
+      <a href="{{ paginate.previous.url }}" class="pag-link">[ {{ 'general.pagination.previous' | t }} ]</a>
+    {%- else -%}
+      <span class="pag-link pag-link--disabled" aria-disabled="true">[ {{ 'general.pagination.previous' | t }} ]</span>
+    {%- endif -%}
+
+    {%- for part in paginate.parts -%}
+      {%- liquid
+        assign part_label = part.title
+        if part_label.size == 1
+          assign part_label = part_label | prepend: '0'
+        endif
+      -%}
+      {%- if part.is_link -%}
+        <a href="{{ part.url }}" class="pag-num" aria-label="{{ 'general.pagination.page' | t: number: part.title }}">{{ part_label }}</a>
+      {%- elsif part.title == paginate.current_page -%}
+        <span class="pag-num pag-num--current" aria-current="page" aria-label="{{ 'general.pagination.current_page' | t: number: part.title }}">{{ part_label }}</span>
+      {%- else -%}
+        <span class="pag-num pag-num--gap">{{ part.title }}</span>
+      {%- endif -%}
+      {%- unless forloop.last -%}<span class="pag-sep" aria-hidden="true">//</span>{%- endunless -%}
+    {%- endfor -%}
+
+    {%- if paginate.next -%}
+      <a href="{{ paginate.next.url }}" class="pag-link">[ {{ 'general.pagination.next' | t }} ]</a>
+    {%- else -%}
+      <span class="pag-link pag-link--disabled" aria-disabled="true">[ {{ 'general.pagination.next' | t }} ]</span>
+    {%- endif -%}
+  </nav>
+{%- endif -%}
