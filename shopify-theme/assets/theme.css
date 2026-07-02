@@ -37,7 +37,11 @@ a { color:inherit; text-decoration:none; }
 /* ============================================================
    2. TYPOGRAPHY + UTILITIES
    ============================================================ */
-.chunk { font-family:var(--display-font); text-transform:uppercase; letter-spacing:-0.01em; line-height:0.95; }
+/* ChunkFive ships one static weight (400); on h1-h6 the UA stylesheet
+   requests 700, so without this the browser synthesizes a faux-bold
+   over every headline sitewide (mushy, off-brand). Force the real
+   declared weight everywhere --display-font is used. */
+.chunk { font-family:var(--display-font); font-weight:400; text-transform:uppercase; letter-spacing:-0.01em; line-height:0.95; }
 .tag { font-family:var(--mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#fff; }
 .tag-mute { color:var(--bone-mute); }
 .rule { color:var(--line-bri); user-select:none; white-space:nowrap; overflow:hidden; }
@@ -165,7 +169,7 @@ a { color:inherit; text-decoration:none; }
 
 /* Dossier — light concrete plate with ChunkFive voice */
 .dossier { background:linear-gradient(rgba(205,205,205,.92),rgba(188,188,188,.92)),var(--tex-hero) center/cover; border:1px solid rgba(0,0,0,.4); padding:var(--s3); }
-.dossier p { font-family:var(--display-font); text-transform:uppercase; letter-spacing:.01em; color:var(--dossier-ink); font-size:clamp(.9rem,1.8vw,1.1rem); line-height:1.15; }
+.dossier p { font-family:var(--display-font); font-weight:400; text-transform:uppercase; letter-spacing:.01em; color:var(--dossier-ink); font-size:clamp(.9rem,1.8vw,1.1rem); line-height:1.15; }
 .dossier p + p { margin-top:28px; }
 .dossier .hit, .dossier strong { color:#0a0a0a; font-weight:400; }
 .js .dossier .hit, .js .dossier strong { opacity:0; }
@@ -228,7 +232,7 @@ a { color:inherit; text-decoration:none; }
 .outro-nav a:hover { color:var(--signal); }
 .rollcall { display:flex; flex-direction:column; gap:var(--s4); margin:var(--s5) 0; }
 .rc-item { position:relative; display:flex; justify-content:center; align-items:center; line-height:1; padding:2px 0; }
-.rc-name { font-family:var(--display-font); text-transform:uppercase; font-size:clamp(1.8rem,5vw,3.2rem); color:var(--bone-mute); letter-spacing:-0.01em; }
+.rc-name { font-family:var(--display-font); font-weight:400; text-transform:uppercase; font-size:clamp(1.8rem,5vw,3.2rem); color:var(--bone-mute); letter-spacing:-0.01em; }
 .rc-item:hover .rc-name { color:#fff; opacity:0; }
 .rc-meta { position:absolute; inset:0; display:none; align-items:center; justify-content:center; font-family:var(--mono); font-size:clamp(.7rem,1.6vw,.95rem); letter-spacing:.16em; color:var(--signal); }
 .rc-item:hover .rc-meta { display:flex; }
@@ -443,7 +447,7 @@ a { color:inherit; text-decoration:none; }
 .coll-info { background:var(--panel); padding:var(--s2) var(--s3) var(--s3); flex:1; display:flex; flex-direction:column; gap:8px; border-top:1px solid var(--line); }
 .coll-name { color:var(--cream); font-size:24px; line-height:.95; margin-top:4px; }
 .coll-name .the { color:var(--brand-red); display:block; }
-.coll-price { color:#fff; font-size:18px; letter-spacing:.04em; font-family:var(--display-font); }
+.coll-price { color:#fff; font-size:18px; letter-spacing:.04em; font-family:var(--display-font); font-weight:400; }
 .coll-dots { display:flex; gap:5px; align-items:center; margin:2px 0 8px; }
 .coll-dot { display:inline-block; width:10px; height:10px; background:var(--dot,#333); border:1px solid rgba(255,255,255,.2); }
 .coll-dot[title="CHALK_WHITE"],.coll-dot[title="CHALK_STONE"] { border-color:rgba(0,0,0,.25); }
@@ -508,7 +512,7 @@ a { color:inherit; text-decoration:none; }
 .promo-text { text-align:left; max-width:560px; }
 .promo-tag { margin-bottom:var(--s3); color:var(--bone); text-shadow:0 1px 6px #000; }
 .promo-title { color:var(--cream); font-size:clamp(2.2rem,5.2vw,4.2rem); text-shadow:0 2px 4px #000,0 4px 30px rgba(0,0,0,.9); margin-bottom:var(--s3); }
-.promo-sub { color:var(--cream); font-family:var(--display-font); font-size:clamp(.95rem,2.1vw,1.2rem); letter-spacing:0.01em; text-transform:uppercase; text-shadow:0 1px 5px #000; margin-bottom:0; }
+.promo-sub { color:var(--cream); font-family:var(--display-font); font-weight:400; font-size:clamp(.95rem,2.1vw,1.2rem); letter-spacing:0.01em; text-transform:uppercase; text-shadow:0 1px 5px #000; margin-bottom:0; }
 .promo-form { max-width:520px; margin-top:var(--s4); }
 .promo-cta { display:block; color:#fff; text-shadow:0 1px 5px #000; margin-bottom:var(--s2); }
 .promo-row { display:flex; border:1px solid var(--bone-dim); background:rgba(0,0,0,0.55); }
