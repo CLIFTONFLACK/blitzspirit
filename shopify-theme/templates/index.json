@@ -6,7 +6,9 @@
     },
     "featured": {
       "type": "featured-product",
-      "settings": {}
+      "settings": {
+        "product": "the-establishment"
+      }
     },
     "promo": {
       "type": "promo-band",
@@ -17,19 +19,27 @@
       "blocks": {
         "item_1": {
           "type": "item",
-          "settings": {}
+          "settings": {
+            "product": "the-boudica"
+          }
         },
         "item_2": {
           "type": "item",
-          "settings": {}
+          "settings": {
+            "product": "the-roll-call"
+          }
         },
         "item_3": {
           "type": "item",
-          "settings": {}
+          "settings": {
+            "product": "the-frequency"
+          }
         },
         "item_4": {
           "type": "item",
-          "settings": {}
+          "settings": {
+            "product": "the-clerk"
+          }
         }
       },
       "block_order": ["item_1", "item_2", "item_3", "item_4"],
@@ -39,7 +49,9 @@
     },
     "equipment": {
       "type": "equipment-feature",
-      "settings": {}
+      "settings": {
+        "product": "the-cap"
+      }
     }
   },
   "order": ["hero", "featured", "promo", "archive", "equipment"]
