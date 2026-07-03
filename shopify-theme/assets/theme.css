@@ -142,6 +142,7 @@ a { color:inherit; text-decoration:none; }
 
 /* Size pills */
 .sizes { display:flex; align-items:center; gap:10px; margin-bottom:var(--s2); flex-wrap:wrap; }
+.sizes-opts { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
 .size-pill { display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--line-bri); padding:7px 13px; font-size:12px; color:var(--bone); min-width:44px; min-height:44px; text-align:center; }
 .size-pill:hover { border-color:var(--bone); color:var(--bone); }
 .size-pill[aria-pressed="true"] { background:var(--bone); color:var(--ink); border-color:var(--bone); }
@@ -152,18 +153,43 @@ a { color:inherit; text-decoration:none; }
 .cw-size-wrap .cw { flex:1; margin-bottom:0; border:none; border-right:1px solid var(--cream); }
 .cw-size-wrap .sizes { flex:1; border:none; padding:var(--s2); margin-bottom:0; flex-wrap:wrap; align-content:flex-start; }
 
-/* Homepage rows (item/featured): stack colour above size so size gets
-   the FULL row width to lay out on one line, same as colour, instead
-   of squeezing into a 50% column and wrapping to a second row. */
+/* Homepage rows (item/featured): colour and size sit in a 2x2 grid --
+   both labels on row 1, both option groups on row 2 -- instead of two
+   independent 50/50 columns (which capped size to half the width and
+   forced 5 pills to wrap). The size column gets the flexible 1fr track
+   so its pills have real room to sit on one line. */
 .item .cw-size-wrap, .featured .cw-size-wrap {
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: var(--s3);
+  row-gap: 8px;
+  padding: var(--s2);
 }
-.item .cw-size-wrap .cw, .featured .cw-size-wrap .cw {
-  border-right: none;
-  border-bottom: 1px solid var(--cream);
-}
+.item .cw-size-wrap .cw, .featured .cw-size-wrap .cw,
 .item .cw-size-wrap .sizes, .featured .cw-size-wrap .sizes {
+  display: contents;
+}
+.item .cw-size-wrap .cw-label, .featured .cw-size-wrap .cw-label {
+  grid-column: 1; grid-row: 1;
+}
+.item .cw-size-wrap .cw-opts, .featured .cw-size-wrap .cw-opts {
+  grid-column: 1; grid-row: 2; align-items: center;
+}
+.item .cw-size-wrap .sizes-label, .featured .cw-size-wrap .sizes-label {
+  grid-column: 2; grid-row: 1; margin-right: 0;
+}
+.item .cw-size-wrap .sizes-opts, .featured .cw-size-wrap .sizes-opts {
+  grid-column: 2; grid-row: 2;
   flex-wrap: nowrap;
+}
+/* Dot-only swatches here (same pattern as .coll-dots) so the colour
+   column doesn't eat width the size column needs to stay unwrapped;
+   min-width keeps the 44px touch target without the text label. */
+.item .cw-size-wrap .cw-opt, .featured .cw-size-wrap .cw-opt {
+  min-width: 44px;
+}
+.item .cw-size-wrap .cw-name, .featured .cw-size-wrap .cw-name {
+  display: none;
 }
 
 /* Product plate — white catalogue well; image swaps on colourway */

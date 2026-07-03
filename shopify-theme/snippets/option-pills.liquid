@@ -34,6 +34,7 @@
           type="button"
           class="cw-opt snap"
           aria-pressed="{% if value == option.selected_value %}true{% else %}false{% endif %}"
+          aria-label="{{ value | escape }}"
           data-option-index="{{ option_index }}"
           data-value="{{ value | escape }}"
         >
@@ -44,17 +45,19 @@
   </div>
 {%- else -%}
   <div class="sizes" data-option-group data-option-index="{{ option_index }}">
-    <span class="tag" style="margin-right:4px">[ {{ 'products.choose_size' | t }} ]</span>
-    {%- for value in option.values -%}
-      <button
-        type="button"
-        class="size-pill snap"
-        aria-pressed="{% if value == option.selected_value %}true{% else %}false{% endif %}"
-        data-option-index="{{ option_index }}"
-        data-value="{{ value | escape }}"
-      >
-        {{- value | escape -}}
-      </button>
-    {%- endfor -%}
+    <span class="tag sizes-label" style="margin-right:4px">[ {{ 'products.choose_size' | t }} ]</span>
+    <div class="sizes-opts">
+      {%- for value in option.values -%}
+        <button
+          type="button"
+          class="size-pill snap"
+          aria-pressed="{% if value == option.selected_value %}true{% else %}false{% endif %}"
+          data-option-index="{{ option_index }}"
+          data-value="{{ value | escape }}"
+        >
+          {{- value | escape -}}
+        </button>
+      {%- endfor -%}
+    </div>
   </div>
 {%- endif -%}
