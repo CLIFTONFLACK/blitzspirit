@@ -121,7 +121,7 @@ a { color:inherit; text-decoration:none; }
 .directive--flicker:hover { animation:flicker .45s infinite steps(1); }
 .directive[disabled],.directive[aria-disabled="true"] { border-color:var(--line); color:var(--bone-mute); cursor:not-allowed; }
 .directive[disabled]:hover,.directive[aria-disabled="true"]:hover { background:transparent; color:var(--bone-mute); border-color:var(--line); }
-.actions { display:flex; gap:var(--s2); flex-wrap:wrap; }
+.actions { display:flex; align-items:center; gap:var(--s2); flex-wrap:wrap; }
 .actions .directive { flex:1 1 180px; width:auto; }
 
 @keyframes flicker { 0%,100%{opacity:1} 8%{opacity:.25} 10%{opacity:1} 20%{opacity:.6} 22%{opacity:1} 60%{opacity:1} 62%{opacity:.4} 64%{opacity:1} }
@@ -241,6 +241,9 @@ a { color:inherit; text-decoration:none; }
 .dossier .directive { color:var(--dossier-ink); border-color:rgba(0,0,0,.3); margin-top:var(--s2); }
 .dossier .directive:hover { background:var(--dossier-ink); color:var(--bone); border-color:var(--dossier-ink); }
 .dossier .what-link { display:block; margin-top:10px; border:1px solid var(--signal); padding:10px var(--s2); font-size:13px; letter-spacing:.15em; text-transform:uppercase; color:var(--signal); text-align:center; font-family:var(--mono); }
+/* Inside .actions (item/featured), the "WHAT IS X" link sits beside
+   ADD TO BAG on the same row, sized like the button. */
+.actions .what-link { flex:1 1 180px; width:auto; margin-top:0; display:flex; align-items:center; justify-content:center; }
 .dossier .what-link:hover { border-color:#0a0a0a; color:#fff; background:#0a0a0a; }
 
 /* Dark-row dossier restores light-text scheme */

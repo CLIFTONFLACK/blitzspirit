@@ -74,12 +74,6 @@
           {%- endif -%}
         {%- endif -%}
 
-        {%- if section.settings.what_label != blank -%}
-          <a class="what-link snap" href="{{ product.url }}">
-            {{- section.settings.what_label | escape }} '{{ title_up }}'
-          </a>
-        {%- endif -%}
-
         <product-form data-section-id="{{ section.id }}">
           {%- form 'product', product -%}
             <input
@@ -101,6 +95,11 @@
             </script>
 
             <div class="actions">
+              {%- if section.settings.what_label != blank -%}
+                <a class="what-link snap" href="{{ product.url }}">
+                  {{- section.settings.what_label | escape }} '{{ title_up }}'
+                </a>
+              {%- endif -%}
               <button
                 type="submit"
                 name="add"
