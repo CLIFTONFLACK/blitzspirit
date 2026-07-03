@@ -94,10 +94,10 @@ Variant conventions (per the live site + build plan):
 | # | Product | Price | Colours (option values) | Sizes | Static-site photos (upload as product media) |
 |---|---|---|---|---|---|
 | 1 | The Boudica | £28.00 | Off-White, Black | S, M, L, XL, XXL | `tee-boudica-offwhite.jpg`, `tee-boudica-black.jpg` |
-| 2 | The Establishment | £28.00 | Black | S, M, L, XL | `tee-skull-black-colour.jpg` |
-| 3 | The Roll Call | £26.00 | Off-White, Black | S, M, L, XL | `tee-tommy-white.jpg`, `tee-tommy-black.jpg` |
-| 4 | The Frequency | £28.00 | Black, Off-White, Navy | S, M, L, XL | `tee-roundel-black.jpg`, `tee-roundel-offwhite.jpg`, `tee-roundel-navy.jpg` |
-| 5 | The Clerk | £28.00 | Black, Off-White | S, M, L, XL | `tee-clerk-black.jpg`, `tee-clerk-white.jpg` |
+| 2 | The Establishment | £28.00 | Black | S, M, L, XL, XXL | `tee-skull-black-colour.jpg` |
+| 3 | The Roll Call | £26.00 | Off-White, Black | S, M, L, XL, XXL | `tee-tommy-white.jpg`, `tee-tommy-black.jpg` |
+| 4 | The Frequency | £28.00 | Black, Off-White, Navy | S, M, L, XL, XXL | `tee-roundel-black.jpg`, `tee-roundel-offwhite.jpg`, `tee-roundel-navy.jpg` |
+| 5 | The Clerk | £28.00 | Black, Off-White | S, M, L, XL, XXL | `tee-clerk-black.jpg`, `tee-clerk-white.jpg` |
 | 6 | The Cap | £22.00 | Black, Navy, Stone | — (one size) | `cap-black.jpg`, `cap-navy.jpg`, `cap-cream.jpg` |
 
 > The Clerk's white tee photographs as CHALK_WHITE; use option value
