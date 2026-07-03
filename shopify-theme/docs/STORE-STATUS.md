@@ -1,4 +1,4 @@
-# BlitzSpirit Store — Seed Status (2026-07-02)
+# BlitzSpirit Store — Seed Status (2026-07-02, updated 2026-07-03)
 
 Store: **blitzspirit-2.myshopify.com** (permanent domain `ncrmim-xu.myshopify.com`),
 Basic plan, GBP, UK, owner cloofhouse@gmail.com. Currently **password-protected
@@ -18,6 +18,8 @@ Basic plan, GBP, UK, owner cloofhouse@gmail.com. Currently **password-protected
 | Variants + SKUs | Colour×Size per catalogue (Boudica S–XXL, other tees S–XL, Cap colour-only). SKUs `BS-<CODE>-<COLOUR>-<SIZE>`. Inventory **tracked, policy CONTINUE** (buyable at 0 stock) |
 | Variant images | Each colourway photo pulled from vercel.app → Shopify CDN and set as the variant image (colour-swap works). Media READY on all 6 |
 | Product metafields | strapline, issue, index_ref, limited, and dossier rich-text (bold = `.hit`) set on every product |
+| Nav submenus (2026-07-03) | main-menu: ABOUT → About Us / Help / Contact; THE COLLECTIONS → The Range / Deals. Rendered as hover/focus-within dropdowns (masthead.liquid) |
+| Deals collection (2026-07-03) | Smart collection `deals`, rule TAG=sale, currently empty — tag a product "sale" to populate it |
 | Collections | `t-shirts` (smart, TYPE=T-Shirt, 5 products) · `caps` (smart, TYPE=Headwear, 1) — published to Online Store; handles match the theme's collection tabs |
 | Pages | about, story, help, icons, link-in-bio — each with matching template suffix so the theme's `page.*` templates render (copy lives in section defaults) |
 | Menus | `main-menu` = HOME / ABOUT / THE COLLECTIONS · `footer` = ABOUT / SIZE GUIDE / RETURNS / CONTACT (→ help anchors) |
