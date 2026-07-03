@@ -55,6 +55,7 @@
 
       this.bindQty();
       this.bindThumbs();
+      this.equalizeActions();
 
       var jsonEl = this.querySelector('script[data-variant-json]');
       if (!jsonEl) return;
@@ -233,6 +234,27 @@
       });
     }
 
+    /* Equal-height "STORY" link / "ADD TO BAG" button pair. Grid/flex
+       align-items:stretch does not reliably stretch native <button>
+       elements to match a sibling that has wrapped to two lines (a
+       cross-browser quirk with form-control intrinsic sizing), so this
+       measures both and sets an explicit min-height on the shorter one. */
+    equalizeActions() {
+      toArray(this.scope.querySelectorAll('.actions')).forEach(function (actions) {
+        var items = toArray(actions.children);
+        if (items.length < 2) return;
+        items.forEach(function (item) { item.style.height = ''; });
+        var tallest = 0;
+        items.forEach(function (item) {
+          var h = item.getBoundingClientRect().height;
+          if (h > tallest) tallest = h;
+        });
+        items.forEach(function (item) {
+          item.style.height = Math.ceil(tallest) + 'px';
+        });
+      });
+    }
+
     /* ---------- option availability ---------- */
 
     refreshOptionAvailability() {
@@ -385,4 +407,16 @@
   }
 
   window.customElements.define('product-form', ProductForm);
+
+  // Text-wrap in the STORY link is viewport-width dependent, so
+  // re-equalize .actions heights on resize (debounced).
+  var resizeTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () {
+      toArray(document.querySelectorAll('product-form')).forEach(function (el) {
+        if (el.equalizeActions) el.equalizeActions();
+      });
+    }, 150);
+  });
 })();
