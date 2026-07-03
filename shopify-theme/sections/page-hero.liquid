@@ -12,14 +12,20 @@
   if section.settings.show_page_ref and page.title != blank
     assign page_ref = page.title | upcase | replace: ' ', '_'
   endif
+
+  assign ph_style = ''
+  if section.settings.texture != blank
+    assign ph_style = ph_style | append: '--ph-tex: url(' | append: "'" | append: section.settings.texture | image_url: width: 1800 | append: "'" | append: '); '
+  endif
+  if section.settings.extra_height != blank and section.settings.extra_height != 0
+    assign ph_style = ph_style | append: '--ph-extra-h: ' | append: section.settings.extra_height | append: 'px;'
+  endif
 -%}
 
 <section
   class="about-hero page-hero page-hero--{{ section.settings.heading_size }}"
   data-section-id="{{ section.id }}"
-  {% if section.settings.texture != blank %}
-    style="--ph-tex: url('{{ section.settings.texture | image_url: width: 1800 }}')"
-  {% endif %}
+  {% if ph_style != blank %}style="{{ ph_style }}"{% endif %}
 >
   <div>
     {%- if section.settings.index_tag != blank or page_ref != blank -%}
@@ -66,7 +72,7 @@
 }
 .page-hero .ph-index { margin-bottom: 16px; }
 .page-hero .ph-head {
-  color: #fff;
+  color: var(--cream);
   font-size: clamp(3rem, 9vw, 8rem);
   line-height: 0.9;
   margin-bottom: 24px;
@@ -124,6 +130,16 @@
       "id": "texture",
       "label": "Backdrop texture override",
       "info": "Leave empty to use the global dark charcoal concrete."
+    },
+    {
+      "type": "range",
+      "id": "extra_height",
+      "label": "Extra height (px)",
+      "min": 0,
+      "max": 300,
+      "step": 10,
+      "default": 0,
+      "info": "Added on top of the standard 65vh hero height."
     }
   ],
   "blocks": [

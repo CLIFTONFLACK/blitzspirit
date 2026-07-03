@@ -6,25 +6,25 @@
         "meta-1": {
           "type": "meta_tag",
           "settings": {
-            "text": "[ T-SHIRTS + CAPS ]"
+            "text": "T-SHIRTS + CAPS"
           }
         },
         "meta-2": {
           "type": "meta_tag",
           "settings": {
-            "text": "[ FREE UK DELIVERY OVER £40 ]"
+            "text": "FREE UK DELIVERY OVER £40"
           }
         },
         "meta-3": {
           "type": "meta_tag",
           "settings": {
-            "text": "[ SCREEN PRINTED IN BRITAIN ]"
+            "text": "SCREEN PRINTED IN BRITAIN"
           }
         }
       },
       "block_order": ["meta-1", "meta-2", "meta-3"],
       "settings": {
-        "tag_line": "[ SYSTEM_LEDGER // FULL_KIT // ISSUE_001 ]",
+        "index_tag": "SYSTEM_LEDGER // FULL_KIT // ISSUE_001",
         "fallback_title": "Full Kit."
       }
     },

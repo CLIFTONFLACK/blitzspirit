@@ -41,4 +41,4 @@
       assign cw_hex = '#e8dfc0'
   endcase
 -%}
-<span class="dot" style="--dot:{{ cw_hex }}"></span><span class="cw-name">{{ cw_label }}</span>
+<span class="dot" style="--dot:{{ cw_hex }}" title="{{ value | escape }}"></span><span class="cw-name">{{ cw_label }}</span>

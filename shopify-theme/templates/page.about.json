@@ -7,7 +7,8 @@
         "show_page_ref": true,
         "heading": "NOT HERE\nTO BE LIKED.",
         "red_first_line": true,
-        "heading_size": "xl"
+        "heading_size": "xl",
+        "extra_height": 50
       },
       "blocks": {
         "meta-1": { "type": "meta_tag", "settings": { "text": "IRONIC" } },
