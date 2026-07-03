@@ -6,31 +6,24 @@
         "meta-1": {
           "type": "meta_tag",
           "settings": {
-            "text": "THE FULL ENGLISH"
+            "text": "the collections"
           }
         },
         "meta-2": {
           "type": "meta_tag",
           "settings": {
-            "text": "BUNDLES"
-          }
-        },
-        "meta-3": {
-          "type": "meta_tag",
-          "settings": {
-            "text": "BRITISH DEALS"
+            "text": "made in britain"
           }
         }
       },
       "block_order": [
         "meta-1",
-        "meta-2",
-        "meta-3"
+        "meta-2"
       ],
       "settings": {
-        "index_tag": "SYSTEM_LEDGER // THE full english",
+        "index_tag": "SYSTEM_LEDGER // THE collections",
         "show_page_ref": false,
-        "heading": "Get your swag \nwhile stocks last.",
+        "heading": "nostalgia reborn\nclothing built to last.",
         "fallback_title": "Full Kit.",
         "red_first_line": true,
         "heading_size": "lg",
