@@ -2,46 +2,63 @@
   "sections": {
     "hero": {
       "type": "page-hero",
-      "settings": {
-        "index_tag": "FIELD_TELEPHONE",
-        "show_page_ref": true,
-        "heading": "Get in touch.",
-        "red_first_line": false,
-        "heading_size": "lg"
-      },
       "blocks": {
-        "meta-1": { "type": "meta_tag", "settings": { "text": "A HUMAN READS EVERYTHING" } },
-        "meta-2": { "type": "meta_tag", "settings": { "text": "ONE WORKING DAY" } }
+        "meta-1": {
+          "type": "meta_tag",
+          "settings": {
+            "text": "contact us"
+          }
+        },
+        "meta-2": {
+          "type": "meta_tag",
+          "settings": {
+            "text": "give us a bell"
+          }
+        }
       },
-      "block_order": ["meta-1", "meta-2"]
+      "block_order": [
+        "meta-1",
+        "meta-2"
+      ],
+      "settings": {
+        "index_tag": "FIELD_TELEPHONE  // give us a shout",
+        "show_page_ref": true,
+        "heading": "contact us \nto get the lowdown.",
+        "red_first_line": true,
+        "heading_size": "lg",
+        "extra_height": 0
+      }
     },
     "contact": {
       "type": "faq",
-      "settings": {
-        "index_tag": "FIELD_TELEPHONE // CONTACT",
-        "intro": "Straight answers, no run-around. Email us and a human — not a bot — reads it."
-      },
       "blocks": {
         "email": {
           "type": "qa",
           "settings": {
             "heading": "Email",
+            "body": "<p>Email <a href=\"mailto:hq@blitzspirit.co.uk\">hq@blitzspirit.co.uk</a> — a human answers within one working day. For order queries, include your order number and we’ll sort it without a fuss.</p>",
             "anchor": "email",
-            "open": true,
-            "body": "<p>Email <a href=\"mailto:hq@blitzspirit.co.uk\">hq@blitzspirit.co.uk</a> — a human answers within one working day. For order queries, include your order number and we’ll sort it without a fuss.</p>"
+            "open": true
           }
         },
         "before-you-write": {
           "type": "qa",
           "settings": {
             "heading": "Before you write in",
+            "body": "<p>Delivery, returns and size guide are covered on the <a href=\"/pages/help\">Field Manual</a> page — might save you the wait.</p>",
             "anchor": "before-you-write",
-            "open": false,
-            "body": "<p>Delivery, returns and size guide are covered on the <a href=\"/pages/help\">Field Manual</a> page — might save you the wait.</p>"
+            "open": false
           }
         }
       },
-      "block_order": ["email", "before-you-write"]
+      "block_order": [
+        "email",
+        "before-you-write"
+      ],
+      "settings": {
+        "index_tag": "FIELD_TELEPHONE // CONTACT",
+        "intro": "Straight answers, no run-around. Email us and a human — not a bot — reads it."
+      }
     },
     "newsletter": {
       "type": "newsletter",
@@ -53,5 +70,9 @@
       }
     }
   },
-  "order": ["hero", "contact", "newsletter"]
+  "order": [
+    "hero",
+    "contact",
+    "newsletter"
+  ]
 }

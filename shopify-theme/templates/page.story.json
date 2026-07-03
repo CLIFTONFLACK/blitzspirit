@@ -2,20 +2,25 @@
   "sections": {
     "hero": {
       "type": "page-hero",
-      "settings": {
-        "index_tag": "SYSTEM_DOSSIER",
-        "show_page_ref": true,
-        "heading": "Blitz spirit is what you need\nwhen your back is against the wall.",
-        "red_first_line": true,
-        "heading_size": "lg"
-      },
       "blocks": {
         "meta-1": {
           "type": "meta_tag",
-          "settings": { "text": "FACED WITH ADVERSITY, YOU DIG DEEP, CARRY ON — AND STICK THE KETTLE ON" }
+          "settings": {
+            "text": "DIG DEEP, CARRY ON, AND STICK THE KETTLE ON"
+          }
         }
       },
-      "block_order": ["meta-1"]
+      "block_order": [
+        "meta-1"
+      ],
+      "settings": {
+        "index_tag": "SYSTEM_DOSSIER  // The blitz",
+        "show_page_ref": false,
+        "heading": "when your back\n is against the wall.",
+        "red_first_line": true,
+        "heading_size": "lg",
+        "extra_height": 0
+      }
     },
     "split-1940": {
       "type": "about-split",
@@ -24,7 +29,9 @@
         "heading": "The bombs fell. The kettle went on.",
         "body": "<p>Fifty-seven consecutive nights of bombing. Whole streets gone by morning. And the response of ordinary Londoners — telephonists, bus drivers, shopkeepers, kids — was to get up, dust off, and <em>carry on out of sheer bloody-mindedness</em>.</p><p>They called it blitz spirit: the attitude of a city that refused to be told when it was beaten. The pubs stayed open, mostly. The pint was had.</p><p><em>“There was one thing about which there was never any doubt. The courage, the unconquerable grit and stamina of our people. Upon that rock, all stand unshakeable.”</em> — Winston Churchill</p>",
         "image_ref": "FILE_001 // LONDON_1940",
-        "image_side": "left"
+        "image_side": "left",
+        "cta_label": "",
+        "cta_link": ""
       }
     },
     "split-today": {
@@ -41,7 +48,6 @@
     },
     "house-rules": {
       "type": "values-grid",
-      "settings": {},
       "blocks": {
         "rule-1": {
           "type": "cell",
@@ -72,7 +78,13 @@
           }
         }
       },
-      "block_order": ["rule-1", "rule-2", "rule-3", "rule-4"]
+      "block_order": [
+        "rule-1",
+        "rule-2",
+        "rule-3",
+        "rule-4"
+      ],
+      "settings": {}
     },
     "newsletter": {
       "type": "newsletter",
@@ -84,5 +96,11 @@
       }
     }
   },
-  "order": ["hero", "split-1940", "split-today", "house-rules", "newsletter"]
+  "order": [
+    "hero",
+    "split-1940",
+    "split-today",
+    "house-rules",
+    "newsletter"
+  ]
 }

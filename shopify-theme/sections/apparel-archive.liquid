@@ -51,6 +51,8 @@
         assign plate_ref = plate_ref | append: 'UNASSIGNED'
       endif
 
+      assign strapline = product.metafields.custom.strapline
+
       assign item_image_count = 0
       for media in product.media
         if media.media_type == 'image'
@@ -130,6 +132,13 @@
               </h2>
 
               <div class="item-price tag">{% render 'price', product: product %}</div>
+
+              {%- if strapline != blank -%}
+                <p>
+                  <span class="hit">// {{ title_up }}</span>
+                  &mdash; {{ strapline | escape }}
+                </p>
+              {%- endif -%}
 
               {%- if block.settings.dossier != blank -%}
                 {{ block.settings.dossier }}

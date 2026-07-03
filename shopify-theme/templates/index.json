@@ -3,18 +3,36 @@
     "hero": {
       "type": "hero",
       "settings": {
-        "status_line": ""
+        "corner_tag": "SYS_REF // 47-CONCRETE-SEAMS",
+        "heading": "NOT HERE TO BE LIKED.",
+        "tagline": "PROUD. UNAPOLOGETIC. OCCASIONALLY DIFFICULT.",
+        "status_line": "",
+        "cta_label": "[ SEE THE COLLECTION ]",
+        "cta_link": "",
+        "foot_text": "EST. 2026 // BRITISH STUBBORNNESS"
       }
     },
     "featured": {
       "type": "featured-product",
       "settings": {
-        "product": "the-establishment"
+        "product": "the-establishment",
+        "issue_override": "",
+        "dossier": "",
+        "what_label": "STORY",
+        "plate_ref": "BS_002 // ISSUE_000"
       }
     },
     "promo": {
       "type": "promo-band",
-      "settings": {}
+      "settings": {
+        "tag": "[ DISPATCH // STAND BY ]",
+        "heading": "GOT MORE BOTTLE THAN THE MILKMAN",
+        "subheading": "Put the kettle on, time for a nice cup of tea!",
+        "lead_line": "ENTER YOUR EMAIL ADDRESS TO BE THE FIRST IN THE KNOW",
+        "placeholder": "NAME@DOMAIN.CO.UK",
+        "button_label": "[ NOTIFY ME ]",
+        "success_text": "[ SECURED // YOU'RE FIRST IN THE KNOW ]"
+      }
     },
     "archive": {
       "type": "apparel-archive",
@@ -22,39 +40,79 @@
         "item_1": {
           "type": "item",
           "settings": {
-            "product": "the-boudica"
+            "product": "the-boudica",
+            "dossier": "",
+            "index_label": "",
+            "force_dark": false
           }
         },
         "item_2": {
           "type": "item",
           "settings": {
-            "product": "the-roll-call"
+            "product": "the-roll-call",
+            "dossier": "",
+            "index_label": "",
+            "force_dark": false
           }
         },
         "item_3": {
           "type": "item",
           "settings": {
-            "product": "the-frequency"
+            "product": "the-frequency",
+            "dossier": "",
+            "index_label": "",
+            "force_dark": false
           }
         },
         "item_4": {
           "type": "item",
           "settings": {
-            "product": "the-clerk"
+            "product": "the-clerk",
+            "dossier": "",
+            "index_label": "",
+            "force_dark": false
           }
         }
       },
-      "block_order": ["item_1", "item_2", "item_3", "item_4"],
+      "block_order": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
       "settings": {
-        "auto_alternate": true
+        "auto_alternate": true,
+        "what_label": "STORY"
       }
     },
     "equipment": {
       "type": "equipment-feature",
       "settings": {
-        "product": "the-cap"
+        "label": "[ RECOMMENDED CONDIMENT ]",
+        "product": "the-cap",
+        "issue_tag": "ISSUE_001 // EQUIPMENT"
+      }
+    },
+    "promo_band_VF78L7": {
+      "type": "promo-band",
+      "settings": {
+        "image": "shopify://shop_images/Blitz-telephonists.jpg",
+        "tag": "[ DISPATCH // EARLY BIRDS ]",
+        "heading": "The Blitz, the weather, the pub queue. ",
+        "subheading": "brits are too stubborn to worry.",
+        "lead_line": "",
+        "placeholder": "NAME@DOMAIN.CO.UK",
+        "button_label": "[ NOTIFY ME ]",
+        "success_text": "[ SECURED // YOU'RE FIRST IN THE KNOW ]"
       }
     }
   },
-  "order": ["hero", "featured", "promo", "archive", "equipment"]
+  "order": [
+    "hero",
+    "featured",
+    "promo",
+    "archive",
+    "equipment",
+    "promo_band_VF78L7"
+  ]
 }

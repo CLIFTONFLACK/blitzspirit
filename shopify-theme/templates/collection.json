@@ -6,26 +6,35 @@
         "meta-1": {
           "type": "meta_tag",
           "settings": {
-            "text": "T-SHIRTS + CAPS"
+            "text": "THE FULL ENGLISH"
           }
         },
         "meta-2": {
           "type": "meta_tag",
           "settings": {
-            "text": "FREE UK DELIVERY OVER £40"
+            "text": "BUNDLES"
           }
         },
         "meta-3": {
           "type": "meta_tag",
           "settings": {
-            "text": "SCREEN PRINTED IN BRITAIN"
+            "text": "BRITISH DEALS"
           }
         }
       },
-      "block_order": ["meta-1", "meta-2", "meta-3"],
+      "block_order": [
+        "meta-1",
+        "meta-2",
+        "meta-3"
+      ],
       "settings": {
-        "index_tag": "SYSTEM_LEDGER // FULL_KIT // ISSUE_001",
-        "fallback_title": "Full Kit."
+        "index_tag": "SYSTEM_LEDGER // THE full english",
+        "show_page_ref": false,
+        "heading": "Get your swag \nwhile stocks last.",
+        "fallback_title": "Full Kit.",
+        "red_first_line": true,
+        "heading_size": "lg",
+        "extra_height": 0
       }
     },
     "tabs": {
@@ -35,13 +44,15 @@
           "type": "tab",
           "settings": {
             "label": "ALL",
-            "link_all": true
+            "link_all": true,
+            "collection": ""
           }
         },
         "tab-tshirts": {
           "type": "tab",
           "settings": {
             "label": "T-SHIRTS",
+            "link_all": false,
             "collection": "t-shirts"
           }
         },
@@ -49,11 +60,16 @@
           "type": "tab",
           "settings": {
             "label": "CAPS",
+            "link_all": false,
             "collection": "caps"
           }
         }
       },
-      "block_order": ["tab-all", "tab-tshirts", "tab-caps"],
+      "block_order": [
+        "tab-all",
+        "tab-tshirts",
+        "tab-caps"
+      ],
       "settings": {
         "show_count": true
       }
@@ -63,9 +79,15 @@
       "settings": {
         "products_per_page": 12,
         "columns_desktop": "3",
-        "show_badge": true
+        "show_badge": true,
+        "empty_heading": "Bombed out.",
+        "empty_text": "Nothing filed under this yet."
       }
     }
   },
-  "order": ["hero", "tabs", "grid"]
+  "order": [
+    "hero",
+    "tabs",
+    "grid"
+  ]
 }

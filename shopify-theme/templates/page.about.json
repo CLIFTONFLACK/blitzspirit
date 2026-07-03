@@ -2,21 +2,39 @@
   "sections": {
     "hero": {
       "type": "page-hero",
+      "blocks": {
+        "meta-1": {
+          "type": "meta_tag",
+          "settings": {
+            "text": "IRONIC"
+          }
+        },
+        "meta-2": {
+          "type": "meta_tag",
+          "settings": {
+            "text": "ICONIC"
+          }
+        },
+        "meta-3": {
+          "type": "meta_tag",
+          "settings": {
+            "text": "MADE IN BRITAIN"
+          }
+        }
+      },
+      "block_order": [
+        "meta-1",
+        "meta-2",
+        "meta-3"
+      ],
       "settings": {
-        "index_tag": "SYSTEM_DOSSIER",
-        "show_page_ref": true,
+        "index_tag": "SYSTEM_DOSSIER  // OUR DNA",
+        "show_page_ref": false,
         "heading": "NOT HERE\nTO BE LIKED.",
         "red_first_line": true,
-        "heading_size": "xl",
-        "extra_height": 50
-      },
-      "blocks": {
-        "meta-1": { "type": "meta_tag", "settings": { "text": "IRONIC" } },
-        "meta-2": { "type": "meta_tag", "settings": { "text": "ICONIC" } },
-        "meta-3": { "type": "meta_tag", "settings": { "text": "BRITISH MADE" } },
-        "meta-4": { "type": "meta_tag", "settings": { "text": "EST. 2008" } }
-      },
-      "block_order": ["meta-1", "meta-2", "meta-3", "meta-4"]
+        "heading_size": "lg",
+        "extra_height": 0
+      }
     },
     "split-started": {
       "type": "about-split",
@@ -25,7 +43,9 @@
         "heading": "How it started.",
         "body": "<p>London, 2008. A bowler hat. A skull. Two crossed umbrellas. The original Skull &amp; Brollies tee came out of a simple question: <em>what does British stoicism actually look like on a t-shirt?</em></p><p>Not a bulldog. Not a Union Jack slapped on a cheap blank. Something that meant something — with a proper character behind it. Somebody who’d been through it and kept their composure. The city gent who walked to work through the Blitz and dared it to make him late.</p><p>That first design became BlitzSpirit. The name stuck because the spirit stuck. Eighteen years later, same question, same answer — <em>just better cotton</em>.</p>",
         "image_ref": "FILE_001 // ORIGIN",
-        "image_side": "left"
+        "image_side": "left",
+        "cta_label": "",
+        "cta_link": ""
       }
     },
     "split-make": {
@@ -42,7 +62,6 @@
     },
     "values": {
       "type": "values-grid",
-      "settings": {},
       "blocks": {
         "value-1": {
           "type": "cell",
@@ -73,7 +92,13 @@
           }
         }
       },
-      "block_order": ["value-1", "value-2", "value-3", "value-4"]
+      "block_order": [
+        "value-1",
+        "value-2",
+        "value-3",
+        "value-4"
+      ],
+      "settings": {}
     },
     "split-means": {
       "type": "about-split",
@@ -81,6 +106,8 @@
         "index_tag": "FILE_003 // WHAT_IT_MEANS",
         "heading": "What it means.",
         "body": "<p>The blitz spirit isn’t nostalgia. It’s not bunting and Churchill quotes on a tea towel. It’s a specific quality — the ability to be <em>cheerful in adversity</em>, practical under pressure, and fundamentally unimpressed by things that are trying very hard to impress you.</p><p>It shows up in a skull wearing a bowler hat. In a mod target built from a single word. In a typographic roll call that’s set like a setlist because the names deserve the stage. <em>That’s what we make. That’s why it works.</em></p>",
+        "image_ref": "",
+        "image_side": "left",
         "cta_label": "[ VIEW THE COLLECTION ]",
         "cta_link": "/pages/icons"
       }
@@ -95,5 +122,12 @@
       }
     }
   },
-  "order": ["hero", "split-started", "split-make", "values", "split-means", "newsletter"]
+  "order": [
+    "hero",
+    "split-started",
+    "split-make",
+    "values",
+    "split-means",
+    "newsletter"
+  ]
 }
