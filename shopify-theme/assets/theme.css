@@ -228,6 +228,24 @@ a { color:inherit; text-decoration:none; }
 }
 .item--dark .dossier .metafield-rich_text_field li::before { background:var(--signal); }
 
+/* Native product.description (Admin "Description" field) gets the same
+   treatment as the metafield rich text -- merchants edit this field
+   directly, so its bullet lists are real content, not a redundant
+   fabric/care list, and stay visible (unlike .metafield-rich_text_field
+   ul above). */
+.dossier .dossier-desc p,
+.dossier .dossier-desc li {
+  font-family:var(--mono); font-weight:400; text-transform:uppercase;
+  letter-spacing:.04em; font-size:clamp(.8rem,1.6vw,.95rem); line-height:1.6;
+}
+.dossier .dossier-desc ul { list-style:none; margin:14px 0 0; padding:0; }
+.dossier .dossier-desc li { position:relative; padding-left:18px; margin-top:8px; }
+.dossier .dossier-desc li:first-child { margin-top:0; }
+.dossier .dossier-desc li::before {
+  content:""; position:absolute; left:0; top:8px; width:6px; height:6px; background:var(--brand-red);
+}
+.item--dark .dossier .dossier-desc li::before { background:var(--signal); }
+
 /* Homepage teaser rows (item/featured): show only the lead paragraph of
    the story copy -- the full dossier lives on the PDP via the "WHAT IS"
    link. This is the real lever for container height (the copy was the
@@ -235,10 +253,14 @@ a { color:inherit; text-decoration:none; }
    dossier is untouched. */
 .item .dossier .metafield-rich_text_field p:nth-of-type(n+2),
 .item .dossier .dossier-desc p:nth-of-type(n+2),
+.item .dossier .dossier-desc li:nth-of-type(n+2),
 .featured .dossier .metafield-rich_text_field p:nth-of-type(n+2),
-.featured .dossier .dossier-desc p:nth-of-type(n+2) { display:none; }
+.featured .dossier .dossier-desc p:nth-of-type(n+2),
+.featured .dossier .dossier-desc li:nth-of-type(n+2) { display:none; }
 .item .dossier .metafield-rich_text_field,
-.featured .dossier .metafield-rich_text_field { margin-bottom:0; }
+.featured .dossier .metafield-rich_text_field,
+.item .dossier .dossier-desc ul,
+.featured .dossier .dossier-desc ul { margin-bottom:0; }
 .item .dossier p + p, .featured .dossier p + p { margin-top:14px; }
 .item .dossier, .featured .dossier { padding:var(--s2); }
 .js .dossier .hit, .js .dossier strong { opacity:0; }

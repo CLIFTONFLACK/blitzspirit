@@ -7,11 +7,13 @@
   Behaviour:
     - Lead line from product.metafields.custom.strapline rendered as
       "// TITLE — strapline" with the title in a .hit span.
-    - Body from product.metafields.custom.dossier (rich_text via
+    - Body from the native product.description (the Admin "Description"
+      field — this is what merchants actually edit day to day). Falls
+      back to product.metafields.custom.dossier (rich_text via
       metafield_tag; bold in the rich text takes the .hit treatment
-      via CSS: .dossier strong).
-    - Falls back to product.description when the dossier metafield
-      is blank. Renders nothing at all when there is no copy.
+      via CSS: .dossier strong) only when the Description field is
+      blank, e.g. products still on the original seeded copy. Renders
+      nothing at all when there is no copy anywhere.
 
   Usage:
     {% render 'dossier', product: product %}
@@ -30,10 +32,10 @@
         &mdash; {{ dossier_strap | escape }}
       </p>
     {%- endif -%}
-    {%- if dossier_rich != blank -%}
-      {{ dossier_rich | metafield_tag }}
-    {%- elsif product.description != blank -%}
+    {%- if product.description != blank -%}
       <div class="dossier-desc">{{ product.description }}</div>
+    {%- elsif dossier_rich != blank -%}
+      {{ dossier_rich | metafield_tag }}
     {%- endif -%}
   </div>
 {%- endif -%}

@@ -114,10 +114,10 @@
               &mdash; {{ strapline | escape }}
             </p>
           {%- endif -%}
-          {%- if dossier_meta != blank -%}
-            {{ dossier_meta | metafield_tag }}
-          {%- elsif product.description != blank -%}
+          {%- if product.description != blank -%}
             <div class="dossier-desc">{{ product.description }}</div>
+          {%- elsif dossier_meta != blank -%}
+            {{ dossier_meta | metafield_tag }}
           {%- endif -%}
         {%- endif -%}
 

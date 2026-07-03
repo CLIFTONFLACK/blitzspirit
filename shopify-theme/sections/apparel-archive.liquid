@@ -133,10 +133,10 @@
 
               {%- if block.settings.dossier != blank -%}
                 {{ block.settings.dossier }}
+              {%- elsif product.description != blank -%}
+                <div class="dossier-desc">{{ product.description }}</div>
               {%- elsif product.metafields.custom.dossier != blank -%}
                 {{ product.metafields.custom.dossier | metafield_tag }}
-              {%- elsif product.description != blank -%}
-                {{ product.description }}
               {%- endif -%}
 
               <product-form data-section-id="{{ section.id }}">
