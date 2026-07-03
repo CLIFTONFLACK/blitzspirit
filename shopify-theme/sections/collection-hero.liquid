@@ -12,15 +12,20 @@
 {% endcomment %}
 
 {%- liquid
+  assign display_title = collection.title
+  if collection.handle == 'all'
+    assign display_title = 'The Collections.'
+  endif
+
   assign heading = section.settings.heading
   if heading == blank
-    assign heading = collection.title | default: section.settings.fallback_title | default: 'Full Kit.'
+    assign heading = display_title | default: section.settings.fallback_title | default: 'Full Kit.'
   endif
   assign heading_lines = heading | newline_to_br | split: '<br />'
 
   assign coll_ref = ''
-  if section.settings.show_page_ref and collection.title != blank
-    assign coll_ref = collection.title | upcase | replace: ' ', '_'
+  if section.settings.show_page_ref and display_title != blank
+    assign coll_ref = display_title | remove: '.' | upcase | replace: ' ', '_'
   endif
 
   assign ph_style = ''

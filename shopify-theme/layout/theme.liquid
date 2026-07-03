@@ -6,6 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="theme-color" content="{{ settings.color_ink | default: '#0A0A0A' }}">
 
+    {%- if template.name == 'collection' and collection.handle == 'all' -%}
+      {%- assign page_title = 'The Collections.' -%}
+    {%- endif -%}
     <title>
       {{- page_title -}}
       {%- if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif -%}
