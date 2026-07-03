@@ -247,20 +247,16 @@ a { color:inherit; text-decoration:none; }
 .item--dark .dossier .dossier-desc li::before { background:var(--signal); }
 
 /* Homepage teaser rows (item/featured): show only the lead paragraph of
-   the story copy -- the full dossier lives on the PDP via the "WHAT IS"
-   link. This is the real lever for container height (the copy was the
-   tallest thing in the row, not the plate). Scoped so the PDP's full
-   dossier is untouched. */
+   the metafield-era story copy -- that fallback path is long-form
+   narrative prose, so it's truncated to keep row height in check. The
+   native product.description (.dossier-desc, what merchants actually
+   edit) is left untruncated -- it's short by nature (a few punchy
+   lines/bullets, not a paragraph essay), so the full thing shows on
+   both the homepage and the PDP. */
 .item .dossier .metafield-rich_text_field p:nth-of-type(n+2),
-.item .dossier .dossier-desc p:nth-of-type(n+2),
-.item .dossier .dossier-desc li:nth-of-type(n+2),
-.featured .dossier .metafield-rich_text_field p:nth-of-type(n+2),
-.featured .dossier .dossier-desc p:nth-of-type(n+2),
-.featured .dossier .dossier-desc li:nth-of-type(n+2) { display:none; }
+.featured .dossier .metafield-rich_text_field p:nth-of-type(n+2) { display:none; }
 .item .dossier .metafield-rich_text_field,
-.featured .dossier .metafield-rich_text_field,
-.item .dossier .dossier-desc ul,
-.featured .dossier .dossier-desc ul { margin-bottom:0; }
+.featured .dossier .metafield-rich_text_field { margin-bottom:0; }
 .item .dossier p + p, .featured .dossier p + p { margin-top:14px; }
 .item .dossier, .featured .dossier { padding:var(--s2); }
 .js .dossier .hit, .js .dossier strong { opacity:0; }
