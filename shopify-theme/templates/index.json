@@ -2,7 +2,9 @@
   "sections": {
     "hero": {
       "type": "hero",
-      "settings": {}
+      "settings": {
+        "status_line": ""
+      }
     },
     "featured": {
       "type": "featured-product",

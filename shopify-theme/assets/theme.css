@@ -26,7 +26,7 @@
 html { scroll-behavior:smooth; }
 body {
   background:var(--ink); color:var(--bone); font-family:var(--mono);
-  font-size:14px; line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden;
 }
 img { display:block; max-width:100%; height:auto; }
 button { font:inherit; color:inherit; background:none; border:none; cursor:pointer; }
@@ -76,10 +76,27 @@ a { color:inherit; text-decoration:none; }
 .masthead .bag b { color:var(--signal); font-weight:400; }
 
 /* 3b. MASTHEAD — left/right split layout */
-.nodes--left { display:flex; gap:var(--s3); align-items:center; overflow:hidden; min-width:0; }
+.nodes--left { display:flex; gap:var(--s3); align-items:center; overflow-x:hidden; overflow-y:visible; min-width:0; }
 .nodes--right { display:flex; gap:var(--s2); align-items:center; flex-shrink:0; }
 .mh-long { color:var(--bone-mute); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:none; }
 .mh-social { display:flex; align-items:center; color:var(--bone); line-height:1; }
+
+/* 3c. MASTHEAD — dropdown submenus (hover + keyboard focus) */
+.nav-item { position:relative; display:inline-flex; align-items:center; }
+.nav-dropdown {
+  position:absolute; top:100%; left:0; margin-top:10px; z-index:60;
+  display:flex; flex-direction:column; min-width:180px;
+  background:var(--panel); border:1px solid var(--line-bri);
+  padding:6px 0;
+  opacity:0; visibility:hidden; transform:translateY(-6px);
+  transition:opacity .15s ease, transform .15s ease, visibility .15s;
+}
+.nav-item:hover .nav-dropdown,
+.nav-item:focus-within .nav-dropdown {
+  opacity:1; visibility:visible; transform:translateY(0);
+}
+.nav-dropdown-link { display:block; padding:10px 16px; color:var(--bone); white-space:nowrap; font-size:12px; }
+.nav-dropdown-link:hover, .nav-dropdown-link:focus-visible { background:var(--panel-2); color:var(--signal); }
 .mh-social:hover { color:var(--bone); }
 
 /* ============================================================
@@ -676,6 +693,7 @@ a { color:inherit; text-decoration:none; }
   .js .dossier .hit, .js .dossier strong { opacity:1; }
   .js .dossier .hit.hit--live, .js .dossier strong.hit--live { animation:none; }
   .cart-drawer,.cart-overlay,.coll-plate img { transition:none; }
+  .nav-dropdown { transition:none; }
 }
 
 /* ============================================================

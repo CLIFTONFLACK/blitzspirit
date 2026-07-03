@@ -21,7 +21,18 @@
   <nav class="nodes nodes--left" aria-label="{{ 'general.menu' | t }}">
     {%- if menu != blank and menu.links.size > 0 -%}
       {%- for link in menu.links -%}
-        <a href="{{ link.url }}" class="tag"{% if link.current %} aria-current="page"{% endif %}>[ {{ link.title | upcase | escape }} ]</a>
+        {%- if link.links.size > 0 -%}
+          <div class="nav-item">
+            <a href="{{ link.url }}" class="tag"{% if link.current %} aria-current="page"{% endif %} aria-haspopup="true" aria-expanded="false">[ {{ link.title | upcase | escape }} ]</a>
+            <div class="nav-dropdown">
+              {%- for child in link.links -%}
+                <a href="{{ child.url }}" class="tag nav-dropdown-link"{% if child.current %} aria-current="page"{% endif %}>{{ child.title | upcase | escape }}</a>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- else -%}
+          <a href="{{ link.url }}" class="tag"{% if link.current %} aria-current="page"{% endif %}>[ {{ link.title | upcase | escape }} ]</a>
+        {%- endif -%}
       {%- endfor -%}
     {%- else -%}
       <a href="{{ routes.root_url }}" class="tag"{% if request.path == routes.root_url %} aria-current="page"{% endif %}>[ {{ 'general.home' | t }} ]</a>
