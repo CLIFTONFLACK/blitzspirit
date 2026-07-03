@@ -114,7 +114,7 @@
                   <div class="actions">
                     {%- if section.settings.what_label != blank -%}
                       <a class="what-link snap" href="{{ product.url }}">
-                        {{- section.settings.what_label | escape }} '{{ title_up }}'
+                        {{- title_up }} {{ section.settings.what_label | escape }}
                       </a>
                     {%- endif -%}
                     <button
@@ -184,8 +184,8 @@
       "type": "text",
       "id": "what_label",
       "label": "Product link label",
-      "default": "WHAT IS",
-      "info": "Rendered as WHAT IS 'PRODUCT NAME' — leave blank to hide the links"
+      "default": "STORY",
+      "info": "Rendered as PRODUCT NAME STORY — leave blank to hide the links"
     }
   ],
   "blocks": [

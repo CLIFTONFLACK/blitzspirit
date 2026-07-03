@@ -72,7 +72,7 @@
     "confirmation": "SECURED // YOU'RE FIRST IN THE KNOW"
   },
   "search": {
-    "title": "SEARCH THE ARCHIVE",
+    "title": "SEARCH THE COLLECTION",
     "placeholder": "SEARCH",
     "submit": "SEARCH",
     "no_results": "NOTHING LOGGED FOR \"{{ terms }}\" // TRY AGAIN",

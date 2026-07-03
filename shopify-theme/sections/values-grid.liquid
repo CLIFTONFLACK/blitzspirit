@@ -1,13 +1,14 @@
 {% comment %}
-  values-grid — 4-up numbered values grid (values-grid family, per about.html).
-  Cell numbers are automatic from block order: [ 01 ] … [ 04 ].
+  values-grid — 4-up values grid (values-grid family, per about.html).
+  Each cell is marked with the "mark" icon (snippets/icon.liquid) in place
+  of the earlier [ 01 ] … [ 04 ] numbered tag.
 {% endcomment %}
 
 {%- if section.blocks.size > 0 -%}
   <div class="values-grid" data-section-id="{{ section.id }}">
     {%- for block in section.blocks -%}
       <div class="value-cell" {{ block.shopify_attributes }}>
-        <p class="value-num tag">[ {{ forloop.index | prepend: '0' | slice: -2, 2 }} ]</p>
+        <span class="value-mark">{% render 'icon', name: 'mark' %}</span>
         {%- if block.settings.heading != blank -%}
           <h3 class="value-head chunk">{{ block.settings.heading | escape }}</h3>
         {%- endif -%}

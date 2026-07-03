@@ -13,13 +13,10 @@
       "blocks": {
         "meta-1": { "type": "meta_tag", "settings": { "text": "IRONIC" } },
         "meta-2": { "type": "meta_tag", "settings": { "text": "ICONIC" } },
-        "meta-3": { "type": "meta_tag", "settings": { "text": "BRITISH" } },
-        "meta-4": { "type": "meta_tag", "settings": { "text": "EST. 2008" } },
-        "meta-5": { "type": "meta_tag", "settings": { "text": "LONDON" } },
-        "meta-6": { "type": "meta_tag", "settings": { "text": "HEAVYWEIGHT COTTON" } },
-        "meta-7": { "type": "meta_tag", "settings": { "text": "PRINTED IN THE UK" } }
+        "meta-3": { "type": "meta_tag", "settings": { "text": "BRITISH MADE" } },
+        "meta-4": { "type": "meta_tag", "settings": { "text": "EST. 2008" } }
       },
-      "block_order": ["meta-1", "meta-2", "meta-3", "meta-4", "meta-5", "meta-6", "meta-7"]
+      "block_order": ["meta-1", "meta-2", "meta-3", "meta-4"]
     },
     "split-started": {
       "type": "about-split",
@@ -37,9 +34,9 @@
         "index_tag": "FILE_002 // WHAT_WE_MAKE",
         "heading": "What we make.",
         "body": "<p>Heavyweight t-shirts. 220gsm ring-spun cotton. Screen printed in Britain with water-based inks that won’t crack, fade, or apologise. Cut unisex so they sit right on any frame.</p><p>Each design has a <em>backbone story</em>. Boudica — the original guardian, nineteen centuries before anyone coined the phrase. The Frequency — a mod target built entirely from the word blitzspirit. The Roll Call — Tommy, Katie, Winston &amp; Boudica, set like a band line-up because that’s what they are.</p><p>Nothing here is decoration. Every character has previous. <em>Read up before you wear one.</em></p>",
-        "image_ref": "FILE_002 // ARCHIVE",
+        "image_ref": "FILE_002 // COLLECTION",
         "image_side": "right",
-        "cta_label": "[ VIEW THE ARCHIVE ]",
+        "cta_label": "[ VIEW THE COLLECTION ]",
         "cta_link": "/collections/all"
       }
     },
@@ -84,7 +81,7 @@
         "index_tag": "FILE_003 // WHAT_IT_MEANS",
         "heading": "What it means.",
         "body": "<p>The blitz spirit isn’t nostalgia. It’s not bunting and Churchill quotes on a tea towel. It’s a specific quality — the ability to be <em>cheerful in adversity</em>, practical under pressure, and fundamentally unimpressed by things that are trying very hard to impress you.</p><p>It shows up in a skull wearing a bowler hat. In a mod target built from a single word. In a typographic roll call that’s set like a setlist because the names deserve the stage. <em>That’s what we make. That’s why it works.</em></p>",
-        "cta_label": "[ VIEW THE ARCHIVE ]",
+        "cta_label": "[ VIEW THE COLLECTION ]",
         "cta_link": "/pages/icons"
       }
     },

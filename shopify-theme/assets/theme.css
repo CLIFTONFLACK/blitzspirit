@@ -76,9 +76,9 @@ a { color:inherit; text-decoration:none; }
 .masthead .bag b { color:var(--signal); font-weight:400; }
 
 /* 3b. MASTHEAD — left/right split layout */
-.nodes--left { display:flex; gap:var(--s3); align-items:center; overflow-x:hidden; overflow-y:visible; min-width:0; }
+.nodes--left { display:flex; gap:var(--s3); align-items:center; min-width:0; }
 .nodes--right { display:flex; gap:var(--s2); align-items:center; flex-shrink:0; }
-.mh-long { color:var(--bone-mute); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:none; }
+.mh-long { color:var(--bone-mute); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:none; min-width:0; max-width:260px; }
 .mh-social { display:flex; align-items:center; color:var(--bone); line-height:1; }
 
 /* 3c. MASTHEAD — dropdown submenus (hover + keyboard focus) */
@@ -216,6 +216,7 @@ a { color:inherit; text-decoration:none; }
 
 /* Price (snippets/price.liquid) */
 .price__compare { color:var(--bone-mute); text-decoration:line-through; margin-right:8px; }
+.price__current { font-family:var(--display-font); font-weight:400; font-size:17px; letter-spacing:.02em; }
 .price--sale .price__current { color:var(--signal); }
 .price__vat { color:var(--bone-mute); }
 
@@ -239,7 +240,11 @@ a { color:inherit; text-decoration:none; }
   font-family:var(--mono); font-weight:400; text-transform:uppercase;
   letter-spacing:.04em; font-size:clamp(.8rem,1.6vw,.95rem); line-height:1.6;
 }
-.dossier .metafield-rich_text_field ul { list-style:none; margin:14px 0 0; padding:0; }
+/* Fabric/care facts list hidden on homepage and PDP -- the field-manual
+   table already covers this info in a dedicated technical-spec format,
+   showing it twice was redundant. Structure kept in the metafield/CSS
+   below in case it's wanted again later. */
+.dossier .metafield-rich_text_field ul { display:none; list-style:none; margin:14px 0 0; padding:0; }
 .dossier .metafield-rich_text_field li { position:relative; padding-left:18px; margin-top:8px; }
 .dossier .metafield-rich_text_field li:first-child { margin-top:0; }
 .dossier .metafield-rich_text_field li::before {
@@ -470,8 +475,8 @@ a { color:inherit; text-decoration:none; }
 .values-grid { display:grid; grid-template-columns:repeat(4,1fr); border-bottom:1px solid var(--line); }
 .value-cell { padding:var(--s4) var(--s3); border-right:1px solid var(--line); }
 .value-cell:last-child { border-right:none; }
-.value-num { color:var(--signal); font-size:11px; letter-spacing:.14em; margin-bottom:var(--s2); }
-.value-head { color:#fff; font-size:clamp(1.1rem,2.5vw,1.6rem); margin-bottom:var(--s1); }
+.value-mark { display:inline-flex; color:var(--signal); margin-bottom:var(--s2); }
+.value-head { color:var(--cream); font-size:clamp(1.1rem,2.5vw,1.6rem); margin-bottom:var(--s1); }
 .value-body { color:var(--bone); font-size:11px; letter-spacing:.05em; text-transform:uppercase; line-height:1.7; }
 
 .newsletter { padding:var(--s6) var(--s3); border-bottom:1px solid var(--line); }
