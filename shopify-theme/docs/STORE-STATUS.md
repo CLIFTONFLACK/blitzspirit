@@ -19,7 +19,8 @@ Basic plan, GBP, UK, owner cloofhouse@gmail.com. Currently **password-protected
 | Variant images | Each colourway photo pulled from vercel.app → Shopify CDN and set as the variant image (colour-swap works). Media READY on all 6 |
 | Product metafields | strapline, issue, index_ref, limited, and dossier rich-text (bold = `.hit`) set on every product |
 | Nav submenus (2026-07-03) | main-menu: ABOUT → About Us / Help / Contact; THE COLLECTIONS → The Range / Deals. Rendered as hover/focus-within dropdowns (masthead.liquid) |
-| Deals collection (2026-07-03) | Smart collection `deals`, rule TAG=sale, currently empty — tag a product "sale" to populate it |
+| Deals collection (2026-07-03) | Smart collection `deals`, rule TAG=sale — now populated by the 3 bundles below |
+| Bundle products (2026-07-03) | Native Shopify Bundles (`productBundleCreate`), each fixed at size M where applicable, tagged `sale`+`bundle`, ACTIVE + published: **The Establishment + Navy Cap** (£40, was £50) · **The Establishment + The Clerk** (£44.80, was £56) · **The Boudica + Chalk Cap** (£40, was £50). All 20% off via price/compareAtPrice, no discount code needed |
 | Collections | `t-shirts` (smart, TYPE=T-Shirt, 5 products) · `caps` (smart, TYPE=Headwear, 1) — published to Online Store; handles match the theme's collection tabs |
 | Pages | about, story, help, icons, link-in-bio — each with matching template suffix so the theme's `page.*` templates render (copy lives in section defaults) |
 | Menus | `main-menu` = HOME / ABOUT / THE COLLECTIONS · `footer` = ABOUT / SIZE GUIDE / RETURNS / CONTACT (→ help anchors) |
