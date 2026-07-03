@@ -82,8 +82,10 @@ Variant conventions (per the live site + build plan):
   `Navy`, `Stone`) × **Size**. The brutalist display names live in the theme's
   swatch map: Black→OXY_BLACK, Off-White→CHALK_WHITE, Navy→SYSTEM_NAVY,
   Stone→CHALK_STONE.
-- Size runs: **The Boudica S–XXL; all other tees S–XL; The Cap is one-size**
-  (single option: Colour).
+- Size runs: **all tees S–XXL; The Cap is one-size** (single option: Colour).
+  (2026-07-03: The Frequency, The Clerk and The Establishment were
+  originally seeded S–XL only — corrected to match the static site's
+  size selector, which shows XXL on every tee page.)
 - Assign each colourway's flat-lay photo as the **variant image** for every
   size of that colour — the PDP image swap and colour pills key off it.
   Product photos are product media, never theme assets.
