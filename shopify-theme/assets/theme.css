@@ -235,7 +235,7 @@ a { color:inherit; text-decoration:none; }
    ul above). */
 .dossier .dossier-desc p,
 .dossier .dossier-desc li {
-  font-family:var(--mono); font-weight:400; text-transform:uppercase;
+  color:var(--dossier-ink); font-family:var(--mono); font-weight:400; text-transform:uppercase;
   letter-spacing:.04em; font-size:clamp(.8rem,1.6vw,.95rem); line-height:1.6;
 }
 .dossier .dossier-desc ul { list-style:none; margin:14px 0 0; padding:0; }
