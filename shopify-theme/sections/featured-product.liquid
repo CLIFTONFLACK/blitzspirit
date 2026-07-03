@@ -56,6 +56,8 @@
           {%- endif -%}
         </h2>
 
+        <div class="featured-price tag">{% render 'price', product: product %}</div>
+
         {%- if section.settings.dossier != blank -%}
           {{ section.settings.dossier }}
         {%- else -%}
@@ -77,8 +79,6 @@
             {{- section.settings.what_label | escape }} '{{ title_up }}'
           </a>
         {%- endif -%}
-
-        <div class="featured-price tag">{% render 'price', product: product %}</div>
 
         <product-form data-section-id="{{ section.id }}">
           {%- form 'product', product -%}
@@ -142,9 +142,9 @@
 }
 .featured .dossier .featured-price {
   display: block;
-  margin: var(--s3) 0 0;
+  margin: 0 0 var(--s3);
   color: var(--dossier-ink);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.12em;
 }
 .featured .dossier strong {

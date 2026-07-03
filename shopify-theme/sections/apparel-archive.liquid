@@ -81,6 +81,8 @@
                 {%- endif -%}
               </h2>
 
+              <div class="item-price tag">{% render 'price', product: product %}</div>
+
               {%- if block.settings.dossier != blank -%}
                 {{ block.settings.dossier }}
               {%- elsif product.metafields.custom.dossier != blank -%}
@@ -114,8 +116,6 @@
                   <script type="application/json" data-variant-json>
                     {{ product.variants | json }}
                   </script>
-
-                  <div class="item-price tag">{% render 'price', product: product %}</div>
 
                   <div class="actions">
                     <button
@@ -152,9 +152,9 @@
 }
 .item .dossier .item-price {
   display: block;
-  margin: var(--s3) 0 0;
+  margin: 10px 0 var(--s3);
   color: var(--dossier-ink);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.12em;
 }
 .item--dark .dossier .item-price {
