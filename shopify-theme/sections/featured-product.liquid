@@ -29,18 +29,65 @@
 
   assign strapline = product.metafields.custom.strapline
   assign dossier_meta = product.metafields.custom.dossier
+
+  assign featured_image_count = 0
+  for media in product.media
+    if media.media_type == 'image'
+      assign featured_image_count = featured_image_count | plus: 1
+    endif
+  endfor
+  assign featured_current_media_id = product.selected_or_first_available_variant.featured_media.id | default: product.featured_media.id
 -%}
 
-<section class="featured" data-section-id="{{ section.id }}">
+<section class="featured" data-section-id="{{ section.id }}" data-product-wrap>
   <div class="featured-visual">
     <span class="item-asset-ref tag">[ {{ issue_text | escape }} ]</span>
-    {% render 'plate',
-      image: product.featured_image,
-      ref_text: section.settings.plate_ref,
-      alt: product.title,
-      priority: true,
-      sizes: '(min-width: 860px) 42vw, 84vw'
-    %}
+    <div class="pdp-gallery-row">
+      {%- if featured_image_count > 1 -%}
+        <div class="pdp-thumbs">
+          {%- for media in product.media -%}
+            {%- if media.media_type == 'image' -%}
+              <button
+                type="button"
+                class="pdp-thumb snap"
+                data-thumb
+                data-media-id="{{ media.id }}"
+                data-image-id="{{ media.preview_image.id }}"
+                aria-pressed="{% if media.id == featured_current_media_id %}true{% else %}false{% endif %}"
+                aria-label="{{ media.preview_image.alt | default: product.title | escape }}"
+              >
+                <img
+                  src="{{ media.preview_image | image_url: width: 144 }}"
+                  alt=""
+                  width="144"
+                  height="{{ 144 | divided_by: media.preview_image.aspect_ratio | round }}"
+                  loading="lazy"
+                >
+              </button>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+      <div class="pdp-gallery-main">
+        {%- if featured_image_count > 0 -%}
+          {%- for media in product.media -%}
+            {%- if media.media_type == 'image' -%}
+              {%- assign is_current = false -%}
+              {%- if media.id == featured_current_media_id -%}
+                {%- assign is_current = true -%}
+              {%- endif -%}
+              <div data-plate-frame data-media-id="{{ media.id }}" data-image-id="{{ media.preview_image.id }}" {% unless is_current %}hidden{% endunless %}>
+                {% render 'plate', image: media.preview_image, ref_text: section.settings.plate_ref, alt: product.title, priority: is_current, sizes: '(min-width: 860px) 38vw, 78vw' %}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- else -%}
+          <div data-plate-frame>
+            {% render 'plate', ref_text: section.settings.plate_ref, alt: product.title %}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
   </div>
 
   <div class="featured-ledger">
@@ -83,11 +130,23 @@
             >
 
             {%- unless product.has_only_default_variant -%}
-              <div class="cw-size-wrap">
-                {%- for option in product.options_with_values -%}
-                  {% render 'option-pills', option: option, option_index: option.position %}
-                {%- endfor -%}
-              </div>
+              {%- assign featured_has_other_options = false -%}
+              {%- for option in product.options_with_values -%}
+                {%- assign featured_opt_down = option.name | downcase -%}
+                {%- unless featured_opt_down == 'colour' or featured_opt_down == 'color' -%}
+                  {%- assign featured_has_other_options = true -%}
+                {%- endunless -%}
+              {%- endfor -%}
+              {%- if featured_has_other_options -%}
+                <div class="cw-size-wrap">
+                  {%- for option in product.options_with_values -%}
+                    {%- assign featured_opt_down = option.name | downcase -%}
+                    {%- unless featured_opt_down == 'colour' or featured_opt_down == 'color' -%}
+                      {% render 'option-pills', option: option, option_index: option.position %}
+                    {%- endunless -%}
+                  {%- endfor -%}
+                </div>
+              {%- endif -%}
             {%- endunless -%}
 
             <script type="application/json" data-variant-json>

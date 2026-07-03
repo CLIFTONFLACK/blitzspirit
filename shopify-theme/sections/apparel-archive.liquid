@@ -50,6 +50,14 @@
       else
         assign plate_ref = plate_ref | append: 'UNASSIGNED'
       endif
+
+      assign item_image_count = 0
+      for media in product.media
+        if media.media_type == 'image'
+          assign item_image_count = item_image_count | plus: 1
+        endif
+      endfor
+      assign item_current_media_id = product.selected_or_first_available_variant.featured_media.id | default: product.featured_media.id
     -%}
 
     <article
@@ -58,12 +66,52 @@
       {{ block.shopify_attributes }}
     >
       <div class="item-visual">
-        {% render 'plate',
-          image: product.featured_image,
-          ref_text: plate_ref,
-          alt: product.title,
-          sizes: '(min-width: 860px) 41vw, 82vw'
-        %}
+        <div class="pdp-gallery-row">
+          {%- if item_image_count > 1 -%}
+            <div class="pdp-thumbs">
+              {%- for media in product.media -%}
+                {%- if media.media_type == 'image' -%}
+                  <button
+                    type="button"
+                    class="pdp-thumb snap"
+                    data-thumb
+                    data-media-id="{{ media.id }}"
+                    data-image-id="{{ media.preview_image.id }}"
+                    aria-pressed="{% if media.id == item_current_media_id %}true{% else %}false{% endif %}"
+                    aria-label="{{ media.preview_image.alt | default: product.title | escape }}"
+                  >
+                    <img
+                      src="{{ media.preview_image | image_url: width: 144 }}"
+                      alt=""
+                      width="144"
+                      height="{{ 144 | divided_by: media.preview_image.aspect_ratio | round }}"
+                      loading="lazy"
+                    >
+                  </button>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+          <div class="pdp-gallery-main">
+            {%- if item_image_count > 0 -%}
+              {%- for media in product.media -%}
+                {%- if media.media_type == 'image' -%}
+                  {%- assign is_current = false -%}
+                  {%- if media.id == item_current_media_id -%}
+                    {%- assign is_current = true -%}
+                  {%- endif -%}
+                  <div data-plate-frame data-media-id="{{ media.id }}" data-image-id="{{ media.preview_image.id }}" {% unless is_current %}hidden{% endunless %}>
+                    {% render 'plate', image: media.preview_image, ref_text: plate_ref, alt: product.title, sizes: '(min-width: 860px) 36vw, 76vw' %}
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            {%- else -%}
+              <div data-plate-frame>
+                {% render 'plate', ref_text: plate_ref, alt: product.title %}
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
       </div>
 
       <div class="item-ledger">
@@ -100,11 +148,23 @@
                   >
 
                   {%- unless product.has_only_default_variant -%}
-                    <div class="cw-size-wrap">
-                      {%- for option in product.options_with_values -%}
-                        {% render 'option-pills', option: option, option_index: option.position %}
-                      {%- endfor -%}
-                    </div>
+                    {%- assign item_has_other_options = false -%}
+                    {%- for option in product.options_with_values -%}
+                      {%- assign item_opt_down = option.name | downcase -%}
+                      {%- unless item_opt_down == 'colour' or item_opt_down == 'color' -%}
+                        {%- assign item_has_other_options = true -%}
+                      {%- endunless -%}
+                    {%- endfor -%}
+                    {%- if item_has_other_options -%}
+                      <div class="cw-size-wrap">
+                        {%- for option in product.options_with_values -%}
+                          {%- assign item_opt_down = option.name | downcase -%}
+                          {%- unless item_opt_down == 'colour' or item_opt_down == 'color' -%}
+                            {% render 'option-pills', option: option, option_index: option.position %}
+                          {%- endunless -%}
+                        {%- endfor -%}
+                      </div>
+                    {%- endif -%}
                   {%- endunless -%}
 
                   <script type="application/json" data-variant-json>

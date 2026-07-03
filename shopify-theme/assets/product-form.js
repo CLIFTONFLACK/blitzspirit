@@ -157,10 +157,55 @@
       toArray(this.scope.querySelectorAll('[data-thumb]')).forEach(function (thumb) {
         thumb.addEventListener('click', function () {
           var mediaId = thumb.getAttribute('data-media-id');
-          if (mediaId === null) return;
-          var frame = self.scope.querySelector(
-            '[data-plate-frame][data-media-id="' + mediaId + '"]'
-          );
+          var imageId = thumb.getAttribute('data-image-id');
+
+          // Thumbnails select a variant, not just an image: find the
+          // variant(s) sharing this media/image, then pick whichever one
+          // keeps the most of the currently-selected options (so e.g.
+          // switching colour via thumb preserves the chosen size).
+          if (self.variants && self.variants.length) {
+            var matches = self.variants.filter(function (v) {
+              var vMediaId = v.featured_media && v.featured_media.id !== undefined ? String(v.featured_media.id) : null;
+              var vImageId = v.featured_image && v.featured_image.id !== undefined ? String(v.featured_image.id) : null;
+              return (mediaId !== null && vMediaId === mediaId) || (imageId !== null && vImageId === imageId);
+            });
+
+            if (matches.length) {
+              var best = null;
+              var bestScore = -1;
+              matches.forEach(function (v) {
+                var opts = variantOptions(v);
+                var score = 0;
+                for (var i = 0; i < opts.length; i++) {
+                  if (opts[i] === self.selected[i]) score++;
+                }
+                if (v.available) score += 100; // prefer an in-stock match
+                if (score > bestScore) {
+                  bestScore = score;
+                  best = v;
+                }
+              });
+
+              if (best) {
+                self.selected = variantOptions(best).slice();
+                self.groups.forEach(function (group) {
+                  var index = (parseInt(group.getAttribute('data-option-index'), 10) || 1) - 1;
+                  toArray(group.querySelectorAll('[data-value]')).forEach(function (btn) {
+                    btn.setAttribute('aria-pressed', String(btn.getAttribute('data-value') === self.selected[index]));
+                  });
+                });
+                self.refreshOptionAvailability();
+                self.applyVariant(best, { updateUrl: self.hasAttribute('data-url-update') });
+                return;
+              }
+            }
+          }
+
+          // Fallback: no variant resolved (e.g. an extra editorial photo
+          // with no matching variant image) -- just swap the frame.
+          var frame =
+            (mediaId !== null && self.scope.querySelector('[data-plate-frame][data-media-id="' + mediaId + '"]')) ||
+            (imageId !== null && self.scope.querySelector('[data-plate-frame][data-image-id="' + imageId + '"]'));
           if (frame) self.showFrame(frame);
         });
       });

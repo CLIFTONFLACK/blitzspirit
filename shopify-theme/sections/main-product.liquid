@@ -62,58 +62,62 @@
         [ {{ section.settings.gallery_ref | default: 'ASSET // FLAT_LAY' }}{% if index_ref != blank %} // {{ index_ref | upcase }}{% endif %} ]
       </div>
 
-      {%- if image_media_count > 0 -%}
-        {%- for media in product.media -%}
-          {%- if media.media_type == 'image' -%}
-            {%- assign is_current = false -%}
-            {%- if media.id == current_media_id -%}
-              {%- assign is_current = true -%}
-            {%- endif -%}
-            <div
-              data-plate-frame
-              data-media-id="{{ media.id }}"
-              data-image-id="{{ media.preview_image.id }}"
-              {% unless is_current %}hidden{% endunless %}
-            >
-              {%- if is_current -%}
-                {% render 'plate', image: media.preview_image, ref_text: plate_ref, alt: product.title, priority: true, sizes: '(min-width: 860px) 42vw, 92vw' %}
-              {%- else -%}
-                {% render 'plate', image: media.preview_image, ref_text: plate_ref, alt: product.title, sizes: '(min-width: 860px) 42vw, 92vw' %}
+      <div class="pdp-gallery-row">
+        {%- if image_media_count > 1 -%}
+          <div class="pdp-thumbs">
+            {%- for media in product.media -%}
+              {%- if media.media_type == 'image' -%}
+                <button
+                  type="button"
+                  class="pdp-thumb snap"
+                  data-thumb
+                  data-media-id="{{ media.id }}"
+                  data-image-id="{{ media.preview_image.id }}"
+                  aria-pressed="{% if media.id == current_media_id %}true{% else %}false{% endif %}"
+                  aria-label="{{ media.preview_image.alt | default: product.title | escape }}"
+                >
+                  <img
+                    src="{{ media.preview_image | image_url: width: 144 }}"
+                    alt=""
+                    width="144"
+                    height="{{ 144 | divided_by: media.preview_image.aspect_ratio | round }}"
+                    loading="lazy"
+                  >
+                </button>
               {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        <div class="pdp-gallery-main">
+          {%- if image_media_count > 0 -%}
+            {%- for media in product.media -%}
+              {%- if media.media_type == 'image' -%}
+                {%- assign is_current = false -%}
+                {%- if media.id == current_media_id -%}
+                  {%- assign is_current = true -%}
+                {%- endif -%}
+                <div
+                  data-plate-frame
+                  data-media-id="{{ media.id }}"
+                  data-image-id="{{ media.preview_image.id }}"
+                  {% unless is_current %}hidden{% endunless %}
+                >
+                  {%- if is_current -%}
+                    {% render 'plate', image: media.preview_image, ref_text: plate_ref, alt: product.title, priority: true, sizes: '(min-width: 860px) 36vw, 80vw' %}
+                  {%- else -%}
+                    {% render 'plate', image: media.preview_image, ref_text: plate_ref, alt: product.title, sizes: '(min-width: 860px) 36vw, 80vw' %}
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- else -%}
+            <div data-plate-frame>
+              {% render 'plate', ref_text: plate_ref, alt: product.title %}
             </div>
           {%- endif -%}
-        {%- endfor -%}
-      {%- else -%}
-        <div data-plate-frame>
-          {% render 'plate', ref_text: plate_ref, alt: product.title %}
         </div>
-      {%- endif -%}
-
-      {%- if image_media_count > 1 -%}
-        <div class="pdp-thumbs">
-          {%- for media in product.media -%}
-            {%- if media.media_type == 'image' -%}
-              <button
-                type="button"
-                class="pdp-thumb snap"
-                data-thumb
-                data-media-id="{{ media.id }}"
-                data-image-id="{{ media.preview_image.id }}"
-                aria-pressed="{% if media.id == current_media_id %}true{% else %}false{% endif %}"
-                aria-label="{{ media.preview_image.alt | default: product.title | escape }}"
-              >
-                <img
-                  src="{{ media.preview_image | image_url: width: 144 }}"
-                  alt=""
-                  width="144"
-                  height="{{ 144 | divided_by: media.preview_image.aspect_ratio | round }}"
-                  loading="lazy"
-                >
-              </button>
-            {%- endif -%}
-          {%- endfor -%}
-        </div>
-      {%- endif -%}
+      </div>
     </div>
 
     <div class="pdp-ledger">

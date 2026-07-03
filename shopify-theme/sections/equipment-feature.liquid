@@ -15,9 +15,17 @@
   assign product = section.settings.product
   assign title_up = product.title | upcase
   assign title_first4 = title_up | slice: 0, 4
+
+  assign equip_image_count = 0
+  for media in product.media
+    if media.media_type == 'image'
+      assign equip_image_count = equip_image_count | plus: 1
+    endif
+  endfor
+  assign equip_current_media_id = product.selected_or_first_available_variant.featured_media.id | default: product.featured_media.id
 -%}
 
-<section class="equipment" data-section-id="{{ section.id }}">
+<section class="equipment" data-section-id="{{ section.id }}" data-product-wrap>
   <div class="condiment-inner">
     {%- if section.settings.label != blank -%}
       <div class="condiment-label tag">{{ section.settings.label | escape }}</div>
@@ -25,11 +33,52 @@
 
     <div class="condiment-body">
       <div class="condiment-visual">
-        {% render 'plate',
-          image: product.featured_image,
-          alt: product.title,
-          sizes: '(min-width: 640px) 45vw, 100vw'
-        %}
+        <div class="pdp-gallery-row">
+          {%- if equip_image_count > 1 -%}
+            <div class="pdp-thumbs">
+              {%- for media in product.media -%}
+                {%- if media.media_type == 'image' -%}
+                  <button
+                    type="button"
+                    class="pdp-thumb snap"
+                    data-thumb
+                    data-media-id="{{ media.id }}"
+                    data-image-id="{{ media.preview_image.id }}"
+                    aria-pressed="{% if media.id == equip_current_media_id %}true{% else %}false{% endif %}"
+                    aria-label="{{ media.preview_image.alt | default: product.title | escape }}"
+                  >
+                    <img
+                      src="{{ media.preview_image | image_url: width: 144 }}"
+                      alt=""
+                      width="144"
+                      height="{{ 144 | divided_by: media.preview_image.aspect_ratio | round }}"
+                      loading="lazy"
+                    >
+                  </button>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+          <div class="pdp-gallery-main">
+            {%- if equip_image_count > 0 -%}
+              {%- for media in product.media -%}
+                {%- if media.media_type == 'image' -%}
+                  {%- assign is_current = false -%}
+                  {%- if media.id == equip_current_media_id -%}
+                    {%- assign is_current = true -%}
+                  {%- endif -%}
+                  <div data-plate-frame data-media-id="{{ media.id }}" data-image-id="{{ media.preview_image.id }}" {% unless is_current %}hidden{% endunless %}>
+                    {% render 'plate', image: media.preview_image, alt: product.title, sizes: '(min-width: 640px) 40vw, 90vw' %}
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            {%- else -%}
+              <div data-plate-frame>
+                {% render 'plate', alt: product.title %}
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
       </div>
 
       <div class="condiment-info">
@@ -54,13 +103,28 @@
                 value="{{ product.selected_or_first_available_variant.id }}"
               >
 
+              {%- assign equip_has_other_options = false -%}
               {%- unless product.has_only_default_variant -%}
+                {%- for option in product.options_with_values -%}
+                  {%- assign equip_opt_down = option.name | downcase -%}
+                  {%- unless equip_opt_down == 'colour' or equip_opt_down == 'color' -%}
+                    {%- assign equip_has_other_options = true -%}
+                  {%- endunless -%}
+                {%- endfor -%}
+              {%- endunless -%}
+              {%- if equip_has_other_options -%}
                 <div class="condiment-cw">
                   {%- for option in product.options_with_values -%}
-                    {% render 'option-pills', option: option, option_index: option.position %}
+                    {%- assign equip_opt_down = option.name | downcase -%}
+                    {%- unless equip_opt_down == 'colour' or equip_opt_down == 'color' -%}
+                      {% render 'option-pills', option: option, option_index: option.position %}
+                    {%- endunless -%}
                   {%- endfor -%}
                 </div>
-              {%- endunless -%}
+              {%- endif -%}
+              {%- comment -%} Colour-only products (e.g. the Cap) select
+                purely via the thumb rail above -- the hidden id input
+                still needs an initial variant, already set above. {%- endcomment -%}
 
               <script type="application/json" data-variant-json>
                 {{ product.variants | json }}
