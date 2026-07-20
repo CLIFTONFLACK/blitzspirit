@@ -49,15 +49,15 @@
     }
   },
   "products": {
-    "add_to_cart": "ALLOCATE TO BAG",
+    "add_to_cart": "ADD TO BAG",
     "sold_out": "STOCK EXPENDED",
     "unavailable": "UNAVAILABLE",
     "in_stock": "IN STOCK",
     "view": "VIEW PRODUCT",
     "quick_add": "QUICK",
     "inc_vat": "// INC. VAT",
-    "choose_colour": "CHOOSE COLOUR",
-    "choose_size": "CHOOSE SIZE",
+    "choose_colour": "COLOUR",
+    "choose_size": "SIZE",
     "price": {
       "regular_price": "Regular price",
       "sale_price": "Sale price"

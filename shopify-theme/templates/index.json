@@ -3,13 +3,10 @@
     "hero": {
       "type": "hero",
       "settings": {
-        "corner_tag": "SYS_REF // 47-CONCRETE-SEAMS",
-        "heading": "NOT HERE TO BE LIKED.",
-        "tagline": "PROUD. UNAPOLOGETIC. OCCASIONALLY DIFFICULT.",
-        "status_line": "",
-        "cta_label": "[ SEE THE COLLECTION ]",
-        "cta_link": "",
-        "foot_text": "EST. 2026 // BRITISH STUBBORNNESS"
+        "kicker": "ISSUE_001 · THE FIRST COLLECTION",
+        "heading": "BUILT FOR THE STUBBORN.",
+        "cta_label": "SEE THE COLLECTION",
+        "cta_link": ""
       }
     },
     "featured": {

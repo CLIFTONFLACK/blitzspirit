@@ -1,38 +1,10 @@
 {% comment %}
   css-variables — the ONLY inline CSS in the theme.
   Emits :root design tokens from theme settings (defaults = static-site values
-  from newui.css), the ChunkFive @font-face, and texture custom properties.
-  image_picker settings cannot carry defaults, so textures fall back to the
-  theme-owned copies in assets/.
+  from newui.css) and the ChunkFive @font-face.
 
   Consumed by assets/theme.css and every per-section {% stylesheet %}.
 {% endcomment %}
-
-{%- liquid
-  if settings.texture_hero != blank
-    assign tex_hero = settings.texture_hero | image_url: width: 2000
-  else
-    assign tex_hero = 'hero-panel-concrete.jpg' | asset_url
-  endif
-
-  if settings.texture_hero_bg != blank
-    assign tex_hero_bg = settings.texture_hero_bg | image_url: width: 2000
-  else
-    assign tex_hero_bg = 'hero-wall-v3.jpg' | asset_url
-  endif
-
-  if settings.texture_char != blank
-    assign tex_char = settings.texture_char | image_url: width: 2000
-  else
-    assign tex_char = 'dark-charcoal-concrete.jpg' | asset_url
-  endif
-
-  if settings.texture_crack != blank
-    assign tex_crack = settings.texture_crack | image_url: width: 2000
-  else
-    assign tex_crack = 'dark-cracked-concrete.jpg' | asset_url
-  endif
--%}
 
 <style>
   @font-face {
@@ -59,12 +31,6 @@
     --plate: {{ settings.color_plate | default: '#EAE8E2' }};
     --signal: {{ settings.color_signal | default: '#FF0000' }};
     --brand-red: {{ settings.color_brand_red | default: '#C23030' }};
-
-    /* Texture tokens (image_picker with asset fallbacks) */
-    --tex-hero: url('{{ tex_hero }}');
-    --tex-hero-bg: url('{{ tex_hero_bg }}');
-    --tex-char: url('{{ tex_char }}');
-    --tex-crack: url('{{ tex_crack }}');
 
     /* Type stacks */
     --mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, 'Roboto Mono', monospace;

@@ -83,35 +83,6 @@
     ]
   },
   {
-    "name": "Textures",
-    "settings": [
-      {
-        "type": "paragraph",
-        "content": "Concrete textures behind panels and heroes. Leave empty to use the theme's built-in ISSUE_001 textures — uploads here override them site-wide."
-      },
-      {
-        "type": "image_picker",
-        "id": "texture_hero",
-        "label": "Hero panel concrete (light plate backdrop)"
-      },
-      {
-        "type": "image_picker",
-        "id": "texture_hero_bg",
-        "label": "Hero wall (homepage hero backdrop)"
-      },
-      {
-        "type": "image_picker",
-        "id": "texture_char",
-        "label": "Dark charcoal concrete"
-      },
-      {
-        "type": "image_picker",
-        "id": "texture_crack",
-        "label": "Dark cracked concrete (outro)"
-      }
-    ]
-  },
-  {
     "name": "Typography",
     "settings": [
       {

@@ -66,9 +66,11 @@
 
 {% stylesheet %}
 .page-hero {
+  /* Flat panel by default; a section image override still lands via --ph-tex
+     (the gradient fallback acts as a flat colour when no override is set). */
   background:
     linear-gradient(rgba(10, 10, 10, 0.6), rgba(10, 10, 10, 0.76)),
-    var(--ph-tex, var(--tex-char)) center/cover no-repeat;
+    var(--ph-tex, linear-gradient(var(--panel), var(--panel))) center/cover no-repeat;
 }
 .page-hero .ph-index { margin-bottom: 46px; }
 .page-hero .ph-head {
@@ -129,7 +131,7 @@
       "type": "image_picker",
       "id": "texture",
       "label": "Backdrop texture override",
-      "info": "Leave empty to use the global dark charcoal concrete."
+      "info": "Leave empty for the flat dark panel backdrop."
     },
     {
       "type": "range",

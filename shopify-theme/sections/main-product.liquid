@@ -27,10 +27,16 @@
   assign index_ref = product.metafields.custom.index_ref
   assign crumb_collection = collection | default: product.collections.first
 
+  comment
+    index_ref values like "#01" become "ENTRY 01" (kicker) and "01 OF NN"
+    (archive note); any other value is shown verbatim.
+  endcomment
+  assign entry_num = ''
   if index_ref != blank
-    assign plate_ref = index_ref | upcase | append: ' // PDP'
-  else
-    assign plate_ref = 'PDP'
+    assign ref_first = index_ref | slice: 0, 1
+    if ref_first == '#'
+      assign entry_num = index_ref | remove: '#'
+    endif
   endif
 
   assign current_media_id = current_variant.featured_media.id | default: product.featured_media.id
@@ -45,23 +51,21 @@
 
 <section class="pdp-wrap" data-product-wrap data-section-id="{{ section.id }}">
 
-  <nav class="pdp-breadcrumb" aria-label="Breadcrumb">
-    <a href="{{ routes.root_url }}" class="tag">[ {{ shop.name | upcase | escape }} ]</a>
-    <span class="tag sep" aria-hidden="true">//</span>
-    {%- if crumb_collection != blank -%}
-      <a href="{{ crumb_collection.url }}" class="tag">[ {{ crumb_collection.title | upcase | escape }} ]</a>
+  {%- if section.settings.show_breadcrumb -%}
+    <nav class="pdp-breadcrumb" aria-label="Breadcrumb">
+      <a href="{{ routes.root_url }}" class="tag">[ {{ shop.name | upcase | escape }} ]</a>
       <span class="tag sep" aria-hidden="true">//</span>
-    {%- endif -%}
-    <span class="tag crumb-current" aria-current="page">[ {{ product.title | upcase | escape }} ]</span>
-  </nav>
+      {%- if crumb_collection != blank -%}
+        <a href="{{ crumb_collection.url }}" class="tag">[ {{ crumb_collection.title | upcase | escape }} ]</a>
+        <span class="tag sep" aria-hidden="true">//</span>
+      {%- endif -%}
+      <span class="tag crumb-current" aria-current="page">[ {{ product.title | upcase | escape }} ]</span>
+    </nav>
+  {%- endif -%}
 
   <div class="pdp">
 
     <div class="pdp-gallery">
-      <div class="pdp-ref tag">
-        [ {{ section.settings.gallery_ref | default: 'ASSET // FLAT_LAY' }}{% if index_ref != blank %} // {{ index_ref | upcase }}{% endif %} ]
-      </div>
-
       <div class="pdp-gallery-row">
         {%- if image_media_count > 1 -%}
           <div class="pdp-thumbs">
@@ -104,16 +108,16 @@
                   {% unless is_current %}hidden{% endunless %}
                 >
                   {%- if is_current -%}
-                    {% render 'plate', image: media.preview_image, ref_text: plate_ref, alt: product.title, priority: true, sizes: '(min-width: 860px) 36vw, 80vw' %}
+                    {% render 'plate', image: media.preview_image, alt: product.title, priority: true, sizes: '(min-width: 860px) 36vw, 80vw' %}
                   {%- else -%}
-                    {% render 'plate', image: media.preview_image, ref_text: plate_ref, alt: product.title, sizes: '(min-width: 860px) 36vw, 80vw' %}
+                    {% render 'plate', image: media.preview_image, alt: product.title, sizes: '(min-width: 860px) 36vw, 80vw' %}
                   {%- endif -%}
                 </div>
               {%- endif -%}
             {%- endfor -%}
           {%- else -%}
             <div data-plate-frame>
-              {% render 'plate', ref_text: plate_ref, alt: product.title %}
+              {% render 'plate', alt: product.title %}
             </div>
           {%- endif -%}
         </div>
@@ -131,7 +135,12 @@
 
             {%- when 'issue_tag' -%}
               <div class="pdp-issue" {{ block.shopify_attributes }}>
-                <div class="led-index tag">[ &#9733; {{ issue_val | upcase }}{% if index_ref != blank %} // {{ index_ref | upcase }}{% endif %} ]</div>
+                <div class="pdp-kicker tag tag-mute">
+                  {{- issue_val | upcase -}}
+                  {%- if entry_num != blank %} &middot; ENTRY {{ entry_num }}
+                  {%- elsif index_ref != blank %} &middot; {{ index_ref | upcase }}
+                  {%- endif -%}
+                </div>
               </div>
 
             {%- when 'title' -%}
@@ -212,17 +221,9 @@
             {%- when 'variant_picker' -%}
               {%- unless product.has_only_default_variant -%}
                 <div class="pdp-options" {{ block.shopify_attributes }}>
-                  {%- assign size_guide_done = false -%}
                   {%- for option in product.options_with_values -%}
                     {%- if option.values.size > 1 -%}
-                      {% render 'option-pills', option: option, option_index: option.position %}
-                      {%- assign option_down = option.name | downcase -%}
-                      {%- if option_down != 'colour' and option_down != 'color' and size_guide_done == false and section.settings.size_guide_page != blank -%}
-                        <a href="{{ section.settings.size_guide_page.url }}" class="tag tag-mute pdp-size-guide">
-                          [ {{ section.settings.size_guide_label | default: 'SIZE GUIDE' }} ]
-                        </a>
-                        {%- assign size_guide_done = true -%}
-                      {%- endif -%}
+                      {% render 'option-pills', option: option, option_index: option.position, bare: true %}
                     {%- endif -%}
                   {%- endfor -%}
                 </div>
@@ -269,19 +270,16 @@
                     </div>
                   {%- endif -%}
 
-                  <div class="actions">
+                  <div class="pdp-actions">
                     <button
                       type="submit"
                       name="add"
-                      class="directive snap"
+                      class="directive directive--fill snap"
                       {% unless current_variant.available %}disabled{% endunless %}
                     >
-                      <span data-add-label {% unless current_variant.available %}hidden{% endunless %}>[ {{ 'products.add_to_cart' | t }} ]</span>
-                      <span data-sold-label {% if current_variant.available %}hidden{% endif %}>[ {{ 'products.sold_out' | t }} ]</span>
+                      <span data-add-label {% unless current_variant.available %}hidden{% endunless %}>{{ 'products.add_to_cart' | t }}</span>
+                      <span data-sold-label {% if current_variant.available %}hidden{% endif %}>{{ 'products.sold_out' | t }}</span>
                     </button>
-                    <a href="{{ crumb_collection.url | default: routes.all_products_collection_url }}" class="directive directive--ghost snap">
-                      [ {{ section.settings.collection_link_label | default: 'EVALUATE THE FULL COLLECTION' }} ]
-                    </a>
                   </div>
 
                   {%- if section.settings.show_dynamic_checkout -%}
@@ -291,10 +289,12 @@
               </div>
 
             {%- when 'dossier' -%}
-              {%- if product.metafields.custom.dossier != blank or product.metafields.custom.strapline != blank or product.description != blank -%}
+              {%- if product.metafields.custom.dossier != blank or product.description != blank or section.settings.hook_line != blank -%}
                 <div class="pdp-dossier" {{ block.shopify_attributes }}>
-                  <hr class="sep-line">
-                  {% render 'dossier', product: product %}
+                  {% render 'dossier', product: product, hide_strap: true %}
+                  {%- if section.settings.hook_line != blank -%}
+                    <p class="pdp-hook">{{ section.settings.hook_line | escape }}</p>
+                  {%- endif -%}
                 </div>
               {%- endif -%}
 
@@ -307,6 +307,35 @@
               {%- if block.settings.text != blank -%}
                 <p class="tag tag-mute pdp-trust" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
               {%- endif -%}
+
+            {%- when 'links' -%}
+              {%- if section.settings.size_guide_page != blank or section.settings.returns_url != blank -%}
+                <div class="pdp-links" {{ block.shopify_attributes }}>
+                  {%- if section.settings.size_guide_page != blank -%}
+                    <a href="{{ section.settings.size_guide_page.url }}" class="tag pdp-link">{{ section.settings.size_guide_label | default: 'SIZE GUIDE' }}</a>
+                  {%- endif -%}
+                  {%- if section.settings.size_guide_page != blank and section.settings.returns_url != blank -%}
+                    <span class="tag tag-mute" aria-hidden="true">&middot;</span>
+                  {%- endif -%}
+                  {%- if section.settings.returns_url != blank -%}
+                    <a href="{{ section.settings.returns_url }}" class="tag pdp-link">{{ section.settings.returns_label | default: 'RETURNS' }}</a>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+
+            {%- when 'archive_note' -%}
+              <div class="pdp-archive-note" {{ block.shopify_attributes }}>
+                <hr class="sep-line">
+                <span class="tag tag-mute">
+                  {{- issue_val | upcase -}}
+                  {%- if entry_num != blank and crumb_collection != blank -%}
+                    {%- assign coll_total = crumb_collection.all_products_count -%}
+                    {%- if coll_total < 10 -%}
+                      {%- assign coll_total = coll_total | prepend: '0' -%}
+                    {%- endif %} &middot; {{ entry_num }} OF {{ coll_total }}
+                  {%- endif %} &middot; {{ block.settings.label | default: 'ARCHIVE ENTRY' }}
+                </span>
+              </div>
 
             {%- when 'custom_liquid' -%}
               {%- if block.settings.custom_liquid != blank -%}
@@ -335,11 +364,52 @@ product-form { display: block; }
 .pdp-ledger product-form { display: flex; flex-direction: column; gap: var(--s3); }
 
 .pdp-ledger .pdp-name { font-size: clamp(2.2rem, 5vw, 4rem); margin-bottom: 0; }
-.pdp-issue .led-index { margin-bottom: 0; }
 
-.pdp-stock-row { display: flex; justify-content: flex-end; }
+/* Kicker — "ISSUE_001 · ENTRY 02" with a short underline (mockup v27). */
+.pdp-issue .pdp-kicker {
+  display: inline-block;
+  align-self: flex-start;
+  letter-spacing: 0.25em;
+  padding: 0 var(--s4) 12px 0;
+  border-bottom: 1px solid var(--line-bri);
+}
+
+/* Stock reads as a quiet tag and only surfaces when it matters. */
+.pdp-stock-row { display: flex; }
+.pdp-stock[data-state="in-stock"] { display: none; }
 .pdp-stock[data-state="sold-out"] { color: var(--bone-mute); }
 
+/* Dossier on the PDP: bare paragraphs on the black wall, sentence case,
+   with the red hook line as the punchline (mockup v27). */
+.pdp-dossier { display: flex; flex-direction: column; gap: var(--s2); }
+.pdp-dossier .dossier { background: none; border: none; padding: 0; }
+.pdp-dossier .dossier p,
+.pdp-dossier .dossier .dossier-desc p,
+.pdp-dossier .dossier .dossier-desc li,
+.pdp-dossier .dossier .metafield-rich_text_field p,
+.pdp-dossier .dossier .metafield-rich_text_field li {
+  font-family: var(--mono); text-transform: none;
+  font-size: 14px; letter-spacing: 0.02em; line-height: 1.75;
+  color: var(--bone);
+}
+.pdp-dossier .dossier p + p { margin-top: var(--s2); }
+.pdp-hook {
+  font-family: var(--mono); font-weight: 700; text-transform: uppercase;
+  font-size: 15px; letter-spacing: 0.08em; color: var(--signal); margin: var(--s1) 0 0;
+}
+
+/* Option groups — bare COLOUR / SIZE labels over outlined pills. */
+.pdp-options { display: flex; flex-direction: column; gap: var(--s3); }
+.pdp-options .cw { border: none; padding: 0; margin-bottom: 0; }
+.pdp-options .cw-label,
+.pdp-options .sizes-label { display: block; color: var(--bone-mute); font-size: 10px; letter-spacing: 0.25em; margin-bottom: 10px; }
+.pdp-options .sizes { margin-bottom: 0; flex-direction: column; align-items: flex-start; gap: 0; }
+.pdp-options .cw-opt .dot { display: none; }
+.pdp-options .cw-opt[aria-pressed="true"],
+.pdp-options .size-pill[aria-pressed="true"] { background: transparent; color: #fff; border-color: var(--bone); }
+
+/* Plain mono price on the black wall (mockup v27 — no boxed row). */
+.pdp-price .price__current { font-family: var(--mono); font-size: 15px; letter-spacing: 0.12em; color: var(--bone); }
 .price__unit { display: block; font-size: 10px; letter-spacing: 0.08em; color: var(--bone-mute); }
 
 /* Plate frames — one per image media, toggled via [hidden]. */
@@ -353,8 +423,15 @@ product-form { display: block; }
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
 }
 
-.pdp-size-guide { display: inline-block; margin-top: 6px; }
-.pdp-size-guide:hover { color: var(--signal); }
+/* Solid signal-red ADD TO BAG bar (mockup v27). */
+.pdp-actions { display: flex; }
+.pdp-buy .directive--fill {
+  flex: 1; width: auto;
+  background: var(--signal); border-color: var(--signal); color: #fff;
+  font-family: var(--mono); letter-spacing: 0.2em;
+}
+.pdp-buy .directive--fill:hover { background: #fff; border-color: #fff; color: var(--ink); }
+.pdp-buy .directive--fill[disabled] { background: transparent; border-color: var(--line); color: var(--bone-mute); }
 
 .pdp-buy form { display: flex; flex-direction: column; gap: var(--s2); }
 .pdp-variant-select {
@@ -393,8 +470,15 @@ product-form { display: block; }
 /* Dossier rich text: bold carries the .hit treatment; wrappers keep
    the 28px paragraph rhythm from theme.css. */
 .dossier strong,
-.dossier b { font-weight: 400; color: #0a0a0a; }
+.dossier b { font-weight: 400; color: #fff; }
 .dossier > p + div { margin-top: 28px; }
+
+/* SIZE GUIDE · RETURNS + closing archive line. */
+.pdp-links { display: flex; align-items: center; gap: var(--s2); }
+.pdp-link { color: var(--bone-dim); text-decoration: underline; text-underline-offset: 4px; }
+.pdp-link:hover { color: var(--signal); }
+.pdp-archive-note { display: flex; flex-direction: column; gap: var(--s3); margin-top: var(--s2); }
+.pdp-archive-note .tag { letter-spacing: 0.2em; }
 
 /* Field manual COLOURWAYS auto-row reuses the swatch snippet for its
    display-name map — dots off, labels on. */
@@ -409,11 +493,10 @@ product-form { display: block; }
   "name": "Product",
   "settings": [
     {
-      "type": "text",
-      "id": "gallery_ref",
-      "label": "Gallery reference tag",
-      "info": "The product's index ref metafield is appended automatically.",
-      "default": "ASSET // FLAT_LAY"
+      "type": "checkbox",
+      "id": "show_breadcrumb",
+      "label": "Show breadcrumb",
+      "default": false
     },
     {
       "type": "checkbox",
@@ -429,22 +512,35 @@ product-form { display: block; }
       "default": false
     },
     {
+      "type": "text",
+      "id": "hook_line",
+      "label": "Hook line",
+      "info": "The red punchline under the description.",
+      "default": "COME ON THEN."
+    },
+    {
       "type": "page",
       "id": "size_guide_page",
       "label": "Size guide page",
-      "info": "Linked beside the size option when set."
+      "info": "Shown in the links row when set."
     },
     {
       "type": "text",
       "id": "size_guide_label",
       "label": "Size guide label",
-      "default": "SIZE GUIDE // STANDARD UNISEX CUT"
+      "default": "SIZE GUIDE"
+    },
+    {
+      "type": "url",
+      "id": "returns_url",
+      "label": "Returns link",
+      "info": "Shown in the links row when set."
     },
     {
       "type": "text",
-      "id": "collection_link_label",
-      "label": "Collection link label",
-      "default": "EVALUATE THE FULL COLLECTION"
+      "id": "returns_label",
+      "label": "Returns label",
+      "default": "RETURNS"
     },
     {
       "type": "header",
@@ -520,7 +616,25 @@ product-form { display: block; }
           "type": "text",
           "id": "text",
           "label": "Text",
-          "default": "30-day no-quibble returns — that would be nonsense."
+          "default": "PRINTED WHEN YOU ORDER IT, NOT WAREHOUSED. ALLOW 5–10 WORKING DAYS. UK DELIVERY FREE OVER £40."
+        }
+      ]
+    },
+    {
+      "type": "links",
+      "name": "Size guide / returns",
+      "limit": 1
+    },
+    {
+      "type": "archive_note",
+      "name": "Archive entry line",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "ARCHIVE ENTRY"
         }
       ]
     },

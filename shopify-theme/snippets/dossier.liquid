@@ -2,7 +2,9 @@
   dossier — the light concrete dossier panel (PDP + archive rows).
 
   Params:
-    product: {Object} product (required)
+    product:    {Object} product (required)
+    hide_strap: {Boolean} true = skip the "// TITLE — strapline" lead
+                (PDP renders its own red hook line instead)
 
   Behaviour:
     - Lead line from product.metafields.custom.strapline rendered as
@@ -26,7 +28,7 @@
 
 {%- if dossier_strap != blank or dossier_rich != blank or product.description != blank -%}
   <div class="dossier">
-    {%- if dossier_strap != blank -%}
+    {%- if dossier_strap != blank and hide_strap != true -%}
       <p>
         <span class="hit">// {{ product.title | upcase | escape }}</span>
         &mdash; {{ dossier_strap | escape }}

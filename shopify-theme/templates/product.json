@@ -31,12 +31,16 @@
           "type": "dossier",
           "settings": {}
         },
-        "field_manual": {
-          "type": "field_manual",
-          "settings": {}
-        },
         "trust_note": {
           "type": "trust_note",
+          "settings": {}
+        },
+        "links": {
+          "type": "links",
+          "settings": {}
+        },
+        "archive_note": {
+          "type": "archive_note",
           "settings": {}
         }
       },
@@ -45,11 +49,12 @@
         "title",
         "price",
         "stock",
+        "dossier",
         "variant_picker",
         "buy_buttons",
-        "dossier",
-        "field_manual",
-        "trust_note"
+        "trust_note",
+        "links",
+        "archive_note"
       ],
       "settings": {}
     },

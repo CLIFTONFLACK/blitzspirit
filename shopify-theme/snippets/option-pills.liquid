@@ -7,6 +7,8 @@
   Params:
     option:       {Object} product option object (option_with_values)
     option_index: {Number} 1-based option position (option.position)
+    bare:         {Boolean} true = plain group labels without the
+                  [ bracket ] idiom (PDP, mockup v27)
 
   The value matching option.selected_value (first available variant's
   value by default) renders pressed.
@@ -27,7 +29,7 @@
 
 {%- if is_colour -%}
   <div class="cw" data-option-group data-option-index="{{ option_index }}">
-    <span class="cw-label tag">[ {{ 'products.choose_colour' | t }} ]</span>
+    <span class="cw-label tag">{% if bare %}{{ 'products.choose_colour' | t }}{% else %}[ {{ 'products.choose_colour' | t }} ]{% endif %}</span>
     <div class="cw-opts">
       {%- for value in option.values -%}
         <button
@@ -45,7 +47,7 @@
   </div>
 {%- else -%}
   <div class="sizes" data-option-group data-option-index="{{ option_index }}">
-    <span class="tag sizes-label" style="margin-right:4px">[ {{ 'products.choose_size' | t }} ]</span>
+    <span class="tag sizes-label" style="margin-right:4px">{% if bare %}{{ 'products.choose_size' | t }}{% else %}[ {{ 'products.choose_size' | t }} ]{% endif %}</span>
     <div class="sizes-opts">
       {%- for value in option.values -%}
         <button

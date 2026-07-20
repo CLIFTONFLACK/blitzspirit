@@ -210,7 +210,8 @@ Hooks product-form.js relies on:
 ## 7. Settings ids (config/settings_schema.json)
 
 Colours `color_ink|panel|panel_2|line|line_bri|bone|bone_dim|bone_mute|plate|signal|brand_red`;
-textures `texture_hero|hero_bg|char|crack`; type `use_custom_font`,
+(textures removed 2026-07-20 — mockup v27 went flat black; lighter panels
+highlight sections); type `use_custom_font`,
 `custom_display_font`; cart `show_free_shipping_bar`,
 `free_shipping_threshold`, `cart_note`; marketing `discount_code`,
 `enable_signup_modal`, `modal_delay`, `modal_suppress_days`,
@@ -242,7 +243,7 @@ meta-tags/structured-data snippets, settings schema/data, locales structure.
 ## 10. Ground rules recap
 
 - Product photos are Shopify **product media**, never theme assets
-  (theme-owned imagery only: textures, sticker, stamp, milkman).
+  (theme-owned imagery only: sticker, stamp, milkman, hero skull mark).
 - All metafield reads blank-guarded (`custom.strapline`, `custom.dossier`,
   `custom.issue`, `custom.index_ref`, `custom.limited`,
   `custom.field_manual`, `custom.editorial`, `custom.video`).
