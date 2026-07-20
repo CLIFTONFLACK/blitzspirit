@@ -6,38 +6,35 @@
         "meta-1": {
           "type": "meta_tag",
           "settings": {
-            "text": "the collections"
+            "text": "THE FULL ENGLISH"
           }
         },
         "meta-2": {
           "type": "meta_tag",
           "settings": {
-            "text": "made in britain"
+            "text": "BUNDLES"
+          }
+        },
+        "meta-3": {
+          "type": "meta_tag",
+          "settings": {
+            "text": "BRITISH DEALS"
           }
         }
       },
       "block_order": [
         "meta-1",
-        "meta-2"
+        "meta-2",
+        "meta-3"
       ],
       "settings": {
-        "index_tag": "SYSTEM_LEDGER // THE collections",
+        "index_tag": "SYSTEM_LEDGER // THE full english",
         "show_page_ref": false,
-        "heading": "nostalgia reborn\nclothing built to last.",
+        "heading": "Get your swag \nwhile stocks last.",
         "fallback_title": "Full Kit.",
         "red_first_line": true,
         "heading_size": "lg",
         "extra_height": 0
-      }
-    },
-    "featured": {
-      "type": "featured-product",
-      "settings": {
-        "product": "the-establishment",
-        "issue_override": "",
-        "dossier": "",
-        "what_label": "STORY",
-        "plate_ref": "BS_002 // ISSUE_000"
       }
     },
     "tabs": {
@@ -90,7 +87,6 @@
   },
   "order": [
     "hero",
-    "featured",
     "tabs",
     "grid"
   ]
