@@ -1,0 +1,75 @@
+---
+// ProductCard — ported from snippets/product-card.liquid.
+//
+// Plate image with a hover swap to the second photo, [ ISSUE ] corner, LIMITED badge,
+// colour dots, price, and the [ VIEW PRODUCT ] link. Class names are unchanged so the
+// .coll-card CSS that ships with the collection sections still applies.
+import { Image } from 'astro:assets';
+import Swatch from './Swatch.astro';
+import Price from './Price.astro';
+import strings from '~/data/strings.json';
+import { asset, assetOrNull } from '~/lib/images';
+import type { Product } from '~/lib/catalogue';
+import { href } from '~/lib/url';
+
+interface Props {
+  product: Product;
+  showBadge?: boolean;
+}
+const { product, showBadge = false } = Astro.props;
+
+const issueTag = product.issue || 'ISSUE_001';
+const titleUp = product.title.toUpperCase();
+const startsWithThe = titleUp.startsWith('THE ');
+
+const primary = product.media[0] ? asset(product.media[0].src) : null;
+const hover = assetOrNull(product.media[1]?.src);
+
+const colourOption = product.options.find((o) => ['Colour', 'Color'].includes(o.name));
+---
+<article class="coll-card">
+  <a href={href(`/products/${product.handle}`)} class="coll-plate">
+    {primary ? (
+      <>
+        <Image
+          src={primary}
+          alt={product.media[0].alt ?? product.title}
+          widths={[400, 600, 800]}
+          sizes="(min-width: 860px) 33vw, (min-width: 540px) 50vw, 100vw"
+          loading="lazy"
+        />
+        {hover && (
+          <Image
+            class="coll-img--hover"
+            src={hover}
+            alt=""
+            widths={[400, 600, 800]}
+            sizes="(min-width: 860px) 33vw, (min-width: 540px) 50vw, 100vw"
+            loading="lazy"
+            aria-hidden="true"
+          />
+        )}
+      </>
+    ) : (
+      <div class="plate__placeholder" aria-hidden="true"></div>
+    )}
+    {showBadge && product.limited && <span class="coll-badge">LIMITED EDITION</span>}
+    <span class="coll-issue">[ {issueTag} ]</span>
+  </a>
+  <div class="coll-info">
+    <h3 class="chunk coll-name">
+      {startsWithThe ? (
+        <><span class="the">THE</span> {titleUp.replace(/^THE /, '')}</>
+      ) : (
+        titleUp
+      )}
+    </h3>
+    {colourOption && (
+      <div class="coll-dots">
+        {colourOption.values.map((v) => <Swatch value={v.value} />)}
+      </div>
+    )}
+    <span class="coll-price"><Price product={product} /></span>
+    <a href={href(`/products/${product.handle}`)} class="coll-cta snap">[ {strings.products.view} ]</a>
+  </div>
+</article>

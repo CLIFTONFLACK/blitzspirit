@@ -1,0 +1,61 @@
+---
+// CollectionTabs — ported from sections/collection-tabs.liquid.
+//
+// Sticky filter strip below the masthead. Tabs stay REAL LINKS (zero JS,
+// crawlable); the active one carries `.active` + aria-current="page" exactly as
+// the Liquid did. Framework classes (.coll-filter/.coll-filter-inner/.coll-tab/
+// .coll-count + sticky positioning) live in theme.css §-collection.
+//
+// A block's `collection` is a handle now instead of a Shopify collection object,
+// so its URL is built as /collections/<handle> — the handles in this build are
+// all, t-shirts, caps and deals.
+//
+// Dropped: the request.design_mode branch (the .coll-tab--hint span and its one
+// CSS rule) — there is no theme editor here, so a tab with no collection is
+// simply not rendered, which is the storefront behaviour. Also dropped:
+// data-section-id and block.shopify_attributes (Shopify section rendering ids).
+import type { Collection } from '~/lib/catalogue';
+import { href } from '~/lib/url';
+
+interface Props {
+  collection?: Collection;
+  showCount?: boolean;
+  blocks?: { label?: string; linkAll?: boolean; collection?: string }[];
+}
+
+const { collection, showCount = true, blocks = [] } = Astro.props;
+
+const tabs = blocks
+  .map((block) => ({
+    label: block.label || 'TAB',
+    url: block.linkAll ? '/collections/all' : block.collection ? `/collections/${block.collection}` : '',
+    active: block.linkAll
+      ? collection?.handle === 'all'
+      : !!block.collection && collection?.handle === block.collection,
+  }))
+  .filter((tab) => tab.url !== '');
+
+// Liquid used `'cart.item_count' | t: count: collection.products_count`, a
+// pluralised locale key that was never carried into src/data/strings.json. The
+// one/other forms from locales/en.default.json are reproduced here verbatim.
+const count = collection ? collection.products.length : 0;
+const countLabel = `${count} ${count === 1 ? 'ITEM' : 'ITEMS'}`;
+---
+{tabs.length > 0 && (
+  <div class="coll-filter">
+    <div class="coll-filter-inner">
+      {tabs.map((tab) => (
+        <a
+          href={href(tab.url)}
+          class:list={['coll-tab', 'snap', tab.active && 'active']}
+          aria-current={tab.active ? 'page' : undefined}
+        >[ {tab.label} ]</a>
+      ))}
+      {showCount && collection && <span class="coll-count">[ {countLabel} ]</span>}
+    </div>
+  </div>
+)}
+
+<style>
+  .coll-count { white-space: nowrap; }
+</style>

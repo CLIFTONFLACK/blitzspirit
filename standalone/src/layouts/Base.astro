@@ -1,0 +1,96 @@
+---
+// Base — ported from layout/theme.liquid.
+//
+// Same order as the Liquid layout: head, skip link, header group
+// (announcement bar + masthead), <main>, footer group (outro), cart drawer,
+// signup modal, then the four scripts.
+//
+// Dropped from the original: content_for_header (Shopify's own script/pixel
+// injection), request.locale (single locale), and the theme-settings favicon
+// picker.
+import '~/styles/tokens.css';
+import '~/styles/theme.css';
+
+import MetaTags from '~/components/MetaTags.astro';
+import StructuredData from '~/components/StructuredData.astro';
+import AnnouncementBar from '~/components/AnnouncementBar.astro';
+import Masthead from '~/components/Masthead.astro';
+import Outro from '~/components/Outro.astro';
+import CartDrawer from '~/components/CartDrawer.astro';
+import SignupModal from '~/components/SignupModal.astro';
+
+import settings from '~/data/settings.json';
+import strings from '~/data/strings.json';
+import { href } from '~/lib/url';
+import type { Collection, Product } from '~/lib/catalogue';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  ogType?: 'website' | 'product';
+  /** Feeds the Product / BreadcrumbList JSON-LD, as `product` and `collection` did
+   *  in the Liquid layout's structured-data render. */
+  product?: Product;
+  collection?: Collection;
+}
+
+const { title, description, image, ogType, product, collection } = Astro.props;
+
+// theme.liquid: append the shop name unless the title already carries it.
+const fullTitle = title.includes(settings.shop.name)
+  ? title
+  : `${title} – ${settings.shop.name}`;
+---
+<!doctype html>
+<html class="no-js" lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0A0A0A" />
+
+    <title>{fullTitle}</title>
+
+    <MetaTags title={fullTitle} description={description} image={image} ogType={ogType} />
+
+    <StructuredData product={product} collection={collection} productImage={image} />
+
+    <link rel="icon" type="image/png" href={href("/assets/blitzspirit-stamp.png")} />
+
+    <link
+      rel="preload"
+      href={href("/assets/fonts/chunkfive.woff2")}
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+
+    <script is:inline>
+      document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+    </script>
+  </head>
+
+  <body>
+    <a class="skip-to-content-link tag" href="#MainContent">{strings.general.skip_to_content}</a>
+
+    <AnnouncementBar />
+    <Masthead />
+
+    <main id="MainContent" tabindex="-1">
+      <slot />
+    </main>
+
+    <Outro />
+
+    <CartDrawer />
+    <SignupModal />
+
+    <script>
+      import '~/scripts/cart.js';
+      import '~/scripts/product-form.js';
+      import '~/scripts/modal.js';
+      import '~/scripts/reveal.js';
+      import '~/scripts/newsletter.js';
+    </script>
+  </body>
+</html>

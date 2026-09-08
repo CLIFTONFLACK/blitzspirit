@@ -1,0 +1,98 @@
+{
+  "sections": [
+    {
+      "id": "main",
+      "type": "main-product",
+      "settings": {},
+      "blocks": [
+        {
+          "id": "issue_tag",
+          "type": "issue_tag",
+          "settings": {}
+        },
+        {
+          "id": "title",
+          "type": "title",
+          "settings": {}
+        },
+        {
+          "id": "price",
+          "type": "price",
+          "settings": {}
+        },
+        {
+          "id": "stock",
+          "type": "stock",
+          "settings": {}
+        },
+        {
+          "id": "dossier",
+          "type": "dossier",
+          "settings": {}
+        },
+        {
+          "id": "variant_picker",
+          "type": "variant_picker",
+          "settings": {}
+        },
+        {
+          "id": "buy_buttons",
+          "type": "buy_buttons",
+          "settings": {}
+        },
+        {
+          "id": "trust_note",
+          "type": "trust_note",
+          "settings": {}
+        },
+        {
+          "id": "links",
+          "type": "links",
+          "settings": {}
+        },
+        {
+          "id": "archive_note",
+          "type": "archive_note",
+          "settings": {}
+        }
+      ]
+    },
+    {
+      "id": "video",
+      "type": "product-video",
+      "settings": {}
+    },
+    {
+      "id": "editorial",
+      "type": "product-editorial",
+      "settings": {},
+      "blocks": [
+        {
+          "id": "editorial_origin",
+          "type": "editorial",
+          "settings": {}
+        },
+        {
+          "id": "editorial_craft",
+          "type": "editorial",
+          "settings": {
+            "tag": "TEXT_02 // THE_CRAFT",
+            "heading": "The Craft.",
+            "body": "<p>220gsm ring-spun cotton. Water-based screen print, applied in Britain. Soft hand-feel that improves with washing. No cracking, no fading, no apologies. Wash inside out at 30°C — tumble dryers are for quitters. [PLACEHOLDER — REPLACE WITH FINAL COPY]</p>",
+            "cta_label": "VIEW SIZE GUIDE"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cross_sell",
+      "type": "cross-sell",
+      "settings": {}
+    },
+    {
+      "id": "promo",
+      "type": "promo-band",
+      "settings": {}
+    }
+  ]
+}

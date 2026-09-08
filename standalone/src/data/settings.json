@@ -1,0 +1,57 @@
+{
+  "shop": {
+    "name": "BLITZSPIRIT",
+    "legalName": "BlitzSpirit System Co.",
+    "url": "https://blitz.getbrian.xyz/new",
+    "currency": "GBP",
+    "currencySymbol": "£",
+    "locale": "en-GB",
+    "country": "GB",
+    "email": "hello@blitzspirit.co.uk",
+    "taxesIncluded": true
+  },
+  "announcement": {
+    "messages": [
+      {
+        "text": "FREE UK DELIVERY OVER £40 — NO NONSENSE. NO FUSS.",
+        "link": ""
+      }
+    ]
+  },
+  "masthead": {
+    "longTag": "[ LATEST ISSUE_001 ]",
+    "showAccount": false
+  },
+  "outro": {
+    "strapline": "[ NOT HERE TO BE LIKED ]",
+    "copyright": "© 2026 BLITZSPIRIT SYSTEM CO. // ALL RIGHTS RESERVED // SECURITY OVERRIDE PRIMED.",
+    "showPaymentIcons": false
+  },
+  "cart": {
+    "note": "Interface drops away at checkout // routes to native encrypted payment.",
+    "showFreeShippingBar": true,
+    "freeShippingThreshold": 4000
+  },
+  "shipping": {
+    "ukStandardPence": 395,
+    "ukStandardLabel": "UK TRACKED // 2-4 WORKING DAYS",
+    "freeThresholdPence": 4000,
+    "freeLabel": "UK TRACKED // FREE OVER £40"
+  },
+  "discount": {
+    "code": "BACKBONE10",
+    "description": "10% off, all products, no expiry, applies to sale items."
+  },
+  "signupModal": {
+    "enabled": true,
+    "delaySeconds": 16,
+    "suppressDays": 7,
+    "exitIntent": true
+  },
+  "social": {
+    "instagram": "",
+    "tiktok": "",
+    "x": "",
+    "facebook": ""
+  }
+}

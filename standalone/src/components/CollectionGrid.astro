@@ -1,0 +1,79 @@
+---
+// CollectionGrid — ported from sections/main-collection-grid.liquid.
+//
+// Cards render through ProductCard (.coll-card family, theme.css). The desktop
+// column count still travels as the --coll-cols custom property; the 2-col /
+// 1-col breakpoints stay owned by theme.css (≤860 / ≤540). The empty state is
+// carried across unchanged.
+//
+// Dropped: {% paginate %} and the {% render 'pagination' %} call, along with the
+// `products_per_page` setting that fed them. The whole catalogue is nine
+// products and every collection fits on one page, so pagination would render a
+// single-page control and nothing else.
+//
+// Also dropped: the `collection == blank` onboarding branch (six placeholder
+// cards, .coll-grid-hint and .coll-placeholder-svg). It only ever ran inside the
+// theme editor via request.design_mode, and it leaned on placeholder_svg_tag,
+// which has no equivalent here. Also dropped: data-section-id.
+import ProductCard from '~/components/ProductCard.astro';
+import strings from '~/data/strings.json';
+import type { Product } from '~/lib/catalogue';
+import { href } from '~/lib/url';
+
+interface Props {
+  products?: Product[];
+  columnsDesktop?: '3' | '4';
+  showBadge?: boolean;
+  emptyHeading?: string;
+  emptyText?: string;
+}
+
+const {
+  products = [],
+  columnsDesktop = '3',
+  showBadge = true,
+  emptyHeading = 'Bombed out.',
+  emptyText = 'Nothing filed under this yet.',
+} = Astro.props;
+---
+<div class="coll-grid-wrap">
+  {products.length === 0 ? (
+    <div class="coll-empty">
+      <h2 class="chunk coll-empty-title">{emptyHeading}</h2>
+      {emptyText && <p class="coll-empty-text">{emptyText}</p>}
+      <a href={href("/collections/all")} class="directive directive--ghost snap coll-empty-link">
+        [ {strings.general['404'].link} ]
+      </a>
+    </div>
+  ) : (
+    <div class="coll-grid" style={`--coll-cols: ${columnsDesktop}`}>
+      {products.map((product) => <ProductCard product={product} showBadge={showBadge} />)}
+    </div>
+  )}
+</div>
+
+<style>
+  @media (min-width: 861px) {
+    .coll-grid-wrap .coll-grid { grid-template-columns: repeat(var(--coll-cols, 3), 1fr); }
+  }
+  .coll-empty {
+    border: 1px solid var(--line);
+    background: var(--panel);
+    padding: var(--s6) var(--s3);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--s2);
+  }
+  .coll-empty-title { color: var(--cream); font-size: clamp(2.2rem, 5vw, 3.5rem); line-height: 0.92; }
+  .coll-empty-text {
+    color: var(--bone-dim);
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    max-width: 52ch;
+  }
+  .coll-empty-link { width: auto; padding: 16px 32px; margin-top: var(--s2); }
+</style>

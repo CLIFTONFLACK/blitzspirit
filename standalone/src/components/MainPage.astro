@@ -1,0 +1,77 @@
+---
+import { hrefsInHtml } from '~/lib/url';
+// MainPage — ported from sections/main-page.liquid.
+//
+// Generic page body: the page's rich text in a readable dossier-like column.
+// The PageHero section above it carries the title.
+//
+// Liquid read `page.content` from Shopify. There is no `page` object here and
+// the copy lives in src/data/pages/*.json, so `content` is an explicit prop.
+// The `{% elsif request.design_mode %}` empty-state notice is dropped: it only
+// ever rendered inside the theme editor, which has no equivalent.
+// Also dropped: data-section-id (a Shopify section rendering id).
+interface Props {
+  content?: string;
+}
+
+const { content } = Astro.props;
+---
+<div class="main-page">
+  {/* `content` is the page's rich text from the repo's own page data —
+      trusted content, not user input — so it renders as HTML exactly as the
+      Liquid `{{ page.content }}` did. */}
+  {content && <div class="main-page-body rte" set:html={hrefsInHtml(content)} />}
+</div>
+
+<style>
+  .main-page { padding: var(--s5) var(--s3) var(--s6); border-bottom: 1px solid var(--line); }
+  .main-page-body { max-width: 720px; margin: 0 auto; }
+</style>
+
+<style is:global>
+  /* Global because every selector below targets an element inside the rich
+     text injected with set:html, which does not carry this component's scope
+     attribute. */
+  .main-page-body h2,
+  .main-page-body h3,
+  .main-page-body h4 {
+    font-family: var(--display-font);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    line-height: 0.95;
+    color: #fff;
+    margin: var(--s4) 0 var(--s2);
+  }
+  .main-page-body h2 { font-size: clamp(1.6rem, 3.5vw, 2.4rem); }
+  .main-page-body h3 { font-size: clamp(1.3rem, 2.8vw, 1.8rem); }
+  .main-page-body h4 { font-size: clamp(1.1rem, 2.2vw, 1.4rem); }
+  .main-page-body p {
+    color: var(--bone);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    line-height: 1.8;
+    margin-bottom: var(--s2);
+  }
+  .main-page-body ul,
+  .main-page-body ol { margin: 0 0 var(--s2) 20px; color: var(--bone); font-size: 13px; line-height: 1.8; }
+  .main-page-body a { color: var(--bone); border-bottom: 1px solid var(--signal); }
+  .main-page-body a:hover { color: var(--signal); }
+  .main-page-body strong { color: #fff; font-weight: 400; }
+  .main-page-body em { font-style: normal; color: #fff; }
+  .main-page-body blockquote {
+    border-left: 2px solid var(--signal);
+    padding: var(--s2) var(--s3);
+    margin: var(--s3) 0;
+    background: var(--panel);
+    color: var(--bone-dim);
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+  }
+  .main-page-body img { border: 1px solid var(--line); margin: var(--s3) 0; }
+  .main-page-body hr { border: none; border-top: 1px solid var(--line); margin: var(--s4) 0; }
+  .main-page-body table { width: 100%; border-collapse: collapse; margin: var(--s3) 0; font-size: 12px; }
+  .main-page-body th,
+  .main-page-body td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; color: var(--bone); }
+</style>

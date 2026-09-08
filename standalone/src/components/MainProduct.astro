@@ -1,0 +1,422 @@
+---
+// MainProduct — ported from sections/main-product.liquid. The ISSUE_001 PDP.
+//
+// Layout is v27's: breadcrumb, then a 50/50 grid of sticky gallery (thumbs under the
+// main plate) and the ledger. Ledger block order comes from templates/product.json:
+// issue_tag, title, price, stock, dossier, variant_picker, buy_buttons, trust_note,
+// links, archive_note. There is no field_manual block on the PDP in v27 — that block
+// type exists in the schema but the template never ordered it in, so it is not here
+// either.
+//
+// <product-form> contract is preserved exactly so product-form.js runs unmodified:
+//   input[name="id"], [data-option-index][data-value] with aria-pressed,
+//   script[data-variant-json], [name="add"] with [data-add-label]/[data-sold-label],
+//   [data-price] holding one pre-rendered span per variant keyed by
+//   [data-variant-price], [data-stock], [data-plate-frame][data-media-id][data-image-id],
+//   [data-thumb], and data-product-wrap on the section root as the lookup scope.
+//
+// Money is still never formatted in JS: every variant's price is rendered here and
+// product-form.js only toggles [hidden].
+//
+// CHANGED FROM LIQUID:
+// - {% form 'product' %} is gone. The add button is type="button"; cart.js adds the
+//   line to local state. The <noscript> variant <select> went with it — without a
+//   Shopify cart there is nothing for a no-JS submit to post to, so this build cannot
+//   sell without JavaScript. The page still renders and reads completely.
+// - The media id is the image path rather than a Shopify media id; frames, thumbs and
+//   the variant JSON all use that same key, which is all product-form.js requires.
+// - The links block is wired to the help page anchors. In v27 it rendered nothing
+//   because size_guide_page/returns_url were never set in the theme editor, which the
+//   2026-07-20 review flagged as outstanding.
+import Plate from './Plate.astro';
+import Dossier from './Dossier.astro';
+import OptionPills from './OptionPills.astro';
+import { Image } from 'astro:assets';
+import { asset } from '~/lib/images';
+import { formatMoney } from '~/lib/money';
+import strings from '~/data/strings.json';
+import settings from '~/data/settings.json';
+import { href } from '~/lib/url';
+import {
+  firstAvailableVariant,
+  mediaForColour,
+  pickerOptions,
+  type Collection,
+  type Product,
+} from '~/lib/catalogue';
+
+interface Props {
+  product: Product;
+  collection?: Collection;
+  showBreadcrumb?: boolean;
+  showQuantity?: boolean;
+  hookLine?: string;
+  sizeGuideUrl?: string;
+  sizeGuideLabel?: string;
+  returnsUrl?: string;
+  returnsLabel?: string;
+  trustNote?: string;
+  archiveLabel?: string;
+}
+
+const {
+  product,
+  collection,
+  // Schema defaults from main-product.liquid.
+  showBreadcrumb = false,
+  showQuantity = false,
+  hookLine = 'COME ON THEN.',
+  sizeGuideUrl = '/help#size-guide',
+  sizeGuideLabel = 'SIZE GUIDE',
+  returnsUrl = '/help#returns',
+  returnsLabel = 'RETURNS',
+  trustNote = 'PRINTED WHEN YOU ORDER IT, NOT WAREHOUSED. ALLOW 5–10 WORKING DAYS. UK DELIVERY FREE OVER £40.',
+  archiveLabel = 'ARCHIVE ENTRY',
+} = Astro.props;
+
+const currentVariant = firstAvailableVariant(product);
+const issueVal = product.issue || 'ISSUE_001';
+const indexRef = product.indexRef;
+
+// index_ref values like "#01" become "ENTRY 01" in the kicker and "01 OF NN" in the
+// archive note; anything else is shown verbatim.
+const entryNum = indexRef.startsWith('#') ? indexRef.slice(1) : '';
+
+const currentMedia = mediaForColour(product, currentVariant.options.Colour);
+const currentMediaId = currentMedia?.src ?? '';
+
+const titleUp = product.title.toUpperCase();
+const startsWithThe = titleUp.startsWith('THE ');
+
+const pickers = pickerOptions(product);
+
+// Ordered option names drive the variant JSON's options array, which is the shape
+// product-form.js's variantOptions() reads.
+const optionNames = product.options.map((o) => o.name);
+const variantJson = product.variants.map((v) => {
+  const mediaId = mediaForColour(product, v.options.Colour)?.src ?? currentMediaId;
+  return {
+    id: v.id,
+    available: v.available,
+    options: optionNames.map((name) => v.options[name]),
+    featured_media: { id: mediaId },
+    featured_image: { id: mediaId },
+  };
+});
+
+const archiveTotal = collection
+  ? String(collection.products.length).padStart(2, '0')
+  : null;
+---
+<section class="pdp-wrap" data-product-wrap>
+  {showBreadcrumb && (
+    <nav class="pdp-breadcrumb" aria-label="Breadcrumb">
+      <a href={href("/")} class="tag">[ {settings.shop.name.toUpperCase()} ]</a>
+      <span class="tag sep" aria-hidden="true">//</span>
+      {collection && (
+        <>
+          <a href={href(`/collections/${collection.handle}`)} class="tag">[ {collection.title.toUpperCase()} ]</a>
+          <span class="tag sep" aria-hidden="true">//</span>
+        </>
+      )}
+      <span class="tag crumb-current" aria-current="page">[ {titleUp} ]</span>
+    </nav>
+  )}
+
+  <div class="pdp">
+    <div class="pdp-gallery">
+      <div class="pdp-gallery-row">
+        {product.media.length > 1 && (
+          <div class="pdp-thumbs">
+            {product.media.map((media) => (
+              <button
+                type="button"
+                class="pdp-thumb snap"
+                data-thumb
+                data-media-id={media.src}
+                data-image-id={media.src}
+                aria-pressed={media.src === currentMediaId ? 'true' : 'false'}
+                aria-label={media.alt}
+              >
+                <Image src={asset(media.src)} alt="" width={144} loading="lazy" />
+              </button>
+            ))}
+          </div>
+        )}
+
+        <div class="pdp-gallery-main">
+          {product.media.length > 0 ? (
+            product.media.map((media) => (
+              <div
+                data-plate-frame
+                data-media-id={media.src}
+                data-image-id={media.src}
+                hidden={media.src !== currentMediaId}
+              >
+                <Plate
+                  src={media.src}
+                  alt={product.title}
+                  priority={media.src === currentMediaId}
+                  sizes="(min-width: 860px) 36vw, 80vw"
+                />
+              </div>
+            ))
+          ) : (
+            <div data-plate-frame>
+              <Plate alt={product.title} />
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+
+    <div class="pdp-ledger">
+      <product-form data-url-update>
+        <div class="pdp-issue">
+          <div class="pdp-kicker tag tag-mute">
+            {issueVal.toUpperCase()}
+            {entryNum ? ` · ENTRY ${entryNum}` : indexRef ? ` · ${indexRef.toUpperCase()}` : ''}
+          </div>
+        </div>
+
+        <h1 class="led-name chunk pdp-name">
+          {startsWithThe ? (
+            <><span class="the">THE</span> {titleUp.replace(/^THE /, '')}</>
+          ) : (
+            titleUp
+          )}
+        </h1>
+
+        <div class="pdp-price-row">
+          <span class="pdp-price tag" data-price>
+            {product.variants.map((variant) => (
+              <span
+                class={product.compareAtPrice && product.compareAtPrice > variant.price ? 'price price--sale' : 'price'}
+                data-variant-price={variant.id}
+                hidden={variant.id !== currentVariant.id}
+              >
+                {product.compareAtPrice && product.compareAtPrice > variant.price && (
+                  <s class="price__compare">{formatMoney(product.compareAtPrice)}</s>
+                )}
+                <span class="price__current">{formatMoney(variant.price)}</span>
+                {settings.shop.taxesIncluded && <span class="price__vat">{strings.products.inc_vat}</span>}
+              </span>
+            ))}
+          </span>
+          <span
+            class="pdp-stock tag"
+            data-stock
+            data-state={currentVariant.available ? 'in-stock' : 'sold-out'}
+            data-label-in-stock={`[ ${strings.products.in_stock} ]`}
+            data-label-sold-out={`[ ${strings.products.sold_out} ]`}
+          >[ {currentVariant.available ? strings.products.in_stock : strings.products.sold_out} ]</span>
+        </div>
+
+        {(product.strapline || product.dossier.length > 0 || hookLine) && (
+          <div class="pdp-dossier">
+            <Dossier
+              title={product.title}
+              strapline={product.strapline}
+              paragraphs={product.dossier}
+              hideStrap={true}
+            />
+            {hookLine && <p class="pdp-hook">{hookLine}</p>}
+          </div>
+        )}
+
+        {pickers.length > 0 && (
+          <div class="pdp-options">
+            {pickers.map(({ option, index }) => (
+              <OptionPills
+                option={option}
+                optionIndex={index}
+                selected={currentVariant.options[option.name]}
+                bare={true}
+              />
+            ))}
+          </div>
+        )}
+
+        <div class="pdp-buy">
+          <input type="hidden" name="id" value={currentVariant.id} />
+
+          {showQuantity && (
+            <div class="pdp-qty">
+              <span class="tag tag-mute">[ {strings.cart.quantity} ]</span>
+              <div class="qty-box">
+                <button type="button" class="qty-btn snap" data-qty-minus aria-label="Decrease quantity">&minus;</button>
+                <input
+                  class="qty-input"
+                  type="number"
+                  name="quantity"
+                  value="1"
+                  min="1"
+                  inputmode="numeric"
+                  autocomplete="off"
+                  aria-label={strings.cart.quantity}
+                />
+                <button type="button" class="qty-btn snap" data-qty-plus aria-label="Increase quantity">+</button>
+              </div>
+            </div>
+          )}
+
+          <div class="pdp-actions">
+            <button
+              type="button"
+              name="add"
+              class="directive directive--fill snap"
+              data-add-to-cart
+              disabled={!currentVariant.available}
+            >
+              <span data-add-label hidden={!currentVariant.available}>{strings.products.add_to_cart}</span>
+              <span data-sold-label hidden={currentVariant.available}>{strings.products.sold_out}</span>
+            </button>
+          </div>
+        </div>
+
+        {trustNote && <p class="tag tag-mute pdp-trust">{trustNote}</p>}
+
+        {(sizeGuideUrl || returnsUrl) && (
+          <div class="pdp-links">
+            {sizeGuideUrl && <a href={href(sizeGuideUrl)} class="tag pdp-link">{sizeGuideLabel}</a>}
+            {sizeGuideUrl && returnsUrl && <span class="tag tag-mute" aria-hidden="true">·</span>}
+            {returnsUrl && <a href={href(returnsUrl)} class="tag pdp-link">{returnsLabel}</a>}
+          </div>
+        )}
+
+        <div class="pdp-archive-note">
+          <hr class="sep-line" />
+          <span class="tag tag-mute">
+            {issueVal.toUpperCase()}
+            {entryNum && archiveTotal ? ` · ${entryNum} OF ${archiveTotal}` : ''}
+            {` · ${archiveLabel}`}
+          </span>
+        </div>
+
+        <script type="application/json" data-variant-json set:html={JSON.stringify(variantJson)} />
+      </product-form>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  /* Global rather than scoped: product-form.js injects nothing, but the option pills,
+     dossier, plate and price all render from other components, so scoping this block
+     would leave them unstyled. */
+  .pdp-wrap [hidden] { display: none !important; }
+
+  /* Ledger blocks flow inside <product-form>; mirror the ledger's rhythm. */
+  product-form { display: block; }
+  .pdp-ledger product-form { display: flex; flex-direction: column; gap: var(--s3); }
+
+  .pdp-ledger .pdp-name { font-size: clamp(2.2rem, 5vw, 4rem); margin-bottom: 0; }
+
+  /* Kicker — "ISSUE_001 · ENTRY 02" with a short underline (mockup v27). */
+  .pdp-issue .pdp-kicker {
+    display: inline-block;
+    align-self: flex-start;
+    letter-spacing: 0.25em;
+    padding: 0 var(--s4) 12px 0;
+    border-bottom: 1px solid var(--line-bri);
+  }
+
+  /* Stock reads as a quiet tag and only surfaces when it matters. */
+  .pdp-stock-row { display: flex; }
+  .pdp-stock[data-state="in-stock"] { display: none; }
+  .pdp-stock[data-state="sold-out"] { color: var(--bone-mute); }
+
+  /* Dossier on the PDP: bare paragraphs on the black wall, sentence case,
+     with the red hook line as the punchline (mockup v27). */
+  .pdp-dossier { display: flex; flex-direction: column; gap: var(--s2); }
+  .pdp-dossier .dossier { background: none; border: none; padding: 0; }
+  .pdp-dossier .dossier p,
+  .pdp-dossier .dossier .dossier-desc p,
+  .pdp-dossier .dossier .dossier-desc li {
+    font-family: var(--mono); text-transform: none;
+    font-size: 14px; letter-spacing: 0.02em; line-height: 1.75;
+    color: var(--bone);
+  }
+  .pdp-dossier .dossier p + p { margin-top: var(--s2); }
+  .pdp-hook {
+    font-family: var(--mono); font-weight: 700; text-transform: uppercase;
+    font-size: 15px; letter-spacing: 0.08em; color: var(--signal); margin: var(--s1) 0 0;
+  }
+
+  /* Option groups — bare COLOUR / SIZE labels over outlined pills. */
+  .pdp-options { display: flex; flex-direction: column; gap: var(--s3); }
+  .pdp-options .cw { border: none; padding: 0; margin-bottom: 0; }
+  .pdp-options .cw-label,
+  .pdp-options .sizes-label { display: block; color: var(--bone-mute); font-size: 10px; letter-spacing: 0.25em; margin-bottom: 10px; }
+  .pdp-options .sizes { margin-bottom: 0; flex-direction: column; align-items: flex-start; gap: 0; }
+  .pdp-options .cw-opt .dot { display: none; }
+  .pdp-options .cw-opt[aria-pressed="true"],
+  .pdp-options .size-pill[aria-pressed="true"] { background: transparent; color: #fff; border-color: var(--bone); }
+
+  /* Plain mono price on the black wall (mockup v27 — no boxed row). */
+  .pdp-price .price__current { font-family: var(--mono); font-size: 15px; letter-spacing: 0.12em; color: var(--bone); }
+  .price__unit { display: block; font-size: 10px; letter-spacing: 0.08em; color: var(--bone-mute); }
+
+  /* Plate frames — one per image, toggled via [hidden]. */
+  [data-plate-frame] { display: contents; }
+  [data-plate-frame][hidden] { display: none !important; }
+  .pdp-gallery .plate {
+    width: 100%;
+    max-width: 500px;
+    aspect-ratio: 1/1.12;
+    margin: 0 auto;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+  }
+
+  /* Solid signal-red ADD TO BAG bar (mockup v27). */
+  .pdp-actions { display: flex; }
+  .pdp-buy .directive--fill {
+    flex: 1; width: auto;
+    background: var(--signal); border-color: var(--signal); color: #fff;
+    font-family: var(--mono); letter-spacing: 0.2em;
+  }
+  .pdp-buy .directive--fill:hover { background: #fff; border-color: #fff; color: var(--ink); }
+  .pdp-buy .directive--fill[disabled] { background: transparent; border-color: var(--line); color: var(--bone-mute); }
+
+  .pdp-buy { display: flex; flex-direction: column; gap: var(--s2); }
+
+  .pdp-qty { display: flex; align-items: center; gap: var(--s2); }
+  .qty-box { display: flex; border: 1px solid var(--line-bri); }
+  .qty-btn { width: 44px; padding: 10px 0; text-align: center; color: var(--bone); font-size: 15px; }
+  .qty-btn:hover { background: var(--panel-2); }
+  .qty-input {
+    width: 56px;
+    background: transparent;
+    border: none;
+    border-left: 1px solid var(--line-bri);
+    border-right: 1px solid var(--line-bri);
+    color: #fff;
+    font-family: var(--mono);
+    font-size: 13px;
+    text-align: center;
+    padding: 10px 0;
+    appearance: textfield;
+    -moz-appearance: textfield;
+  }
+  .qty-input::-webkit-outer-spin-button,
+  .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+  /* Dossier rich text: bold carries the .hit treatment; wrappers keep
+     the 28px paragraph rhythm from theme.css. */
+  .dossier strong,
+  .dossier b { font-weight: 400; color: #fff; }
+  .dossier > p + div { margin-top: 28px; }
+
+  /* SIZE GUIDE · RETURNS + closing archive line. */
+  .pdp-links { display: flex; align-items: center; gap: var(--s2); }
+  .pdp-link { color: var(--bone-dim); text-decoration: underline; text-underline-offset: 4px; }
+  .pdp-link:hover { color: var(--signal); }
+  .pdp-archive-note { display: flex; flex-direction: column; gap: var(--s3); margin-top: var(--s2); }
+  .pdp-archive-note .tag { letter-spacing: 0.2em; }
+
+  /* Field manual COLOURWAYS row reuses the swatch component for its display-name
+     map — dots off, labels on. */
+  .fm-val--cw .dot { display: none; }
+  .fm-val--cw .cw-name { color: inherit; }
+
+  .pdp-trust { margin: 0; }
+</style>

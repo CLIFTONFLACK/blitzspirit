@@ -1,0 +1,27 @@
+---
+// Price — ported from snippets/price.liquid.
+//
+// Takes either a product (uses price / compareAtPrice) or a raw pence value.
+// "// INC. VAT" shows whenever the shop is configured tax-inclusive, which
+// replaces Liquid's cart.taxes_included.
+import settings from '~/data/settings.json';
+import strings from '~/data/strings.json';
+import { formatMoney } from '~/lib/money';
+
+interface Props {
+  product?: { price: number; compareAtPrice: number | null };
+  price?: number;
+  showVat?: boolean;
+}
+
+const { product, price, showVat = settings.shop.taxesIncluded } = Astro.props;
+
+const current = product ? product.price : (price ?? 0);
+const compare = product ? product.compareAtPrice : null;
+const onSale = compare !== null && compare > current;
+---
+<span class:list={['price', onSale && 'price--sale']}>
+  {onSale && <s class="price__compare">{formatMoney(compare!)}</s>}
+  <span class="price__current" data-price>{formatMoney(current)}</span>
+  {showVat && <span class="price__vat">{strings.products.inc_vat}</span>}
+</span>

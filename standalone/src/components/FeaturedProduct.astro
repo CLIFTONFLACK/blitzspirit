@@ -1,0 +1,220 @@
+---
+// FeaturedProduct — ported from sections/featured-product.liquid.
+//
+// The ISSUE_000 50/50 showcase: signal-outlined plate left, dossier ledger right
+// (eyebrow, name, price, dossier copy, buy controls). Framework CSS is in
+// theme.css §12b.
+//
+// Kept from the Liquid: the gallery contract (thumb rail + one [data-plate-frame]
+// per image, all but the current one hidden) and the dossier chain being inlined
+// rather than rendered through Dossier.astro — this panel IS the .dossier box, so
+// reusing that component would nest a second bordered panel inside it. The
+// **bold** parser below mirrors Dossier.astro's for the same reason.
+//
+// Changed / dropped:
+// - {% form 'product' %} and its hidden id input: the add button carries
+//   [data-add-to-cart] + [data-variant-id] and Phase 4 wires the click.
+// - data-media-id now carries the colourway, the only stable media identifier in
+//   catalogue.json; Shopify's numeric preview_image id (data-image-id) has no
+//   equivalent and is dropped.
+// - The "no product selected" onboarding branch: there is no theme editor, and
+//   getProduct throws loudly on an unknown handle.
+// - has_only_default_variant: every catalogue product has real options.
+import { Image } from 'astro:assets';
+import Plate from './Plate.astro';
+import Price from './Price.astro';
+import OptionPills from './OptionPills.astro';
+import strings from '~/data/strings.json';
+import { asset } from '~/lib/images';
+import { getProduct, firstAvailableVariant, mediaForColour } from '~/lib/catalogue';
+import { href } from '~/lib/url';
+
+interface Props {
+  /** Product handle, as the Liquid product picker stored it. */
+  product: string;
+  issueOverride?: string;
+  /** Liquid's richtext dossier override. A non-empty string replaces the whole
+   *  fallback chain (strapline + copy), as it did in the Liquid. */
+  dossier?: string;
+  whatLabel?: string;
+  plateRef?: string;
+}
+
+const {
+  product: handle,
+  issueOverride = '',
+  dossier = '',
+  whatLabel = 'STORY',
+  plateRef = 'BS_002 // ISSUE_000',
+} = Astro.props;
+
+const product = getProduct(handle);
+
+const issueText = issueOverride || product.issue || 'ISSUE_000 // LIMITED EDITION';
+const titleUp = product.title.toUpperCase();
+const startsWithThe = titleUp.startsWith('THE ');
+
+const variant = firstAvailableVariant(product);
+const currentMedia = mediaForColour(product, variant.options.Colour ?? variant.options.Color);
+const available = product.variants.some((v) => v.available);
+
+// Liquid filtered by option NAME, not by value count: colour is chosen on the
+// thumb rail here, so only the other options get pills.
+const pillOptions = product.options
+  .map((option, i) => ({ option, index: i + 1 }))
+  .filter(({ option }) => !['colour', 'color'].includes(option.name.toLowerCase()));
+
+const parse = (text: string) =>
+  text
+    .split(/(\*\*[^*]+\*\*)/g)
+    .filter(Boolean)
+    .map((run) =>
+      run.startsWith('**') && run.endsWith('**')
+        ? { bold: true, text: run.slice(2, -2) }
+        : { bold: false, text: run }
+    );
+---
+<section class="featured" data-product-wrap>
+  <div class="featured-visual">
+    <span class="item-asset-ref tag">[ {issueText} ]</span>
+    <div class="pdp-gallery-row">
+      {product.media.length > 1 && (
+        <div class="pdp-thumbs">
+          {product.media.map((media) => (
+            <button
+              type="button"
+              class="pdp-thumb snap"
+              data-thumb
+              data-media-id={media.colour}
+              aria-pressed={media === currentMedia ? 'true' : 'false'}
+              aria-label={media.alt || product.title}
+            >
+              <Image
+                src={asset(media.src)}
+                alt=""
+                width={144}
+                height={Math.round(144 / (media.width / media.height))}
+                loading="lazy"
+              />
+            </button>
+          ))}
+        </div>
+      )}
+      <div class="pdp-gallery-main">
+        {product.media.map((media) => (
+          <div data-plate-frame data-media-id={media.colour} hidden={media !== currentMedia}>
+            <Plate
+              src={media.src}
+              alt={product.title}
+              refText={plateRef}
+              priority={media === currentMedia}
+              sizes="(min-width: 860px) 38vw, 78vw"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <div class="featured-ledger">
+    <div class="dossier">
+      <span class="featured-eyebrow">★ {issueText}</span>
+
+      <h2 class="featured-name chunk">
+        {startsWithThe ? (
+          <><span class="the">THE</span> {titleUp.replace(/^THE /, '')}</>
+        ) : (
+          titleUp
+        )}
+      </h2>
+
+      <div class="featured-price tag"><Price product={product} /></div>
+
+      {dossier ? (
+        <p>{dossier}</p>
+      ) : (
+        <>
+          {product.strapline && (
+            <p>
+              <span class="hit">// {titleUp}</span>
+              {' — '}{product.strapline}
+            </p>
+          )}
+          {product.dossier.length > 0 && (
+            <div class="dossier-desc">
+              {product.dossier.map((paragraph) => (
+                <p>
+                  {parse(paragraph).map((run) =>
+                    run.bold ? <strong>{run.text}</strong> : run.text
+                  )}
+                </p>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+
+      <product-form>
+        {pillOptions.length > 0 && (
+          <div class="cw-size-wrap">
+            {pillOptions.map(({ option, index }) => (
+              <OptionPills
+                option={option}
+                optionIndex={index}
+                selected={variant.options[option.name]}
+              />
+            ))}
+          </div>
+        )}
+
+        <script
+          type="application/json"
+          data-variant-json
+          is:inline
+          set:html={JSON.stringify(product.variants)}
+        />
+
+        <div class="actions">
+          {whatLabel && (
+            <a class="what-link snap" href={href(`/products/${product.handle}`)}>{titleUp} {whatLabel}</a>
+          )}
+          <button
+            type="button"
+            class="directive snap"
+            data-add-to-cart
+            data-variant-id={variant.id}
+            disabled={!available}
+          >[ {available ? strings.products.add_to_cart : strings.products.sold_out} ]</button>
+        </div>
+      </product-form>
+    </div>
+  </div>
+</section>
+
+{/* The Liquid {% stylesheet %} block. Global rather than scoped because the
+     .plate rules style markup rendered by Plate.astro, which scoped styles cannot
+     reach. The `.plate svg` rules are dropped with placeholder_svg_tag: Plate now
+     renders a .plate__placeholder div, so they could never match. */}
+<style is:global>
+  .featured-visual .pdp-gallery-row {
+    margin-top: 36px;
+  }
+  .featured-visual .plate {
+    width: min(73%, 486px);
+    aspect-ratio: 1 / 1.12;
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.7);
+    outline: 2px solid var(--signal);
+    outline-offset: 10px;
+  }
+  .featured .dossier .featured-price {
+    display: block;
+    margin: 0 0 var(--s3);
+    color: var(--dossier-ink);
+    font-size: 14px;
+    letter-spacing: 0.12em;
+  }
+  .featured .dossier strong {
+    font-weight: 400;
+    color: #0a0a0a;
+  }
+</style>

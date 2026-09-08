@@ -1,0 +1,168 @@
+---
+// CartDrawer — ported from sections/cart-drawer.liquid.
+//
+// What changed: in the Shopify theme this markup was re-rendered server-side by
+// the Section Rendering API after every /cart/add.js and /cart/change.js, and
+// swapped into #CartDrawer wholesale. There is no server cart here, so the
+// shell below is static and cart.js renders the line items, subtotal and
+// free-shipping bar from localStorage.
+//
+// The DOM contract cart.js codes against is unchanged: [data-cart-overlay],
+// [data-cart-close], [data-cart-items], [data-cart-subtotal], [data-cart-error],
+// [data-cart-fsb]. State (.open / aria-hidden / inert) still lives on the
+// <aside> and the overlay, neither of which cart.js replaces.
+//
+// CHECKOUT is now a button that posts the cart to /api/checkout and follows the
+// Stripe Checkout Session URL, rather than a form POST to Shopify's /cart.
+import strings from '~/data/strings.json';
+import settings from '~/data/settings.json';
+import { formatMoney } from '~/lib/money';
+import { href } from '~/lib/url';
+---
+<div class="cart-overlay" data-cart-overlay hidden></div>
+<aside
+  class="cart-drawer"
+  id="CartDrawer"
+  role="dialog"
+  aria-modal="true"
+  aria-label={strings.cart.title}
+  aria-hidden="true"
+  tabindex="-1"
+  inert
+>
+  <div class="cart-head">
+    <span class="tag">[ {strings.cart.title} ]</span>
+    <button type="button" class="cart-close snap" data-cart-close aria-label={strings.accessibility.close_cart}>[ {strings.general.close} ]</button>
+  </div>
+
+  {settings.cart.showFreeShippingBar && settings.cart.freeShippingThreshold > 0 && (
+    <div class="fsb" data-cart-fsb data-threshold={settings.cart.freeShippingThreshold} style="--fsb-pct: 0%">
+      <span class="fsb-msg" data-fsb-msg>
+        [ {strings.cart.free_shipping_away.replace('{{ amount }}', formatMoney(settings.cart.freeShippingThreshold))} ]
+      </span>
+      <div class="fsb-track" aria-hidden="true">
+        <div class="fsb-fill"></div>
+      </div>
+    </div>
+  )}
+
+  <div class="cart-error" data-cart-error role="alert" hidden></div>
+
+  <div class="cart-items" data-cart-items>
+    <div class="cart-empty">[ {strings.cart.empty} ]</div>
+  </div>
+
+  <div class="cart-foot">
+    <div class="cart-sum">
+      <span>[ {strings.cart.subtotal} ]</span>
+      <b data-cart-subtotal>{formatMoney(0)}</b>
+    </div>
+    <button type="button" class="cart-checkout snap" data-checkout disabled>[ {strings.cart.checkout} ]</button>
+    <a href={href("/cart")} class="cart-view snap">[ {strings.cart.view_bag} ]</a>
+    {settings.cart.note && <p class="cart-note">{settings.cart.note}</p>}
+  </div>
+</aside>
+
+<style is:global>
+  /* Scroll lock while the ledger is open (toggled by cart.js). */
+  body.cart-open { overflow: hidden; }
+
+  /* Line items extend theme.css §4 .cart-row with a plate thumb column.
+     Global: cart.js injects these rows at runtime, so scoped styles would
+     never match them. */
+  .cart-drawer .cart-row {
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr) auto;
+    align-items: start;
+  }
+  .ci-plate {
+    width: 64px;
+    height: 64px;
+    background: var(--plate);
+    border: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .ci-plate img { width: 100%; height: 100%; object-fit: contain; }
+  .ci-body { min-width: 0; }
+  .ci-name a:hover { color: var(--signal); }
+  .ci-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s2);
+    margin-top: 10px;
+  }
+  .ci-qty { display: inline-flex; align-items: stretch; border: 1px solid var(--line); }
+  .ci-qty-btn {
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--bone-dim);
+    font-size: 13px;
+    line-height: 1;
+  }
+  .ci-qty-btn:hover { color: #fff; }
+  .ci-qty-val {
+    min-width: 26px;
+    padding: 0 4px;
+    text-align: center;
+    font-size: 11px;
+    line-height: 26px;
+    color: var(--bone);
+    border-left: 1px solid var(--line);
+    border-right: 1px solid var(--line);
+  }
+  .ci-price { font-size: 11px; letter-spacing: 0.08em; color: var(--bone); }
+
+  /* Inline error region (checkout failure, sold out). */
+  .cart-error {
+    border: 1px solid var(--signal);
+    color: var(--signal);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 10px var(--s2);
+    margin-bottom: var(--s2);
+  }
+
+  /* View full ledger link under the checkout directive. */
+  .cart-view {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--bone-dim);
+  }
+  .cart-view:hover { color: #fff; }
+
+  /* Free-shipping progress (.fsb-*) — shared with the /cart page. */
+  .fsb { margin-bottom: var(--s3); }
+  .fsb-msg {
+    display: block;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--bone-dim);
+    margin-bottom: 8px;
+  }
+  .fsb-msg--ok { color: var(--bone); }
+  .fsb-track { height: 4px; border: 1px solid var(--line); background: var(--panel); }
+  .fsb-fill {
+    height: 100%;
+    width: var(--fsb-pct, 0%);
+    background: var(--signal);
+    transition: width 150ms ease;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .fsb-fill { transition: none; }
+  }
+</style>

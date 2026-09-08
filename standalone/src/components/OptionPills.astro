@@ -1,0 +1,55 @@
+---
+// OptionPills — ported from snippets/option-pills.liquid.
+//
+// aria-pressed button group used for BOTH colour (.cw-opt + swatch) and size
+// (.size-pill). product-form.js reads data-option-index / data-value to resolve the
+// selected variant, so those attributes and the 1-based index are load-bearing.
+import Swatch from './Swatch.astro';
+import strings from '~/data/strings.json';
+
+interface Props {
+  option: { name: string; values: { value: string; display?: string }[] };
+  optionIndex: number;
+  selected: string;
+  bare?: boolean;
+}
+const { option, optionIndex, selected, bare = false } = Astro.props;
+
+const isColour = ['colour', 'color'].includes(option.name.toLowerCase());
+const label = isColour ? strings.products.choose_colour : strings.products.choose_size;
+const labelText = bare ? label : `[ ${label} ]`;
+---
+{isColour ? (
+  <div class="cw" data-option-group data-option-index={optionIndex}>
+    <span class="cw-label tag">{labelText}</span>
+    <div class="cw-opts">
+      {option.values.map((v) => (
+        <button
+          type="button"
+          class="cw-opt snap"
+          aria-pressed={v.value === selected ? 'true' : 'false'}
+          aria-label={v.value}
+          data-option-index={optionIndex}
+          data-value={v.value}
+        >
+          <Swatch value={v.value} />
+        </button>
+      ))}
+    </div>
+  </div>
+) : (
+  <div class="sizes" data-option-group data-option-index={optionIndex}>
+    <span class="tag sizes-label" style="margin-right:4px">{labelText}</span>
+    <div class="sizes-opts">
+      {option.values.map((v) => (
+        <button
+          type="button"
+          class="size-pill snap"
+          aria-pressed={v.value === selected ? 'true' : 'false'}
+          data-option-index={optionIndex}
+          data-value={v.value}
+        >{v.value}</button>
+      ))}
+    </div>
+  </div>
+)}

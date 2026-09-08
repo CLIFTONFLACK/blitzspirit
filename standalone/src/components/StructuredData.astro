@@ -1,0 +1,96 @@
+---
+// StructuredData — ported from snippets/structured-data.liquid.
+//
+// Organization sitewide; Product with per-variant Offers plus a BreadcrumbList on a
+// product page; BreadcrumbList on a collection page.
+//
+// Changed from Liquid: `product.vendor` has no equivalent in the standalone
+// catalogue, so the brand is the shop name — which is what the vendor field held on
+// the Shopify store anyway. Prices come from the variant in pence and are divided
+// here, as the `| divided_by: 100.00` filter did.
+import settings from '~/data/settings.json';
+import type { Collection, Product } from '~/lib/catalogue';
+
+interface Props {
+  product?: Product;
+  collection?: Collection;
+  productImage?: string;
+}
+
+const { product, collection, productImage } = Astro.props;
+
+const site = (Astro.site ?? new URL(settings.shop.url)).origin;
+const abs = (path: string) => new URL(path, site).href;
+
+const sameAs = [
+  settings.social.instagram,
+  settings.social.tiktok,
+  settings.social.x,
+  settings.social.facebook,
+].filter(Boolean);
+
+const organization: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: settings.shop.name,
+  url: site,
+  logo: abs('/assets/blitzspirit-stamp.png'),
+};
+if (sameAs.length) organization.sameAs = sameAs;
+
+const productLd = product
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'Product',
+      name: product.title,
+      url: abs(`/products/${product.handle}`),
+      ...(productImage ? { image: [abs(productImage)] } : {}),
+      description: product.dossier.join(' ').replace(/\*\*/g, ''),
+      sku: product.variants[0]?.sku,
+      brand: { '@type': 'Brand', name: settings.shop.name },
+      offers: product.variants.map((variant) => ({
+        '@type': 'Offer',
+        sku: variant.sku,
+        name: Object.values(variant.options).join(' / ') || product.title,
+        url: abs(`/products/${product.handle}`),
+        price: Number((variant.price / 100).toFixed(2)),
+        priceCurrency: settings.shop.currency,
+        availability: variant.available
+          ? 'https://schema.org/InStock'
+          : 'https://schema.org/OutOfStock',
+      })),
+    }
+  : null;
+
+function breadcrumbs() {
+  const items: Record<string, unknown>[] = [
+    { '@type': 'ListItem', position: 1, name: settings.shop.name, item: site },
+  ];
+  if (collection) {
+    items.push({
+      '@type': 'ListItem',
+      position: items.length + 1,
+      name: collection.title,
+      item: abs(`/collections/${collection.handle}`),
+    });
+  }
+  if (product) {
+    items.push({
+      '@type': 'ListItem',
+      position: items.length + 1,
+      name: product.title,
+      item: abs(`/products/${product.handle}`),
+    });
+  }
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items,
+  };
+}
+
+const showBreadcrumbs = !!product || !!collection;
+---
+<script type="application/ld+json" set:html={JSON.stringify(organization)} />
+{productLd && <script type="application/ld+json" set:html={JSON.stringify(productLd)} />}
+{showBreadcrumbs && <script type="application/ld+json" set:html={JSON.stringify(breadcrumbs())} />}

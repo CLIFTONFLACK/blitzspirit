@@ -1,0 +1,46 @@
+---
+// Dossier — ported from snippets/dossier.liquid. The light concrete dossier panel.
+//
+// Liquid read a strapline metafield for the lead line and the native product
+// description for the body. Here both come from catalogue.json: `strapline` and
+// `dossier` (an array of paragraphs). The paragraphs carry `**bold**` markers, which
+// become the <strong> that .dossier strong styles and reveal.js animates — the same
+// treatment Shopify's rich-text bold got.
+interface Props {
+  title: string;
+  strapline?: string;
+  paragraphs: string[];
+  hideStrap?: boolean;
+}
+const { title, strapline, paragraphs, hideStrap = false } = Astro.props;
+
+// Split on **...** keeping the delimiters, so runs alternate plain and bold.
+const parse = (text: string) =>
+  text
+    .split(/(\*\*[^*]+\*\*)/g)
+    .filter(Boolean)
+    .map((run) =>
+      run.startsWith('**') && run.endsWith('**')
+        ? { bold: true, text: run.slice(2, -2) }
+        : { bold: false, text: run }
+    );
+
+const hasBody = paragraphs.length > 0;
+---
+{(strapline || hasBody) && (
+  <div class="dossier">
+    {strapline && !hideStrap && (
+      <p>
+        <span class="hit">// {title.toUpperCase()}</span>
+        {' — '}{strapline}
+      </p>
+    )}
+    {hasBody && (
+      <div class="dossier-desc">
+        {paragraphs.map((paragraph) => (
+          <p>{parse(paragraph).map((run) => (run.bold ? <strong>{run.text}</strong> : run.text))}</p>
+        ))}
+      </div>
+    )}
+  </div>
+)}

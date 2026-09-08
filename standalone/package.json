@@ -1,0 +1,25 @@
+{
+  "name": "blitzspirit-standalone",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "BlitzSpirit ISSUE_001 storefront - standalone Astro build, no Shopify.",
+  "scripts": {
+    "dev": "astro dev",
+    "validate": "node tools/validate-catalogue.mjs",
+    "check": "astro check --minimumSeverity error",
+    "prebuild": "npm run validate && npm run check",
+    "build": "astro build",
+    "postbuild": "node tools/check-build.mjs",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^5.14.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "typescript": "^5.9.3"
+  }
+}

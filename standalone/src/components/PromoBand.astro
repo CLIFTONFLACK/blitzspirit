@@ -1,0 +1,83 @@
+---
+// PromoBand — ported from sections/promo-band.liquid.
+//
+// Newsletter capture over the full-bleed band artwork. The image stays
+// section-owned: --promo-image is set on the wrapper and theme.css §12c's
+// .promo::before consumes it. The homepage renders this section twice — once
+// with the heritage telephonists photo, once falling through to the packaged
+// milkman artwork — so `image` is a prop carrying the schema default.
+//
+// The form is NewsletterForm with classPrefix "promo", the same contract the
+// Liquid had when it rendered snippets/newsletter-form.liquid. `id` is passed
+// straight through, as Liquid passed section.id, so two bands on one page get
+// distinct form/input ids.
+import { getImage } from 'astro:assets';
+import NewsletterForm from './NewsletterForm.astro';
+import { asset } from '~/lib/images';
+
+interface Props {
+  id?: string;
+  image?: string;
+  tag?: string;
+  heading?: string;
+  subheading?: string;
+  leadLine?: string;
+  placeholder?: string;
+  buttonLabel?: string;
+  successText?: string;
+}
+
+const {
+  id = 'PromoBand',
+  image = '/assets/promo-milkman.jpg',
+  tag = '[ DISPATCH // STAND BY ]',
+  heading = 'GOT MORE BOTTLE THAN THE MILKMAN',
+  subheading = 'Put the kettle on, time for a nice cup of tea!',
+  leadLine = 'ENTER YOUR EMAIL ADDRESS TO BE THE FIRST IN THE KNOW',
+  placeholder = 'NAME@DOMAIN.CO.UK',
+  buttonLabel = '[ NOTIFY ME ]',
+  successText = "[ SECURED // YOU'RE FIRST IN THE KNOW ]",
+} = Astro.props;
+
+// Liquid asked image_url for 2000w; getImage is the astro:assets equivalent for a
+// URL that has to end up inside a CSS custom property. Capped at the source width
+// so the small packaged artwork is not upscaled.
+const source = asset(image);
+const banded = await getImage({ src: source, width: Math.min(2000, source.width) });
+---
+<section class="promo" style={`--promo-image: url('${banded.src}')`}>
+  <div class="promo-inner">
+    <div class="promo-text">
+      {tag && <div class="promo-tag tag">{tag}</div>}
+      {heading && <h2 class="promo-title chunk">{heading}</h2>}
+      {subheading && <p class="promo-sub">{subheading}</p>}
+
+      <div class="promo-form">
+        {leadLine && <p class="promo-cta tag">{leadLine}</p>}
+        <NewsletterForm
+          id={id}
+          buttonLabel={buttonLabel}
+          successText={successText}
+          placeholder={placeholder}
+          tags="newsletter,backbone10"
+          classPrefix="promo"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+{/* The Liquid {% stylesheet %} block, verbatim. Global rather than scoped: both
+     selectors target elements rendered by NewsletterForm, which scoped styles
+     would not reach. */}
+<style is:global>
+  .promo .nlf-success-line {
+    color: var(--signal);
+    text-shadow: 0 1px 5px #000;
+  }
+  .promo .nlf-error {
+    color: #fff;
+    text-shadow: 0 1px 5px #000;
+    margin-bottom: var(--s1);
+  }
+</style>

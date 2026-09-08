@@ -1,0 +1,38 @@
+---
+// Contact — templates/page.contact.json: hero, contact (a faq section), newsletter.
+import Base from '~/layouts/Base.astro';
+import PageHero from '~/components/PageHero.astro';
+import Faq from '~/components/Faq.astro';
+import Newsletter from '~/components/Newsletter.astro';
+
+import pageData from '~/data/pages/contact.json';
+import { settings, blocks, type PageData } from '~/lib/pages';
+
+const page = pageData as PageData;
+const hero = settings(page, 'hero');
+const contact = settings(page, 'contact');
+const news = settings(page, 'newsletter');
+---
+<Base
+  title={page.title ?? 'Contact'}
+  description="Give us a shout. Delivery, returns and sizing are answered on the help page first."
+>
+  <PageHero
+    indexTag={hero.index_tag}
+    showPageRef={hero.show_page_ref}
+    pageTitle={page.title}
+    heading={hero.heading}
+    redFirstLine={hero.red_first_line}
+    headingSize={hero.heading_size}
+    extraHeight={hero.extra_height}
+    blocks={blocks(page, 'hero')}
+  />
+  <Faq indexTag={contact.index_tag} intro={contact.intro} blocks={blocks(page, 'contact')} />
+  <Newsletter
+    sectionId="contact"
+    indexTag={news.index_tag}
+    heading={news.heading}
+    body={news.body}
+    buttonLabel={news.button_label}
+  />
+</Base>

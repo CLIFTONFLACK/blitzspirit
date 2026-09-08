@@ -1,0 +1,162 @@
+---
+// EquipmentFeature — ported from sections/equipment-feature.liquid.
+//
+// The RECOMMENDED CONDIMENT cross-sell: centred label, plate with its thumb rail,
+// issue tag, name, price, ADD TO BAG. Framework CSS is in theme.css §12e.
+//
+// A colour-only product (the Cap) renders no pills at all — colour is chosen on
+// the thumb rail — which is what the Liquid's "skip Colour/Color options" filter
+// produced too.
+//
+// Changed / dropped, same as the other v27 product sections:
+// - {% form 'product' %} and its hidden id input: the add button carries
+//   [data-add-to-cart] + [data-variant-id]; Phase 4 wires the click.
+// - data-media-id carries the colourway (catalogue.json has no numeric media id);
+//   data-image-id is dropped with it.
+// - The "no product selected" onboarding branch and has_only_default_variant:
+//   getProduct throws on an unknown handle and every catalogue product has options.
+import { Image } from 'astro:assets';
+import Plate from './Plate.astro';
+import Price from './Price.astro';
+import OptionPills from './OptionPills.astro';
+import strings from '~/data/strings.json';
+import { asset } from '~/lib/images';
+import { getProduct, firstAvailableVariant, mediaForColour } from '~/lib/catalogue';
+
+interface Props {
+  label?: string;
+  /** Product handle, as the Liquid product picker stored it. */
+  product: string;
+  issueTag?: string;
+}
+
+const {
+  label = '[ RECOMMENDED CONDIMENT ]',
+  product: handle,
+  issueTag = 'ISSUE_001 // EQUIPMENT',
+} = Astro.props;
+
+const product = getProduct(handle);
+
+const titleUp = product.title.toUpperCase();
+const startsWithThe = titleUp.startsWith('THE ');
+
+const variant = firstAvailableVariant(product);
+const currentMedia = mediaForColour(product, variant.options.Colour ?? variant.options.Color);
+const available = product.variants.some((v) => v.available);
+
+const pillOptions = product.options
+  .map((option, i) => ({ option, index: i + 1 }))
+  .filter(({ option }) => !['colour', 'color'].includes(option.name.toLowerCase()));
+---
+<section class="equipment" data-product-wrap>
+  <div class="condiment-inner">
+    {label && <div class="condiment-label tag">{label}</div>}
+
+    <div class="condiment-body">
+      <div class="condiment-visual">
+        <div class="pdp-gallery-row">
+          {product.media.length > 1 && (
+            <div class="pdp-thumbs">
+              {product.media.map((media) => (
+                <button
+                  type="button"
+                  class="pdp-thumb snap"
+                  data-thumb
+                  data-media-id={media.colour}
+                  aria-pressed={media === currentMedia ? 'true' : 'false'}
+                  aria-label={media.alt || product.title}
+                >
+                  <Image
+                    src={asset(media.src)}
+                    alt=""
+                    width={144}
+                    height={Math.round(144 / (media.width / media.height))}
+                    loading="lazy"
+                  />
+                </button>
+              ))}
+            </div>
+          )}
+          <div class="pdp-gallery-main">
+            {product.media.map((media) => (
+              <div data-plate-frame data-media-id={media.colour} hidden={media !== currentMedia}>
+                <Plate
+                  src={media.src}
+                  alt={product.title}
+                  sizes="(min-width: 640px) 40vw, 90vw"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div class="condiment-info">
+        {issueTag && <div class="condiment-issue tag">[ {issueTag} ]</div>}
+
+        <h2 class="chunk condiment-name">
+          {startsWithThe ? (
+            <><span class="the">THE</span> {titleUp.replace(/^THE /, '')}</>
+          ) : (
+            titleUp
+          )}
+        </h2>
+
+        <product-form>
+          {pillOptions.length > 0 && (
+            <div class="condiment-cw">
+              {pillOptions.map(({ option, index }) => (
+                <OptionPills
+                  option={option}
+                  optionIndex={index}
+                  selected={variant.options[option.name]}
+                />
+              ))}
+            </div>
+          )}
+
+          <script
+            type="application/json"
+            data-variant-json
+            is:inline
+            set:html={JSON.stringify(product.variants)}
+          />
+
+          <div class="condiment-price tag"><Price product={product} /></div>
+
+          <div class="actions">
+            <button
+              type="button"
+              class="directive snap"
+              data-add-to-cart
+              data-variant-id={variant.id}
+              disabled={!available}
+            >[ {available ? strings.products.add_to_cart : strings.products.sold_out} ]</button>
+          </div>
+        </product-form>
+      </div>
+    </div>
+  </div>
+</section>
+
+{/* The Liquid {% stylesheet %} block. Global rather than scoped because the
+     .plate rules style markup rendered by Plate.astro. The `.plate svg` rule went
+     with placeholder_svg_tag — Plate renders a .plate__placeholder div now — and
+     .condiment-note went with the onboarding branch that was its only user. */}
+<style is:global>
+  .equipment .plate {
+    width: 100%;
+    aspect-ratio: 1 / 1.12;
+    border-color: var(--line);
+    padding: var(--s4);
+  }
+  .condiment-visual .plate img {
+    background: none;
+    border: none;
+    padding: 0;
+  }
+  .condiment-issue {
+    margin-bottom: var(--s2);
+  }
+</style>

@@ -1,0 +1,92 @@
+---
+// Home — templates/index.json, section for section and in order:
+// hero, featured, promo, archive, equipment, promo_band_VF78L7.
+import Base from '~/layouts/Base.astro';
+import Hero from '~/components/Hero.astro';
+import FeaturedProduct from '~/components/FeaturedProduct.astro';
+import PromoBand from '~/components/PromoBand.astro';
+import ApparelArchive from '~/components/ApparelArchive.astro';
+import EquipmentFeature from '~/components/EquipmentFeature.astro';
+
+import pageData from '~/data/pages/index.json';
+import { settings, blocks, type PageData } from '~/lib/pages';
+
+const page = pageData as PageData;
+
+const hero = settings(page, 'hero');
+const featured = settings(page, 'featured');
+const promo = settings(page, 'promo');
+const archive = settings(page, 'archive');
+const equipment = settings(page, 'equipment');
+const promo2 = settings(page, 'promo_band_VF78L7');
+
+// ApparelArchive requires a product handle on every block. Assert it here rather
+// than casting blindly: if the page data ever loses one, the build should stop with
+// a clear message instead of rendering a row with no product.
+const archiveBlocks = blocks<{
+  product: string;
+  dossier?: string;
+  index_label?: string;
+  force_dark?: boolean;
+}>(page, 'archive');
+for (const block of archiveBlocks) {
+  if (!block.settings.product) {
+    throw new Error(`homepage archive block "${block.id}" has no product handle`);
+  }
+}
+---
+<Base
+  title="BLITZSPIRIT"
+  description="Ironic. Iconic. Made in Britain. Heavyweight tees and equipment with a backbone story — ISSUE_001."
+>
+  <Hero
+    kicker={hero.kicker}
+    heading={hero.heading}
+    ctaLabel={hero.cta_label}
+    ctaLink={hero.cta_link}
+  />
+
+  <FeaturedProduct
+    product={featured.product}
+    issueOverride={featured.issue_override}
+    dossier={featured.dossier}
+    whatLabel={featured.what_label}
+    plateRef={featured.plate_ref}
+  />
+
+  <PromoBand
+    id="PromoBand"
+    image={promo.image}
+    tag={promo.tag}
+    heading={promo.heading}
+    subheading={promo.subheading}
+    leadLine={promo.lead_line}
+    placeholder={promo.placeholder}
+    buttonLabel={promo.button_label}
+    successText={promo.success_text}
+  />
+
+  <ApparelArchive
+    blocks={archiveBlocks}
+    autoAlternate={archive.auto_alternate}
+    whatLabel={archive.what_label}
+  />
+
+  <EquipmentFeature
+    label={equipment.label}
+    product={equipment.product}
+    issueTag={equipment.issue_tag}
+  />
+
+  <PromoBand
+    id="PromoBandEarlyBirds"
+    image={promo2.image}
+    tag={promo2.tag}
+    heading={promo2.heading}
+    subheading={promo2.subheading}
+    leadLine={promo2.lead_line}
+    placeholder={promo2.placeholder}
+    buttonLabel={promo2.button_label}
+    successText={promo2.success_text}
+  />
+</Base>

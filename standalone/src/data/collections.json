@@ -1,0 +1,50 @@
+{
+  "all": {
+    "handle": "all",
+    "title": "The Collections.",
+    "description": "Every entry in the archive. Apparel and equipment, ISSUE_001 onward.",
+    "rule": "everything",
+    "products": [
+      "the-boudica",
+      "the-establishment",
+      "the-roll-call",
+      "the-frequency",
+      "the-clerk",
+      "the-cap",
+      "the-establishment-navy-cap",
+      "the-establishment-the-clerk",
+      "the-boudica-chalk-cap"
+    ]
+  },
+  "t-shirts": {
+    "handle": "t-shirts",
+    "title": "The Range.",
+    "description": "The printed archive. 220gsm, screen printed in Britain.",
+    "rule": "type = T-Shirt",
+    "products": [
+      "the-boudica",
+      "the-establishment",
+      "the-roll-call",
+      "the-frequency",
+      "the-clerk"
+    ]
+  },
+  "caps": {
+    "handle": "caps",
+    "title": "Equipment.",
+    "description": "Headwear. Utility over decoration.",
+    "rule": "type = Headwear",
+    "products": ["the-cap"]
+  },
+  "deals": {
+    "handle": "deals",
+    "title": "Deals.",
+    "description": "Bundled entries, 20% under the sum of their parts. No code needed.",
+    "rule": "tag = sale",
+    "products": [
+      "the-establishment-navy-cap",
+      "the-establishment-the-clerk",
+      "the-boudica-chalk-cap"
+    ]
+  }
+}

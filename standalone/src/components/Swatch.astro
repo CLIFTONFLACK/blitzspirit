@@ -1,0 +1,13 @@
+---
+// Swatch — ported from snippets/swatch.liquid.
+// The colour -> display-name + hex map now lives in catalogue.json ("colours"),
+// which is where the option values are defined, so there is one map not two.
+import catalogue from '~/data/catalogue.json';
+
+interface Props { value: string }
+const { value } = Astro.props;
+
+const colours = catalogue.colours as Record<string, { display: string; hex: string }>;
+const swatch = colours[value] ?? { display: value.toUpperCase(), hex: '#777' };
+---
+<span class="dot" style={`--dot:${swatch.hex}`} title={value}></span><span class="cw-name">{swatch.display}</span>

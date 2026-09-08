@@ -1,0 +1,243 @@
+---
+// ApparelArchive — ported from sections/apparel-archive.liquid.
+//
+// The alternating 50/50 item rows. autoAlternate makes rows 2, 4, … dark; a
+// block's force_dark overrides it. Framework CSS is in theme.css §12d.
+//
+// `blocks` keeps the shape it has in src/data/pages/*.json — { id, type, settings }
+// with the settings keys the Liquid schema defined — so a page can hand the
+// section's blocks straight through. Blank `dossier` / `index_label` mean "fall
+// back to the product's own values", exactly as blank settings did in Liquid:
+// index_label → product.indexRef → the row number (#01…); dossier copy →
+// the product's own dossier paragraphs.
+//
+// The dossier chain is inlined rather than rendered through Dossier.astro: the
+// ledger panel IS the .dossier box (it also holds the index, name, price and buy
+// controls), so reusing that component would nest a second bordered panel inside
+// it. The **bold** parser below mirrors Dossier.astro's for the same reason.
+//
+// Changed / dropped:
+// - {% form 'product' %} and its hidden id input: each row's add button carries
+//   [data-add-to-cart] + [data-variant-id]; Phase 4 wires the click.
+// - block.shopify_attributes and the section id.
+// - data-media-id carries the colourway (catalogue.json has no numeric media id);
+//   data-image-id is dropped with it.
+// - The "no product for this row" onboarding branch: there is no theme editor,
+//   and getProduct throws loudly on an unknown handle.
+import { Image } from 'astro:assets';
+import Plate from './Plate.astro';
+import Price from './Price.astro';
+import OptionPills from './OptionPills.astro';
+import strings from '~/data/strings.json';
+import { asset } from '~/lib/images';
+import { getProduct, firstAvailableVariant, mediaForColour } from '~/lib/catalogue';
+import { href } from '~/lib/url';
+
+interface ItemBlock {
+  id?: string;
+  type?: string;
+  settings: {
+    /** Product handle. */
+    product: string;
+    /** Richtext override; blank falls back to the product's dossier copy. */
+    dossier?: string;
+    /** Blank falls back to product.indexRef, then the row number. */
+    index_label?: string;
+    force_dark?: boolean;
+  };
+}
+
+interface Props {
+  blocks: ItemBlock[];
+  autoAlternate?: boolean;
+  whatLabel?: string;
+}
+
+const { blocks, autoAlternate = true, whatLabel = 'STORY' } = Astro.props;
+
+const parse = (text: string) =>
+  text
+    .split(/(\*\*[^*]+\*\*)/g)
+    .filter(Boolean)
+    .map((run) =>
+      run.startsWith('**') && run.endsWith('**')
+        ? { bold: true, text: run.slice(2, -2) }
+        : { bold: false, text: run }
+    );
+
+const rows = blocks.map((block, i) => {
+  const product = getProduct(block.settings.product);
+  const rowNumber = i + 1;
+
+  const indexLabel = block.settings.index_label || product.indexRef || `#0${rowNumber}`;
+  const issueText = product.issue || 'ISSUE_001';
+  const titleUp = product.title.toUpperCase();
+  const variant = firstAvailableVariant(product);
+
+  return {
+    product,
+    dark: block.settings.force_dark === true || (autoAlternate && rowNumber % 2 === 0),
+    indexLabel,
+    issueText,
+    titleUp,
+    startsWithThe: titleUp.startsWith('THE '),
+    plateRef: `${indexLabel} // ${titleUp}`,
+    dossierOverride: block.settings.dossier ?? '',
+    variant,
+    currentMedia: mediaForColour(product, variant.options.Colour ?? variant.options.Color),
+    available: product.variants.some((v) => v.available),
+    // Liquid filtered by option NAME, not by value count: colour is chosen on the
+    // thumb rail here, so only the other options get pills.
+    pillOptions: product.options
+      .map((option, index) => ({ option, index: index + 1 }))
+      .filter(({ option }) => !['colour', 'color'].includes(option.name.toLowerCase())),
+  };
+});
+---
+<div class="archive">
+  {rows.map((row) => (
+    <article class:list={['item', row.dark && 'item--dark']} data-product-wrap>
+      <div class="item-visual">
+        <div class="pdp-gallery-row">
+          {row.product.media.length > 1 && (
+            <div class="pdp-thumbs">
+              {row.product.media.map((media) => (
+                <button
+                  type="button"
+                  class="pdp-thumb snap"
+                  data-thumb
+                  data-media-id={media.colour}
+                  aria-pressed={media === row.currentMedia ? 'true' : 'false'}
+                  aria-label={media.alt || row.product.title}
+                >
+                  <Image
+                    src={asset(media.src)}
+                    alt=""
+                    width={144}
+                    height={Math.round(144 / (media.width / media.height))}
+                    loading="lazy"
+                  />
+                </button>
+              ))}
+            </div>
+          )}
+          <div class="pdp-gallery-main">
+            {row.product.media.map((media) => (
+              <div data-plate-frame data-media-id={media.colour} hidden={media !== row.currentMedia}>
+                <Plate
+                  src={media.src}
+                  alt={row.product.title}
+                  refText={row.plateRef}
+                  sizes="(min-width: 860px) 36vw, 76vw"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div class="item-ledger">
+        <div>
+          <div class="dossier">
+            <div class="led-index tag">
+              [ ★ {row.issueText} // {row.indexLabel} // {row.titleUp} ]
+            </div>
+            <h2 class="led-name chunk">
+              {row.startsWithThe ? (
+                <><span class="the">THE</span> {row.titleUp.replace(/^THE /, '')}</>
+              ) : (
+                row.titleUp
+              )}
+            </h2>
+
+            <div class="item-price tag"><Price product={row.product} /></div>
+
+            {row.product.strapline && (
+              <p>
+                <span class="hit">// {row.titleUp}</span>
+                {' — '}{row.product.strapline}
+              </p>
+            )}
+
+            {row.dossierOverride ? (
+              <p>{row.dossierOverride}</p>
+            ) : (
+              row.product.dossier.length > 0 && (
+                <div class="dossier-desc">
+                  {row.product.dossier.map((paragraph) => (
+                    <p>
+                      {parse(paragraph).map((run) =>
+                        run.bold ? <strong>{run.text}</strong> : run.text
+                      )}
+                    </p>
+                  ))}
+                </div>
+              )
+            )}
+
+            <product-form>
+              {row.pillOptions.length > 0 && (
+                <div class="cw-size-wrap">
+                  {row.pillOptions.map(({ option, index }) => (
+                    <OptionPills
+                      option={option}
+                      optionIndex={index}
+                      selected={row.variant.options[option.name]}
+                    />
+                  ))}
+                </div>
+              )}
+
+              <script
+                type="application/json"
+                data-variant-json
+                is:inline
+                set:html={JSON.stringify(row.product.variants)}
+              />
+
+              <div class="actions">
+                {whatLabel && (
+                  <a class="what-link snap" href={href(`/products/${row.product.handle}`)}>
+                    {row.titleUp} {whatLabel}
+                  </a>
+                )}
+                <button
+                  type="button"
+                  class="directive snap"
+                  data-add-to-cart
+                  data-variant-id={row.variant.id}
+                  disabled={!row.available}
+                >[ {row.available ? strings.products.add_to_cart : strings.products.sold_out} ]</button>
+              </div>
+            </product-form>
+          </div>
+        </div>
+      </div>
+    </article>
+  ))}
+</div>
+
+{/* The Liquid {% stylesheet %} block, minus `.item-visual .plate svg`, which went
+     with placeholder_svg_tag — Plate renders a .plate__placeholder div now, so
+     that rule could never match. Everything left targets markup this component
+     renders, so it stays scoped; the .item-price colour reaches Price.astro's
+     spans by inheritance, as it did in the theme. */}
+<style>
+  .item .dossier .item-price {
+    display: block;
+    margin: 10px 0 var(--s3);
+    color: var(--dossier-ink);
+    font-size: 14px;
+    letter-spacing: 0.12em;
+  }
+  .item--dark .dossier .item-price {
+    color: var(--bone);
+  }
+  .item .dossier strong {
+    font-weight: 400;
+    color: #0a0a0a;
+  }
+  .item--dark .dossier strong {
+    color: #fff;
+  }
+</style>

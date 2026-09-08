@@ -1,0 +1,122 @@
+---
+// SignupModal — ported from sections/signup-modal.liquid.
+// Copy comes from the v27 section defaults; timings and the discount code from
+// src/data/settings.json. modal.js contract is unchanged, including the
+// localStorage keys bs_signed_up and bs_modal_seen.
+import Icon from './Icon.astro';
+import NewsletterForm from './NewsletterForm.astro';
+import settings from '~/data/settings.json';
+import strings from '~/data/strings.json';
+
+const modal = settings.signupModal;
+
+const content = {
+  eyebrow: 'DISPATCHES',
+  heading: 'Join the Home Guard.',
+  subheading: 'Take 10% off your first order.',
+  body: 'First word on new drops and restocks, stories worth telling, and a code for 10% off. No spam — that would be nonsense.',
+  buttonLabel: '[ SIGN ME UP ]',
+  dismissLabel: 'No thanks — I’ll pay full price',
+  carryOnLabel: '[ CARRY ON SHOPPING ]',
+};
+---
+{modal.enabled && (
+  <dialog
+    class="signup-modal"
+    id="SignupModal"
+    data-enabled="true"
+    data-delay={String(modal.delaySeconds)}
+    data-suppress-days={String(modal.suppressDays)}
+    data-exit-intent={modal.exitIntent ? 'true' : 'false'}
+    data-discount-code={settings.discount.code}
+    aria-labelledby="SignupModalHeading"
+  >
+    <div class="signup-inner">
+      <span class="frame-tick frame-tick--tl" aria-hidden="true"></span>
+      <span class="frame-tick frame-tick--br" aria-hidden="true"></span>
+
+      <button type="button" class="signup-close snap" data-modal-close aria-label={strings.accessibility.close_dialog}>
+        <Icon name="close" />
+      </button>
+
+      <p class="led-index tag signup-eyebrow">[ {content.eyebrow} ]</p>
+
+      <h2 class="chunk signup-head" id="SignupModalHeading">{content.heading}</h2>
+
+      <p class="signup-sub tag">{content.subheading}</p>
+
+      <p class="signup-body">{content.body}</p>
+
+      <NewsletterForm id="SignupModalForm" buttonLabel={content.buttonLabel} />
+
+      <button type="button" class="signup-dismiss snap" data-modal-close>
+        {content.dismissLabel}
+      </button>
+
+      <button type="button" class="directive snap signup-carry" data-modal-close>
+        {content.carryOnLabel}
+      </button>
+    </div>
+  </dialog>
+)}
+
+<style is:global>
+  dialog.signup-modal {
+    background: var(--panel);
+    border: 1px solid var(--line-bri);
+    padding: 0;
+    width: min(520px, calc(100% - 32px));
+    color: var(--bone);
+  }
+  dialog.signup-modal::backdrop { background: rgba(10, 10, 10, 0.88); }
+  .signup-inner {
+    position: relative;
+    padding: var(--s5) var(--s4) var(--s4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s2);
+    text-align: left;
+  }
+  .frame-tick { position: absolute; width: 14px; height: 14px; border: 2px solid var(--signal); }
+  .frame-tick--tl { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+  .frame-tick--br { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+  .signup-close {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    padding: 8px;
+    color: var(--bone);
+    line-height: 0;
+  }
+  .signup-close:hover { color: var(--signal); }
+  .signup-eyebrow { display: inline-block; margin-bottom: 0; align-self: flex-start; }
+  .signup-head { color: #fff; font-size: clamp(1.8rem, 5vw, 2.6rem); }
+  .signup-sub { color: var(--signal); }
+  .signup-body {
+    color: var(--bone-dim);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: 1.75;
+  }
+  .signup-dismiss {
+    align-self: center;
+    margin-top: var(--s1);
+    color: var(--bone-mute);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .signup-dismiss:hover { color: var(--signal); }
+  .signup-carry { display: none; }
+  /* The success block is hidden until newsletter.js reveals it, so :has() has
+     to test for it being present AND shown - [hidden] is the off state now,
+     where in the Liquid version the block simply did not exist. */
+  .signup-inner:has([data-signup-success]:not([hidden])) .signup-carry { display: block; }
+  .signup-inner:has([data-signup-success]:not([hidden])) .signup-dismiss,
+  .signup-inner:has([data-signup-success]:not([hidden])) .signup-body,
+  .signup-inner:has([data-signup-success]:not([hidden])) .signup-sub { display: none; }
+</style>

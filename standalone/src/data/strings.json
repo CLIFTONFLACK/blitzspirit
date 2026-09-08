@@ -1,0 +1,68 @@
+{
+  "general": {
+    "skip_to_content": "SKIP TO CONTENT",
+    "close": "CLOSE",
+    "menu": "MENU",
+    "home": "HOME",
+    "404": {
+      "title": "Bombed out.",
+      "subtext": "The page is gone — the spirit isn't. Dust yourself off and carry on shopping.",
+      "link": "CARRY ON SHOPPING"
+    },
+    "social": {
+      "instagram": "Instagram",
+      "tiktok": "TikTok",
+      "x": "X",
+      "facebook": "Facebook"
+    }
+  },
+  "cart": {
+    "title": "SYSTEM_LEDGER // CURRENT_BAG",
+    "empty": "LEDGER EMPTY // NO ASSETS ALLOCATED",
+    "checkout": "PROCEED TO SECURE CHECKOUT",
+    "remove": "REMOVE",
+    "view_bag": "VIEW FULL LEDGER",
+    "subtotal": "SUBTOTAL",
+    "quantity": "QTY",
+    "update": "UPDATE",
+    "free_shipping_away": "{{ amount }} MORE FOR FREE UK DELIVERY",
+    "free_shipping_ok": "SHIPS FREE // WELL DONE",
+    "checkout_error": "CHECKOUT UNREACHABLE // TRY AGAIN"
+  },
+  "products": {
+    "add_to_cart": "ADD TO BAG",
+    "sold_out": "STOCK EXPENDED",
+    "unavailable": "UNAVAILABLE",
+    "in_stock": "IN STOCK",
+    "view": "VIEW PRODUCT",
+    "quick_add": "QUICK",
+    "inc_vat": "// INC. VAT",
+    "choose_colour": "COLOUR",
+    "choose_size": "SIZE"
+  },
+  "newsletter": {
+    "label": "ENTER YOUR EMAIL ADDRESS TO BE THE FIRST IN THE KNOW",
+    "email_placeholder": "NAME@DOMAIN.CO.UK",
+    "submit": "NOTIFY ME",
+    "success": "WELCOME TO THE HOME GUARD.",
+    "code_line": "Your 10% code: {{ code }}",
+    "confirmation": "SECURED // YOU'RE FIRST IN THE KNOW",
+    "error": "COULD NOT SIGN YOU UP // TRY AGAIN"
+  },
+  "search": {
+    "title": "SEARCH THE COLLECTION",
+    "placeholder": "SEARCH",
+    "submit": "SEARCH",
+    "no_results": "NOTHING LOGGED FOR \"{{ terms }}\" // TRY AGAIN"
+  },
+  "accessibility": {
+    "skip_to_text": "Skip to content",
+    "close_dialog": "Close dialog",
+    "cart_count": "Items in bag",
+    "open_cart": "Open bag",
+    "close_cart": "Close bag",
+    "loading": "Loading",
+    "colour_swatch": "Colour swatch",
+    "error": "Error"
+  }
+}

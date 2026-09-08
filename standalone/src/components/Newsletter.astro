@@ -1,0 +1,64 @@
+---
+// Newsletter — ported from sections/newsletter.liquid.
+//
+// The generic DISPATCHES capture band. The form is the shared NewsletterForm
+// component (tags newsletter,backbone10; the success state shows the discount
+// code from settings.json), exactly as the Liquid rendered the shared
+// newsletter-form snippet.
+//
+// Dropped: data-section-id (a Shopify section rendering id). The form's DOM id
+// was `Newsletter-{{ section.id }}`, so `sectionId` is an explicit prop —
+// several of these bands can share a page and the ids must stay unique.
+import NewsletterForm from '~/components/NewsletterForm.astro';
+
+interface Props {
+  sectionId?: string;
+  indexTag?: string;
+  heading?: string;
+  body?: string;
+  buttonLabel?: string;
+}
+
+const {
+  sectionId = 'newsletter',
+  indexTag = 'DISPATCHES // HOME_GUARD',
+  heading = 'Wakey wakey.',
+  body = 'First word on new drops, restocks and stories worth telling — plus 10% off your first order. No spam. That would be nonsense.',
+  buttonLabel = '[ SEND IT ]',
+} = Astro.props;
+---
+<section class="newsletter">
+  <div class="nws-inner">
+    {indexTag && <p class="led-index tag nws-index">[ {indexTag} ]</p>}
+
+    {heading && <h2 class="chunk nws-head">{heading}</h2>}
+
+    {body && <p>{body}</p>}
+
+    <NewsletterForm id={`Newsletter-${sectionId}`} buttonLabel={buttonLabel} />
+  </div>
+</section>
+
+<style>
+  .newsletter .nws-index { display: inline-block; margin-bottom: var(--s2); }
+  .newsletter .nws-head { font-size: clamp(2rem, 4vw, 3rem); }
+</style>
+
+<style is:global>
+  /* Shared newsletter-form snippet states (.nlf-*) — the snippet renders in
+     this band, the homepage promo band, the signup modal and the password
+     splash; these rules are global via the aggregated section stylesheet.
+     Global here too, because the elements belong to NewsletterForm.astro and
+     so never carry this component's scope attribute. */
+  .nlf-success {
+    border: 1px solid var(--signal);
+    padding: var(--s3);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s1);
+  }
+  .nlf-success-line { color: #fff; letter-spacing: 0.16em; }
+  .nlf-code { color: var(--signal); }
+  .nlf-error { color: var(--signal); margin-bottom: var(--s1); }
+</style>

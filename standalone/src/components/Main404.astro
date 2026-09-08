@@ -1,0 +1,75 @@
+---
+// Main404 — ported from sections/main-404.liquid.
+//
+// Brutalist "Bombed out." error page over --tex-crack. Eyebrow tag, huge .chunk
+// title + lede from strings.general['404'], then two directives: the all-products
+// collection and the homepage. The directive labels are schema defaults (they had
+// no locale keys in the theme either), so they land as prop defaults here.
+//
+// Dropped: data-section-id (a Shopify section rendering id).
+import strings from '~/data/strings.json';
+import { href } from '~/lib/url';
+
+interface Props {
+  eyebrow?: string;
+  primaryLabel?: string;
+  secondaryLabel?: string;
+}
+
+const {
+  eyebrow = '[ ERROR 404 ]',
+  primaryLabel = 'CHOOSE THE COLLECTION',
+  secondaryLabel = 'BACK TO BASE',
+} = Astro.props;
+---
+<div class="main-404">
+  <div class="main-404-inner">
+    {eyebrow && <p class="tag main-404-eyebrow">{eyebrow}</p>}
+    <h1 class="chunk main-404-title">{strings.general['404'].title}</h1>
+    <p class="main-404-lede">{strings.general['404'].subtext}</p>
+    <div class="main-404-actions">
+      <a href={href("/collections/all")} class="directive snap">
+        [ {primaryLabel} ]
+      </a>
+      <a href={href("/")} class="directive directive--ghost snap">
+        [ {secondaryLabel} ]
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .main-404 {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--s7) var(--s3);
+    text-align: center;
+    border-bottom: 1px solid var(--line);
+    background: var(--ink);
+  }
+  .main-404-inner {
+    max-width: 720px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--s3);
+  }
+  .main-404-eyebrow {
+    color: var(--signal);
+    border: 1px solid var(--signal);
+    padding: 6px 13px;
+    letter-spacing: 0.2em;
+  }
+  .main-404-title { color: var(--cream); font-size: clamp(3rem, 10vw, 6.5rem); line-height: 0.9; }
+  .main-404-lede { color: var(--bone-dim); font-size: 14px; line-height: 1.7; max-width: 46ch; }
+  .main-404-actions {
+    display: flex;
+    gap: var(--s2);
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: var(--s2);
+  }
+  .main-404-actions .directive { display: inline-block; width: auto; padding: 16px 32px; }
+</style>

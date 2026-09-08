@@ -1,0 +1,76 @@
+---
+// Collection — templates/collection.json for every collection except deals, which
+// has its own template (collection.deals.json: no featured product, different hero).
+import Base from '~/layouts/Base.astro';
+import CollectionHero from '~/components/CollectionHero.astro';
+import FeaturedProduct from '~/components/FeaturedProduct.astro';
+import CollectionTabs from '~/components/CollectionTabs.astro';
+import CollectionGrid from '~/components/CollectionGrid.astro';
+
+import defaultPage from '~/data/pages/collection.json';
+import dealsPage from '~/data/pages/collection-deals.json';
+import { settings, blocks, section, type PageData } from '~/lib/pages';
+import { collections, collectionProducts } from '~/lib/catalogue';
+
+export function getStaticPaths() {
+  return Object.keys(collections).map((handle) => ({ params: { handle } }));
+}
+
+const { handle } = Astro.params;
+const collection = collections[handle!];
+const items = collectionProducts(handle!);
+
+const page = (handle === 'deals' ? dealsPage : defaultPage) as PageData;
+const hero = settings(page, 'hero');
+const grid = settings(page, 'grid');
+const tabsSettings = settings(page, 'tabs');
+
+// The featured band only exists on the default collection template.
+const hasFeatured = page.sections.some((s) => s.id === 'featured');
+const featured = hasFeatured ? settings(page, 'featured') : null;
+
+const tabBlocks = blocks(page, 'tabs').map((b) => ({
+  label: b.settings.label,
+  linkAll: b.settings.link_all,
+  collection: b.settings.collection,
+}));
+
+const heroBlocks = blocks(page, 'hero').map((b) => ({ text: b.settings.text }));
+---
+<Base title={collection.title} description={collection.description} collection={collection}>
+  <CollectionHero
+    collection={collection}
+    indexTag={hero.index_tag}
+    showPageRef={hero.show_page_ref}
+    heading={hero.heading}
+    fallbackTitle={hero.fallback_title}
+    redFirstLine={hero.red_first_line}
+    headingSize={hero.heading_size}
+    extraHeight={hero.extra_height}
+    blocks={heroBlocks}
+  />
+
+  {featured && (
+    <FeaturedProduct
+      product={featured.product}
+      issueOverride={featured.issue_override}
+      dossier={featured.dossier}
+      whatLabel={featured.what_label}
+      plateRef={featured.plate_ref}
+    />
+  )}
+
+  <CollectionTabs
+    collection={collection}
+    showCount={tabsSettings.show_count}
+    blocks={tabBlocks}
+  />
+
+  <CollectionGrid
+    products={items}
+    columnsDesktop={grid.columns_desktop}
+    showBadge={grid.show_badge}
+    emptyHeading={grid.empty_heading}
+    emptyText={grid.empty_text}
+  />
+</Base>

@@ -1,0 +1,1537 @@
+{
+  "colours": {
+    "Black": {
+      "display": "OXY_BLACK",
+      "hex": "#0a0a0a",
+      "code": "BLK"
+    },
+    "Off-White": {
+      "display": "CHALK_WHITE",
+      "hex": "#e7e7e2",
+      "code": "OWH"
+    },
+    "Navy": {
+      "display": "SYSTEM_NAVY",
+      "hex": "#1f2a3d",
+      "code": "NVY"
+    },
+    "Stone": {
+      "display": "CHALK_STONE",
+      "hex": "#e8dfc0",
+      "code": "STN"
+    }
+  },
+  "products": [
+    {
+      "handle": "the-boudica",
+      "title": "The Boudica",
+      "kind": "product",
+      "code": "BOUD",
+      "type": "T-Shirt",
+      "tags": [],
+      "price": 2800,
+      "compareAtPrice": null,
+      "issue": "ISSUE_001",
+      "indexRef": "#01",
+      "limited": false,
+      "strapline": "mono print. She doesn’t ask. She doesn’t explain.",
+      "dossier": [
+        "Britannia reimagined: trident in hand, Union Jack shield raised, looking at no one in particular because she doesn’t need to. She’s already won and hasn’t decided to let you know yet.",
+        "Not a warrior queen for ceremony. Not a mascot. Not a tribute act. **The original. The standard. The one they built the statue to and still got wrong**.",
+        "**220gsm heavyweight cotton. Screen printed in Britain. Wash inside out at 30°C. No tumble dry.**"
+      ],
+      "fieldManual": [
+        {
+          "label": "ENTRY",
+          "value": "#01 // THE BOUDICA"
+        },
+        {
+          "label": "ISSUE",
+          "value": "ISSUE_001"
+        },
+        {
+          "label": "PRINT",
+          "value": "MONO // WATER-BASED SCREEN PRINT // UK"
+        },
+        {
+          "label": "FABRIC",
+          "value": "100% RING-SPUN COTTON // 220GSM"
+        },
+        {
+          "label": "FIT",
+          "value": "UNISEX // REGULAR // CREW NECK"
+        },
+        {
+          "label": "COLOURWAYS",
+          "value": "OXY_BLACK / CHALK_WHITE"
+        },
+        {
+          "label": "CARE",
+          "value": "30°C // INSIDE OUT // NO TUMBLE"
+        },
+        {
+          "label": "DELIVERY",
+          "value": "FREE UK OVER £40 // 2–5 WORKING DAYS"
+        }
+      ],
+      "editorial": [
+        {
+          "heading": "The Queen.",
+          "body": "Boudica of the Iceni — who burned Roman London to the ground and made them rebuild it somewhere else. Not a myth. Not a metaphor. A real woman who looked at the largest empire on earth, decided it was insufficiently polite about land rights, and went to war. We put her on a tee because the statue on the Thames Embankment still has the wrong wheels on the chariot. Someone should correct the record. [PLACEHOLDER — REPLACE WITH FINAL COPY]"
+        },
+        {
+          "heading": "The Craft.",
+          "body": "220gsm ring-spun cotton. Water-based screen print, applied in Britain. Soft hand-feel that improves with washing. No cracking, no fading, no apologies. Wash inside out at 30°C — tumble dryers are for quitters. [PLACEHOLDER — REPLACE WITH FINAL COPY]"
+        }
+      ],
+      "options": [
+        {
+          "name": "Colour",
+          "values": [
+            {
+              "value": "Off-White",
+              "display": "CHALK_WHITE",
+              "hex": "#e7e7e2"
+            },
+            {
+              "value": "Black",
+              "display": "OXY_BLACK",
+              "hex": "#0a0a0a"
+            }
+          ]
+        },
+        {
+          "name": "Size",
+          "values": [
+            {
+              "value": "S",
+              "display": "S"
+            },
+            {
+              "value": "M",
+              "display": "M"
+            },
+            {
+              "value": "L",
+              "display": "L"
+            },
+            {
+              "value": "XL",
+              "display": "XL"
+            },
+            {
+              "value": "XXL",
+              "display": "XXL"
+            }
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "id": "the-boudica-owh-s",
+          "sku": "BS-BOUD-OWH-S",
+          "options": {
+            "Colour": "Off-White",
+            "Size": "S"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-boudica-owh-m",
+          "sku": "BS-BOUD-OWH-M",
+          "options": {
+            "Colour": "Off-White",
+            "Size": "M"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-boudica-owh-l",
+          "sku": "BS-BOUD-OWH-L",
+          "options": {
+            "Colour": "Off-White",
+            "Size": "L"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-boudica-owh-xl",
+          "sku": "BS-BOUD-OWH-XL",
+          "options": {
+            "Colour": "Off-White",
+            "Size": "XL"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-boudica-owh-xxl",
+          "sku": "BS-BOUD-OWH-XXL",
+          "options": {
+            "Colour": "Off-White",
+            "Size": "XXL"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-boudica-blk-s",
+          "sku": "BS-BOUD-BLK-S",
+          "options": {
+            "Colour": "Black",
+            "Size": "S"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-boudica-blk-m",
+          "sku": "BS-BOUD-BLK-M",
+          "options": {
+            "Colour": "Black",
+            "Size": "M"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-boudica-blk-l",
+          "sku": "BS-BOUD-BLK-L",
+          "options": {
+            "Colour": "Black",
+            "Size": "L"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-boudica-blk-xl",
+          "sku": "BS-BOUD-BLK-XL",
+          "options": {
+            "Colour": "Black",
+            "Size": "XL"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-boudica-blk-xxl",
+          "sku": "BS-BOUD-BLK-XXL",
+          "options": {
+            "Colour": "Black",
+            "Size": "XXL"
+          },
+          "price": 2800,
+          "available": true
+        }
+      ],
+      "media": [
+        {
+          "colour": "Off-White",
+          "src": "/assets/products/tee-boudica-offwhite.jpg",
+          "width": 992,
+          "height": 1098,
+          "alt": "The Boudica — CHALK_WHITE"
+        },
+        {
+          "colour": "Black",
+          "src": "/assets/products/tee-boudica-black.jpg",
+          "width": 1168,
+          "height": 1158,
+          "alt": "The Boudica — OXY_BLACK"
+        }
+      ]
+    },
+    {
+      "handle": "the-establishment",
+      "title": "The Establishment",
+      "kind": "product",
+      "code": "ESTB",
+      "type": "T-Shirt",
+      "tags": [],
+      "price": 2800,
+      "compareAtPrice": null,
+      "issue": "ISSUE_000",
+      "indexRef": "LIMITED EDITION",
+      "limited": true,
+      "strapline": "colour print. The old guard in full regalia.",
+      "dossier": [
+        "The bowler hat draped in Union Jack. The umbrella crossed like a weapon. The skull wearing it all with a grin that says: **I was here before you and I’ll be here after**.",
+        "Colour print on OXY_BLACK. This is Issue 000 — before the archive started, when it was just one image and a name that hadn’t been earned yet.",
+        "**220gsm heavyweight cotton. Colour screen printed in Britain. Wash inside out at 30°C. No tumble dry.**"
+      ],
+      "fieldManual": [
+        {
+          "label": "ENTRY",
+          "value": "ISSUE_000 // THE ESTABLISHMENT"
+        },
+        {
+          "label": "EDITION",
+          "value": "LIMITED // PRE-ARCHIVE // NOT REPEATED"
+        },
+        {
+          "label": "PRINT",
+          "value": "COLOUR // WATER-BASED SCREEN PRINT // UK"
+        },
+        {
+          "label": "FABRIC",
+          "value": "100% RING-SPUN COTTON // 220GSM"
+        },
+        {
+          "label": "FIT",
+          "value": "UNISEX // REGULAR // CREW NECK"
+        },
+        {
+          "label": "COLOURWAYS",
+          "value": "OXY_BLACK ONLY"
+        },
+        {
+          "label": "CARE",
+          "value": "30°C // INSIDE OUT // NO TUMBLE"
+        },
+        {
+          "label": "DELIVERY",
+          "value": "FREE UK OVER £40 // 2–5 WORKING DAYS"
+        }
+      ],
+      "editorial": [
+        {
+          "heading": "Issue Zero.",
+          "body": "Before the archive. Before the numbering. When it was one print, one question, and a name that hadn’t been earned yet. The Establishment was the first image — the skull in the Union Jack bowler, the crossed umbrellas below it. The whole brand is an argument with this image. This is where the argument started. [PLACEHOLDER — REPLACE WITH FINAL COPY]"
+        },
+        {
+          "heading": "The Craft.",
+          "body": "220gsm ring-spun cotton. Colour water-based screen print, applied in Britain. The extra complexity of a colour print is deliberate — Issue 000 earns its edition status in every layer. Soft hand-feel that improves with washing. No cracking, no fading, no apologies. Wash inside out at 30°C — tumble dryers are for quitters. [PLACEHOLDER — REPLACE WITH FINAL COPY]"
+        }
+      ],
+      "options": [
+        {
+          "name": "Colour",
+          "values": [
+            {
+              "value": "Black",
+              "display": "OXY_BLACK",
+              "hex": "#0a0a0a"
+            }
+          ]
+        },
+        {
+          "name": "Size",
+          "values": [
+            {
+              "value": "S",
+              "display": "S"
+            },
+            {
+              "value": "M",
+              "display": "M"
+            },
+            {
+              "value": "L",
+              "display": "L"
+            },
+            {
+              "value": "XL",
+              "display": "XL"
+            },
+            {
+              "value": "XXL",
+              "display": "XXL"
+            }
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "id": "the-establishment-blk-s",
+          "sku": "BS-ESTB-BLK-S",
+          "options": {
+            "Colour": "Black",
+            "Size": "S"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-establishment-blk-m",
+          "sku": "BS-ESTB-BLK-M",
+          "options": {
+            "Colour": "Black",
+            "Size": "M"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-establishment-blk-l",
+          "sku": "BS-ESTB-BLK-L",
+          "options": {
+            "Colour": "Black",
+            "Size": "L"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-establishment-blk-xl",
+          "sku": "BS-ESTB-BLK-XL",
+          "options": {
+            "Colour": "Black",
+            "Size": "XL"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-establishment-blk-xxl",
+          "sku": "BS-ESTB-BLK-XXL",
+          "options": {
+            "Colour": "Black",
+            "Size": "XXL"
+          },
+          "price": 2800,
+          "available": true
+        }
+      ],
+      "media": [
+        {
+          "colour": "Black",
+          "src": "/assets/products/tee-skull-black-colour.jpg",
+          "width": 994,
+          "height": 1092,
+          "alt": "The Establishment — OXY_BLACK"
+        }
+      ]
+    },
+    {
+      "handle": "the-roll-call",
+      "title": "The Roll Call",
+      "kind": "product",
+      "code": "ROLL",
+      "type": "T-Shirt",
+      "tags": [],
+      "price": 2600,
+      "compareAtPrice": null,
+      "issue": "ISSUE_001",
+      "indexRef": "#03",
+      "limited": false,
+      "strapline": "answer your name.",
+      "dossier": [
+        "**TOMMY** — every lad who shouldered a pack and went. **KATIE** — every woman who ran the switchboards, drove the ambulances and built the bombers. **WINSTON** — the growl on the wireless when it mattered most. **BOUDICA** — the one who started it all.",
+        "Set like a band line-up, because that’s what they are: the greatest line-up these islands ever fielded. Soft-hand typographic print. If you know, you know — and if someone asks, you get to tell the whole story.",
+        "**220gsm heavyweight cotton. Printed in Britain. Wash inside out at 30°C. No tumble dry.**"
+      ],
+      "fieldManual": [
+        {
+          "label": "ENTRY",
+          "value": "#03 // THE ROLL CALL"
+        },
+        {
+          "label": "ISSUE",
+          "value": "ISSUE_001"
+        },
+        {
+          "label": "PRINT",
+          "value": "SOFT-HAND TYPOGRAPHIC // UK"
+        },
+        {
+          "label": "FABRIC",
+          "value": "100% RING-SPUN COTTON // 220GSM"
+        },
+        {
+          "label": "FIT",
+          "value": "UNISEX // REGULAR // CREW NECK"
+        },
+        {
+          "label": "COLOURWAYS",
+          "value": "CHALK_WHITE / OXY_BLACK"
+        },
+        {
+          "label": "CARE",
+          "value": "30°C // INSIDE OUT // NO TUMBLE"
+        },
+        {
+          "label": "DELIVERY",
+          "value": "FREE UK OVER £40 // 2–5 WORKING DAYS"
+        }
+      ],
+      "editorial": [
+        {
+          "heading": "The Names.",
+          "body": "Tommy, Katie, Winston, Boudica. Set like a band line-up because that’s what they are — the greatest line-up these islands ever fielded. Typographic print, no symbols required. The names say everything. If you know, you know. And if someone asks, you get to tell the whole story. [PLACEHOLDER — REPLACE WITH FINAL COPY]"
+        },
+        {
+          "heading": "The Craft.",
+          "body": "220gsm ring-spun cotton. Water-based screen print, applied in Britain. Soft hand-feel that improves with washing. No cracking, no fading, no apologies. Wash inside out at 30°C — tumble dryers are for quitters. [PLACEHOLDER — REPLACE WITH FINAL COPY]"
+        }
+      ],
+      "options": [
+        {
+          "name": "Colour",
+          "values": [
+            {
+              "value": "Off-White",
+              "display": "CHALK_WHITE",
+              "hex": "#e7e7e2"
+            },
+            {
+              "value": "Black",
+              "display": "OXY_BLACK",
+              "hex": "#0a0a0a"
+            }
+          ]
+        },
+        {
+          "name": "Size",
+          "values": [
+            {
+              "value": "S",
+              "display": "S"
+            },
+            {
+              "value": "M",
+              "display": "M"
+            },
+            {
+              "value": "L",
+              "display": "L"
+            },
+            {
+              "value": "XL",
+              "display": "XL"
+            },
+            {
+              "value": "XXL",
+              "display": "XXL"
+            }
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "id": "the-roll-call-owh-s",
+          "sku": "BS-ROLL-OWH-S",
+          "options": {
+            "Colour": "Off-White",
+            "Size": "S"
+          },
+          "price": 2600,
+          "available": true
+        },
+        {
+          "id": "the-roll-call-owh-m",
+          "sku": "BS-ROLL-OWH-M",
+          "options": {
+            "Colour": "Off-White",
+            "Size": "M"
+          },
+          "price": 2600,
+          "available": true
+        },
+        {
+          "id": "the-roll-call-owh-l",
+          "sku": "BS-ROLL-OWH-L",
+          "options": {
+            "Colour": "Off-White",
+            "Size": "L"
+          },
+          "price": 2600,
+          "available": true
+        },
+        {
+          "id": "the-roll-call-owh-xl",
+          "sku": "BS-ROLL-OWH-XL",
+          "options": {
+            "Colour": "Off-White",
+            "Size": "XL"
+          },
+          "price": 2600,
+          "available": true
+        },
+        {
+          "id": "the-roll-call-owh-xxl",
+          "sku": "BS-ROLL-OWH-XXL",
+          "options": {
+            "Colour": "Off-White",
+            "Size": "XXL"
+          },
+          "price": 2600,
+          "available": true
+        },
+        {
+          "id": "the-roll-call-blk-s",
+          "sku": "BS-ROLL-BLK-S",
+          "options": {
+            "Colour": "Black",
+            "Size": "S"
+          },
+          "price": 2600,
+          "available": true
+        },
+        {
+          "id": "the-roll-call-blk-m",
+          "sku": "BS-ROLL-BLK-M",
+          "options": {
+            "Colour": "Black",
+            "Size": "M"
+          },
+          "price": 2600,
+          "available": true
+        },
+        {
+          "id": "the-roll-call-blk-l",
+          "sku": "BS-ROLL-BLK-L",
+          "options": {
+            "Colour": "Black",
+            "Size": "L"
+          },
+          "price": 2600,
+          "available": true
+        },
+        {
+          "id": "the-roll-call-blk-xl",
+          "sku": "BS-ROLL-BLK-XL",
+          "options": {
+            "Colour": "Black",
+            "Size": "XL"
+          },
+          "price": 2600,
+          "available": true
+        },
+        {
+          "id": "the-roll-call-blk-xxl",
+          "sku": "BS-ROLL-BLK-XXL",
+          "options": {
+            "Colour": "Black",
+            "Size": "XXL"
+          },
+          "price": 2600,
+          "available": true
+        }
+      ],
+      "media": [
+        {
+          "colour": "Off-White",
+          "src": "/assets/products/tee-tommy-white.jpg",
+          "width": 944,
+          "height": 1098,
+          "alt": "The Roll Call — CHALK_WHITE"
+        },
+        {
+          "colour": "Black",
+          "src": "/assets/products/tee-tommy-black.jpg",
+          "width": 970,
+          "height": 1072,
+          "alt": "The Roll Call — OXY_BLACK"
+        }
+      ]
+    },
+    {
+      "handle": "the-frequency",
+      "title": "The Frequency",
+      "kind": "product",
+      "code": "FREQ",
+      "type": "T-Shirt",
+      "tags": [],
+      "price": 2800,
+      "compareAtPrice": null,
+      "issue": "ISSUE_001",
+      "indexRef": "#04",
+      "limited": false,
+      "strapline": "a mod target with a second signal.",
+      "dossier": [
+        "From a distance: classic RAF roundel. Up close: every concentric ring is built entirely from the word **BLITZSPIRIT**, repeated as a drumbeat. No extra logo. No signature. Just the brand, in the brand.",
+        "Roundel started on the wings of Spitfires over Kent in 1940. A generation later the mods lifted it onto parkas and scooters. Same circle, same defiance — better tailoring.",
+        "**220gsm heavyweight cotton. Screen printed in Britain. Wash inside out at 30°C. No tumble dry.**"
+      ],
+      "fieldManual": [
+        {
+          "label": "ENTRY",
+          "value": "#04 // THE FREQUENCY"
+        },
+        {
+          "label": "ISSUE",
+          "value": "ISSUE_001"
+        },
+        {
+          "label": "FABRIC",
+          "value": "100% RING-SPUN COTTON // 220GSM"
+        },
+        {
+          "label": "PRINT",
+          "value": "WATER-BASED SCREEN PRINT // UK"
+        },
+        {
+          "label": "FIT",
+          "value": "UNISEX // REGULAR // CREW NECK"
+        },
+        {
+          "label": "COLOURWAYS",
+          "value": "OXY_BLACK / CHALK_WHITE / SYSTEM_NAVY"
+        },
+        {
+          "label": "CARE",
+          "value": "30°C // INSIDE OUT // NO TUMBLE"
+        },
+        {
+          "label": "DELIVERY",
+          "value": "FREE UK OVER £40 // 2–5 WORKING DAYS"
+        }
+      ],
+      "editorial": [
+        {
+          "heading": "The Signal.",
+          "body": "Started on Spitfire wings over Kent in 1940, lifted onto parkas and scooters a generation later. The mod roundel is the sharpest mark in British street culture — same circle, same defiance. Our version hides the whole story inside: every ring is built from the word BLITZSPIRIT, repeated like a drumbeat. [PLACEHOLDER — REPLACE WITH FINAL COPY]"
+        },
+        {
+          "heading": "The Craft.",
+          "body": "220gsm ring-spun cotton. Water-based screen print, applied in Britain. Soft hand-feel that improves with washing. No cracking, no fading, no apologies. Wash inside out at 30°C — tumble dryers are for quitters. [PLACEHOLDER — REPLACE WITH FINAL COPY]"
+        }
+      ],
+      "options": [
+        {
+          "name": "Colour",
+          "values": [
+            {
+              "value": "Black",
+              "display": "OXY_BLACK",
+              "hex": "#0a0a0a"
+            },
+            {
+              "value": "Off-White",
+              "display": "CHALK_WHITE",
+              "hex": "#e7e7e2"
+            },
+            {
+              "value": "Navy",
+              "display": "SYSTEM_NAVY",
+              "hex": "#1f2a3d"
+            }
+          ]
+        },
+        {
+          "name": "Size",
+          "values": [
+            {
+              "value": "S",
+              "display": "S"
+            },
+            {
+              "value": "M",
+              "display": "M"
+            },
+            {
+              "value": "L",
+              "display": "L"
+            },
+            {
+              "value": "XL",
+              "display": "XL"
+            },
+            {
+              "value": "XXL",
+              "display": "XXL"
+            }
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "id": "the-frequency-blk-s",
+          "sku": "BS-FREQ-BLK-S",
+          "options": {
+            "Colour": "Black",
+            "Size": "S"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-frequency-blk-m",
+          "sku": "BS-FREQ-BLK-M",
+          "options": {
+            "Colour": "Black",
+            "Size": "M"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-frequency-blk-l",
+          "sku": "BS-FREQ-BLK-L",
+          "options": {
+            "Colour": "Black",
+            "Size": "L"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-frequency-blk-xl",
+          "sku": "BS-FREQ-BLK-XL",
+          "options": {
+            "Colour": "Black",
+            "Size": "XL"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-frequency-blk-xxl",
+          "sku": "BS-FREQ-BLK-XXL",
+          "options": {
+            "Colour": "Black",
+            "Size": "XXL"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-frequency-owh-s",
+          "sku": "BS-FREQ-OWH-S",
+          "options": {
+            "Colour": "Off-White",
+            "Size": "S"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-frequency-owh-m",
+          "sku": "BS-FREQ-OWH-M",
+          "options": {
+            "Colour": "Off-White",
+            "Size": "M"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-frequency-owh-l",
+          "sku": "BS-FREQ-OWH-L",
+          "options": {
+            "Colour": "Off-White",
+            "Size": "L"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-frequency-owh-xl",
+          "sku": "BS-FREQ-OWH-XL",
+          "options": {
+            "Colour": "Off-White",
+            "Size": "XL"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-frequency-owh-xxl",
+          "sku": "BS-FREQ-OWH-XXL",
+          "options": {
+            "Colour": "Off-White",
+            "Size": "XXL"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-frequency-nvy-s",
+          "sku": "BS-FREQ-NVY-S",
+          "options": {
+            "Colour": "Navy",
+            "Size": "S"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-frequency-nvy-m",
+          "sku": "BS-FREQ-NVY-M",
+          "options": {
+            "Colour": "Navy",
+            "Size": "M"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-frequency-nvy-l",
+          "sku": "BS-FREQ-NVY-L",
+          "options": {
+            "Colour": "Navy",
+            "Size": "L"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-frequency-nvy-xl",
+          "sku": "BS-FREQ-NVY-XL",
+          "options": {
+            "Colour": "Navy",
+            "Size": "XL"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-frequency-nvy-xxl",
+          "sku": "BS-FREQ-NVY-XXL",
+          "options": {
+            "Colour": "Navy",
+            "Size": "XXL"
+          },
+          "price": 2800,
+          "available": true
+        }
+      ],
+      "media": [
+        {
+          "colour": "Black",
+          "src": "/assets/products/tee-roundel-black.jpg",
+          "width": 950,
+          "height": 1082,
+          "alt": "The Frequency — OXY_BLACK"
+        },
+        {
+          "colour": "Off-White",
+          "src": "/assets/products/tee-roundel-offwhite.jpg",
+          "width": 1000,
+          "height": 1092,
+          "alt": "The Frequency — CHALK_WHITE"
+        },
+        {
+          "colour": "Navy",
+          "src": "/assets/products/tee-roundel-navy.jpg",
+          "width": 974,
+          "height": 1118,
+          "alt": "The Frequency — SYSTEM_NAVY"
+        }
+      ]
+    },
+    {
+      "handle": "the-clerk",
+      "title": "The Clerk",
+      "kind": "product",
+      "code": "CLRK",
+      "type": "T-Shirt",
+      "tags": [],
+      "price": 2800,
+      "compareAtPrice": null,
+      "issue": "ISSUE_001",
+      "indexRef": "#05",
+      "limited": false,
+      "strapline": "mono print. Courtesy is not weakness.",
+      "dossier": [
+        "The bowler hat and the umbrella: the most polite uniform ever invented. The man who wore it queued properly, apologised when you stepped on **his** foot — and walked to work through rubble with the morning paper under his arm, daring the Luftwaffe to make him late.",
+        "Cross the brollies like cutlasses, put the skull under the brim, and you get the truth of him. The Jolly Roger of good manners — **politely menacing since the Blitz**.",
+        "**220gsm heavyweight cotton. Screen printed in Britain. Wash inside out at 30°C. No tumble dry.**"
+      ],
+      "fieldManual": [
+        {
+          "label": "ENTRY",
+          "value": "#05 // THE CLERK"
+        },
+        {
+          "label": "ISSUE",
+          "value": "ISSUE_001"
+        },
+        {
+          "label": "PRINT",
+          "value": "MONO // WATER-BASED SCREEN PRINT // UK"
+        },
+        {
+          "label": "FABRIC",
+          "value": "100% RING-SPUN COTTON // 220GSM"
+        },
+        {
+          "label": "FIT",
+          "value": "UNISEX // REGULAR // CREW NECK"
+        },
+        {
+          "label": "COLOURWAYS",
+          "value": "OXY_BLACK / CHALK_WHITE"
+        },
+        {
+          "label": "CARE",
+          "value": "30°C // INSIDE OUT // NO TUMBLE"
+        },
+        {
+          "label": "DELIVERY",
+          "value": "FREE UK OVER £40 // 2–5 WORKING DAYS"
+        }
+      ],
+      "editorial": [
+        {
+          "heading": "The City Gent.",
+          "body": "The bowler hat and the umbrella: the most polite uniform ever invented. He queued properly, apologised when you stepped on his foot — and walked to work through rubble with the morning paper under his arm, daring the Luftwaffe to make him late. Cross the brollies like cutlasses, put the skull under the brim. Politely menacing since the Blitz. [PLACEHOLDER — REPLACE WITH FINAL COPY]"
+        },
+        {
+          "heading": "The Craft.",
+          "body": "220gsm ring-spun cotton. Water-based screen print, applied in Britain. Soft hand-feel that improves with washing. No cracking, no fading, no apologies. Wash inside out at 30°C — tumble dryers are for quitters. [PLACEHOLDER — REPLACE WITH FINAL COPY]"
+        }
+      ],
+      "options": [
+        {
+          "name": "Colour",
+          "values": [
+            {
+              "value": "Black",
+              "display": "OXY_BLACK",
+              "hex": "#0a0a0a"
+            },
+            {
+              "value": "Off-White",
+              "display": "CHALK_WHITE",
+              "hex": "#e7e7e2"
+            }
+          ]
+        },
+        {
+          "name": "Size",
+          "values": [
+            {
+              "value": "S",
+              "display": "S"
+            },
+            {
+              "value": "M",
+              "display": "M"
+            },
+            {
+              "value": "L",
+              "display": "L"
+            },
+            {
+              "value": "XL",
+              "display": "XL"
+            },
+            {
+              "value": "XXL",
+              "display": "XXL"
+            }
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "id": "the-clerk-blk-s",
+          "sku": "BS-CLRK-BLK-S",
+          "options": {
+            "Colour": "Black",
+            "Size": "S"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-clerk-blk-m",
+          "sku": "BS-CLRK-BLK-M",
+          "options": {
+            "Colour": "Black",
+            "Size": "M"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-clerk-blk-l",
+          "sku": "BS-CLRK-BLK-L",
+          "options": {
+            "Colour": "Black",
+            "Size": "L"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-clerk-blk-xl",
+          "sku": "BS-CLRK-BLK-XL",
+          "options": {
+            "Colour": "Black",
+            "Size": "XL"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-clerk-blk-xxl",
+          "sku": "BS-CLRK-BLK-XXL",
+          "options": {
+            "Colour": "Black",
+            "Size": "XXL"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-clerk-owh-s",
+          "sku": "BS-CLRK-OWH-S",
+          "options": {
+            "Colour": "Off-White",
+            "Size": "S"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-clerk-owh-m",
+          "sku": "BS-CLRK-OWH-M",
+          "options": {
+            "Colour": "Off-White",
+            "Size": "M"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-clerk-owh-l",
+          "sku": "BS-CLRK-OWH-L",
+          "options": {
+            "Colour": "Off-White",
+            "Size": "L"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-clerk-owh-xl",
+          "sku": "BS-CLRK-OWH-XL",
+          "options": {
+            "Colour": "Off-White",
+            "Size": "XL"
+          },
+          "price": 2800,
+          "available": true
+        },
+        {
+          "id": "the-clerk-owh-xxl",
+          "sku": "BS-CLRK-OWH-XXL",
+          "options": {
+            "Colour": "Off-White",
+            "Size": "XXL"
+          },
+          "price": 2800,
+          "available": true
+        }
+      ],
+      "media": [
+        {
+          "colour": "Black",
+          "src": "/assets/products/tee-clerk-black.jpg",
+          "width": 922,
+          "height": 1090,
+          "alt": "The Clerk — OXY_BLACK"
+        },
+        {
+          "colour": "Off-White",
+          "src": "/assets/products/tee-clerk-white.jpg",
+          "width": 940,
+          "height": 1098,
+          "alt": "The Clerk — CHALK_WHITE"
+        }
+      ]
+    },
+    {
+      "handle": "the-cap",
+      "title": "The Cap",
+      "kind": "product",
+      "code": "CAP",
+      "type": "Headwear",
+      "tags": [],
+      "price": 2200,
+      "compareAtPrice": null,
+      "issue": "ISSUE_001",
+      "indexRef": "EQUIPMENT",
+      "limited": false,
+      "strapline": "stiff upper brim.",
+      "dossier": [
+        "Six-panel structured cap. BlitzSpirit embroidered on the front — **no typographic cowardice**. Adjustable strap at the rear. Built for all weather, all latitudes, all situations where you’d rather say nothing and let the cap do the talking.",
+        "Equipment division. Same principles as the tees — utility over decoration, quality over novelty.",
+        "**100% cotton twill. Embroidered logo. Adjustable strap. Spot clean.**"
+      ],
+      "fieldManual": [
+        {
+          "label": "CLASSIFICATION",
+          "value": "EQUIPMENT // HEADWEAR"
+        },
+        {
+          "label": "ISSUE",
+          "value": "ISSUE_001"
+        },
+        {
+          "label": "CONSTRUCTION",
+          "value": "6-PANEL // STRUCTURED // STIFF BRIM"
+        },
+        {
+          "label": "FABRIC",
+          "value": "100% COTTON TWILL"
+        },
+        {
+          "label": "LOGO",
+          "value": "EMBROIDERED // FRONT PANEL"
+        },
+        {
+          "label": "FIT",
+          "value": "ONE-SIZE-FITS-MOST // ADJUSTABLE STRAP"
+        },
+        {
+          "label": "COLOURWAYS",
+          "value": "OXY_BLACK / SYSTEM_NAVY / CHALK_STONE"
+        },
+        {
+          "label": "CARE",
+          "value": "SPOT CLEAN ONLY // DO NOT MACHINE WASH"
+        },
+        {
+          "label": "DELIVERY",
+          "value": "FREE UK OVER £40 // 2–5 WORKING DAYS"
+        }
+      ],
+      "editorial": [
+        {
+          "heading": "The Brim.",
+          "body": "Six-panel structured cap. Embroidered BlitzSpirit on the front — no typographic cowardice. Adjustable strap at the rear. Built for all weather, all latitudes, all situations where you’d rather say nothing and let the cap do the talking. Equipment division. Same principles as the tees — utility over decoration, quality over novelty. [PLACEHOLDER — REPLACE WITH FINAL COPY]"
+        },
+        {
+          "heading": "The Craft.",
+          "body": "100% cotton twill, cut in six panels and built to keep its shape. Embroidered — not printed — because the logo should outlast the weather. Spot clean only; a cap that goes in the washing machine comes out apologising. [PLACEHOLDER — REPLACE WITH FINAL COPY]"
+        }
+      ],
+      "options": [
+        {
+          "name": "Colour",
+          "values": [
+            {
+              "value": "Black",
+              "display": "OXY_BLACK",
+              "hex": "#0a0a0a"
+            },
+            {
+              "value": "Navy",
+              "display": "SYSTEM_NAVY",
+              "hex": "#1f2a3d"
+            },
+            {
+              "value": "Stone",
+              "display": "CHALK_STONE",
+              "hex": "#e8dfc0"
+            }
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "id": "the-cap-blk",
+          "sku": "BS-CAP-BLK",
+          "options": {
+            "Colour": "Black"
+          },
+          "price": 2200,
+          "available": true
+        },
+        {
+          "id": "the-cap-nvy",
+          "sku": "BS-CAP-NVY",
+          "options": {
+            "Colour": "Navy"
+          },
+          "price": 2200,
+          "available": true
+        },
+        {
+          "id": "the-cap-stn",
+          "sku": "BS-CAP-STN",
+          "options": {
+            "Colour": "Stone"
+          },
+          "price": 2200,
+          "available": true
+        }
+      ],
+      "media": [
+        {
+          "colour": "Black",
+          "src": "/assets/products/cap-black.jpg",
+          "width": 920,
+          "height": 892,
+          "alt": "The Cap — OXY_BLACK"
+        },
+        {
+          "colour": "Navy",
+          "src": "/assets/products/cap-navy.jpg",
+          "width": 1014,
+          "height": 1042,
+          "alt": "The Cap — SYSTEM_NAVY"
+        },
+        {
+          "colour": "Stone",
+          "src": "/assets/products/cap-cream.jpg",
+          "width": 1090,
+          "height": 1034,
+          "alt": "The Cap — CHALK_STONE"
+        }
+      ]
+    },
+    {
+      "handle": "the-establishment-navy-cap",
+      "title": "The Establishment + Navy Cap",
+      "kind": "bundle",
+      "code": "THE_ESTABLISHMENT_NAVY_CAP",
+      "type": "Bundle",
+      "tags": [
+        "sale",
+        "bundle"
+      ],
+      "price": 4000,
+      "compareAtPrice": 5000,
+      "issue": "ISSUE_001",
+      "indexRef": "DEAL",
+      "limited": false,
+      "strapline": "issue zero and the brim, together.",
+      "dossier": [
+        "Issue 000 on OXY_BLACK with the six-panel cap in SYSTEM_NAVY. The pre-archive print and the equipment that goes with it.",
+        "Sold as one line. The Establishment + The Cap. **20% under the sum of its parts.**",
+        "**Free UK delivery over £40. Wash inside out at 30°C. No tumble dry.**"
+      ],
+      "fieldManual": [
+        {
+          "label": "ENTRY",
+          "value": "DEAL // THE ESTABLISHMENT + NAVY CAP"
+        },
+        {
+          "label": "CONTENTS",
+          "value": "THE ESTABLISHMENT // THE CAP"
+        },
+        {
+          "label": "SAVING",
+          "value": "20% OFF THE SUM OF ITS PARTS"
+        },
+        {
+          "label": "CARE",
+          "value": "PER ITEM // SEE COMPONENT ENTRIES"
+        },
+        {
+          "label": "DELIVERY",
+          "value": "FREE UK OVER £40 // 2–5 WORKING DAYS"
+        }
+      ],
+      "editorial": [],
+      "components": [
+        {
+          "handle": "the-establishment",
+          "label": "The Establishment",
+          "colour": "Black",
+          "size": "M"
+        },
+        {
+          "handle": "the-cap",
+          "label": "The Cap",
+          "colour": "Navy",
+          "size": null
+        }
+      ],
+      "options": [],
+      "variants": [
+        {
+          "id": "the-establishment-navy-cap",
+          "sku": "BS-BUNDLE-TENC",
+          "options": {},
+          "price": 4000,
+          "available": true
+        }
+      ],
+      "media": [
+        {
+          "colour": "Black",
+          "src": "/assets/products/tee-skull-black-colour.jpg",
+          "width": 994,
+          "height": 1092,
+          "alt": "The Establishment — OXY_BLACK"
+        },
+        {
+          "colour": "Navy",
+          "src": "/assets/products/cap-navy.jpg",
+          "width": 1014,
+          "height": 1042,
+          "alt": "The Cap — SYSTEM_NAVY"
+        }
+      ]
+    },
+    {
+      "handle": "the-establishment-the-clerk",
+      "title": "The Establishment + The Clerk",
+      "kind": "bundle",
+      "code": "THE_ESTABLISHMENT_THE_CLERK",
+      "type": "Bundle",
+      "tags": [
+        "sale",
+        "bundle"
+      ],
+      "price": 4480,
+      "compareAtPrice": 5600,
+      "issue": "ISSUE_001",
+      "indexRef": "DEAL",
+      "limited": false,
+      "strapline": "both skulls. one line.",
+      "dossier": [
+        "The colour print and the mono print of the same idea — the old guard in full regalia, and the city gent who kept walking through the rubble.",
+        "Sold as one line. The Establishment + The Clerk. **20% under the sum of its parts.**",
+        "**Free UK delivery over £40. Wash inside out at 30°C. No tumble dry.**"
+      ],
+      "fieldManual": [
+        {
+          "label": "ENTRY",
+          "value": "DEAL // THE ESTABLISHMENT + THE CLERK"
+        },
+        {
+          "label": "CONTENTS",
+          "value": "THE ESTABLISHMENT // THE CLERK"
+        },
+        {
+          "label": "SAVING",
+          "value": "20% OFF THE SUM OF ITS PARTS"
+        },
+        {
+          "label": "CARE",
+          "value": "PER ITEM // SEE COMPONENT ENTRIES"
+        },
+        {
+          "label": "DELIVERY",
+          "value": "FREE UK OVER £40 // 2–5 WORKING DAYS"
+        }
+      ],
+      "editorial": [],
+      "components": [
+        {
+          "handle": "the-establishment",
+          "label": "The Establishment",
+          "colour": "Black",
+          "size": "M"
+        },
+        {
+          "handle": "the-clerk",
+          "label": "The Clerk",
+          "colour": "Black",
+          "size": "M"
+        }
+      ],
+      "options": [],
+      "variants": [
+        {
+          "id": "the-establishment-the-clerk",
+          "sku": "BS-BUNDLE-TETC",
+          "options": {},
+          "price": 4480,
+          "available": true
+        }
+      ],
+      "media": [
+        {
+          "colour": "Black",
+          "src": "/assets/products/tee-skull-black-colour.jpg",
+          "width": 994,
+          "height": 1092,
+          "alt": "The Establishment — OXY_BLACK"
+        },
+        {
+          "colour": "Black",
+          "src": "/assets/products/tee-clerk-black.jpg",
+          "width": 922,
+          "height": 1090,
+          "alt": "The Clerk — OXY_BLACK"
+        }
+      ]
+    },
+    {
+      "handle": "the-boudica-chalk-cap",
+      "title": "The Boudica + Chalk Cap",
+      "kind": "bundle",
+      "code": "THE_BOUDICA_CHALK_CAP",
+      "type": "Bundle",
+      "tags": [
+        "sale",
+        "bundle"
+      ],
+      "price": 4000,
+      "compareAtPrice": 5000,
+      "issue": "ISSUE_001",
+      "indexRef": "DEAL",
+      "limited": false,
+      "strapline": "the standard, and something to keep the rain off.",
+      "dossier": [
+        "Britannia on CHALK_WHITE with the six-panel cap in CHALK_STONE. She would not have queued for either.",
+        "Sold as one line. The Boudica + The Cap. **20% under the sum of its parts.**",
+        "**Free UK delivery over £40. Wash inside out at 30°C. No tumble dry.**"
+      ],
+      "fieldManual": [
+        {
+          "label": "ENTRY",
+          "value": "DEAL // THE BOUDICA + CHALK CAP"
+        },
+        {
+          "label": "CONTENTS",
+          "value": "THE BOUDICA // THE CAP"
+        },
+        {
+          "label": "SAVING",
+          "value": "20% OFF THE SUM OF ITS PARTS"
+        },
+        {
+          "label": "CARE",
+          "value": "PER ITEM // SEE COMPONENT ENTRIES"
+        },
+        {
+          "label": "DELIVERY",
+          "value": "FREE UK OVER £40 // 2–5 WORKING DAYS"
+        }
+      ],
+      "editorial": [],
+      "components": [
+        {
+          "handle": "the-boudica",
+          "label": "The Boudica",
+          "colour": "Off-White",
+          "size": "M"
+        },
+        {
+          "handle": "the-cap",
+          "label": "The Cap",
+          "colour": "Stone",
+          "size": null
+        }
+      ],
+      "options": [],
+      "variants": [
+        {
+          "id": "the-boudica-chalk-cap",
+          "sku": "BS-BUNDLE-TBCC",
+          "options": {},
+          "price": 4000,
+          "available": true
+        }
+      ],
+      "media": [
+        {
+          "colour": "Off-White",
+          "src": "/assets/products/tee-boudica-offwhite.jpg",
+          "width": 992,
+          "height": 1098,
+          "alt": "The Boudica — CHALK_WHITE"
+        },
+        {
+          "colour": "Stone",
+          "src": "/assets/products/cap-cream.jpg",
+          "width": 1090,
+          "height": 1034,
+          "alt": "The Cap — CHALK_STONE"
+        }
+      ]
+    }
+  ]
+}
