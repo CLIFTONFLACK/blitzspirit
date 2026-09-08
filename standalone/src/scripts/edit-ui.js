@@ -136,15 +136,39 @@ function beginEditing(el) {
     refreshBar();
   };
 
-  el.addEventListener('blur', () => finish(true), { once: true });
+  // Record as they type. Relying on blur alone loses the edit whenever blur does
+  // not fire — the frame losing focus to the parent document, or clicking straight
+  // from the text onto Save.
+  const onInput = () => {
+    const entry = edits.get(id);
+    entry.text = el.textContent;
+    if (entry.text.trim() !== entry.original.trim()) el.setAttribute('data-dirty', '');
+    else el.removeAttribute('data-dirty');
+    refreshBar();
+  };
+  el.addEventListener('input', onInput);
+
+  el.addEventListener(
+    'blur',
+    () => {
+      el.removeEventListener('input', onInput);
+      finish(true);
+    },
+    { once: true }
+  );
+
   el.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
       el.blur();
     } else if (event.key === 'Escape') {
       event.preventDefault();
-      // Put the field back to whatever it said before this click.
-      el.textContent = edits.get(id).text;
+      // Abandon this edit: back to the stored value, not the last keystroke.
+      const entry = edits.get(id);
+      entry.text = entry.original;
+      el.textContent = entry.original;
+      el.removeAttribute('data-dirty');
+      refreshBar();
       el.blur();
     }
   });
