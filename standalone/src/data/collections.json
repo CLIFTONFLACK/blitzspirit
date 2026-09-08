@@ -5,15 +5,12 @@
     "description": "Every entry in the archive. Apparel and equipment, ISSUE_001 onward.",
     "rule": "everything",
     "products": [
-      "the-boudica",
       "the-establishment",
-      "the-roll-call",
       "the-frequency",
       "the-clerk",
       "the-cap",
       "the-establishment-navy-cap",
-      "the-establishment-the-clerk",
-      "the-boudica-chalk-cap"
+      "the-establishment-the-clerk"
     ]
   },
   "t-shirts": {
@@ -22,9 +19,7 @@
     "description": "The printed archive. 220gsm, screen printed in Britain.",
     "rule": "type = T-Shirt",
     "products": [
-      "the-boudica",
       "the-establishment",
-      "the-roll-call",
       "the-frequency",
       "the-clerk"
     ]
@@ -34,7 +29,9 @@
     "title": "Equipment.",
     "description": "Headwear. Utility over decoration.",
     "rule": "type = Headwear",
-    "products": ["the-cap"]
+    "products": [
+      "the-cap"
+    ]
   },
   "deals": {
     "handle": "deals",
@@ -43,8 +40,7 @@
     "rule": "tag = sale",
     "products": [
       "the-establishment-navy-cap",
-      "the-establishment-the-clerk",
-      "the-boudica-chalk-cap"
+      "the-establishment-the-clerk"
     ]
   }
 }

@@ -43,26 +43,6 @@
       },
       "blocks": [
         {
-          "id": "item_1",
-          "type": "item",
-          "settings": {
-            "product": "the-boudica",
-            "dossier": "",
-            "index_label": "",
-            "force_dark": false
-          }
-        },
-        {
-          "id": "item_2",
-          "type": "item",
-          "settings": {
-            "product": "the-roll-call",
-            "dossier": "",
-            "index_label": "",
-            "force_dark": false
-          }
-        },
-        {
           "id": "item_3",
           "type": "item",
           "settings": {

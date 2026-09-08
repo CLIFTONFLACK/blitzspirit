@@ -104,9 +104,24 @@ const variantJson = product.variants.map((v) => {
   };
 });
 
-const archiveTotal = collection
-  ? String(collection.products.length).padStart(2, '0')
+// "#04 OF 05" only reads correctly while the entry number is within the collection.
+// Products can be withdrawn - The Boudica (#01) and The Roll Call (#03) were - and
+// the archive keeps its historical numbering, so #04 can outlive a collection of 3.
+// Rather than print "04 OF 03", drop the count and leave the entry standing.
+const collectionSize = collection ? collection.products.length : 0;
+const entryWithinCollection =
+  entryNum !== '' && Number(entryNum) <= collectionSize;
+const archiveTotal = entryWithinCollection
+  ? String(collectionSize).padStart(2, '0')
   : null;
+
+// Assembled here rather than inline, so the separators stay tidy when the middle
+// clause drops out.
+const archiveLine = [
+  issueVal.toUpperCase(),
+  archiveTotal ? entryNum + ' OF ' + archiveTotal : null,
+  archiveLabel,
+].filter(Boolean).join(' · ');
 ---
 <section class="pdp-wrap" data-product-wrap>
   {showBreadcrumb && (
@@ -286,11 +301,7 @@ const archiveTotal = collection
 
         <div class="pdp-archive-note">
           <hr class="sep-line" />
-          <span class="tag tag-mute">
-            {issueVal.toUpperCase()}
-            {entryNum && archiveTotal ? ` · ${entryNum} OF ${archiveTotal}` : ''}
-            {` · ${archiveLabel}`}
-          </span>
+          <span class="tag tag-mute">{archiveLine}</span>
         </div>
 
         <script type="application/json" data-variant-json set:html={JSON.stringify(variantJson)} />
