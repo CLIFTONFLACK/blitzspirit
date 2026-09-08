@@ -1658,6 +1658,794 @@
               ]
             }
           ]
+        },
+        {
+          "heading": "Written for the sets",
+          "note": "One caption per hook, so nothing repeats",
+          "entries": [
+            {
+              "ref": "C-SET-A-01",
+              "variants": [
+                {
+                  "id": "C-SET-A-01:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Not for everyone. That was the brief."
+                },
+                {
+                  "id": "C-SET-A-01:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "It won't be for everyone. That is rather the point."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-A-02",
+              "variants": [
+                {
+                  "id": "C-SET-A-02:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Built for the stubborn. The rest is detail."
+                },
+                {
+                  "id": "C-SET-A-02:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Built for the stubborn. That is the whole idea."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-A-03",
+              "variants": [
+                {
+                  "id": "C-SET-A-03:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "We made one because we wanted one. Turns out we weren't alone."
+                },
+                {
+                  "id": "C-SET-A-03:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Made because we wanted one. Seems we were not the only ones."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-A-04",
+              "variants": [
+                {
+                  "id": "C-SET-A-04:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "You knew by the second word. Everyone does."
+                },
+                {
+                  "id": "C-SET-A-04:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "You know within a second whether it is your sort of thing."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-A-06",
+              "variants": [
+                {
+                  "id": "C-SET-A-06:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "One idea per shirt. Anything else is decoration."
+                },
+                {
+                  "id": "C-SET-A-06:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "One idea to a shirt. Nothing else added."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-A-07",
+              "variants": [
+                {
+                  "id": "C-SET-A-07:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "The Clerk. Still at the desk, still on the record."
+                },
+                {
+                  "id": "C-SET-A-07:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "The Clerk. Still at the desk, still refusing to be filed away."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-B-01",
+              "variants": [
+                {
+                  "id": "C-SET-B-01:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Nobody puts it on a CV. Everyone recognises it."
+                },
+                {
+                  "id": "C-SET-B-01:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "It never goes on a CV, but everyone knows it when they see it."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-B-02",
+              "variants": [
+                {
+                  "id": "C-SET-B-02:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Ask anyone who has lived with one of us."
+                },
+                {
+                  "id": "C-SET-B-02:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Ask anyone who has had to live with one of us."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-B-03",
+              "variants": [
+                {
+                  "id": "C-SET-B-03:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Heritage you can put through a wash."
+                },
+                {
+                  "id": "C-SET-B-03:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Heritage that goes through the wash, not behind glass."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-B-04",
+              "variants": [
+                {
+                  "id": "C-SET-B-04:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "The quietest people in the room started most of it."
+                },
+                {
+                  "id": "C-SET-B-04:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "The quiet ones in the room usually started it."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-B-05",
+              "variants": [
+                {
+                  "id": "C-SET-B-05:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "We have made jokes through considerably worse."
+                },
+                {
+                  "id": "C-SET-B-05:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "We have joked our way through a great deal worse."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-B-06",
+              "variants": [
+                {
+                  "id": "C-SET-B-06:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Heavy cotton, heavy print, no season attached."
+                },
+                {
+                  "id": "C-SET-B-06:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Heavy cotton and a heavy print. No season attached."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-B-07",
+              "variants": [
+                {
+                  "id": "C-SET-B-07:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Proud. Unapologetic. Occasionally difficult."
+                },
+                {
+                  "id": "C-SET-B-07:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Proud, unapologetic, and occasionally difficult."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-B-08",
+              "variants": [
+                {
+                  "id": "C-SET-B-08:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Every design here has to survive that question."
+                },
+                {
+                  "id": "C-SET-B-08:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Every design here has to pass that test before it exists."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-C-02",
+              "variants": [
+                {
+                  "id": "C-SET-C-02:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Slept on a platform. Went to work. Complained about the tea."
+                },
+                {
+                  "id": "C-SET-C-02:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "They slept on the platforms, went to work, and complained about the tea."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-C-03",
+              "variants": [
+                {
+                  "id": "C-SET-C-03:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Not a queen for ceremony."
+                },
+                {
+                  "id": "C-SET-C-03:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Not the ceremonial sort of queen."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-C-04",
+              "variants": [
+                {
+                  "id": "C-SET-C-04:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Target from a distance. Attitude up close."
+                },
+                {
+                  "id": "C-SET-C-04:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "A target from far off. Attitude up close."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-C-05",
+              "variants": [
+                {
+                  "id": "C-SET-C-05:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "The old guard went. The bowler stayed."
+                },
+                {
+                  "id": "C-SET-C-05:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "The old guard is long gone. The bowler hat stayed."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-C-08",
+              "variants": [
+                {
+                  "id": "C-SET-C-08:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Twenty years later, the same two words."
+                },
+                {
+                  "id": "C-SET-C-08:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Twenty years on, still the same two words."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-D-01",
+              "variants": [
+                {
+                  "id": "C-SET-D-01:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Somebody has to be the immovable one."
+                },
+                {
+                  "id": "C-SET-D-01:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Someone in every room has to be the immovable one."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-D-02",
+              "variants": [
+                {
+                  "id": "C-SET-D-02:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "It reads twice. That is the design."
+                },
+                {
+                  "id": "C-SET-D-02:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "It takes two reads. That part is deliberate."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-D-03",
+              "variants": [
+                {
+                  "id": "C-SET-D-03:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Taken as a compliment, every time."
+                },
+                {
+                  "id": "C-SET-D-03:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "We have always taken that as a compliment."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-D-04",
+              "variants": [
+                {
+                  "id": "C-SET-D-04:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "The country runs on people who went anyway."
+                },
+                {
+                  "id": "C-SET-D-04:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "This country runs on the people who went anyway."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-D-05",
+              "variants": [
+                {
+                  "id": "C-SET-D-05:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Her face, her temper, her standards about queueing."
+                },
+                {
+                  "id": "C-SET-D-05:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Her face, her temper, and her views on queueing."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-D-06",
+              "variants": [
+                {
+                  "id": "C-SET-D-06:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "The door started it."
+                },
+                {
+                  "id": "C-SET-D-06:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "In fairness, the door started it."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-D-07",
+              "variants": [
+                {
+                  "id": "C-SET-D-07:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "No club, no cause, no group chat."
+                },
+                {
+                  "id": "C-SET-D-07:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "No club, no cause, and no group chat required."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-D-08",
+              "variants": [
+                {
+                  "id": "C-SET-D-08:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "If it only works as a message, it isn't finished."
+                },
+                {
+                  "id": "C-SET-D-08:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "The design has to stand up on its own before anything else does."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-E-03",
+              "variants": [
+                {
+                  "id": "C-SET-E-03:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Five names. Most people place two."
+                },
+                {
+                  "id": "C-SET-E-03:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Five names on it. Most people manage two."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-E-04",
+              "variants": [
+                {
+                  "id": "C-SET-E-04:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Ours involved a kettle and a very long queue."
+                },
+                {
+                  "id": "C-SET-E-04:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Ours involved putting the kettle on and joining a very long queue."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-E-05",
+              "variants": [
+                {
+                  "id": "C-SET-E-05:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Pick one. Defend it."
+                },
+                {
+                  "id": "C-SET-E-05:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Pick one and defend it below."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-E-06",
+              "variants": [
+                {
+                  "id": "C-SET-E-06:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Black says nothing. Chalk says it anyway. Navy splits the difference."
+                },
+                {
+                  "id": "C-SET-E-06:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Black keeps quiet, chalk does not, navy sits somewhere between."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-E-07",
+              "variants": [
+                {
+                  "id": "C-SET-E-07:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Ours would have picked the plain one."
+                },
+                {
+                  "id": "C-SET-E-07:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Ours would have gone straight for the plain one."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-F-02",
+              "variants": [
+                {
+                  "id": "C-SET-F-02:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "The shirt does half the work."
+                },
+                {
+                  "id": "C-SET-F-02:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "The colour of the shirt does half of the design."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-F-06",
+              "variants": [
+                {
+                  "id": "C-SET-F-06:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "The mark, before anything else."
+                },
+                {
+                  "id": "C-SET-F-06:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "The plain mark. Where the whole thing started."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-F-07",
+              "variants": [
+                {
+                  "id": "C-SET-F-07:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Issues, not seasons."
+                },
+                {
+                  "id": "C-SET-F-07:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Issues rather than seasons. Five entries in this one."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-F-08",
+              "variants": [
+                {
+                  "id": "C-SET-F-08:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "One run. No reprint planned."
+                },
+                {
+                  "id": "C-SET-F-08:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "A single run, and no reprint planned."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-G-02",
+              "variants": [
+                {
+                  "id": "C-SET-G-02:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Queueing. Understatement. Getting on with it."
+                },
+                {
+                  "id": "C-SET-G-02:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Queueing, understatement, and getting on with it."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-G-03",
+              "variants": [
+                {
+                  "id": "C-SET-G-03:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Rebel. Firebrand. Statesman. Queen."
+                },
+                {
+                  "id": "C-SET-G-03:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "A rebel, a firebrand, a statesman and a queen."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-G-04",
+              "variants": [
+                {
+                  "id": "C-SET-G-04:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Black for the quiet version. Navy for the other one."
+                },
+                {
+                  "id": "C-SET-G-04:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Black is the quiet version. Navy is not."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-G-05",
+              "variants": [
+                {
+                  "id": "C-SET-G-05:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "One idea. Recognisable. Improves with age. Works in a sentence."
+                },
+                {
+                  "id": "C-SET-G-05:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "One idea, recognisable, improves with age, and works in a sentence."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-G-06",
+              "variants": [
+                {
+                  "id": "C-SET-G-06:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Some need no explaining. One takes a paragraph."
+                },
+                {
+                  "id": "C-SET-G-06:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Most need no explaining. One of them takes a paragraph."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-H-01",
+              "variants": [
+                {
+                  "id": "C-SET-H-01:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "My grandad would have worn this. Most weeks, without fail."
+                },
+                {
+                  "id": "C-SET-H-01:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "'My grandad would have worn this' turns up most weeks."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-H-02",
+              "variants": [
+                {
+                  "id": "C-SET-H-02:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Blunt, mostly complimentary, occasionally both at once."
+                },
+                {
+                  "id": "C-SET-H-02:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Blunt reviews, mostly good ones."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-H-03",
+              "variants": [
+                {
+                  "id": "C-SET-H-03:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Named in the comments. Printed by us."
+                },
+                {
+                  "id": "C-SET-H-03:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "You named it in the comments. We printed it."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-H-04",
+              "variants": [
+                {
+                  "id": "C-SET-H-04:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Regular fit. Between sizes, go up."
+                },
+                {
+                  "id": "C-SET-H-04:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Regular fit, true to size. Between sizes, size up."
+                }
+              ]
+            },
+            {
+              "ref": "C-SET-H-05",
+              "variants": [
+                {
+                  "id": "C-SET-H-05:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "You asked. Here it is."
+                },
+                {
+                  "id": "C-SET-H-05:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "You asked, so here is the answer."
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -1787,8 +2575,8 @@
                   "id": "A-LIST-01:house",
                   "reg": "house",
                   "label": "House",
-                  "text": "Gone. Add your name - we'll tell you if it comes back.",
-                  "dir": "Verbatim from the out-of-stock state copy. Keep it word for word"
+                  "text": "Gone. Add your name to the list.",
+                  "dir": "Echoes the locked out-of-stock state copy, which is in From Brand Book"
                 },
                 {
                   "id": "A-LIST-01:eased",
@@ -2039,6 +2827,811 @@
               ]
             }
           ]
+        },
+        {
+          "heading": "Written for the sets",
+          "note": "One ask per hook, matched to what the hook is doing",
+          "entries": [
+            {
+              "ref": "A-SET-A-01",
+              "variants": [
+                {
+                  "id": "A-SET-A-01:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Have a look. Bio."
+                },
+                {
+                  "id": "A-SET-A-01:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Link in bio if you want a look."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-A-02",
+              "variants": [
+                {
+                  "id": "A-SET-A-02:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "The range is in the bio."
+                },
+                {
+                  "id": "A-SET-A-02:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Full range, link in bio."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-A-03",
+              "variants": [
+                {
+                  "id": "A-SET-A-03:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "There if you want it."
+                },
+                {
+                  "id": "A-SET-A-03:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "It is in the bio if you want it."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-A-04",
+              "variants": [
+                {
+                  "id": "A-SET-A-04:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Decide in the bio."
+                },
+                {
+                  "id": "A-SET-A-04:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Have a look in the bio and decide."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-A-06",
+              "variants": [
+                {
+                  "id": "A-SET-A-06:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "See the five. Bio."
+                },
+                {
+                  "id": "A-SET-A-06:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "All five are in the bio."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-A-07",
+              "variants": [
+                {
+                  "id": "A-SET-A-07:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "The Clerk is in the bio."
+                },
+                {
+                  "id": "A-SET-A-07:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Find The Clerk in the bio."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-B-01",
+              "variants": [
+                {
+                  "id": "A-SET-B-01:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Wear the CV instead."
+                },
+                {
+                  "id": "A-SET-B-01:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "It is on a shirt in the bio."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-B-02",
+              "variants": [
+                {
+                  "id": "A-SET-B-02:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Send this to yours."
+                },
+                {
+                  "id": "A-SET-B-02:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Send it to the stubborn one."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-B-03",
+              "variants": [
+                {
+                  "id": "A-SET-B-03:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "The story is in the Archive."
+                },
+                {
+                  "id": "A-SET-B-03:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Read the story in the Archive."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-B-04",
+              "variants": [
+                {
+                  "id": "A-SET-B-04:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Say nothing. Wear it."
+                },
+                {
+                  "id": "A-SET-B-04:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Let the shirt do the talking."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-B-05",
+              "variants": [
+                {
+                  "id": "A-SET-B-05:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Kettle first. Then the bio."
+                },
+                {
+                  "id": "A-SET-B-05:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Kettle on, then have a look in the bio."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-B-06",
+              "variants": [
+                {
+                  "id": "A-SET-B-06:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "No sale coming. Bio."
+                },
+                {
+                  "id": "A-SET-B-06:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "It is in the bio, and there will not be a sale."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-B-07",
+              "variants": [
+                {
+                  "id": "A-SET-B-07:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Nominate the most difficult person you know."
+                },
+                {
+                  "id": "A-SET-B-07:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Tag the most difficult person you know."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-C-01",
+              "variants": [
+                {
+                  "id": "A-SET-C-01:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Same idea, on a shirt. Bio."
+                },
+                {
+                  "id": "A-SET-C-01:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "The same idea on a shirt, link in bio."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-C-02",
+              "variants": [
+                {
+                  "id": "A-SET-C-02:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Some of that is still going. Bio."
+                },
+                {
+                  "id": "A-SET-C-02:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "There is a shirt for that in the bio."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-D-01",
+              "variants": [
+                {
+                  "id": "A-SET-D-01:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "You know who this is for."
+                },
+                {
+                  "id": "A-SET-D-01:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Send it to the one who never budges."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-D-02",
+              "variants": [
+                {
+                  "id": "A-SET-D-02:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Watch it happen. Bio."
+                },
+                {
+                  "id": "A-SET-D-02:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Have a look in the bio."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-D-03",
+              "variants": [
+                {
+                  "id": "A-SET-D-03:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Tag one."
+                },
+                {
+                  "id": "A-SET-D-03:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Tag someone who is a lot."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-D-04",
+              "variants": [
+                {
+                  "id": "A-SET-D-04:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Dress accordingly. Bio."
+                },
+                {
+                  "id": "A-SET-D-04:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "We have one for exactly that. Link in bio."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-D-05",
+              "variants": [
+                {
+                  "id": "A-SET-D-05:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "She would have worn this one."
+                },
+                {
+                  "id": "A-SET-D-05:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "She would have picked this one."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-D-06",
+              "variants": [
+                {
+                  "id": "A-SET-D-06:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Apologise to no one else."
+                },
+                {
+                  "id": "A-SET-D-06:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "It is in the bio."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-D-08",
+              "variants": [
+                {
+                  "id": "A-SET-D-08:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Judge it on the design. Bio."
+                },
+                {
+                  "id": "A-SET-D-08:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "See the designs in the bio."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-E-02",
+              "variants": [
+                {
+                  "id": "A-SET-E-02:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Answer below. We read them."
+                },
+                {
+                  "id": "A-SET-E-02:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Tell us below. We read all of them."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-E-03",
+              "variants": [
+                {
+                  "id": "A-SET-E-03:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Answers below. No cheating."
+                },
+                {
+                  "id": "A-SET-E-03:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Put your answers below, no looking them up."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-E-04",
+              "variants": [
+                {
+                  "id": "A-SET-E-04:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Best answer gets printed."
+                },
+                {
+                  "id": "A-SET-E-04:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "The best answer below gets printed."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-E-05",
+              "variants": [
+                {
+                  "id": "A-SET-E-05:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "We will put the best one on a shirt."
+                },
+                {
+                  "id": "A-SET-E-05:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "The best answer might end up on a shirt."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-E-07",
+              "variants": [
+                {
+                  "id": "A-SET-E-07:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Show him. Bio."
+                },
+                {
+                  "id": "A-SET-E-07:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Send it to him."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-E-08",
+              "variants": [
+                {
+                  "id": "A-SET-E-08:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Settle it below."
+                },
+                {
+                  "id": "A-SET-E-08:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Have it out in the comments."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-F-01",
+              "variants": [
+                {
+                  "id": "A-SET-F-01:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Look properly. Bio."
+                },
+                {
+                  "id": "A-SET-F-01:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "See it up close in the bio."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-F-02",
+              "variants": [
+                {
+                  "id": "A-SET-F-02:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Three colourways. Bio."
+                },
+                {
+                  "id": "A-SET-F-02:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "All three colourways are in the bio."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-F-04",
+              "variants": [
+                {
+                  "id": "A-SET-F-04:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "No discount code exists."
+                },
+                {
+                  "id": "A-SET-F-04:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "There is no discount code, sorry."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-F-05",
+              "variants": [
+                {
+                  "id": "A-SET-F-05:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Every shot is the garment. Bio."
+                },
+                {
+                  "id": "A-SET-F-05:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "The full set of shots is in the bio."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-F-07",
+              "variants": [
+                {
+                  "id": "A-SET-F-07:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Issue_001 is in the bio."
+                },
+                {
+                  "id": "A-SET-F-07:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Issue_001 is live. Link in bio."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-G-02",
+              "variants": [
+                {
+                  "id": "A-SET-G-02:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Add the fourth below."
+                },
+                {
+                  "id": "A-SET-G-02:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Add your fourth in the comments."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-G-03",
+              "variants": [
+                {
+                  "id": "A-SET-G-03:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Class is in session. Bio."
+                },
+                {
+                  "id": "A-SET-G-03:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "The full print is in the bio."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-G-04",
+              "variants": [
+                {
+                  "id": "A-SET-G-04:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Pick a side in the bio."
+                },
+                {
+                  "id": "A-SET-G-04:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Both are in the bio."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-G-05",
+              "variants": [
+                {
+                  "id": "A-SET-G-05:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Mark ours yourself. Bio."
+                },
+                {
+                  "id": "A-SET-G-05:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Judge ours in the bio."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-G-06",
+              "variants": [
+                {
+                  "id": "A-SET-G-06:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Start at the top. Bio."
+                },
+                {
+                  "id": "A-SET-G-06:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Start with the collection, link in bio."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-H-01",
+              "variants": [
+                {
+                  "id": "A-SET-H-01:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Send it to yours."
+                },
+                {
+                  "id": "A-SET-H-01:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Send it to your grandad."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-H-02",
+              "variants": [
+                {
+                  "id": "A-SET-H-02:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Read the rest on the page."
+                },
+                {
+                  "id": "A-SET-H-02:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "The rest are on the product page."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-H-03",
+              "variants": [
+                {
+                  "id": "A-SET-H-03:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Name the next one below."
+                },
+                {
+                  "id": "A-SET-H-03:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Suggest the next one below."
+                }
+              ]
+            },
+            {
+              "ref": "A-SET-H-05",
+              "variants": [
+                {
+                  "id": "A-SET-H-05:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Keep them coming."
+                },
+                {
+                  "id": "A-SET-H-05:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Keep the questions coming."
+                }
+              ]
+            },
+            {
+              "ref": "A-BOT-04",
+              "variants": [
+                {
+                  "id": "A-BOT-04:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Boudica: [LINK]\n\nChalk and black, S to XXL. Reply here if you want a hand with sizing."
+                },
+                {
+                  "id": "A-BOT-04:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Here is Boudica: [LINK]\n\nChalk and black, S to XXL. Any questions, just reply."
+                }
+              ]
+            },
+            {
+              "ref": "A-BOT-05",
+              "variants": [
+                {
+                  "id": "A-BOT-05:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "The Frequency: [LINK]\n\nBlack and navy. Look closely at the roundel."
+                },
+                {
+                  "id": "A-BOT-05:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Here you go: [LINK]\n\nBlack and navy. Worth looking closely at the roundel."
+                }
+              ]
+            },
+            {
+              "ref": "A-BOT-06",
+              "variants": [
+                {
+                  "id": "A-BOT-06:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Issue_001: [LINK]\n\nFive entries. That is the whole collection."
+                },
+                {
+                  "id": "A-BOT-06:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "The collection is here: [LINK]\n\nFive entries, that is all of it."
+                }
+              ]
+            },
+            {
+              "ref": "A-BOT-07",
+              "variants": [
+                {
+                  "id": "A-BOT-07:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Equipment: [LINK]\n\nCaps are permanently stocked. No drop date to wait for."
+                },
+                {
+                  "id": "A-BOT-07:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Caps are here: [LINK]\n\nAlways stocked, so no rush."
+                }
+              ]
+            },
+            {
+              "ref": "A-BOT-08",
+              "variants": [
+                {
+                  "id": "A-BOT-08:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Issue_000: [LINK]\n\nBlack and chalk white. The plain mark."
+                },
+                {
+                  "id": "A-BOT-08:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Issue_000 is here: [LINK]\n\nBlack and chalk white."
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -2255,6 +3848,120 @@
               ]
             }
           ]
+        },
+        {
+          "heading": "Written in the voice",
+          "note": "New lines, same register: he states things and the joke is that they are true",
+          "entries": [
+            {
+              "ref": "D-09",
+              "variants": [
+                {
+                  "id": "D-09:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "The guest has been dead two hundred years. The courtesy is the same."
+                },
+                {
+                  "id": "D-09:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "However long a guest has been dead, the courtesy does not change."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Episode asks",
+          "note": "The only permitted CTA in this register: never a product link",
+          "entries": [
+            {
+              "ref": "A-DRV-01",
+              "variants": [
+                {
+                  "id": "A-DRV-01:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "New episode. He does not introduce it, and neither will we."
+                },
+                {
+                  "id": "A-DRV-01:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "The new one is up. Link in bio."
+                }
+              ]
+            },
+            {
+              "ref": "A-DRV-02",
+              "variants": [
+                {
+                  "id": "A-DRV-02:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "Listen wherever you listen."
+                },
+                {
+                  "id": "A-DRV-02:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Available wherever you get your podcasts."
+                }
+              ]
+            },
+            {
+              "ref": "A-DRV-03",
+              "variants": [
+                {
+                  "id": "A-DRV-03:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "An hour. No conclusion."
+                },
+                {
+                  "id": "A-DRV-03:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "An hour, and no conclusion. Link in bio."
+                }
+              ]
+            },
+            {
+              "ref": "A-DRV-04",
+              "variants": [
+                {
+                  "id": "A-DRV-04:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "He will be there next week regardless."
+                },
+                {
+                  "id": "A-DRV-04:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "New episode every week. Follow along."
+                }
+              ]
+            },
+            {
+              "ref": "A-DRV-05",
+              "variants": [
+                {
+                  "id": "A-DRV-05:house",
+                  "reg": "house",
+                  "label": "House",
+                  "text": "The guest list is not announced."
+                },
+                {
+                  "id": "A-DRV-05:eased",
+                  "reg": "eased",
+                  "label": "Eased",
+                  "text": "Episodes are in the bio. Guests are a surprise."
+                }
+              ]
+            }
+          ]
         }
       ]
     }
@@ -2386,249 +4093,1363 @@
       ]
     }
   ],
-  "pairs": {
-    "H-A-01": {
-      "caption": "C-DROP-02",
-      "cta": "A-SHOP-03"
+  "views": [
+    {
+      "id": "brandbook",
+      "kind": "brandbook",
+      "eyebrow": "Section 01 - Locked",
+      "heading": "From Brand Book",
+      "groups": [
+        {
+          "heading": "Eight sets, word for word",
+          "note": "Reproduced from Brand Book v4. Use them whole; a locked line is not a draft",
+          "sets": [
+            {
+              "ref": "V-CORE-01",
+              "parts": [
+                {
+                  "role": "Line",
+                  "ref": "V-CORE-01"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "V-PROD-000"
+                },
+                {
+                  "role": "Sign-off",
+                  "ref": "V-EDGE-06"
+                }
+              ]
+            },
+            {
+              "ref": "V-CAMP-01",
+              "parts": [
+                {
+                  "role": "Line",
+                  "ref": "V-CAMP-01"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "V-PROD-ROL"
+                },
+                {
+                  "role": "Sign-off",
+                  "ref": "V-EDGE-01"
+                }
+              ]
+            },
+            {
+              "ref": "V-CAMP-02",
+              "parts": [
+                {
+                  "role": "Line",
+                  "ref": "V-CAMP-02"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "V-EDGE-10"
+                },
+                {
+                  "role": "Sign-off",
+                  "ref": "V-EDGE-03"
+                }
+              ]
+            },
+            {
+              "ref": "V-CAMP-03",
+              "parts": [
+                {
+                  "role": "Line",
+                  "ref": "V-CAMP-03"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "V-PROD-FRQ"
+                },
+                {
+                  "role": "Sign-off",
+                  "ref": "V-EDGE-05"
+                }
+              ]
+            },
+            {
+              "ref": "V-CAMP-04",
+              "parts": [
+                {
+                  "role": "Line",
+                  "ref": "V-CAMP-04"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "V-PROD-BOU"
+                },
+                {
+                  "role": "Sign-off",
+                  "ref": "V-EDGE-04"
+                }
+              ]
+            },
+            {
+              "ref": "V-CAMP-05",
+              "parts": [
+                {
+                  "role": "Line",
+                  "ref": "V-CAMP-05"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "V-EDGE-07"
+                },
+                {
+                  "role": "Sign-off",
+                  "ref": "V-EDGE-08"
+                }
+              ]
+            },
+            {
+              "ref": "V-CAMP-06",
+              "parts": [
+                {
+                  "role": "Line",
+                  "ref": "V-CAMP-06"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "V-PROD-EST"
+                },
+                {
+                  "role": "Sign-off",
+                  "ref": "V-EDGE-02"
+                }
+              ]
+            },
+            {
+              "ref": "V-CAMP-07",
+              "parts": [
+                {
+                  "role": "Line",
+                  "ref": "V-CAMP-07"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "V-PROD-CLK"
+                },
+                {
+                  "role": "Sign-off",
+                  "ref": "V-EDGE-09"
+                }
+              ]
+            }
+          ]
+        }
+      ]
     },
-    "H-A-02": {
-      "caption": "C-PROD-01",
-      "cta": "A-SHOP-01"
+    {
+      "id": "beyond",
+      "kind": "beyond",
+      "eyebrow": "Section 02 - Ready to post",
+      "heading": "Beyond Brand Book",
+      "groups": [
+        {
+          "heading": "A - Cold open",
+          "note": "Straight declaration. No setup, no explanation.",
+          "sets": [
+            {
+              "ref": "H-A-01",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-A-01"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-A-01"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-A-01"
+                }
+              ]
+            },
+            {
+              "ref": "H-A-02",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-A-02"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-A-02"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-A-02"
+                }
+              ]
+            },
+            {
+              "ref": "H-A-03",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-A-03"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-A-03"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-A-03"
+                }
+              ]
+            },
+            {
+              "ref": "H-A-04",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-A-04"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-A-04"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-A-04"
+                }
+              ]
+            },
+            {
+              "ref": "H-A-05",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-A-05"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-DROP-04"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-LIST-04"
+                }
+              ]
+            },
+            {
+              "ref": "H-A-06",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-A-06"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-A-06"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-A-06"
+                }
+              ]
+            },
+            {
+              "ref": "H-A-07",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-A-07"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-A-07"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-A-07"
+                }
+              ]
+            },
+            {
+              "ref": "H-A-08",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-A-08"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-DROP-01"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SHOP-01"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "B - Dry observation",
+          "note": "The register that carries the brand. Noticing, not arguing.",
+          "sets": [
+            {
+              "ref": "H-B-01",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-B-01"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-B-01"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-B-01"
+                }
+              ]
+            },
+            {
+              "ref": "H-B-02",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-B-02"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-B-02"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-B-02"
+                }
+              ]
+            },
+            {
+              "ref": "H-B-03",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-B-03"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-B-03"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-B-03"
+                }
+              ]
+            },
+            {
+              "ref": "H-B-04",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-B-04"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-B-04"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-B-04"
+                }
+              ]
+            },
+            {
+              "ref": "H-B-05",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-B-05"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-B-05"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-B-05"
+                }
+              ]
+            },
+            {
+              "ref": "H-B-06",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-B-06"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-B-06"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-B-06"
+                }
+              ]
+            },
+            {
+              "ref": "H-B-07",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-B-07"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-B-07"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-B-07"
+                }
+              ]
+            },
+            {
+              "ref": "H-B-08",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-B-08"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-B-08"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SHOP-05"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "C - Heritage",
+          "note": "Wry affection, not a call to arms. Facts checked; keep them that way.",
+          "sets": [
+            {
+              "ref": "H-C-01",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-C-01"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-ARC-02"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-C-01"
+                }
+              ]
+            },
+            {
+              "ref": "H-C-02",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-C-02"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-C-02"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-C-02"
+                }
+              ]
+            },
+            {
+              "ref": "H-C-03",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-C-03"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-C-03"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-DM-02"
+                },
+                {
+                  "role": "Auto-DM",
+                  "ref": "A-BOT-04"
+                }
+              ]
+            },
+            {
+              "ref": "H-C-04",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-C-04"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-C-04"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-DM-03"
+                },
+                {
+                  "role": "Auto-DM",
+                  "ref": "A-BOT-05"
+                }
+              ]
+            },
+            {
+              "ref": "H-C-05",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-C-05"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-C-05"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SHOP-02"
+                }
+              ]
+            },
+            {
+              "ref": "H-C-06",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-C-06"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-PROD-03"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-DM-04"
+                },
+                {
+                  "role": "Auto-DM",
+                  "ref": "A-BOT-01"
+                }
+              ]
+            },
+            {
+              "ref": "H-C-07",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-C-07"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-ARC-01"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SHOP-06"
+                }
+              ]
+            },
+            {
+              "ref": "H-C-08",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-C-08"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-C-08"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-LIST-02"
+                },
+                {
+                  "role": "Auto-DM",
+                  "ref": "A-BOT-03"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "D - POV",
+          "note": "On-screen text, no voiceover. Highest share rate of any format.",
+          "sets": [
+            {
+              "ref": "H-D-01",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-D-01"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-D-01"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-D-01"
+                }
+              ]
+            },
+            {
+              "ref": "H-D-02",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-D-02"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-D-02"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-D-02"
+                }
+              ]
+            },
+            {
+              "ref": "H-D-03",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-D-03"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-D-03"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-D-03"
+                }
+              ]
+            },
+            {
+              "ref": "H-D-04",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-D-04"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-D-04"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-D-04"
+                }
+              ]
+            },
+            {
+              "ref": "H-D-05",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-D-05"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-D-05"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-D-05"
+                }
+              ]
+            },
+            {
+              "ref": "H-D-06",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-D-06"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-D-06"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-D-06"
+                }
+              ]
+            },
+            {
+              "ref": "H-D-07",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-D-07"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-D-07"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-LIST-03"
+                }
+              ]
+            },
+            {
+              "ref": "H-D-08",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-D-08"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-D-08"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-D-08"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "E - Question",
+          "note": "Ask it, then genuinely stop. Don't answer it in the caption.",
+          "sets": [
+            {
+              "ref": "H-E-01",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-E-01"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-COM-01"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-DM-01"
+                },
+                {
+                  "role": "Auto-DM",
+                  "ref": "A-BOT-06"
+                }
+              ]
+            },
+            {
+              "ref": "H-E-02",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-E-02"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-COM-02"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-E-02"
+                }
+              ]
+            },
+            {
+              "ref": "H-E-03",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-E-03"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-E-03"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-E-03"
+                }
+              ]
+            },
+            {
+              "ref": "H-E-04",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-E-04"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-E-04"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-E-04"
+                }
+              ]
+            },
+            {
+              "ref": "H-E-05",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-E-05"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-E-05"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-E-05"
+                }
+              ]
+            },
+            {
+              "ref": "H-E-06",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-E-06"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-E-06"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SHOP-04"
+                }
+              ]
+            },
+            {
+              "ref": "H-E-07",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-E-07"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-E-07"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-E-07"
+                }
+              ]
+            },
+            {
+              "ref": "H-E-08",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-E-08"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-COM-03"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-E-08"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "F - Design detail",
+          "note": "Warm audiences. Open on the garment; the brand does the talking through the object.",
+          "sets": [
+            {
+              "ref": "H-F-01",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-F-01"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-PROD-01"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-F-01"
+                }
+              ]
+            },
+            {
+              "ref": "H-F-02",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-F-02"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-F-02"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-F-02"
+                }
+              ]
+            },
+            {
+              "ref": "H-F-03",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-F-03"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-DROP-03"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-DM-07"
+                },
+                {
+                  "role": "Auto-DM",
+                  "ref": "A-BOT-07"
+                }
+              ]
+            },
+            {
+              "ref": "H-F-04",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-F-04"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-PROD-02"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-F-04"
+                }
+              ]
+            },
+            {
+              "ref": "H-F-05",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-F-05"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-ARC-03"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-F-05"
+                }
+              ]
+            },
+            {
+              "ref": "H-F-06",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-F-06"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-F-06"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-DM-05"
+                },
+                {
+                  "role": "Auto-DM",
+                  "ref": "A-BOT-08"
+                }
+              ]
+            },
+            {
+              "ref": "H-F-07",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-F-07"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-F-07"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-F-07"
+                }
+              ]
+            },
+            {
+              "ref": "H-F-08",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-F-08"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-F-08"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-LIST-01"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "G - Listicle",
+          "note": "The number in the hook is a promise about watch time. Deliver every item.",
+          "sets": [
+            {
+              "ref": "H-G-01",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-G-01"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-DROP-02"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SHOP-03"
+                }
+              ]
+            },
+            {
+              "ref": "H-G-02",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-G-02"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-G-02"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-G-02"
+                }
+              ]
+            },
+            {
+              "ref": "H-G-03",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-G-03"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-G-03"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-G-03"
+                }
+              ]
+            },
+            {
+              "ref": "H-G-04",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-G-04"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-G-04"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-G-04"
+                }
+              ]
+            },
+            {
+              "ref": "H-G-05",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-G-05"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-G-05"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-G-05"
+                }
+              ]
+            },
+            {
+              "ref": "H-G-06",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-G-06"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-G-06"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-G-06"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "H - Social proof",
+          "note": "Only with the real screenshot, review or message on screen. Never as a bare claim.",
+          "sets": [
+            {
+              "ref": "H-H-01",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-H-01"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-H-01"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-H-01"
+                }
+              ]
+            },
+            {
+              "ref": "H-H-02",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-H-02"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-H-02"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-H-02"
+                }
+              ]
+            },
+            {
+              "ref": "H-H-03",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-H-03"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-H-03"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-H-03"
+                }
+              ]
+            },
+            {
+              "ref": "H-H-04",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-H-04"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-H-04"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-DM-06"
+                },
+                {
+                  "role": "Auto-DM",
+                  "ref": "A-BOT-02"
+                }
+              ]
+            },
+            {
+              "ref": "H-H-05",
+              "parts": [
+                {
+                  "role": "Hook",
+                  "ref": "H-H-05"
+                },
+                {
+                  "role": "Caption",
+                  "ref": "C-SET-H-05"
+                },
+                {
+                  "role": "CTA",
+                  "ref": "A-SET-H-05"
+                }
+              ]
+            }
+          ]
+        }
+      ]
     },
-    "H-A-03": {
-      "caption": "C-PROD-01",
-      "cta": "A-SHOP-05"
-    },
-    "H-A-04": {
-      "caption": "C-DROP-02",
-      "cta": "A-DM-01",
-      "bot": "A-BOT-01"
-    },
-    "H-A-05": {
-      "caption": "C-DROP-04",
-      "cta": "A-LIST-04"
-    },
-    "H-A-06": {
-      "caption": "C-PROD-01",
-      "cta": "A-SHOP-03"
-    },
-    "H-A-07": {
-      "caption": "C-PROD-01",
-      "cta": "A-SHOP-02"
-    },
-    "H-A-08": {
-      "caption": "C-DROP-01",
-      "cta": "A-DM-02",
-      "bot": "A-BOT-01"
-    },
-    "H-B-01": {
-      "caption": "C-COM-01",
-      "cta": "A-SHOP-03"
-    },
-    "H-B-02": {
-      "caption": "C-COM-02",
-      "cta": "A-SHOP-01"
-    },
-    "H-B-03": {
-      "caption": "C-ARC-02",
-      "cta": "A-SHOP-06"
-    },
-    "H-B-04": {
-      "caption": "C-PROD-03",
-      "cta": "A-DM-04"
-    },
-    "H-B-05": {
-      "caption": "C-ARC-02",
-      "cta": "A-SHOP-01"
-    },
-    "H-B-06": {
-      "caption": "C-PROD-02",
-      "cta": "A-SHOP-04"
-    },
-    "H-B-07": {
-      "caption": "C-COM-01",
-      "cta": "A-DM-01"
-    },
-    "H-B-08": {
-      "caption": "C-PROD-01",
-      "cta": "A-SHOP-05"
-    },
-    "H-C-01": {
-      "caption": "C-ARC-02",
-      "cta": "A-SHOP-06"
-    },
-    "H-C-02": {
-      "caption": "C-ARC-02",
-      "cta": "A-SHOP-03"
-    },
-    "H-C-03": {
-      "caption": "C-DROP-01",
-      "cta": "A-DM-02"
-    },
-    "H-C-04": {
-      "caption": "C-PROD-01",
-      "cta": "A-DM-03"
-    },
-    "H-C-05": {
-      "caption": "C-DROP-02",
-      "cta": "A-SHOP-02"
-    },
-    "H-C-06": {
-      "caption": "C-PROD-03",
-      "cta": "A-DM-04"
-    },
-    "H-C-07": {
-      "caption": "C-ARC-01",
-      "cta": "A-SHOP-06"
-    },
-    "H-C-08": {
-      "caption": "C-ARC-01",
-      "cta": "A-LIST-02",
-      "bot": "A-BOT-03"
-    },
-    "H-D-01": {
-      "caption": "C-COM-02",
-      "cta": "A-SHOP-01"
-    },
-    "H-D-02": {
-      "caption": "C-PROD-01",
-      "cta": "A-DM-01"
-    },
-    "H-D-03": {
-      "caption": "C-COM-03",
-      "cta": "A-SHOP-01"
-    },
-    "H-D-04": {
-      "caption": "C-ARC-02",
-      "cta": "A-SHOP-01"
-    },
-    "H-D-05": {
-      "caption": "C-COM-02",
-      "cta": "A-SHOP-03"
-    },
-    "H-D-06": {
-      "caption": "C-COM-01",
-      "cta": "A-SHOP-05"
-    },
-    "H-D-07": {
-      "caption": "C-DROP-02",
-      "cta": "A-LIST-03"
-    },
-    "H-D-08": {
-      "caption": "C-PROD-01",
-      "cta": "A-SHOP-04"
-    },
-    "H-E-01": {
-      "caption": "C-COM-01",
-      "cta": "A-DM-01"
-    },
-    "H-E-02": {
-      "caption": "C-COM-02",
-      "cta": "A-SHOP-06"
-    },
-    "H-E-03": {
-      "caption": "C-PROD-03",
-      "cta": "A-DM-04",
-      "bot": "A-BOT-01"
-    },
-    "H-E-04": {
-      "caption": "C-COM-02",
-      "cta": "A-SHOP-01"
-    },
-    "H-E-05": {
-      "caption": "C-COM-01",
-      "cta": "A-SHOP-03"
-    },
-    "H-E-06": {
-      "caption": "C-COM-03",
-      "cta": "A-SHOP-04"
-    },
-    "H-E-07": {
-      "caption": "C-COM-03",
-      "cta": "A-SHOP-03"
-    },
-    "H-E-08": {
-      "caption": "C-COM-03",
-      "cta": "A-SHOP-04"
-    },
-    "H-F-01": {
-      "caption": "C-PROD-01",
-      "cta": "A-DM-03",
-      "bot": "A-BOT-01"
-    },
-    "H-F-02": {
-      "caption": "C-PROD-01",
-      "cta": "A-SHOP-04"
-    },
-    "H-F-03": {
-      "caption": "C-DROP-03",
-      "cta": "A-DM-07"
-    },
-    "H-F-04": {
-      "caption": "C-PROD-02",
-      "cta": "A-SHOP-04"
-    },
-    "H-F-05": {
-      "caption": "C-ARC-03",
-      "cta": "A-SHOP-06"
-    },
-    "H-F-06": {
-      "caption": "C-DROP-02",
-      "cta": "A-DM-05",
-      "bot": "A-BOT-02"
-    },
-    "H-F-07": {
-      "caption": "C-DROP-02",
-      "cta": "A-SHOP-03"
-    },
-    "H-F-08": {
-      "caption": "C-DROP-02",
-      "cta": "A-LIST-01"
-    },
-    "H-G-01": {
-      "caption": "C-DROP-02",
-      "cta": "A-SHOP-03"
-    },
-    "H-G-02": {
-      "caption": "C-COM-01",
-      "cta": "A-SHOP-06"
-    },
-    "H-G-03": {
-      "caption": "C-PROD-03",
-      "cta": "A-DM-04"
-    },
-    "H-G-04": {
-      "caption": "C-PROD-01",
-      "cta": "A-DM-03"
-    },
-    "H-G-05": {
-      "caption": "C-PROD-01",
-      "cta": "A-SHOP-05"
-    },
-    "H-G-06": {
-      "caption": "C-DROP-02",
-      "cta": "A-SHOP-03"
-    },
-    "H-H-01": {
-      "caption": "C-COM-02",
-      "cta": "A-SHOP-01"
-    },
-    "H-H-02": {
-      "caption": "C-PROD-02",
-      "cta": "A-SHOP-04"
-    },
-    "H-H-03": {
-      "caption": "C-COM-03",
-      "cta": "A-DM-01"
-    },
-    "H-H-04": {
-      "caption": "C-PROD-02",
-      "cta": "A-DM-06",
-      "bot": "A-BOT-02"
-    },
-    "H-H-05": {
-      "caption": "C-COM-01",
-      "cta": "A-SHOP-01"
+    {
+      "id": "dravot",
+      "kind": "dravot",
+      "eyebrow": "Section 03 - Separate register",
+      "heading": "Dravot says",
+      "groups": [
+        {
+          "heading": "Six sets, no thesis",
+          "note": "Play him like a funeral director who secretly still believes in the cause",
+          "sets": [
+            {
+              "ref": "D-CAN-01",
+              "parts": [
+                {
+                  "role": "Opening",
+                  "ref": "D-CAN-01"
+                },
+                {
+                  "role": "Line",
+                  "ref": "D-CAN-03"
+                },
+                {
+                  "role": "Ask",
+                  "ref": "D-07"
+                }
+              ]
+            },
+            {
+              "ref": "D-01",
+              "parts": [
+                {
+                  "role": "Opening",
+                  "ref": "D-01"
+                },
+                {
+                  "role": "Line",
+                  "ref": "D-02"
+                },
+                {
+                  "role": "Ask",
+                  "ref": "A-DRV-01"
+                }
+              ]
+            },
+            {
+              "ref": "D-03",
+              "parts": [
+                {
+                  "role": "Opening",
+                  "ref": "D-03"
+                },
+                {
+                  "role": "Line",
+                  "ref": "D-04"
+                },
+                {
+                  "role": "Ask",
+                  "ref": "A-DRV-02"
+                }
+              ]
+            },
+            {
+              "ref": "D-05",
+              "parts": [
+                {
+                  "role": "Opening",
+                  "ref": "D-05"
+                },
+                {
+                  "role": "Line",
+                  "ref": "D-CAN-05"
+                },
+                {
+                  "role": "Ask",
+                  "ref": "A-DRV-03"
+                }
+              ]
+            },
+            {
+              "ref": "D-08",
+              "parts": [
+                {
+                  "role": "Opening",
+                  "ref": "D-08"
+                },
+                {
+                  "role": "Line",
+                  "ref": "D-06"
+                },
+                {
+                  "role": "Ask",
+                  "ref": "A-DRV-04"
+                }
+              ]
+            },
+            {
+              "ref": "D-CAN-02",
+              "parts": [
+                {
+                  "role": "Opening",
+                  "ref": "D-CAN-02"
+                },
+                {
+                  "role": "Line",
+                  "ref": "D-09"
+                },
+                {
+                  "role": "Ask",
+                  "ref": "A-DRV-05"
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
-  }
+  ]
 }

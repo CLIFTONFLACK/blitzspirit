@@ -45,77 +45,42 @@ const editable = sections.flatMap((s) => s.groups.flatMap((g) => g.entries.flatM
 // what is locked to the Brand Book, what was written beyond it, and Dravot, who
 // has his own voice and never sells a shirt. Hooks, captions and CTAs sit in one
 // group because they are used together - a hook needs its caption and its ask.
-// Every entry, addressable by its ref, so a set can name its parts.
+// Every entry, addressable by its ref: a set names its parts, it does not copy them,
+// so each line is still written in exactly one place.
 const byRef: Map<string, Entry> = new Map(
-  sections.flatMap((s) => s.groups.flatMap((g) => g.entries.map((e) => [e.ref, e]))),
+  sections.flatMap((s) => s.groups.flatMap((g) => g.entries.map((e) => [e.ref, e] as [string, Entry]))),
 );
-const pairs = (page as any).pairs as Record<string, { caption: string; cta: string; bot?: string }>;
 
-/** A set is what actually gets posted: the hook, the caption under it, the ask that
- *  closes it, and - where the ask is a DM keyword - the reply the bot sends back.
- *  Captions and CTAs repeat across sets. That is not a shortcut: a caption is
- *  reusable and a hook is not, and pretending otherwise would mean padding. */
-const setsFor = (entry: Entry): Part[] => {
-  const pair = pairs[entry.ref];
-  if (!pair) return [{ role: null, entry }];
-  const parts: Part[] = [
-    { role: 'Hook', entry },
-    { role: 'Caption', entry: byRef.get(pair.caption)! },
-    { role: 'CTA', entry: byRef.get(pair.cta)! },
-  ];
-  if (pair.bot) parts.push({ role: 'Auto-DM', entry: byRef.get(pair.bot)! });
-  return parts;
-};
+/** A set is what actually gets posted. In Beyond Brand Book that is the hook, its
+ *  caption and its ask; in From Brand Book, a locked line, the product copy it hangs
+ *  on and the state line that closes it; for Dravot, an opening, a line and the only
+ *  ask his register allows. Nothing appears in two sets - the parts are one to one. */
+interface RawPart { role: string; ref: string }
+interface RawSet { ref: string; parts: RawPart[] }
+interface View {
+  id: string;
+  kind: string;
+  eyebrow: string;
+  heading: string;
+  groups: { heading: string; note: string; sets: RawSet[] }[];
+}
 
-// The page shows three things: what is locked, what is ready to post, and Dravot.
-// Captions and CTAs no longer stand alone - they arrive inside the sets.
-const view = [
-  ...sections
-    .filter((s) => s.kind === 'verbatim')
-    .map((s) => ({
-      id: s.id,
-      kind: s.kind,
-      eyebrow: s.eyebrow,
-      heading: s.heading,
-      groups: s.groups.map((g) => ({
-        heading: g.heading,
-        note: g.note,
-        sets: g.entries.map((e) => ({ ref: e.ref, parts: [{ role: null, entry: e }] })),
-      })),
+const views = ((page as any).views as View[]).map((v) => ({
+  ...v,
+  groups: v.groups.map((g) => ({
+    ...g,
+    sets: g.sets.map((set) => ({
+      ref: set.ref,
+      parts: set.parts.map((part) => ({ role: part.role, entry: byRef.get(part.ref)! })),
     })),
-  ...sections
-    .filter((s) => s.kind === 'hook')
-    .map((s) => ({
-      id: 'beyond',
-      kind: 'beyond',
-      eyebrow: 'Section 02 - Ready to post',
-      heading: 'Beyond Brand Book',
-      groups: s.groups.map((g) => ({
-        heading: g.heading,
-        note: g.note,
-        sets: g.entries.map((e) => ({ ref: e.ref, parts: setsFor(e) })),
-      })),
-    })),
-  ...sections
-    .filter((s) => s.kind === 'dravot')
-    .map((s) => ({
-      id: s.id,
-      kind: s.kind,
-      eyebrow: s.eyebrow,
-      heading: s.heading,
-      groups: s.groups.map((g) => ({
-        heading: g.heading,
-        note: g.note,
-        sets: g.entries.map((e) => ({ ref: e.ref, parts: [{ role: null, entry: e }] })),
-      })),
-    })),
-];
+  })),
+}));
 
-const setCount = view.reduce((n, s) => n + s.groups.reduce((m, g) => m + g.sets.length, 0), 0);
+const setCount = views.reduce((n, v) => n + v.groups.reduce((m, g) => m + g.sets.length, 0), 0);
 
 const filters = [
   { label: 'All', kinds: [] },
-  { label: 'From Brand Book', kinds: ['verbatim'] },
+  { label: 'From Brand Book', kinds: ['brandbook'] },
   { label: 'Beyond Brand Book', kinds: ['beyond'] },
   { label: 'Dravot says', kinds: ['dravot'] },
 ];
@@ -176,7 +141,7 @@ const filters = [
         </div>
       </div>
 
-      {view.map((section) => (
+      {views.map((section) => (
         <section id={section.id} data-kind={section.kind}>
           <p class="eyebrow">{section.eyebrow}</p>
           <h2 class="chunk">{section.heading}</h2>
