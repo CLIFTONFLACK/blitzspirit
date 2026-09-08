@@ -25,6 +25,15 @@ catalogue.products.forEach(function (product) {
   });
 });
 
+/** Does this subtotal earn free delivery?
+ *
+ *  Its own function so the boundary can be tested at the penny. No combination of
+ *  the current four products sums to exactly the threshold, so a fixture cannot
+ *  reach it - and `>=` written as `>` would slip through unnoticed. */
+function isFreeDelivery(subtotal) {
+  return subtotal >= settings.shipping.freeThresholdPence;
+}
+
 function describe(product, variant) {
   var options = Object.keys(variant.options)
     .map(function (name) {
@@ -92,7 +101,7 @@ function buildOrder(lines) {
   }
 
   var shipping = settings.shipping;
-  var freeDelivery = subtotal >= shipping.freeThresholdPence;
+  var freeDelivery = isFreeDelivery(subtotal);
 
   var shippingOption = {
     shipping_rate_data: {
@@ -115,6 +124,7 @@ function buildOrder(lines) {
 
 module.exports = {
   buildOrder: buildOrder,
+  isFreeDelivery: isFreeDelivery,
   OrderError: OrderError,
   MAX_LINES: MAX_LINES,
   MAX_QUANTITY: MAX_QUANTITY,

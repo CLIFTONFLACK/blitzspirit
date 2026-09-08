@@ -15,7 +15,7 @@ import { dirname, join } from 'node:path';
 import order from '../api/_order.js';
 import checkout from '../api/checkout.js';
 
-const { buildOrder, MAX_QUANTITY } = order;
+const { buildOrder, isFreeDelivery, MAX_QUANTITY } = order;
 const { toBody } = checkout;
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -83,14 +83,18 @@ check('a client-supplied price is ignored entirely', () => {
 });
 
 check('every line item is charged the catalogue price', () => {
-  // Sweeps the whole catalogue rather than one fixture, so a price that only leaks
+  // Sweeps several products rather than one fixture, so a price that only leaks
   // on some product shape still fails.
   const lines = [
     { id: 'the-cap-blk', quantity: 1, price: 1 },
     { id: 'the-frequency-nvy-xl', quantity: 3, price: 1 },
-    { id: 'the-establishment-navy-cap', quantity: 1, price: 1 },
+    { id: 'the-clerk-blk-m', quantity: 1, price: 1 },
   ];
-  const expected = { 'the-cap-blk': 2200, 'the-frequency-nvy-xl': 2800, 'the-establishment-navy-cap': 4000 };
+  const expected = {
+    'the-cap-blk': 2200,
+    'the-frequency-nvy-xl': 2800,
+    'the-clerk-blk-m': 2800,
+  };
   const { lineItems } = buildOrder(lines);
   for (const item of lineItems) {
     const id = item.price_data.product_data.metadata.variant_id;
@@ -118,18 +122,20 @@ check('charges delivery below the free threshold', () => {
   );
 });
 
-check('drops delivery to zero AT the threshold exactly', () => {
-  // The boundary is the point worth testing, and it has to be hit exactly or a
-  // `>` where `>=` belongs slips through - which is what happened when this
-  // fixture summed to £50 instead of £40. The Establishment + Navy Cap bundle is
-  // priced at exactly the £40 threshold.
-  const { subtotal, shippingOption } = buildOrder([
-    { id: 'the-establishment-navy-cap', quantity: 1 },
-  ]);
-  assert(
-    subtotal === settings.shipping.freeThresholdPence,
-    `fixture must sit exactly on the threshold, got ${subtotal}`
-  );
+check('free delivery turns on AT the threshold, to the penny', () => {
+  // No combination of the current four products sums to exactly the threshold, so
+  // this tests the decision itself rather than a basket. Without it, `>=` written
+  // as `>` passes every basket-level test.
+  const t = settings.shipping.freeThresholdPence;
+  assert(isFreeDelivery(t) === true, `${t} should be free`);
+  assert(isFreeDelivery(t - 1) === false, `${t - 1} should not be free`);
+  assert(isFreeDelivery(t + 1) === true, `${t + 1} should be free`);
+  assert(isFreeDelivery(0) === false, 'an empty subtotal should not be free');
+});
+
+check('a basket over the threshold ships free', () => {
+  const { subtotal, shippingOption } = buildOrder([{ id: 'the-cap-blk', quantity: 2 }]);
+  assert(subtotal > settings.shipping.freeThresholdPence, `subtotal ${subtotal}`);
   assert(shippingOption.shipping_rate_data.fixed_amount.amount === 0, 'expected free delivery');
   assert(
     shippingOption.shipping_rate_data.display_name === settings.shipping.freeLabel,
@@ -146,20 +152,6 @@ check('still charges delivery just under the threshold', () => {
     shippingOption.shipping_rate_data.fixed_amount.amount === settings.shipping.ukStandardPence,
     'expected the standard rate'
   );
-});
-
-check('gives free delivery above the threshold', () => {
-  const { subtotal, shippingOption } = buildOrder([
-    { id: 'the-frequency-nvy-xl', quantity: 1 },
-    { id: 'the-cap-blk', quantity: 1 },
-  ]);
-  assert(subtotal > settings.shipping.freeThresholdPence, `subtotal ${subtotal} not above threshold`);
-  assert(shippingOption.shipping_rate_data.fixed_amount.amount === 0, 'expected free delivery');
-});
-
-check('a bundle is priced at its bundle price, not its parts', () => {
-  const { subtotal } = buildOrder([{ id: 'the-establishment-navy-cap', quantity: 1 }]);
-  assert(subtotal === 4000, `bundle subtotal ${subtotal}, expected 4000`);
 });
 
 check('rejects an empty bag', () => rejects([], 400, 'empty bag'));
