@@ -1,0 +1,100 @@
+---
+// AnnouncementBar — ported from sections/announcement-bar.liquid.
+// One message renders static; two or three rotate on a CSS-only opacity
+// cycle (6s each, no JS). Reduced motion shows only the first.
+import settings from '~/data/settings.json';
+import { href } from '~/lib/url';
+
+const messages = settings.announcement.messages.filter((m) => m.text.trim() !== '');
+const n = messages.length;
+---
+{n > 0 && (
+  <div class={`announcement-bar announcement-bar--n${n}`}>
+    {messages.map((msg, i) => (
+      <p class="announcement-bar__msg" style={`--ann-i: ${i}`}>
+        {msg.link ? <a href={href(msg.link)}>{msg.text}</a> : msg.text}
+      </p>
+    ))}
+  </div>
+)}
+
+<style>
+  .announcement-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 55;
+    height: 28px;
+    /* Deepened from pure --signal (#FF0000): white-on-#FF0000 is only 4.0:1
+       and fails WCAG AA for this small text. #D40000 keeps the vivid signal
+       red but lifts white-on-red to ~5.5:1. */
+    background: #D40000;
+    overflow: hidden;
+  }
+  .announcement-bar__msg {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0 var(--s2);
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .announcement-bar__msg a { color: #fff; }
+  .announcement-bar__msg a:hover { text-decoration: underline; }
+
+  /* CSS-only rotation — 6s per message, opacity cycle, no JS. */
+  .announcement-bar--n2 .announcement-bar__msg,
+  .announcement-bar--n3 .announcement-bar__msg { opacity: 0; }
+  .announcement-bar--n2 .announcement-bar__msg {
+    animation: announcement-cycle-2 12s infinite;
+    animation-delay: calc(var(--ann-i) * 6s);
+  }
+  .announcement-bar--n3 .announcement-bar__msg {
+    animation: announcement-cycle-3 18s infinite;
+    animation-delay: calc(var(--ann-i) * 6s);
+  }
+  @keyframes announcement-cycle-2 {
+    0% { opacity: 0; }
+    4% { opacity: 1; }
+    46% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 0; }
+  }
+  @keyframes announcement-cycle-3 {
+    0% { opacity: 0; }
+    3% { opacity: 1; }
+    30% { opacity: 1; }
+    33.33% { opacity: 0; }
+    100% { opacity: 0; }
+  }
+
+  @media (max-width: 480px) {
+    .announcement-bar__msg { font-size: 10px; letter-spacing: 0.1em; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .announcement-bar__msg { animation: none !important; }
+    .announcement-bar--n2 .announcement-bar__msg:first-child,
+    .announcement-bar--n3 .announcement-bar__msg:first-child { opacity: 1; }
+    .announcement-bar--n2 .announcement-bar__msg:not(:first-child),
+    .announcement-bar--n3 .announcement-bar__msg:not(:first-child) { display: none; }
+  }
+</style>
+
+<style is:global>
+  /* The fixed masthead (theme.css §3, top:0) drops below the band whenever the
+     band exists on the page. Global because it targets .masthead, which lives
+     in a sibling component. Browsers without :has() degrade gracefully. */
+  body:has(.announcement-bar) .masthead { top: 28px; }
+</style>

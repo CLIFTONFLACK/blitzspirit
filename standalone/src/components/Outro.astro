@@ -1,0 +1,36 @@
+---
+// Outro — ported from sections/outro.liquid.
+// Payment icons are dropped: they came from shop.enabled_payment_types, which
+// has no equivalent here, and the setting was off in v27 anyway.
+import menus from '~/data/menus.json';
+import settings from '~/data/settings.json';
+import { href } from '~/lib/url';
+
+const { strapline, copyright } = settings.outro;
+const rule = '------------------------------------------------------------------';
+const path = Astro.url.pathname;
+---
+<footer class="outro">
+  <div class="outro-inner">
+    <nav class="outro-nav">
+      {menus.footer.map((link) => (
+        <a
+          href={href(link.url)}
+          class="tag"
+          aria-current={link.url === path ? 'page' : undefined}>[ {link.title} ]</a>
+      ))}
+    </nav>
+
+    {strapline && <span class="tag outro-strap">{strapline}</span>}
+  </div>
+
+  <div class="outro-foot">
+    <div class="rule" aria-hidden="true">{rule}</div>
+    <div class="copyright">{copyright}</div>
+    <div class="rule" aria-hidden="true">{rule}</div>
+  </div>
+</footer>
+
+<style>
+  .outro-text { color: var(--bone-dim); }
+</style>

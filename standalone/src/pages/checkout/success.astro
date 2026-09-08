@@ -1,0 +1,42 @@
+---
+// Where Stripe returns a shopper after a completed payment.
+import Base from '~/layouts/Base.astro';
+import { href } from '~/lib/url';
+---
+<Base title="Order received" description="Your order is in. Carry on.">
+  <section class="checkout-outcome">
+    <p class="tag tag-mute">[ TRANSACTION // COMPLETE ]</p>
+    <h1 class="chunk">Order received.</h1>
+    <p class="checkout-body">
+      Stripe has your payment and your receipt is on its way by email. Everything is
+      printed when you order it, not warehoused — allow 5–10 working days.
+    </p>
+    <a href={href("/collections/all")} class="directive snap">[ CARRY ON SHOPPING ]</a>
+  </section>
+</Base>
+
+<script is:inline>
+  // The bag has been paid for, so empty it. Guarded because storage can throw
+  // outright in private mode, and a failure here must not break the page.
+  try { localStorage.removeItem('bs_cart'); } catch (err) { /* noop */ }
+</script>
+
+<style is:global>
+  .checkout-outcome {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: var(--s7) var(--s3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s3);
+    align-items: flex-start;
+  }
+  .checkout-outcome h1 { font-size: clamp(2.4rem, 6vw, 4rem); color: var(--cream); }
+  .checkout-body {
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.75;
+    letter-spacing: 0.02em;
+    color: var(--bone);
+  }
+</style>

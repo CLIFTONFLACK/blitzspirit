@@ -1,0 +1,17 @@
+---
+// Where Stripe returns a shopper who backed out. The bag is deliberately left
+// untouched so they can pick up where they stopped.
+import Base from '~/layouts/Base.astro';
+import { href } from '~/lib/url';
+---
+<Base title="Checkout cancelled" description="Nothing was charged. Your bag is where you left it.">
+  <section class="checkout-outcome">
+    <p class="tag tag-mute">[ TRANSACTION // ABANDONED ]</p>
+    <h1 class="chunk">Nothing charged.</h1>
+    <p class="checkout-body">
+      You backed out of checkout, which is your right. The bag is exactly where you
+      left it — carry on when you are ready.
+    </p>
+    <a href={href("/cart")} class="directive snap">[ VIEW FULL LEDGER ]</a>
+  </section>
+</Base>

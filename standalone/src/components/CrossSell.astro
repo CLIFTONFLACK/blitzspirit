@@ -1,0 +1,71 @@
+---
+// CrossSell — ported from sections/cross-sell.liquid.
+//
+// The "GOOD COMPANY — PAIR IT WITH" band. Cards render through ProductCard
+// (.coll-card), the head keeps its [ HEADING ] tag and the optional view-all
+// link, and the section renders nothing at all when there is nothing to show —
+// all as the Liquid had it.
+//
+// Dropped: the Shopify Product Recommendations API. The Liquid emitted a hidden
+// [data-recommendations] stub plus an inline fetch of
+// /recommendations/products?…&intent=related and swapped the result in on idle.
+// There is no such endpoint in this build and no recommendation algorithm is
+// invented to replace it: the products to show arrive as a prop and the page
+// decides. That also removes the `use_recommendations` setting, the manual
+// `product` blocks that augmented the API result, the duplicate-skipping pass,
+// the `pending` hidden state and the .cross-sell-cell wrapper (display:contents)
+// those blocks sat in — recommended cards went straight into the grid, and so do
+// these. Also dropped: data-section-id and block.shopify_attributes.
+import ProductCard from '~/components/ProductCard.astro';
+import type { Product } from '~/lib/catalogue';
+import { href } from '~/lib/url';
+
+interface Props {
+  products?: Product[];
+  heading?: string;
+  showViewAll?: boolean;
+  viewAllLabel?: string;
+}
+
+const {
+  products = [],
+  heading = 'GOOD COMPANY — PAIR IT WITH',
+  showViewAll = true,
+  viewAllLabel = 'VIEW ALL →',
+} = Astro.props;
+
+// Liquid capped the grid at four cards (`limit: 4` on the recommendations loop,
+// max_blocks 4 on the manual ones) and .cross-sell-grid is a four-column grid.
+const shown = products.slice(0, 4);
+---
+{shown.length > 0 && (
+  <section class="cross-sell">
+    <div class="cs-head">
+      <span class="tag">[ {heading} ]</span>
+      {showViewAll && (
+        <a href={href("/collections/all")} class="tag cs-view-all">
+          [ {viewAllLabel} ]
+        </a>
+      )}
+    </div>
+
+    <div class="cross-sell-grid">
+      {shown.map((product) => <ProductCard product={product} showBadge={true} />)}
+    </div>
+  </section>
+)}
+
+<style>
+  .cs-view-all:hover { color: var(--signal); }
+  .cross-sell-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  @media (max-width: 1100px) {
+    .cross-sell-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 540px) {
+    .cross-sell-grid { grid-template-columns: 1fr; }
+  }
+</style>

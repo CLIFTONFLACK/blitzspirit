@@ -1,0 +1,38 @@
+---
+// MetaTags — ported from snippets/meta-tags.liquid.
+// Image fallback chain: explicit page image → the theme stamp asset.
+// (settings.favicon, the middle link in the Liquid chain, has no equivalent
+// here: there is no image-picker setting, the stamp IS the favicon.)
+import settings from '~/data/settings.json';
+import { href } from '~/lib/url';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  ogType?: 'website' | 'product';
+}
+
+const { title, description, image, ogType = 'website' } = Astro.props;
+const site = Astro.site ?? new URL(settings.shop.url);
+const canonical = new URL(Astro.url.pathname, site).href;
+// `image` arrives already processed and base-prefixed (the product page resolves it
+// through astro:assets); the stamp fallback is a public/ file, which is served under
+// the base like everything else here.
+const shareImage = new URL(image ?? href('/assets/blitzspirit-stamp.png'), site).href;
+---
+<link rel="canonical" href={canonical} />
+
+{description && <meta name="description" content={description} />}
+
+<meta property="og:site_name" content={settings.shop.name} />
+<meta property="og:url" content={canonical} />
+<meta property="og:title" content={title} />
+<meta property="og:type" content={ogType} />
+{description && <meta property="og:description" content={description} />}
+<meta property="og:image" content={shareImage} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+{description && <meta name="twitter:description" content={description} />}
+<meta name="twitter:image" content={shareImage} />

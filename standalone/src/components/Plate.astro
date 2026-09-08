@@ -1,0 +1,62 @@
+---
+// Plate — ported from snippets/plate.liquid. The white catalogue product well.
+//
+// The Liquid version built a srcset from Shopify's image_url filter at 400/600/800/
+// 1200w. Astro's <Image> generates the same ladder at build time from the source file
+// in src/assets, so the markup contract is unchanged and the widths still match.
+import { Image } from 'astro:assets';
+import { assetOrNull } from '~/lib/images';
+
+interface Props {
+  src?: string | null;
+  alt?: string;
+  refText?: string;
+  sizes?: string;
+  priority?: boolean;
+  class?: string;
+}
+
+const {
+  src,
+  alt = '',
+  refText,
+  sizes = '(min-width: 860px) 50vw, 100vw',
+  priority = false,
+  class: className,
+} = Astro.props;
+
+const image = assetOrNull(src);
+---
+<div class:list={['plate', className]}>
+  {image ? (
+    <Image
+      data-plate
+      src={image}
+      alt={alt}
+      widths={[400, 600, 800, 1200]}
+      sizes={sizes}
+      loading={priority ? 'eager' : 'lazy'}
+      fetchpriority={priority ? 'high' : undefined}
+      decoding={priority ? 'sync' : 'async'}
+    />
+  ) : (
+    <div class="plate__placeholder" aria-hidden="true"></div>
+  )}
+  {refText && <span class="plate-cnr">{refText}</span>}
+</div>
+
+<style is:global>
+  /* Stand-in for Shopify's placeholder_svg_tag: a plate with nothing in it should
+     still hold its space rather than collapsing the grid row. */
+  .plate__placeholder {
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 8px,
+      rgba(10, 10, 10, 0.06) 8px,
+      rgba(10, 10, 10, 0.06) 16px
+    );
+  }
+</style>

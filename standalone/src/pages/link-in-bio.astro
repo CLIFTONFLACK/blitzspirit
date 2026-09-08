@@ -1,0 +1,23 @@
+---
+// Link in Bio — templates/page.link-in-bio.json: one link-in-bio section.
+// The page the social profiles point at, so it is deliberately chrome-light.
+import Base from '~/layouts/Base.astro';
+import LinkInBio from '~/components/LinkInBio.astro';
+
+import pageData from '~/data/pages/link-in-bio.json';
+import { settings, blocks, type PageData } from '~/lib/pages';
+
+const page = pageData as PageData;
+const main = settings(page, 'main');
+---
+<Base
+  title={page.title ?? 'Link in Bio'}
+  description="Everywhere BlitzSpirit lives, in one place."
+>
+  <LinkInBio
+    sticker={main.sticker}
+    heading={main.heading}
+    sub={main.sub}
+    blocks={blocks(page, 'main')}
+  />
+</Base>

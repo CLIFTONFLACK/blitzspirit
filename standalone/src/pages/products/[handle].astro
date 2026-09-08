@@ -1,0 +1,70 @@
+---
+// PDP — templates/product.json: main, video, editorial, cross_sell, promo.
+//
+// One page per product handle, bundles included. Cross-sell replaces Shopify's
+// Product Recommendations API with the rest of the product's own collection,
+// capped the way the Liquid capped it.
+import Base from '~/layouts/Base.astro';
+import MainProduct from '~/components/MainProduct.astro';
+import ProductVideo from '~/components/ProductVideo.astro';
+import ProductEditorial from '~/components/ProductEditorial.astro';
+import CrossSell from '~/components/CrossSell.astro';
+import PromoBand from '~/components/PromoBand.astro';
+
+import { getImage } from 'astro:assets';
+import { asset } from '~/lib/images';
+import pageData from '~/data/pages/product.json';
+import { settings, type PageData } from '~/lib/pages';
+import { products, collections, collectionProducts, type Product } from '~/lib/catalogue';
+
+export function getStaticPaths() {
+  return products.map((product) => ({ params: { handle: product.handle } }));
+}
+
+const { handle } = Astro.params;
+const product = products.find((p) => p.handle === handle)!;
+
+const page = pageData as PageData;
+const video = settings(page, 'video');
+const promo = settings(page, 'promo');
+
+// Breadcrumb and the "01 OF NN" archive line both want the product's home
+// collection — the narrowest one it belongs to, never the catch-all.
+const home = Object.values(collections).find(
+  (c) => c.handle !== 'all' && c.products.includes(product.handle)
+);
+
+const related: Product[] = home
+  ? collectionProducts(home.handle).filter((p) => p.handle !== product.handle)
+  : [];
+
+// Open Graph needs a URL that actually exists in the build, so resolve the source
+// path through the image pipeline rather than shipping the unprocessed /assets/ path.
+const shareImage = product.media[0]
+  ? (await getImage({ src: asset(product.media[0].src), width: 1200 })).src
+  : undefined;
+---
+<Base
+  title={product.title}
+  description={`${product.strapline} ${product.dossier[0] ?? ''}`.replace(/\*\*/g, '').trim()}
+  image={shareImage}
+  ogType="product"
+  product={product}
+  collection={home}
+>
+  <MainProduct product={product} collection={home} />
+  <ProductVideo label={video.label} videoSrc={video.video_src} />
+  <ProductEditorial items={product.editorial} />
+  <CrossSell products={related} />
+  <PromoBand
+    id={`PromoBand-${product.handle}`}
+    image={promo.image}
+    tag={promo.tag}
+    heading={promo.heading}
+    subheading={promo.subheading}
+    leadLine={promo.lead_line}
+    placeholder={promo.placeholder}
+    buttonLabel={promo.button_label}
+    successText={promo.success_text}
+  />
+</Base>

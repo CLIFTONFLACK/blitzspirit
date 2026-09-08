@@ -1,0 +1,30 @@
+---
+// ValuesGrid — ported from sections/values-grid.liquid.
+//
+// 4-up values grid; each cell is marked with the "mark" icon. All of the
+// styling lives in theme.css §9 (.values-grid / .value-cell / .value-mark /
+// .value-head / .value-body), so the Liquid had no {% stylesheet %} block and
+// this component needs no <style>.
+//
+// Dropped: data-section-id and block.shopify_attributes (Shopify section
+// rendering ids).
+import Icon from '~/components/Icon.astro';
+
+interface Props {
+  /** cell blocks, straight out of src/data/pages/*.json. */
+  blocks?: { settings: { heading?: string; body?: string } }[];
+}
+
+const { blocks = [] } = Astro.props;
+---
+{blocks.length > 0 && (
+  <div class="values-grid">
+    {blocks.map((block) => (
+      <div class="value-cell">
+        <span class="value-mark"><Icon name="mark" /></span>
+        {block.settings.heading && <h3 class="value-head chunk">{block.settings.heading}</h3>}
+        {block.settings.body && <p class="value-body">{block.settings.body}</p>}
+      </div>
+    ))}
+  </div>
+)}

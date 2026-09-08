@@ -1,0 +1,55 @@
+---
+// ProductVideo — ported from sections/product-video.liquid.
+//
+// The [ ASSET // VIDEO ] band. Liquid picked a source in priority order:
+// the product's custom.video metafield, then the section's video setting, then
+// the brutalist placeholder frame. That metafield was never set on any product
+// in this build and no video file ships with it, so the placeholder frame is
+// what v27 actually renders — it is the real state of the section, not a stub.
+// `videoSrc` keeps the second rung of that ladder available: pass a file URL and
+// the live frame renders instead.
+//
+// Dropped: the metafield lookup (no such field on the catalogue product) and
+// Shopify's video_tag filter — a plain <video controls preload="metadata">
+// is the markup it emitted. Also dropped: data-section-id.
+
+interface Props {
+  label?: string;
+  videoSrc?: string;
+  playLabel?: string;
+  pendingLabel?: string;
+}
+
+const {
+  label = 'ASSET // VIDEO // BEHIND_THE_PRINT',
+  videoSrc,
+  playLabel = '▶ PLAY',
+  pendingLabel = 'VIDEO ASSET PENDING // UPLOAD TO ACTIVATE',
+} = Astro.props;
+---
+<section class="pdp-video">
+  <div class="video-label tag">[ {label} ]</div>
+
+  {videoSrc ? (
+    <div class="video-frame video-frame--live">
+      <video controls preload="metadata" src={videoSrc}></video>
+    </div>
+  ) : (
+    <div class="video-frame">
+      <span class="video-play tag">[ {playLabel} ]</span>
+      <span class="video-meta tag">[ {pendingLabel} ]</span>
+    </div>
+  )}
+</section>
+
+<style>
+  .video-frame--live { padding: 0; background: #000; }
+  .video-frame--live video {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+  }
+  /* The placeholder play chip is decorative — no false affordance. */
+  .video-frame:not(.video-frame--live) .video-play { cursor: default; }
+</style>

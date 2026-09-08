@@ -1,0 +1,111 @@
+{
+  "sections": [
+    {
+      "id": "hero",
+      "type": "hero",
+      "settings": {
+        "kicker": "ISSUE_001 · THE FIRST COLLECTION",
+        "heading": "BUILT FOR THE STUBBORN.",
+        "cta_label": "SEE THE COLLECTION",
+        "cta_link": ""
+      }
+    },
+    {
+      "id": "featured",
+      "type": "featured-product",
+      "settings": {
+        "product": "the-establishment",
+        "issue_override": "",
+        "dossier": "",
+        "what_label": "STORY",
+        "plate_ref": "BS_002 // ISSUE_000"
+      }
+    },
+    {
+      "id": "promo",
+      "type": "promo-band",
+      "settings": {
+        "tag": "[ DISPATCH // STAND BY ]",
+        "heading": "GOT MORE BOTTLE THAN THE MILKMAN",
+        "subheading": "Put the kettle on, time for a nice cup of tea!",
+        "lead_line": "ENTER YOUR EMAIL ADDRESS TO BE THE FIRST IN THE KNOW",
+        "placeholder": "NAME@DOMAIN.CO.UK",
+        "button_label": "[ NOTIFY ME ]",
+        "success_text": "[ SECURED // YOU'RE FIRST IN THE KNOW ]"
+      }
+    },
+    {
+      "id": "archive",
+      "type": "apparel-archive",
+      "settings": {
+        "auto_alternate": true,
+        "what_label": "STORY"
+      },
+      "blocks": [
+        {
+          "id": "item_1",
+          "type": "item",
+          "settings": {
+            "product": "the-boudica",
+            "dossier": "",
+            "index_label": "",
+            "force_dark": false
+          }
+        },
+        {
+          "id": "item_2",
+          "type": "item",
+          "settings": {
+            "product": "the-roll-call",
+            "dossier": "",
+            "index_label": "",
+            "force_dark": false
+          }
+        },
+        {
+          "id": "item_3",
+          "type": "item",
+          "settings": {
+            "product": "the-frequency",
+            "dossier": "",
+            "index_label": "",
+            "force_dark": false
+          }
+        },
+        {
+          "id": "item_4",
+          "type": "item",
+          "settings": {
+            "product": "the-clerk",
+            "dossier": "",
+            "index_label": "",
+            "force_dark": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "equipment",
+      "type": "equipment-feature",
+      "settings": {
+        "label": "[ RECOMMENDED CONDIMENT ]",
+        "product": "the-cap",
+        "issue_tag": "ISSUE_001 // EQUIPMENT"
+      }
+    },
+    {
+      "id": "promo_band_VF78L7",
+      "type": "promo-band",
+      "settings": {
+        "image": "/assets/heritage-telephonists.jpg",
+        "tag": "[ DISPATCH // EARLY BIRDS ]",
+        "heading": "The Blitz, the weather, the pub queue. ",
+        "subheading": "brits are too stubborn to worry.",
+        "lead_line": "",
+        "placeholder": "NAME@DOMAIN.CO.UK",
+        "button_label": "[ NOTIFY ME ]",
+        "success_text": "[ SECURED // YOU'RE FIRST IN THE KNOW ]"
+      }
+    }
+  ]
+}

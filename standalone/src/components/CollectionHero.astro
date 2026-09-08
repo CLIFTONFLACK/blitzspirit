@@ -1,0 +1,130 @@
+---
+// CollectionHero — ported from sections/collection-hero.liquid.
+//
+// The same markup as PageHero (.about-hero/.page-hero + .ph-index/.ph-head/
+// .ph-red/.ph-meta) but fed from the collection instead of a page. In the
+// Liquid theme this section carried no {% stylesheet %} at all: Shopify
+// concatenates every section stylesheet into one file, so page-hero.liquid's
+// rules already applied here. Astro scopes a component's <style> to that
+// component, so the .page-hero block below is a deliberate duplicate of
+// PageHero's — same declarations, scoped to this section's own elements.
+// Adding it to src/styles/theme.css instead would be the DRY fix, but that
+// file is shared and outside this port.
+//
+// Dropped: the `texture_override` image_picker (no page in src/data/pages sets
+// it; the CSS keeps its var(--ph-tex, …) fallback so the flat panel backdrop is
+// unchanged) and data-section-id (a Shopify section rendering id).
+import type { Collection } from '~/lib/catalogue';
+
+interface Props {
+  collection?: Collection;
+  indexTag?: string;
+  showPageRef?: boolean;
+  heading?: string;
+  fallbackTitle?: string;
+  redFirstLine?: boolean;
+  headingSize?: 'xl' | 'lg';
+  extraHeight?: number;
+  blocks?: { text?: string }[];
+}
+
+const {
+  collection,
+  indexTag = 'SYSTEM_LEDGER // FULL_KIT // ISSUE_001',
+  showPageRef = true,
+  heading: headingProp,
+  fallbackTitle = 'Full Kit.',
+  redFirstLine = false,
+  headingSize = 'xl',
+  extraHeight = 0,
+  blocks = [],
+} = Astro.props;
+
+// Liquid forced 'The Collections.' for the catch-all collection. collections.json
+// already titles `all` that way, so this is a no-op on the current data — kept
+// because the rule, not the value, is what the theme guaranteed.
+const displayTitle =
+  collection?.handle === 'all' ? 'The Collections.' : (collection?.title ?? '');
+
+const heading = headingProp || displayTitle || fallbackTitle;
+
+// heading | newline_to_br | split: '<br />' then `strip` on each line — the same
+// thing as splitting on the literal "\n" the page data stores. Blank lines are
+// skipped entirely (Liquid `continue` also skips the <br>), but the "is this the
+// first / last line" tests still run against the unsplit array.
+const rawLines = heading.split('\n');
+const lines = rawLines
+  .map((line, i) => ({
+    text: line.trim(),
+    first: i === 0,
+    last: i === rawLines.length - 1,
+  }))
+  .filter((line) => line.text !== '');
+
+const collRef =
+  showPageRef && displayTitle
+    ? displayTitle.replaceAll('.', '').toUpperCase().replaceAll(' ', '_')
+    : '';
+
+const style = extraHeight ? `--ph-extra-h: ${extraHeight}px;` : undefined;
+
+const metaSegments = blocks.map((block) => block.text).filter((text): text is string => !!text);
+---
+<section class:list={['about-hero', 'page-hero', `page-hero--${headingSize}`]} style={style}>
+  <div>
+    {(indexTag || collRef) && (
+      <p class="led-index tag ph-index">
+        [ {indexTag}{indexTag && collRef ? ' // ' : ''}{collRef} ]
+      </p>
+    )}
+
+    {heading && (
+      <h1 class="chunk ph-head">
+        {lines.map((line) => (
+          <>
+            {line.first && redFirstLine && rawLines.length > 1 ? (
+              <span class="ph-red">{line.text}</span>
+            ) : (
+              line.text
+            )}
+            {!line.last && <br />}
+          </>
+        ))}
+      </h1>
+    )}
+
+    {metaSegments.length > 0 ? (
+      <p class="tag ph-meta">
+        [{metaSegments.map((text, i) => (
+          <> {text}{i < metaSegments.length - 1 ? ' //' : ''}</>
+        ))} ]
+      </p>
+    ) : (
+      collection?.description && <div class="ph-meta">{collection.description}</div>
+    )}
+  </div>
+</section>
+
+<style>
+  .page-hero {
+    /* Flat panel by default; a section image override still lands via --ph-tex
+       (the gradient fallback acts as a flat colour when no override is set). */
+    background:
+      linear-gradient(rgba(10, 10, 10, 0.6), rgba(10, 10, 10, 0.76)),
+      var(--ph-tex, linear-gradient(var(--panel), var(--panel))) center/cover no-repeat;
+  }
+  .page-hero .ph-index { margin-bottom: 46px; }
+  .page-hero .ph-head {
+    color: var(--cream);
+    font-size: clamp(3rem, 9vw, 8rem);
+    line-height: 0.9;
+    margin-bottom: 24px;
+  }
+  .page-hero--lg .ph-head { font-size: clamp(2.2rem, 6vw, 4.5rem); }
+  .page-hero .ph-red { color: var(--brand-red); }
+  .page-hero .ph-meta {
+    color: var(--bone-dim);
+    max-width: 60ch;
+    line-height: 1.8;
+  }
+</style>

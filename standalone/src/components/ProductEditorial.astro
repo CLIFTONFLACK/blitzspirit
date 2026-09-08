@@ -1,0 +1,52 @@
+---
+// ProductEditorial — ported from sections/product-editorial.liquid.
+//
+// Two-column editorial blocks driven by the product's `editorial` array (the old
+// custom.editorial metafield: heading + body pairs). Index tags are auto-numbered
+// [ TEXT_01 ], [ TEXT_02 ] … in list order, zero-padded below ten, exactly as the
+// Liquid forloop did. Bodies are plain text run through newline_to_br.
+//
+// Renders nothing at all when the array is empty. That is the live case for the
+// three bundles (the-establishment-navy-cap, the-establishment-the-clerk,
+// the-boudica-chalk-cap), whose editorial arrays are empty in catalogue.json.
+//
+// Dropped: the section-blocks fallback. Liquid fell back to editable `editorial`
+// blocks (tag / heading / richtext body / optional CTA) when the metafield was
+// empty; every non-bundle product here carries explicit entries and the bundles
+// are meant to render nothing, so the fallback branch would only ever put
+// placeholder copy on a bundle page. Its two CSS rules go with it —
+// `.editorial-body p + p` (the richtext path was the only one emitting <p>) and
+// `.editorial-cta` (only the block fallback had a CTA). Also dropped:
+// data-section-id and block.shopify_attributes.
+
+interface Props {
+  items?: { heading: string; body: string }[];
+}
+
+const { items = [] } = Astro.props;
+
+const pad = (n: number) => (n < 10 ? `0${n}` : String(n));
+---
+{items.length > 0 && (
+  <section class="pdp-editorial">
+    <div class="editorial-grid">
+      {items.map((item, i) => (
+        <div class="editorial-block">
+          <div class="led-index tag editorial-tag">[ TEXT_{pad(i + 1)} ]</div>
+          {item.heading && <h2 class="chunk editorial-head">{item.heading}</h2>}
+          {item.body && (
+            <div class="editorial-body">
+              {item.body.split('\n').map((line, j, all) => (
+                <>{line}{j < all.length - 1 && <br />}</>
+              ))}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  </section>
+)}
+
+<style>
+  .editorial-tag { display: inline-block; margin-bottom: 16px; }
+</style>

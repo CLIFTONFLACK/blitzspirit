@@ -1,0 +1,175 @@
+---
+// LinkInBio — ported from sections/link-in-bio.liquid.
+//
+// The /pages/links destination for the IG/TikTok bio URL: mobile-first narrow
+// column with a sticker header, big brutalist directive buttons (`link`
+// blocks), a compact product card (`product` block) and a social icon row
+// (`social_row` block, urls from src/data/settings.json).
+//
+// Block urls are taken exactly as the page data supplies them — some still
+// point at Shopify paths (/pages/icons) and are being corrected in the data,
+// not here.
+//
+// Changed / dropped:
+// - The two sticker branches collapse into one. Liquid picked between an
+//   image_picker upload (srcset 400w/600w) and the bundled
+//   blitzspirit-sticker.png (a bare <img>); here the sticker is always a
+//   packaged asset, so it always gets the responsive ladder the picker branch
+//   had, at the same widths and the same `sizes`.
+// - The `{% elsif request.design_mode %}` "[ PICK A PRODUCT ]" placeholder:
+//   there is no theme editor. Its `.lib-product--empty` rule is kept in the
+//   stylesheet below so the ported CSS stays complete.
+// - data-section-id and block.shopify_attributes (Shopify section rendering
+//   ids).
+import { Image } from 'astro:assets';
+import Icon from '~/components/Icon.astro';
+import ProductCard from '~/components/ProductCard.astro';
+import settings from '~/data/settings.json';
+import strings from '~/data/strings.json';
+import { asset } from '~/lib/images';
+import { getProduct } from '~/lib/catalogue';
+import { href } from '~/lib/url';
+
+interface LinkBlock {
+  type?: string;
+  settings: {
+    label?: string;
+    url?: string;
+    badge?: string;
+    /** Product handle, as the Liquid product picker stored it. */
+    product?: string;
+  };
+}
+
+interface Props {
+  sticker?: string;
+  heading?: string;
+  sub?: string;
+  /** link / product / social_row blocks, straight out of src/data/pages/*.json. */
+  blocks?: LinkBlock[];
+}
+
+const {
+  sticker = '/assets/blitzspirit-sticker.png',
+  heading = 'Wakey wakey.',
+  sub = 'IRONIC // ICONIC // BRITISH',
+  blocks = [],
+} = Astro.props;
+
+const stickerImage = asset(sticker);
+
+const social = settings.social;
+const socialLinks = [
+  { key: 'instagram', url: social.instagram, label: strings.general.social.instagram },
+  { key: 'tiktok', url: social.tiktok, label: strings.general.social.tiktok },
+  { key: 'x', url: social.x, label: strings.general.social.x },
+  { key: 'facebook', url: social.facebook, label: strings.general.social.facebook },
+].filter((s) => s.url !== '');
+---
+<div class="lib">
+  <header class="lib-head">
+    <Image
+      class="lib-sticker"
+      src={stickerImage}
+      alt={settings.shop.name}
+      widths={[400, 600]}
+      sizes="(min-width: 480px) 320px, 70vw"
+      loading="eager"
+    />
+
+    {heading && <h1 class="chunk lib-heading">{heading}</h1>}
+
+    {sub && <p class="tag lib-sub">[ {sub} ]</p>}
+  </header>
+
+  <div class="lib-stack">
+    {blocks.map((block) => {
+      if (block.type === 'link') {
+        if (!block.settings.label || !block.settings.url) return null;
+        return (
+          <a href={href(block.settings.url)} class="directive snap lib-link">
+            <span class="lib-link-label">{block.settings.label}</span>
+            {block.settings.badge && <span class="lib-badge tag">{block.settings.badge}</span>}
+          </a>
+        );
+      }
+
+      if (block.type === 'product') {
+        if (!block.settings.product) return null;
+        return (
+          <div class="lib-product">
+            <ProductCard product={getProduct(block.settings.product)} showBadge />
+          </div>
+        );
+      }
+
+      if (block.type === 'social_row') {
+        if (socialLinks.length === 0) return null;
+        return (
+          <div class="lib-social">
+            {socialLinks.map((s) => (
+              <a
+                href={s.url}
+                class="lib-social-link"
+                target="_blank"
+                rel="noopener"
+                aria-label={s.label}>
+                <Icon name={s.key as any} />
+              </a>
+            ))}
+          </div>
+        );
+      }
+
+      return null;
+    })}
+  </div>
+</div>
+
+<style>
+  /* The Liquid {% stylesheet %} block, verbatim. All of it can stay scoped:
+     every rule targets this component's own markup, and astro:assets' <Image>
+     forwards the scope attribute onto the <img> it emits, so .lib-sticker
+     still matches. */
+  .lib {
+    max-width: 460px;
+    margin: 0 auto;
+    padding: var(--s5) var(--s3) var(--s6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s4);
+  }
+  .lib-head { text-align: center; display: flex; flex-direction: column; align-items: center; gap: var(--s2); }
+  .lib-sticker { width: min(70%, 320px); height: auto; filter: drop-shadow(2px 4px 10px rgba(0, 0, 0, 0.85)); }
+  .lib-heading { color: var(--cream); font-size: clamp(1.6rem, 6vw, 2.2rem); }
+  .lib-sub { color: var(--bone-dim); }
+  .lib-stack { display: flex; flex-direction: column; gap: var(--s2); }
+  .lib-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s2);
+    position: relative;
+  }
+  .lib-badge {
+    position: absolute;
+    top: -8px;
+    right: -6px;
+    background: var(--signal);
+    color: #fff;
+    padding: 3px 8px;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+  }
+  /* Carried over from the Liquid stylesheet. The markup it styled was the
+     theme editor's "[ PICK A PRODUCT ]" placeholder, which has no equivalent
+     here — kept so the ported CSS is complete. */
+  .lib-product--empty {
+    border: 1px dashed var(--line);
+    padding: var(--s4);
+    text-align: center;
+  }
+  .lib-social { display: flex; justify-content: center; gap: var(--s3); padding: var(--s2) 0; }
+  .lib-social-link { color: var(--bone); padding: 10px; line-height: 0; border: 1px solid var(--line); }
+  .lib-social-link:hover { color: var(--signal); border-color: var(--signal); }
+</style>

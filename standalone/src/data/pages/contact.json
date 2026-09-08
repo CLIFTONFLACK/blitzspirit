@@ -1,0 +1,73 @@
+{
+  "title": "Contact",
+  "sections": [
+    {
+      "id": "hero",
+      "type": "page-hero",
+      "settings": {
+        "index_tag": "FIELD_TELEPHONE  // give us a shout",
+        "show_page_ref": true,
+        "heading": "contact us \nto get the lowdown.",
+        "red_first_line": true,
+        "heading_size": "lg",
+        "extra_height": 0
+      },
+      "blocks": [
+        {
+          "id": "meta-1",
+          "type": "meta_tag",
+          "settings": {
+            "text": "contact us"
+          }
+        },
+        {
+          "id": "meta-2",
+          "type": "meta_tag",
+          "settings": {
+            "text": "give us a bell"
+          }
+        }
+      ]
+    },
+    {
+      "id": "contact",
+      "type": "faq",
+      "settings": {
+        "index_tag": "FIELD_TELEPHONE // CONTACT",
+        "intro": "Straight answers, no run-around. Email us and a human — not a bot — reads it."
+      },
+      "blocks": [
+        {
+          "id": "email",
+          "type": "qa",
+          "settings": {
+            "heading": "Email",
+            "body": "<p>Email <a href=\"mailto:hq@blitzspirit.co.uk\">hq@blitzspirit.co.uk</a> — a human answers within one working day. For order queries, include your order number and we’ll sort it without a fuss.</p>",
+            "anchor": "email",
+            "open": true
+          }
+        },
+        {
+          "id": "before-you-write",
+          "type": "qa",
+          "settings": {
+            "heading": "Before you write in",
+            "body": "<p>Delivery, returns and size guide are covered on the <a href=\"/help\">Field Manual</a> page — might save you the wait.</p>",
+            "anchor": "before-you-write",
+            "open": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "newsletter",
+      "type": "newsletter",
+      "settings": {
+        "index_tag": "DISPATCHES // HOME_GUARD",
+        "heading": "Wakey wakey.",
+        "body": "First word on new drops, restocks and stories worth telling — plus 10% off your first order. No spam. That would be nonsense.",
+        "button_label": "[ SEND IT ]"
+      }
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+---
+// NewsletterForm — ported from snippets/newsletter-form.liquid.
+//
+// The Shopify original was a {% form 'customer' %} that POSTed and reloaded the
+// page, so success and error states were server-rendered. Here the form submits
+// with fetch to /api/newsletter and the same two states are swapped in client
+// side, keeping the [data-signup-success] hook modal.js reads.
+//
+// Interface is unchanged for callers: id, buttonLabel, successText,
+// placeholder, tags, classPrefix ("nws" or "promo").
+import strings from '~/data/strings.json';
+import settings from '~/data/settings.json';
+
+interface Props {
+  id?: string;
+  buttonLabel?: string;
+  successText?: string;
+  placeholder?: string;
+  tags?: string;
+  classPrefix?: 'nws' | 'promo';
+}
+
+const {
+  id = 'NewsletterForm',
+  buttonLabel = '[ SIGN UP ]',
+  successText,
+  placeholder = 'YOUR@EMAIL.CO.UK',
+  tags = 'newsletter,backbone10',
+  classPrefix = 'nws',
+} = Astro.props;
+
+const codeLine = settings.discount.code
+  ? strings.newsletter.code_line.replace('{{ code }}', settings.discount.code)
+  : '';
+---
+<div class="nlf" id={`${id}-wrap`}>
+  <form class="nlf-form" id={id} data-newsletter-form data-tags={tags} novalidate>
+    <p class="nlf-error tag" role="alert" hidden></p>
+    <label class="visually-hidden" for={`${id}-email`}>{strings.newsletter.label}</label>
+    <div class={`${classPrefix}-row`}>
+      <input
+        id={`${id}-email`}
+        class={`${classPrefix}-input`}
+        type="email"
+        name="email"
+        placeholder={placeholder}
+        autocomplete="email"
+        autocorrect="off"
+        autocapitalize="off"
+        required
+      />
+      <button class={`${classPrefix}-submit snap`} type="submit">{buttonLabel}</button>
+    </div>
+  </form>
+
+  {/* Revealed by newsletter.js on a successful POST. The hook name and the
+       copy match the Liquid version so modal.js needs no changes. */}
+  <div class="nlf-success" data-signup-success role="status" hidden>
+    {successText ? (
+      <p class="nlf-success-line tag">{successText}</p>
+    ) : (
+      <>
+        <p class="nlf-success-line tag">{strings.newsletter.success}</p>
+        {codeLine && <p class="nlf-code tag">{codeLine}</p>}
+      </>
+    )}
+  </div>
+</div>

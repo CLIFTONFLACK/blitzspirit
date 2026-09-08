@@ -1,0 +1,53 @@
+---
+// The Story — templates/page.story.json: hero, split-1940, split-today,
+// house-rules, newsletter.
+import Base from '~/layouts/Base.astro';
+import PageHero from '~/components/PageHero.astro';
+import AboutSplit from '~/components/AboutSplit.astro';
+import ValuesGrid from '~/components/ValuesGrid.astro';
+import Newsletter from '~/components/Newsletter.astro';
+
+import pageData from '~/data/pages/story.json';
+import { settings, blocks, type PageData } from '~/lib/pages';
+
+const page = pageData as PageData;
+const hero = settings(page, 'hero');
+const nineteenForty = settings(page, 'split-1940');
+const today = settings(page, 'split-today');
+const news = settings(page, 'newsletter');
+
+const split = (s: Record<string, any>) => ({
+  indexTag: s.index_tag,
+  heading: s.heading,
+  body: s.body,
+  imageRef: s.image_ref,
+  imageSide: s.image_side,
+  ctaLabel: s.cta_label,
+  ctaLink: s.cta_link,
+});
+---
+<Base
+  title={page.title ?? 'The Story'}
+  description="Fifty-seven consecutive nights of bombing, and a city that refused to be told when it was beaten. Blitz spirit, and what it means now."
+>
+  <PageHero
+    indexTag={hero.index_tag}
+    showPageRef={hero.show_page_ref}
+    pageTitle={page.title}
+    heading={hero.heading}
+    redFirstLine={hero.red_first_line}
+    headingSize={hero.heading_size}
+    extraHeight={hero.extra_height}
+    blocks={blocks(page, 'hero')}
+  />
+  <AboutSplit {...split(nineteenForty)} />
+  <AboutSplit {...split(today)} />
+  <ValuesGrid blocks={blocks(page, 'house-rules')} />
+  <Newsletter
+    sectionId="story"
+    indexTag={news.index_tag}
+    heading={news.heading}
+    body={news.body}
+    buttonLabel={news.button_label}
+  />
+</Base>

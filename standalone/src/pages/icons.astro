@@ -1,0 +1,42 @@
+---
+// The Icons — templates/page.icons.json: hero, roster, newsletter.
+import Base from '~/layouts/Base.astro';
+import PageHero from '~/components/PageHero.astro';
+import IconRoster from '~/components/IconRoster.astro';
+import Newsletter from '~/components/Newsletter.astro';
+
+import pageData from '~/data/pages/icons.json';
+import { settings, blocks, type PageData } from '~/lib/pages';
+
+const page = pageData as PageData;
+const hero = settings(page, 'hero');
+const roster = settings(page, 'roster');
+const news = settings(page, 'newsletter');
+---
+<Base
+  title={page.title ?? 'The Icons'}
+  description="Every design has a backbone story. Boudica, the Roundel, Skull & Brollies — nothing here is decoration."
+>
+  <PageHero
+    indexTag={hero.index_tag}
+    showPageRef={hero.show_page_ref}
+    pageTitle={page.title}
+    heading={hero.heading}
+    redFirstLine={hero.red_first_line}
+    headingSize={hero.heading_size}
+    extraHeight={hero.extra_height}
+    blocks={blocks(page, 'hero')}
+  />
+  <IconRoster
+    noteText={roster.note_text}
+    noteCtaLabel={roster.note_cta_label}
+    blocks={blocks(page, 'roster')}
+  />
+  <Newsletter
+    sectionId="icons"
+    indexTag={news.index_tag}
+    heading={news.heading}
+    body={news.body}
+    buttonLabel={news.button_label}
+  />
+</Base>

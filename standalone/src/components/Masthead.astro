@@ -1,0 +1,77 @@
+---
+// Masthead — ported from sections/masthead.liquid.
+//
+// cart.js contract preserved exactly: [data-cart-toggle] opens the drawer and
+// [data-cart-count] is the live count target. The bag link stays a real /cart
+// anchor so a no-JS visitor lands on the full ledger page.
+//
+// Changed from the Shopify original: the count renders 0 server-side and cart.js
+// hydrates it from localStorage on load (there is no request-time cart object to
+// read). Everything else is markup-for-markup identical.
+import Icon from './Icon.astro';
+import menus from '~/data/menus.json';
+import settings from '~/data/settings.json';
+import { href } from '~/lib/url';
+
+const social = settings.social;
+const socialLinks = [
+  { key: 'instagram', url: social.instagram, label: 'Instagram' },
+  { key: 'tiktok', url: social.tiktok, label: 'TikTok' },
+  { key: 'x', url: social.x, label: 'X' },
+  { key: 'facebook', url: social.facebook, label: 'Facebook' },
+].filter((s) => s.url !== '');
+
+const path = Astro.url.pathname;
+const isCurrent = (url: string) => url === path || (url !== '/' && path.startsWith(url));
+---
+<header class="masthead">
+  <nav class="nodes nodes--left" aria-label="Menu">
+    {menus.main.map((link) =>
+      link.children && link.children.length > 0 ? (
+        <div class="nav-item">
+          <a
+            href={href(link.url)}
+            class="tag"
+            aria-current={isCurrent(link.url) ? 'page' : undefined}
+            aria-haspopup="true"
+            aria-expanded="false">[ {link.title} ]</a>
+          <div class="nav-dropdown">
+            {link.children.map((child) => (
+              <a
+                href={href(child.url)}
+                class="tag nav-dropdown-link"
+                aria-current={isCurrent(child.url) ? 'page' : undefined}>{child.title}</a>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <a
+          href={href(link.url)}
+          class="tag"
+          aria-current={link.url === path ? 'page' : undefined}>[ {link.title} ]</a>
+      )
+    )}
+    {settings.masthead.longTag && (
+      <span class="tag mh-long">{settings.masthead.longTag}</span>
+    )}
+  </nav>
+
+  <div class="nodes nodes--right">
+    {socialLinks.map((s) => (
+      <a
+        href={s.url}
+        class="tag mh-social"
+        aria-label={s.label}
+        target="_blank"
+        rel="noopener noreferrer">
+        <Icon name={s.key as any} />
+      </a>
+    ))}
+    <a
+      href={href("/cart")}
+      class="tag bag"
+      data-cart-toggle
+      aria-controls="CartDrawer"
+      aria-expanded="false">[ BAG (<b data-cart-count>0</b>) ]</a>
+  </div>
+</header>

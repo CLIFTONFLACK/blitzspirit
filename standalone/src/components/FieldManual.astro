@@ -1,0 +1,21 @@
+---
+// FieldManual — ported from snippets/field-manual.liquid.
+//
+// The Liquid version had a fallback that auto-built ENTRY / ISSUE / COLOURWAYS /
+// CARE / DELIVERY rows for products whose field_manual metafield was empty. Every
+// product in catalogue.json carries explicit rows (enforced by
+// tools/validate-catalogue.mjs), so that branch would be dead code and is dropped.
+interface Props {
+  rows: { label: string; value: string }[];
+}
+const { rows } = Astro.props;
+---
+<div class="field-manual">
+  <div class="fm-head tag">[ FIELD_MANUAL // TECHNICAL_SPEC ]</div>
+  {rows.map((row) => (
+    <div class="fm-row">
+      <span class="fm-key">{row.label.toUpperCase()}</span>
+      <span class="fm-val">{row.value}</span>
+    </div>
+  ))}
+</div>

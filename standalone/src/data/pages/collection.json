@@ -1,0 +1,91 @@
+{
+  "sections": [
+    {
+      "id": "hero",
+      "type": "collection-hero",
+      "settings": {
+        "index_tag": "SYSTEM_LEDGER // THE collections",
+        "show_page_ref": false,
+        "heading": "nostalgia reborn\nclothing built to last.",
+        "fallback_title": "Full Kit.",
+        "red_first_line": true,
+        "heading_size": "lg",
+        "extra_height": 0
+      },
+      "blocks": [
+        {
+          "id": "meta-1",
+          "type": "meta_tag",
+          "settings": {
+            "text": "the collections"
+          }
+        },
+        {
+          "id": "meta-2",
+          "type": "meta_tag",
+          "settings": {
+            "text": "made in britain"
+          }
+        }
+      ]
+    },
+    {
+      "id": "featured",
+      "type": "featured-product",
+      "settings": {
+        "product": "the-establishment",
+        "issue_override": "",
+        "dossier": "",
+        "what_label": "STORY",
+        "plate_ref": "BS_002 // ISSUE_000"
+      }
+    },
+    {
+      "id": "tabs",
+      "type": "collection-tabs",
+      "settings": {
+        "show_count": true
+      },
+      "blocks": [
+        {
+          "id": "tab-all",
+          "type": "tab",
+          "settings": {
+            "label": "ALL",
+            "link_all": true,
+            "collection": ""
+          }
+        },
+        {
+          "id": "tab-tshirts",
+          "type": "tab",
+          "settings": {
+            "label": "T-SHIRTS",
+            "link_all": false,
+            "collection": "t-shirts"
+          }
+        },
+        {
+          "id": "tab-caps",
+          "type": "tab",
+          "settings": {
+            "label": "CAPS",
+            "link_all": false,
+            "collection": "caps"
+          }
+        }
+      ]
+    },
+    {
+      "id": "grid",
+      "type": "main-collection-grid",
+      "settings": {
+        "products_per_page": 12,
+        "columns_desktop": "3",
+        "show_badge": true,
+        "empty_heading": "Bombed out.",
+        "empty_text": "Nothing filed under this yet."
+      }
+    }
+  ]
+}

@@ -1,0 +1,188 @@
+---
+// IconRoster — ported from sections/icon-roster.liquid.
+//
+// The Icons "files" gallery: alternating 50/50 rows, plate-framed image on
+// concrete, copy panel with FILE num tag, chunk heading, dossier description,
+// meta row and CTA. Every second row flips (`.roster-item--flip`), exactly as
+// the Liquid's `forloop.index | modulo: 2` did.
+//
+// The closing archive note's button is the signup trigger: [data-open-signup]
+// is bound globally by src/scripts/modal.js, so the attribute, the element type
+// and the class list are carried over character for character.
+//
+// Kept as-is: the CTA renders only when the block supplies BOTH cta_label and
+// cta_link, as the Liquid required. The schema's per-block defaults
+// ("FILE 01 / AD 60", "[ CHOOSE THIS ICON ]") are deliberately NOT used as
+// fallbacks — in Shopify they seed a newly added block, they are not a
+// render-time default, and applying them here would stamp "FILE 01" on every
+// row. Section-level defaults (note_text, note_cta_label) are carried across,
+// because those the page data does rely on.
+//
+// Dropped: data-section-id and block.shopify_attributes (Shopify section
+// rendering ids).
+import Plate from '~/components/Plate.astro';
+import { href, hrefsInHtml } from '~/lib/url';
+
+interface RosterBlock {
+  settings: {
+    image?: string | null;
+    num?: string;
+    heading?: string;
+    description?: string;
+    meta_1?: string;
+    meta_2?: string;
+    meta_3?: string;
+    cta_label?: string;
+    cta_link?: string;
+  };
+}
+
+interface Props {
+  noteText?: string;
+  noteCtaLabel?: string;
+  /** icon blocks, straight out of src/data/pages/*.json. */
+  blocks?: RosterBlock[];
+}
+
+const {
+  noteText = '<p>FROM THE ARCHIVE — The bowler-hatted gent first appeared on a BlitzSpirit tee back in 2008. Some characters refuse to stay retired. More files will be declassified as new designs drop — join the Home Guard to get them first.</p>',
+  noteCtaLabel = '[ JOIN THE HOME GUARD ]',
+  blocks = [],
+} = Astro.props;
+
+// Stand-in for Liquid's `handleize`, which built each row's anchor id from the
+// icon name: lowercase, strip diacritics, collapse non-alphanumerics to a dash.
+const handleize = (value: string) =>
+  value
+    .normalize('NFD')
+    .replace(/\p{M}/gu, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+---
+<div class="roster">
+  {blocks.map((block, i) => {
+    const s = block.settings;
+    const flip = (i + 1) % 2 === 0;
+    const hasMeta = !!(s.meta_1 || s.meta_2 || s.meta_3);
+    return (
+      <article
+        class:list={['about-block', 'roster-item', flip && 'roster-item--flip']}
+        id={s.heading ? handleize(s.heading) : undefined}
+      >
+        <div class="about-visual roster-visual">
+          <div class="roster-plate">
+            <Plate
+              src={s.image}
+              refText={s.num}
+              alt={s.heading}
+              sizes="(min-width: 860px) 50vw, 100vw"
+            />
+          </div>
+        </div>
+
+        <div class="about-copy roster-copy">
+          {s.num && <p class="led-index tag roster-num">[ {s.num} ]</p>}
+
+          {s.heading && <h2 class="chunk roster-head">{s.heading}</h2>}
+
+          <hr class="roster-rule" aria-hidden="true" />
+
+          {/* `description` is the block's richtext setting, authored in the
+              repo's own page data — trusted content, not user input — so it
+              renders as HTML exactly as the Liquid
+              `{{ block.settings.description }}` did. */}
+          {s.description && <div class="roster-body" set:html={hrefsInHtml(s.description)} />}
+
+          {hasMeta && (
+            <div class="roster-meta tag">
+              {s.meta_1 && <span>{s.meta_1}</span>}
+              {s.meta_2 && <span>{s.meta_2}</span>}
+              {s.meta_3 && <span>{s.meta_3}</span>}
+            </div>
+          )}
+
+          {s.cta_label && s.cta_link && (
+            <div class="roster-cta">
+              <a href={href(s.cta_link)} class="directive snap">{s.cta_label}</a>
+            </div>
+          )}
+        </div>
+      </article>
+    );
+  })}
+
+  {noteText && (
+    <aside class="roster-note">
+      {/* `note_text` is the section's richtext setting, from the repo's own
+          page data — trusted content, not user input. */}
+      <div class="roster-note-body" set:html={hrefsInHtml(noteText)} />
+      {noteCtaLabel && (
+        <button type="button" class="directive snap roster-note-cta" data-open-signup>
+          {noteCtaLabel}
+        </button>
+      )}
+    </aside>
+  )}
+</div>
+
+<style>
+  /* The Liquid {% stylesheet %} block. Rules that reach into Plate.astro's
+     markup or into the set:html rich text live in the global block below. */
+  .roster-item { scroll-margin-top: 64px; }
+  .roster-item .roster-num { display: inline-block; margin-bottom: 0; align-self: flex-start; }
+  .roster-plate { width: min(88%, 460px); margin: 0 auto; }
+  .roster-head { color: #fff; }
+  .roster-rule { border: none; border-top: 2px solid var(--signal); width: 64px; margin: 0; }
+  .roster-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s2);
+    color: var(--bone-mute);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 10px 0;
+  }
+  .roster-cta .directive { display: inline-block; width: auto; padding: 16px 28px; }
+  .roster-note {
+    border-bottom: 1px solid var(--line);
+    background: var(--panel-2);
+    padding: var(--s5) var(--s3);
+    text-align: center;
+  }
+  .roster-note-body { max-width: 56ch; margin: 0 auto; }
+  .roster-note-cta { display: inline-block; width: auto; padding: 14px 28px; margin-top: var(--s3); }
+
+  @media (min-width: 861px) {
+    .roster-item--flip .roster-visual { order: 2; border-right: none; border-left: 1px solid var(--line); }
+    .roster-item--flip .roster-copy { order: 1; }
+  }
+</style>
+
+<style is:global>
+  /* Global because these reach past this component's own markup: the .plate
+     rules style elements rendered by Plate.astro, and the .roster-body /
+     .roster-note-body rules style rich text injected with set:html, neither of
+     which carry this component's scope attribute. */
+  .roster-plate .plate { aspect-ratio: 1 / 1.12; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35); }
+  .roster-plate .plate__placeholder { width: 100%; height: 100%; opacity: 0.35; }
+  .roster-body p {
+    color: var(--bone);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: 1.75;
+    max-width: 52ch;
+  }
+  .roster-body p + p { margin-top: var(--s2); }
+  .roster-body em { font-style: normal; color: #fff; }
+  .roster-body strong { font-weight: 400; color: #fff; }
+  .roster-body p:last-child strong { color: var(--signal); }
+  .roster-note-body p {
+    color: var(--bone-dim);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1.8;
+  }
+</style>

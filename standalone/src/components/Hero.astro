@@ -1,0 +1,58 @@
+---
+// Hero — ported from sections/hero.liquid (the v27 split hero).
+//
+// Flat black wall, copy column left (mono kicker, ChunkFive headline, solid
+// signal-red CTA), skull & brollies artwork right. Framework CSS lives in
+// theme.css §12a — including the invert/dim filter that turns the black-on-white
+// artwork into a grey print on the black wall — so this section ships no CSS of
+// its own, exactly as the Liquid did.
+//
+// The Liquid had two artwork branches: an image_picker srcset (520w/1040w) and a
+// fallback to the packaged hero-skull-umbrella.png. Here the packaged asset is
+// simply the prop default and one <Image> serves both — the 1040w step is only
+// emitted when the source is actually that wide, so the 535px packaged mark is
+// never upscaled.
+import { Image } from 'astro:assets';
+import { asset } from '~/lib/images';
+import { href } from '~/lib/url';
+
+interface Props {
+  kicker?: string;
+  heading?: string;
+  ctaLabel?: string;
+  ctaLink?: string;
+  artworkImage?: string;
+}
+
+const {
+  kicker = 'ISSUE_001 · THE FIRST COLLECTION',
+  heading = 'BUILT FOR THE STUBBORN.',
+  ctaLabel = 'SEE THE COLLECTION',
+  ctaLink = '',
+  artworkImage = '/assets/hero-skull-umbrella.png',
+} = Astro.props;
+
+// Liquid: section.settings.cta_link | default: routes.all_products_collection_url
+const ctaUrl = ctaLink || '/collections/all';
+
+const artwork = asset(artworkImage);
+const artworkWidths = [520, 1040].filter((w) => w <= artwork.width);
+---
+<section class="hero">
+  <div class="hero-copy">
+    {kicker && <span class="hero-kicker tag tag-mute">{kicker}</span>}
+    {heading && <h1 class="chunk">{heading}</h1>}
+    {ctaLabel && <a class="hero-cta snap" href={href(ctaUrl)}>{ctaLabel}</a>}
+  </div>
+
+  <div class="hero-art" aria-hidden="true">
+    <Image
+      src={artwork}
+      alt=""
+      widths={artworkWidths.length > 0 ? artworkWidths : [artwork.width]}
+      sizes="(min-width: 861px) 520px, 68vw"
+      loading="eager"
+      fetchpriority="high"
+    />
+  </div>
+</section>

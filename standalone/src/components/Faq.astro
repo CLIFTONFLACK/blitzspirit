@@ -1,0 +1,206 @@
+---
+import { hrefsInHtml } from '~/lib/url';
+// Faq — ported from sections/faq.liquid.
+//
+// The field-manual accordion, used by both /pages/help and /pages/contact.
+// Native <details>/<summary>, zero JS. Every block gets an anchor id — the
+// block's own `anchor` setting, or the handleized heading when that is blank —
+// so the deep links keep working: the footer menu points at /pages/help#size-guide
+// and /pages/help#returns, and #delivery, #care, #faq, #contact are live too.
+// `.faq-item` carries scroll-margin-top so a jumped-to item clears the masthead.
+//
+// The size_table block renders the S–3XL measurement table from the same
+// pipe-format strings the Liquid parsed ("S|46|69|20", one row per line).
+//
+// Dropped: data-section-id and block.shopify_attributes (Shopify section
+// rendering ids).
+
+interface FaqBlock {
+  type?: string;
+  settings: {
+    heading?: string;
+    body?: string;
+    intro?: string;
+    columns?: string;
+    rows?: string;
+    anchor?: string;
+    open?: boolean;
+  };
+}
+
+interface Props {
+  indexTag?: string;
+  intro?: string;
+  /** qa / size_table blocks, straight out of src/data/pages/*.json. */
+  blocks?: FaqBlock[];
+}
+
+const {
+  indexTag = 'FIELD_MANUAL // STRAIGHT_ANSWERS',
+  intro = 'Straight answers, no run-around. If it’s not covered here, write to us — a human reads everything.',
+  blocks = [],
+} = Astro.props;
+
+// Stand-in for Liquid's `handleize`: lowercase, strip diacritics, and collapse
+// every run of non-alphanumerics into a single dash. It only ever runs on the
+// heading, and only when the block leaves `anchor` blank.
+const handleize = (value: string) =>
+  value
+    .normalize('NFD')
+    .replace(/\p{M}/gu, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
+const items = blocks.map((block) => {
+  const { settings } = block;
+  const anchor = settings.anchor || (settings.heading ? handleize(settings.heading) : '');
+  const columns = settings.columns
+    ? settings.columns.split('|').map((col) => col.trim())
+    : [];
+  const rows = settings.rows
+    ? settings.rows
+        .trim()
+        .split('\n')
+        .map((row) => row.trim())
+        .filter((row) => row !== '')
+        .map((row) => row.split('|').map((cell) => cell.trim()))
+    : [];
+  return { ...block, anchor, columns, rows };
+});
+---
+<div class="faq">
+  <div class="faq-inner">
+    {indexTag && <p class="led-index tag faq-index">[ {indexTag} ]</p>}
+    {intro && <p class="faq-intro">{intro}</p>}
+
+    {items.length > 0 && (
+      <div class="faq-list">
+        {items.map((item) =>
+          item.type === 'size_table' ? (
+            <details
+              class="faq-item faq-item--table"
+              id={item.anchor || undefined}
+              open={item.settings.open}
+            >
+              <summary class="faq-q">
+                <span class="faq-q-text">{item.settings.heading}</span>
+                <span class="faq-marker tag" aria-hidden="true"></span>
+              </summary>
+              <div class="faq-a">
+                {item.settings.intro && <p>{item.settings.intro}</p>}
+                {item.rows.length > 0 && (
+                  <table class="faq-table">
+                    <caption class="visually-hidden">{item.settings.heading}</caption>
+                    {item.columns.length > 0 && (
+                      <thead>
+                        <tr>
+                          {item.columns.map((col) => <th scope="col">{col}</th>)}
+                        </tr>
+                      </thead>
+                    )}
+                    <tbody>
+                      {item.rows.map((cells) => (
+                        <tr>
+                          {cells.map((cell, i) =>
+                            i === 0 ? <th scope="row">{cell}</th> : <td>{cell}</td>
+                          )}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+              </div>
+            </details>
+          ) : (
+            <details class="faq-item" id={item.anchor || undefined} open={item.settings.open}>
+              <summary class="faq-q">
+                <span class="faq-q-text">{item.settings.heading}</span>
+                <span class="faq-marker tag" aria-hidden="true"></span>
+              </summary>
+              {/* `body` is the block's richtext setting, authored in the repo's
+                  own page data — trusted content, not user input — so it renders
+                  as HTML exactly as the Liquid `{{ block.settings.body }}` did. */}
+              {item.settings.body && <div class="faq-a" set:html={hrefsInHtml(item.settings.body)} />}
+            </details>
+          )
+        )}
+      </div>
+    )}
+  </div>
+</div>
+
+<style>
+  .faq { padding: var(--s5) var(--s3) var(--s6); border-bottom: 1px solid var(--line); }
+  .faq-inner { max-width: 760px; margin: 0 auto; }
+  .faq-index { display: inline-block; }
+  .faq-intro {
+    color: var(--bone-dim);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: 1.8;
+    max-width: 60ch;
+    margin-bottom: var(--s4);
+  }
+  .faq-list { display: flex; flex-direction: column; gap: var(--s2); }
+  .faq-item { border: 1px solid var(--line); background: var(--panel); scroll-margin-top: 64px; }
+  .faq-item[open] { border-color: var(--line-bri); }
+  .faq-q {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--s2);
+    padding: var(--s2) var(--s3);
+    cursor: pointer;
+    list-style: none;
+    color: #fff;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .faq-q::-webkit-details-marker { display: none; }
+  .faq-q:hover .faq-q-text { color: var(--bone); }
+  .faq-marker::after { content: '[ + ]'; color: var(--signal); white-space: nowrap; }
+  .faq-item[open] .faq-marker::after { content: '[ – ]'; }
+  .faq-a { padding: 0 var(--s3) var(--s3); border-top: 1px solid var(--line); padding-top: var(--s2); }
+  .faq-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: var(--s2);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .faq-table th,
+  .faq-table td {
+    border: 1px solid var(--line);
+    padding: 8px 12px;
+    text-align: left;
+    color: var(--bone);
+    font-weight: 400;
+  }
+  .faq-table thead th { background: var(--panel-2); color: #fff; }
+  .faq-table tbody th { color: var(--signal); }
+</style>
+
+<style is:global>
+  /* Global because these style the answer rich text injected with set:html,
+     which does not carry this component's scope attribute. The size table's
+     own intro <p> is in-component but shares the same rules, so they have to
+     live together here. */
+  .faq-a p {
+    color: var(--bone-dim);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: 1.8;
+    max-width: 60ch;
+  }
+  .faq-a p + p { margin-top: var(--s2); }
+  .faq-a strong { font-weight: 400; color: var(--bone); }
+  .faq-a em { font-style: normal; color: var(--bone); }
+  .faq-a a { color: var(--bone); border-bottom: 1px solid var(--signal); }
+  .faq-a a:hover { color: var(--signal); }
+</style>

@@ -1,0 +1,119 @@
+---
+// AboutSplit — ported from sections/about-split.liquid.
+//
+// 50/50 FILE block: plate-framed visual on one side, panel copy on the other.
+// With no image the visual column drops away and the copy spans full width
+// (the `as--band` mode, about.html FILE_003 pattern). The Liquid kept showing
+// a placeholder plate inside the theme editor via request.design_mode — there
+// is no editor here, so that branch is dropped and "no image" always means
+// band mode.
+//
+// Dropped: data-section-id (a Shopify section rendering id).
+import Plate from '~/components/Plate.astro';
+import { href, hrefsInHtml } from '~/lib/url';
+
+interface Props {
+  indexTag?: string;
+  heading?: string;
+  body?: string;
+  image?: string | null;
+  imageRef?: string;
+  imageSide?: 'left' | 'right';
+  ctaLabel?: string;
+  ctaLink?: string;
+}
+
+const {
+  indexTag = 'FILE_001 // HOW_IT_STARTED',
+  heading = 'How it started.',
+  body = '<p>London, 2008. A bowler hat. A skull. Two crossed umbrellas. The original Skull &amp; Brollies tee came out of a simple question: <em>what does British stoicism actually look like on a t-shirt?</em></p><p>Not a bulldog. Not a Union Jack slapped on a cheap blank. Something that meant something — with a proper character behind it. Somebody who’d been through it and kept their composure. The city gent who walked to work through the Blitz and dared it to make him late.</p><p>That first design became BlitzSpirit. The name stuck because the spirit stuck. Eighteen years later, same question, same answer — <em>just better cotton</em>.</p>',
+  image,
+  imageRef,
+  imageSide = 'left',
+  ctaLabel,
+  ctaLink,
+} = Astro.props;
+
+const showVisual = !!image;
+---
+<div
+  class:list={[
+    'about-block',
+    'as',
+    imageSide === 'right' && 'as--flip',
+    !showVisual && 'as--band',
+  ]}
+>
+  {showVisual && (
+    <div class="about-visual as-visual">
+      <div class="as-plate">
+        <Plate
+          src={image}
+          refText={imageRef}
+          alt={heading}
+          sizes="(min-width: 860px) 50vw, 100vw"
+        />
+      </div>
+    </div>
+  )}
+
+  <div class="about-copy as-copy">
+    {indexTag && <p class="led-index tag as-index">[ {indexTag} ]</p>}
+
+    {heading && <h2 class="chunk">{heading}</h2>}
+
+    {/* `body` is the section's richtext setting, authored in the repo's own
+        page data — trusted content, not user input — so it renders as HTML
+        exactly as the Liquid `{{ section.settings.body }}` did. */}
+    {body && <div class="as-body" set:html={hrefsInHtml(body)} />}
+
+    {ctaLabel && ctaLink && (
+      <div class="as-cta">
+        <a href={href(ctaLink)} class="directive snap">{ctaLabel}</a>
+      </div>
+    )}
+  </div>
+</div>
+
+<style>
+  .as .as-index { align-self: flex-start; color: var(--signal); }
+  .as-plate { width: min(88%, 460px); margin: 0 auto; }
+  .as-cta { margin-top: var(--s2); }
+  .as-cta .directive { display: inline-block; width: auto; padding: 18px 32px; }
+
+  .as--band { grid-template-columns: 1fr; }
+  .as--band .as-copy { max-width: 980px; }
+  @media (min-width: 861px) {
+    .as--band .as-body { columns: 2; column-gap: var(--s4); }
+  }
+
+  @media (min-width: 861px) {
+    .as--flip .as-visual { order: 2; border-right: none; border-left: 1px solid var(--line); }
+    .as--flip .as-copy { order: 1; }
+  }
+</style>
+
+<style is:global>
+  /* Global because these reach past this component's own markup: the .plate
+     rules style elements rendered by Plate.astro, and the .as-body rules style
+     the rich-text paragraphs injected with set:html, neither of which carry
+     this component's scope attribute. */
+  .as-plate .plate { aspect-ratio: 1 / 1.12; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35); }
+  .as-plate .plate__placeholder { width: 100%; height: 100%; opacity: 0.35; }
+  .as-body p {
+    color: var(--bone);
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: 1.75;
+    max-width: 52ch;
+  }
+  .as-body p + p { margin-top: var(--s2); }
+  .as-body em { font-style: normal; color: #fff; }
+  .as-body strong { font-weight: 400; color: #fff; }
+  .as-body a { color: var(--bone); border-bottom: 1px solid var(--signal); }
+  .as-body a:hover { color: var(--signal); }
+  @media (min-width: 861px) {
+    .as--band .as-body p { break-inside: avoid; }
+  }
+</style>

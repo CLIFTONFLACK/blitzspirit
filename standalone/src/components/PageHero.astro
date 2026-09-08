@@ -1,0 +1,113 @@
+---
+// PageHero — ported from sections/page-hero.liquid.
+//
+// Dropped: the `texture` image_picker. It fed `--ph-tex` through Shopify's
+// image_url and no page in src/data/pages sets it; the CSS keeps the
+// var(--ph-tex, …) fallback so the flat panel backdrop is unchanged.
+// Also dropped: data-section-id (a Shopify section rendering id).
+//
+// Liquid took the headline from page.title when the setting was blank and
+// built the page ref from page.title too, so `pageTitle` is an explicit prop
+// here in place of the Shopify `page` object.
+interface Props {
+  indexTag?: string;
+  showPageRef?: boolean;
+  pageTitle?: string;
+  heading?: string;
+  redFirstLine?: boolean;
+  headingSize?: 'xl' | 'lg';
+  extraHeight?: number;
+  /** meta_tag blocks, straight out of src/data/pages/*.json. */
+  blocks?: { settings: { text?: string } }[];
+}
+
+const {
+  indexTag = 'SYSTEM_DOSSIER',
+  showPageRef = true,
+  pageTitle = '',
+  heading: headingProp,
+  redFirstLine = true,
+  headingSize = 'xl',
+  extraHeight = 0,
+  blocks = [],
+} = Astro.props;
+
+const heading = headingProp || pageTitle;
+
+// heading | newline_to_br | split: '<br />' then `strip` on each line — the
+// same thing as splitting on the literal "\n" the page data stores. Blank
+// lines are skipped entirely (Liquid `continue` also skips the <br>), but the
+// "is this the first / last line" tests still run against the unsplit array.
+const rawLines = heading.split('\n');
+const lines = rawLines
+  .map((line, i) => ({
+    text: line.trim(),
+    first: i === 0,
+    last: i === rawLines.length - 1,
+  }))
+  .filter((line) => line.text !== '');
+
+const pageRef = showPageRef && pageTitle ? pageTitle.toUpperCase().replaceAll(' ', '_') : '';
+
+const style = extraHeight ? `--ph-extra-h: ${extraHeight}px;` : undefined;
+
+const metaSegments = blocks
+  .map((block) => block.settings.text)
+  .filter((text): text is string => !!text);
+---
+<section class:list={['about-hero', 'page-hero', `page-hero--${headingSize}`]} style={style}>
+  <div>
+    {(indexTag || pageRef) && (
+      <p class="led-index tag ph-index">
+        [ {indexTag}{indexTag && pageRef ? ' // ' : ''}{pageRef} ]
+      </p>
+    )}
+
+    {heading && (
+      <h1 class="chunk ph-head">
+        {lines.map((line) => (
+          <>
+            {line.first && redFirstLine && rawLines.length > 1 ? (
+              <span class="ph-red">{line.text}</span>
+            ) : (
+              line.text
+            )}
+            {!line.last && <br />}
+          </>
+        ))}
+      </h1>
+    )}
+
+    {metaSegments.length > 0 && (
+      <p class="tag ph-meta">
+        [{metaSegments.map((text, i) => (
+          <> {text}{i < metaSegments.length - 1 ? ' //' : ''}</>
+        ))} ]
+      </p>
+    )}
+  </div>
+</section>
+
+<style>
+  .page-hero {
+    /* Flat panel by default; a section image override still lands via --ph-tex
+       (the gradient fallback acts as a flat colour when no override is set). */
+    background:
+      linear-gradient(rgba(10, 10, 10, 0.6), rgba(10, 10, 10, 0.76)),
+      var(--ph-tex, linear-gradient(var(--panel), var(--panel))) center/cover no-repeat;
+  }
+  .page-hero .ph-index { margin-bottom: 46px; }
+  .page-hero .ph-head {
+    color: var(--cream);
+    font-size: clamp(3rem, 9vw, 8rem);
+    line-height: 0.9;
+    margin-bottom: 24px;
+  }
+  .page-hero--lg .ph-head { font-size: clamp(2.2rem, 6vw, 4.5rem); }
+  .page-hero .ph-red { color: var(--brand-red); }
+  .page-hero .ph-meta {
+    color: var(--bone-dim);
+    max-width: 60ch;
+    line-height: 1.8;
+  }
+</style>

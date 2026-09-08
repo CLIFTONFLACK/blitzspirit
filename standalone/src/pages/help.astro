@@ -1,0 +1,31 @@
+---
+// Help — templates/page.help.json: hero, faq. The footer links straight into this
+// page's anchors (/help#size-guide, /help#returns), so the FAQ block anchors are
+// load-bearing.
+import Base from '~/layouts/Base.astro';
+import PageHero from '~/components/PageHero.astro';
+import Faq from '~/components/Faq.astro';
+
+import pageData from '~/data/pages/help.json';
+import { settings, blocks, type PageData } from '~/lib/pages';
+
+const page = pageData as PageData;
+const hero = settings(page, 'hero');
+const faq = settings(page, 'faq');
+---
+<Base
+  title={page.title ?? 'Help'}
+  description="Delivery, returns, sizing and care. Straight answers, no run-around."
+>
+  <PageHero
+    indexTag={hero.index_tag}
+    showPageRef={hero.show_page_ref}
+    pageTitle={page.title}
+    heading={hero.heading}
+    redFirstLine={hero.red_first_line}
+    headingSize={hero.heading_size}
+    extraHeight={hero.extra_height}
+    blocks={blocks(page, 'hero')}
+  />
+  <Faq indexTag={faq.index_tag} intro={faq.intro} blocks={blocks(page, 'faq')} />
+</Base>

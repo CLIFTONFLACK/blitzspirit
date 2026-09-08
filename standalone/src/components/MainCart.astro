@@ -1,0 +1,147 @@
+---
+// MainCart — ported from sections/main-cart.liquid. The full /cart page.
+//
+// The Liquid version was the no-JS path: a native {% form 'cart' %} with
+// name="updates[]" inputs and url_to_remove links. There is no server cart to post
+// to now, so this renders an empty shell that cart.js fills from localStorage — the
+// same way the drawer works. Without JavaScript the page shows the empty ledger and
+// a link back to the collection, which is honest: this build cannot sell without JS.
+//
+// cart.js hooks used here: [data-cart-items], [data-cart-subtotal], [data-cart-fsb],
+// [data-checkout], and the per-row [data-line-item] / [data-qty-change] /
+// [data-remove] it generates. The rows it writes are the drawer's .cart-row markup,
+// so this page styles that markup rather than the Liquid page's .main-cart-row grid.
+import settings from '~/data/settings.json';
+import strings from '~/data/strings.json';
+import { formatMoney } from '~/lib/money';
+import { href } from '~/lib/url';
+
+interface Props {
+  heading?: string;
+}
+const { heading = 'Full Ledger.' } = Astro.props;
+---
+<section class="main-cart">
+  <header class="main-cart-head">
+    <div>
+      <div class="tag tag-mute main-cart-kicker">[ {strings.cart.title} ]</div>
+      <h1 class="chunk main-cart-title">{heading}</h1>
+    </div>
+    <span class="tag main-cart-count" data-cart-count-label>[ 0 ITEMS ]</span>
+  </header>
+
+  {settings.cart.showFreeShippingBar && settings.cart.freeShippingThreshold > 0 && (
+    <div class="fsb" data-cart-fsb data-threshold={settings.cart.freeShippingThreshold} style="--fsb-pct: 0%">
+      <span class="fsb-msg" data-fsb-msg>
+        [ {strings.cart.free_shipping_away.replace('{{ amount }}', formatMoney(settings.cart.freeShippingThreshold))} ]
+      </span>
+      <div class="fsb-track" aria-hidden="true">
+        <div class="fsb-fill"></div>
+      </div>
+    </div>
+  )}
+
+  <div class="cart-error" data-cart-error role="alert" hidden></div>
+
+  <div class="main-cart-lines" data-cart-items>
+    <div class="cart-empty">[ {strings.cart.empty} ]</div>
+  </div>
+
+  <a href={href("/collections/all")} class="directive snap main-cart-continue">[ {strings.general['404'].link} ]</a>
+
+  <div class="main-cart-foot">
+    <div class="cart-sum">
+      <span>[ {strings.cart.subtotal} ]</span>
+      <b data-cart-subtotal>{formatMoney(0)}</b>
+    </div>
+    <div class="main-cart-actions">
+      <button type="button" class="cart-checkout snap" data-checkout disabled>[ {strings.cart.checkout} ]</button>
+    </div>
+    {settings.cart.note && <p class="cart-note">{settings.cart.note}</p>}
+  </div>
+</section>
+
+<script>
+  // The item-count line has no equivalent hook in cart.js, so it listens for the
+  // event cart.js already fires rather than adding another contract.
+  document.addEventListener('cart:updated', (event) => {
+    const label = document.querySelector('[data-cart-count-label]');
+    if (!label) return;
+    const detail = (event as CustomEvent).detail;
+    const count = (detail?.lines ?? []).reduce(
+      (n: number, line: { quantity: number }) => n + line.quantity,
+      0
+    );
+    label.textContent = `[ ${count} ${count === 1 ? 'ITEM' : 'ITEMS'} ]`;
+    const empty = count === 0;
+    document.querySelector('.main-cart-continue')?.toggleAttribute('hidden', !empty);
+  });
+</script>
+
+<style is:global>
+  /* Global: cart.js injects the rows at runtime, so scoped styles would not match. */
+  .main-cart {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: var(--s7) var(--s3);
+  }
+  .main-cart-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--s3);
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: var(--s3);
+    margin-bottom: var(--s4);
+  }
+  .main-cart-kicker { display: block; margin-bottom: var(--s2); }
+  .main-cart-title {
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    color: var(--cream);
+  }
+  .main-cart-count { color: var(--bone-mute); }
+  .main-cart-lines {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s2);
+    margin-bottom: var(--s3);
+  }
+
+  /* cart.js writes the drawer's .cart-row markup; give it the roomier page grid. */
+  .main-cart-lines .cart-row {
+    border: 1px solid var(--line);
+    background: var(--panel);
+    padding: var(--s2);
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr) auto;
+    gap: var(--s2);
+    align-items: center;
+  }
+  .main-cart-lines .ci-plate {
+    width: 64px;
+    height: 64px;
+    background: var(--plate);
+    border: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .main-cart-lines .ci-plate img { width: 100%; height: 100%; object-fit: contain; }
+  .main-cart-lines .ci-body { min-width: 0; }
+  .main-cart-lines .ci-rm { display: inline-block; margin-top: 8px; }
+
+  .main-cart-foot { border-top: 1px solid var(--line); padding-top: var(--s3); }
+  .main-cart-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s2);
+    margin-top: var(--s2);
+  }
+  .main-cart-continue { max-width: 420px; margin: var(--s3) auto 0; }
+  @media (max-width: 640px) {
+    .main-cart-lines .cart-row { grid-template-columns: 64px minmax(0, 1fr); }
+    .main-cart-lines .ci-controls { grid-column: 2; }
+  }
+</style>
