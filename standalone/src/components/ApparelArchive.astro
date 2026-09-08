@@ -51,9 +51,11 @@ interface Props {
   blocks: ItemBlock[];
   autoAlternate?: boolean;
   whatLabel?: string;
+  /** Address prefix for the inline copy editor, e.g. "pages/index:archive". */
+  editBase?: string;
 }
 
-const { blocks, autoAlternate = true, whatLabel = 'STORY' } = Astro.props;
+const { blocks, autoAlternate = true, whatLabel = 'STORY', editBase } = Astro.props;
 
 const parse = (text: string) =>
   text
@@ -76,6 +78,7 @@ const rows = blocks.map((block, i) => {
 
   return {
     product,
+    editId: editBase && block.id ? `${editBase}.blocks.${block.id}` : undefined,
     dark: block.settings.force_dark === true || (autoAlternate && rowNumber % 2 === 0),
     indexLabel,
     issueText,
@@ -140,7 +143,7 @@ const rows = blocks.map((block, i) => {
         <div>
           <div class="dossier">
             <div class="led-index tag">
-              [ ★ {row.issueText} // {row.indexLabel} // {row.titleUp} ]
+              [ ★ {row.issueText} // <span data-line-id={row.editId && `${row.editId}.settings.index_label`}>{row.indexLabel}</span> // {row.titleUp} ]
             </div>
             <h2 class="led-name chunk">
               {row.startsWithThe ? (
@@ -197,7 +200,11 @@ const rows = blocks.map((block, i) => {
 
               <div class="actions">
                 {whatLabel && (
-                  <a class="what-link snap" href={href(`/products/${row.product.handle}`)}>
+                  <a
+                    class="what-link snap"
+                    href={href(`/products/${row.product.handle}`)}
+                    data-line-id={editBase && `${editBase}.settings.what_label`}
+                  >
                     {row.titleUp} {whatLabel}
                   </a>
                 )}

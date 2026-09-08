@@ -17,6 +17,8 @@ interface Props {
   heading?: string;
   body?: string;
   buttonLabel?: string;
+  /** Address prefix for the inline copy editor, e.g. "pages/about:newsletter". */
+  editBase?: string;
 }
 
 const {
@@ -25,17 +27,22 @@ const {
   heading = 'Wakey wakey.',
   body = 'First word on new drops, restocks and stories worth telling — plus 10% off your first order. No spam. That would be nonsense.',
   buttonLabel = '[ SEND IT ]',
+  editBase,
 } = Astro.props;
 ---
 <section class="newsletter">
   <div class="nws-inner">
-    {indexTag && <p class="led-index tag nws-index">[ {indexTag} ]</p>}
+    {indexTag && <p class="led-index tag nws-index" data-line-id={editBase && `${editBase}.settings.index_tag`}>[ {indexTag} ]</p>}
 
-    {heading && <h2 class="chunk nws-head">{heading}</h2>}
+    {heading && <h2 class="chunk nws-head" data-line-id={editBase && `${editBase}.settings.heading`}>{heading}</h2>}
 
-    {body && <p>{body}</p>}
+    {body && <p data-line-id={editBase && `${editBase}.settings.body`}>{body}</p>}
 
-    <NewsletterForm id={`Newsletter-${sectionId}`} buttonLabel={buttonLabel} />
+    <NewsletterForm
+      id={`Newsletter-${sectionId}`}
+      buttonLabel={buttonLabel}
+      buttonLabelEditId={editBase ? `${editBase}.settings.button_label` : undefined}
+    />
   </div>
 </section>
 

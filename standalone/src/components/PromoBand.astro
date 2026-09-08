@@ -25,6 +25,8 @@ interface Props {
   placeholder?: string;
   buttonLabel?: string;
   successText?: string;
+  /** Address prefix for the inline copy editor, e.g. "pages/index:promo". */
+  editBase?: string;
 }
 
 const {
@@ -37,6 +39,7 @@ const {
   placeholder = 'NAME@DOMAIN.CO.UK',
   buttonLabel = '[ NOTIFY ME ]',
   successText = "[ SECURED // YOU'RE FIRST IN THE KNOW ]",
+  editBase,
 } = Astro.props;
 
 // Liquid asked image_url for 2000w; getImage is the astro:assets equivalent for a
@@ -48,12 +51,12 @@ const banded = await getImage({ src: source, width: Math.min(2000, source.width)
 <section class="promo" style={`--promo-image: url('${banded.src}')`}>
   <div class="promo-inner">
     <div class="promo-text">
-      {tag && <div class="promo-tag tag">{tag}</div>}
-      {heading && <h2 class="promo-title chunk">{heading}</h2>}
-      {subheading && <p class="promo-sub">{subheading}</p>}
+      {tag && <div class="promo-tag tag" data-line-id={editBase && `${editBase}.settings.tag`}>{tag}</div>}
+      {heading && <h2 class="promo-title chunk" data-line-id={editBase && `${editBase}.settings.heading`}>{heading}</h2>}
+      {subheading && <p class="promo-sub" data-line-id={editBase && `${editBase}.settings.subheading`}>{subheading}</p>}
 
       <div class="promo-form">
-        {leadLine && <p class="promo-cta tag">{leadLine}</p>}
+        {leadLine && <p class="promo-cta tag" data-line-id={editBase && `${editBase}.settings.lead_line`}>{leadLine}</p>}
         <NewsletterForm
           id={id}
           buttonLabel={buttonLabel}
@@ -61,6 +64,7 @@ const banded = await getImage({ src: source, width: Math.min(2000, source.width)
           placeholder={placeholder}
           tags="newsletter,backbone10"
           classPrefix="promo"
+          buttonLabelEditId={editBase ? `${editBase}.settings.button_label` : undefined}
         />
       </div>
     </div>

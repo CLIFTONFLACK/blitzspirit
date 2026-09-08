@@ -28,12 +28,15 @@ interface Props {
   /** Product handle, as the Liquid product picker stored it. */
   product: string;
   issueTag?: string;
+  /** Address prefix for the inline copy editor, e.g. "pages/index:equipment". */
+  editBase?: string;
 }
 
 const {
   label = '[ RECOMMENDED CONDIMENT ]',
   product: handle,
   issueTag = 'ISSUE_001 // EQUIPMENT',
+  editBase,
 } = Astro.props;
 
 const product = getProduct(handle);
@@ -51,7 +54,7 @@ const pillOptions = product.options
 ---
 <section class="equipment" data-product-wrap>
   <div class="condiment-inner">
-    {label && <div class="condiment-label tag">{label}</div>}
+    {label && <div class="condiment-label tag" data-line-id={editBase && `${editBase}.settings.label`}>{label}</div>}
 
     <div class="condiment-body">
       <div class="condiment-visual">
@@ -93,7 +96,7 @@ const pillOptions = product.options
       </div>
 
       <div class="condiment-info">
-        {issueTag && <div class="condiment-issue tag">[ {issueTag} ]</div>}
+        {issueTag && <div class="condiment-issue tag" data-line-id={editBase && `${editBase}.settings.issue_tag`}>[ {issueTag} ]</div>}
 
         <h2 class="chunk condiment-name">
           {startsWithThe ? (

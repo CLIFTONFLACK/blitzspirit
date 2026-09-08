@@ -1,0 +1,178 @@
+---
+// edit — the inline copy editor.
+//
+// Shows the real pages in a frame and makes their copy click-to-edit. Every editable
+// element carries a data-line-id that ADDRESSES the field in the committed JSON
+// (see api/_content.js), so a save is a commit to the repo: no override table, no
+// second copy of the copy, and `git revert` undoes anything.
+//
+// Deliberately not part of the shop's chrome - no masthead, no cart, no footer. It is
+// a tool, and it is noindex.
+//
+// It is served at /edit/ while the shop sits under /new/, so the frame's URLs are
+// built from BASE_URL rather than assumed. When the shop moves to the domain root
+// that constant changes and nothing here does.
+import { products } from '~/lib/catalogue';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const pages = [
+  { label: 'Home', path: '/' },
+  { label: 'About', path: '/about' },
+  { label: 'The Story', path: '/story' },
+  { label: 'Help', path: '/help' },
+  { label: 'Contact', path: '/contact' },
+  { label: 'The Icons', path: '/icons' },
+  { label: 'Link in Bio', path: '/link-in-bio' },
+  { label: 'The Collections', path: '/collections/all' },
+  ...products.map((p) => ({ label: p.title, path: `/products/${p.handle}` })),
+];
+---
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Copy editor — BLITZSPIRIT</title>
+    <link rel="icon" type="image/png" href={`${base}/assets/blitzspirit-stamp.png`} />
+    <style define:vars={{ fontUrl: `url('${base}/assets/fonts/chunkfive.woff2')` }}>
+      @font-face {
+        font-family: 'ChunkFive';
+        src: var(--fontUrl) format('woff2');
+        font-display: swap;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="bar">
+      <div class="brand">
+        <span class="chunk">EDIT</span>
+        <span class="tag muted">COPY // COMMITS TO THE REPO</span>
+      </div>
+
+      <label class="picker">
+        <span class="visually-hidden">Page</span>
+        <select data-page-picker>
+          {pages.map((p) => <option value={base + p.path}>{p.label}</option>)}
+        </select>
+      </label>
+
+      <div class="actions">
+        <span class="tag count" data-count>NO CHANGES</span>
+        <button type="button" class="btn" data-discard disabled>DISCARD</button>
+        <button type="button" class="btn btn--go" data-save disabled>SAVE + PUBLISH</button>
+      </div>
+    </header>
+
+    <p class="hint tag" data-hint>
+      Click any highlighted text to edit it. Enter commits a line, Escape puts it back.
+    </p>
+
+    <div class="status" data-status hidden></div>
+
+    <div class="frame-wrap">
+      <iframe data-frame title="Site preview" src={base + '/'}></iframe>
+    </div>
+
+    <script>
+      import '~/scripts/edit-ui.js';
+    </script>
+
+    <style>
+      :root {
+        --ink: #0a0a0a;
+        --panel: #111;
+        --panel-2: #181818;
+        --line: #2a2a2a;
+        --line-bri: #3a3a3a;
+        --bone: #ececec;
+        --bone-dim: #8a8a8a;
+        --signal: #f00;
+        --mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--ink);
+        color: var(--bone);
+        font-family: var(--mono);
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+      }
+      .chunk { font-family: 'ChunkFive', Georgia, serif; font-size: 20px; letter-spacing: 0.04em; }
+      .tag {
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+      .muted { color: var(--bone-dim); }
+      .visually-hidden {
+        position: absolute; width: 1px; height: 1px; overflow: hidden;
+        clip: rect(0 0 0 0); white-space: nowrap;
+      }
+
+      .bar {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+        padding: 12px 16px;
+        background: var(--panel);
+        border-bottom: 1px solid var(--line);
+      }
+      .brand { display: flex; align-items: baseline; gap: 12px; }
+      .picker { margin-left: auto; }
+      select {
+        background: var(--panel-2);
+        color: var(--bone);
+        border: 1px solid var(--line-bri);
+        font-family: var(--mono);
+        font-size: 12px;
+        padding: 8px 10px;
+        min-width: 220px;
+      }
+      .actions { display: flex; align-items: center; gap: 10px; }
+      .count { color: var(--bone-dim); white-space: nowrap; }
+      .count[data-dirty] { color: var(--signal); }
+      .btn {
+        background: transparent;
+        color: var(--bone);
+        border: 1px solid var(--line-bri);
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        padding: 9px 14px;
+        cursor: pointer;
+      }
+      .btn:hover:not(:disabled) { border-color: var(--bone); }
+      .btn:disabled { opacity: 0.4; cursor: default; }
+      .btn--go { background: var(--signal); border-color: var(--signal); color: #fff; font-weight: 700; }
+      .btn--go:hover:not(:disabled) { background: #fff; border-color: #fff; color: var(--ink); }
+
+      .hint { padding: 8px 16px; color: var(--bone-dim); margin: 0; border-bottom: 1px solid var(--line); }
+
+      .status {
+        padding: 10px 16px;
+        border-bottom: 1px solid var(--line);
+        font-size: 12px;
+      }
+      .status[data-kind='ok'] { color: #9fe08f; background: #0f1a0d; }
+      .status[data-kind='busy'] { color: var(--bone-dim); }
+      .status[data-kind='bad'] { color: #fff; background: #3a0d0d; border-bottom-color: var(--signal); }
+      .status a { color: inherit; }
+
+      .frame-wrap { flex: 1; min-height: 0; background: var(--ink); }
+      iframe { width: 100%; height: 100%; border: 0; display: block; background: var(--ink); }
+
+      @media (max-width: 720px) {
+        .picker { margin-left: 0; width: 100%; }
+        select { width: 100%; }
+        .actions { width: 100%; justify-content: space-between; }
+      }
+    </style>
+  </body>
+</html>

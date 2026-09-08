@@ -22,6 +22,8 @@ interface Props {
   ctaLabel?: string;
   ctaLink?: string;
   artworkImage?: string;
+  /** Address prefix for the inline copy editor, e.g. "pages/index:hero". */
+  editBase?: string;
 }
 
 const {
@@ -30,6 +32,7 @@ const {
   ctaLabel = 'SEE THE COLLECTION',
   ctaLink = '',
   artworkImage = '/assets/hero-skull-umbrella.png',
+  editBase,
 } = Astro.props;
 
 // Liquid: section.settings.cta_link | default: routes.all_products_collection_url
@@ -40,9 +43,9 @@ const artworkWidths = [520, 1040].filter((w) => w <= artwork.width);
 ---
 <section class="hero">
   <div class="hero-copy">
-    {kicker && <span class="hero-kicker tag tag-mute">{kicker}</span>}
-    {heading && <h1 class="chunk">{heading}</h1>}
-    {ctaLabel && <a class="hero-cta snap" href={href(ctaUrl)}>{ctaLabel}</a>}
+    {kicker && <span class="hero-kicker tag tag-mute" data-line-id={editBase && `${editBase}.settings.kicker`}>{kicker}</span>}
+    {heading && <h1 class="chunk" data-line-id={editBase && `${editBase}.settings.heading`}>{heading}</h1>}
+    {ctaLabel && <a class="hero-cta snap" href={href(ctaUrl)} data-line-id={editBase && `${editBase}.settings.cta_label`}>{ctaLabel}</a>}
   </div>
 
   <div class="hero-art" aria-hidden="true">

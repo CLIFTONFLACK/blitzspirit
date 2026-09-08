@@ -16,6 +16,7 @@ import { hrefsInHtml } from '~/lib/url';
 // rendering ids).
 
 interface FaqBlock {
+  id?: string;
   type?: string;
   settings: {
     heading?: string;
@@ -33,12 +34,15 @@ interface Props {
   intro?: string;
   /** qa / size_table blocks, straight out of src/data/pages/*.json. */
   blocks?: FaqBlock[];
+  /** Address prefix for the inline copy editor, e.g. "pages/help:faq". */
+  editBase?: string;
 }
 
 const {
   indexTag = 'FIELD_MANUAL // STRAIGHT_ANSWERS',
   intro = 'Straight answers, no run-around. If it’s not covered here, write to us — a human reads everything.',
   blocks = [],
+  editBase,
 } = Astro.props;
 
 // Stand-in for Liquid's `handleize`: lowercase, strip diacritics, and collapse
@@ -71,8 +75,8 @@ const items = blocks.map((block) => {
 ---
 <div class="faq">
   <div class="faq-inner">
-    {indexTag && <p class="led-index tag faq-index">[ {indexTag} ]</p>}
-    {intro && <p class="faq-intro">{intro}</p>}
+    {indexTag && <p class="led-index tag faq-index" data-line-id={editBase && `${editBase}.settings.index_tag`}>[ {indexTag} ]</p>}
+    {intro && <p class="faq-intro" data-line-id={editBase && `${editBase}.settings.intro`}>{intro}</p>}
 
     {items.length > 0 && (
       <div class="faq-list">
@@ -115,13 +119,22 @@ const items = blocks.map((block) => {
           ) : (
             <details class="faq-item" id={item.anchor || undefined} open={item.settings.open}>
               <summary class="faq-q">
-                <span class="faq-q-text">{item.settings.heading}</span>
+                <span
+                  class="faq-q-text"
+                  data-line-id={editBase && item.id && `${editBase}.blocks.${item.id}.settings.heading`}
+                >{item.settings.heading}</span>
                 <span class="faq-marker tag" aria-hidden="true"></span>
               </summary>
               {/* `body` is the block's richtext setting, authored in the repo's
                   own page data — trusted content, not user input — so it renders
                   as HTML exactly as the Liquid `{{ block.settings.body }}` did. */}
-              {item.settings.body && <div class="faq-a" set:html={hrefsInHtml(item.settings.body)} />}
+              {item.settings.body && (
+                <div
+                  class="faq-a"
+                  data-line-id={editBase && item.id && `${editBase}.blocks.${item.id}.settings.body`}
+                  set:html={hrefsInHtml(item.settings.body)}
+                />
+              )}
             </details>
           )
         )}

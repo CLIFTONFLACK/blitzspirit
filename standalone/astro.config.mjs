@@ -22,7 +22,7 @@ export default defineConfig({
     sitemap({
       // The checkout outcome pages are dead ends a shopper reaches from Stripe;
       // they have nothing to index.
-      filter: (page) => !page.includes('/checkout/'),
+      filter: (page) => !page.includes('/checkout/') && !page.includes('/edit'),
     }),
   ],
   devToolbar: { enabled: false },

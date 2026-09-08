@@ -44,6 +44,7 @@ for (const block of archiveBlocks) {
     heading={hero.heading}
     ctaLabel={hero.cta_label}
     ctaLink={hero.cta_link}
+    editBase="pages/index:hero"
   />
 
   <FeaturedProduct
@@ -52,6 +53,7 @@ for (const block of archiveBlocks) {
     dossier={featured.dossier}
     whatLabel={featured.what_label}
     plateRef={featured.plate_ref}
+    editBase="pages/index:featured"
   />
 
   <PromoBand
@@ -64,18 +66,21 @@ for (const block of archiveBlocks) {
     placeholder={promo.placeholder}
     buttonLabel={promo.button_label}
     successText={promo.success_text}
+    editBase="pages/index:promo"
   />
 
   <ApparelArchive
     blocks={archiveBlocks}
     autoAlternate={archive.auto_alternate}
     whatLabel={archive.what_label}
+    editBase="pages/index:archive"
   />
 
   <EquipmentFeature
     label={equipment.label}
     product={equipment.product}
     issueTag={equipment.issue_tag}
+    editBase="pages/index:equipment"
   />
 
   <PromoBand
@@ -88,5 +93,6 @@ for (const block of archiveBlocks) {
     placeholder={promo2.placeholder}
     buttonLabel={promo2.button_label}
     successText={promo2.success_text}
+    editBase="pages/index:promo_band_VF78L7"
   />
 </Base>

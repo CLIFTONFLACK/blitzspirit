@@ -24,6 +24,7 @@ import Plate from '~/components/Plate.astro';
 import { href, hrefsInHtml } from '~/lib/url';
 
 interface RosterBlock {
+  id?: string;
   settings: {
     image?: string | null;
     num?: string;
@@ -42,12 +43,15 @@ interface Props {
   noteCtaLabel?: string;
   /** icon blocks, straight out of src/data/pages/*.json. */
   blocks?: RosterBlock[];
+  /** Address prefix for the inline copy editor, e.g. "pages/icons:roster". */
+  editBase?: string;
 }
 
 const {
   noteText = '<p>FROM THE ARCHIVE — The bowler-hatted gent first appeared on a BlitzSpirit tee back in 2008. Some characters refuse to stay retired. More files will be declassified as new designs drop — join the Home Guard to get them first.</p>',
   noteCtaLabel = '[ JOIN THE HOME GUARD ]',
   blocks = [],
+  editBase,
 } = Astro.props;
 
 // Stand-in for Liquid's `handleize`, which built each row's anchor id from the
@@ -63,6 +67,7 @@ const handleize = (value: string) =>
 <div class="roster">
   {blocks.map((block, i) => {
     const s = block.settings;
+    const b = editBase && block.id ? `${editBase}.blocks.${block.id}` : undefined;
     const flip = (i + 1) % 2 === 0;
     const hasMeta = !!(s.meta_1 || s.meta_2 || s.meta_3);
     return (
@@ -82,9 +87,9 @@ const handleize = (value: string) =>
         </div>
 
         <div class="about-copy roster-copy">
-          {s.num && <p class="led-index tag roster-num">[ {s.num} ]</p>}
+          {s.num && <p class="led-index tag roster-num" data-line-id={b && `${b}.settings.num`}>[ {s.num} ]</p>}
 
-          {s.heading && <h2 class="chunk roster-head">{s.heading}</h2>}
+          {s.heading && <h2 class="chunk roster-head" data-line-id={b && `${b}.settings.heading`}>{s.heading}</h2>}
 
           <hr class="roster-rule" aria-hidden="true" />
 
@@ -92,13 +97,19 @@ const handleize = (value: string) =>
               repo's own page data — trusted content, not user input — so it
               renders as HTML exactly as the Liquid
               `{{ block.settings.description }}` did. */}
-          {s.description && <div class="roster-body" set:html={hrefsInHtml(s.description)} />}
+          {s.description && (
+            <div
+              class="roster-body"
+              data-line-id={b && `${b}.settings.description`}
+              set:html={hrefsInHtml(s.description)}
+            />
+          )}
 
           {hasMeta && (
             <div class="roster-meta tag">
-              {s.meta_1 && <span>{s.meta_1}</span>}
-              {s.meta_2 && <span>{s.meta_2}</span>}
-              {s.meta_3 && <span>{s.meta_3}</span>}
+              {s.meta_1 && <span data-line-id={b && `${b}.settings.meta_1`}>{s.meta_1}</span>}
+              {s.meta_2 && <span data-line-id={b && `${b}.settings.meta_2`}>{s.meta_2}</span>}
+              {s.meta_3 && <span data-line-id={b && `${b}.settings.meta_3`}>{s.meta_3}</span>}
             </div>
           )}
 
@@ -116,7 +127,11 @@ const handleize = (value: string) =>
     <aside class="roster-note">
       {/* `note_text` is the section's richtext setting, from the repo's own
           page data — trusted content, not user input. */}
-      <div class="roster-note-body" set:html={hrefsInHtml(noteText)} />
+      <div
+        class="roster-note-body"
+        data-line-id={editBase && `${editBase}.settings.note_text`}
+        set:html={hrefsInHtml(noteText)}
+      />
       {noteCtaLabel && (
         <button type="button" class="directive snap roster-note-cta" data-open-signup>
           {noteCtaLabel}

@@ -21,9 +21,11 @@
 
 interface Props {
   items?: { heading: string; body: string }[];
+  /** Product handle, so the inline editor can address these blocks in catalogue.json. */
+  handle?: string;
 }
 
-const { items = [] } = Astro.props;
+const { items = [], handle } = Astro.props;
 
 const pad = (n: number) => (n < 10 ? `0${n}` : String(n));
 ---
@@ -33,9 +35,9 @@ const pad = (n: number) => (n < 10 ? `0${n}` : String(n));
       {items.map((item, i) => (
         <div class="editorial-block">
           <div class="led-index tag editorial-tag">[ TEXT_{pad(i + 1)} ]</div>
-          {item.heading && <h2 class="chunk editorial-head">{item.heading}</h2>}
+          {item.heading && <h2 class="chunk editorial-head" data-line-id={handle && `catalogue:${handle}.editorial.${i}.heading`}>{item.heading}</h2>}
           {item.body && (
-            <div class="editorial-body">
+            <div class="editorial-body" data-line-id={handle && `catalogue:${handle}.editorial.${i}.body`}>
               {item.body.split('\n').map((line, j, all) => (
                 <>{line}{j < all.length - 1 && <br />}</>
               ))}

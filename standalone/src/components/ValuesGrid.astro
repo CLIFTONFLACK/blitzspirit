@@ -12,18 +12,30 @@ import Icon from '~/components/Icon.astro';
 
 interface Props {
   /** cell blocks, straight out of src/data/pages/*.json. */
-  blocks?: { settings: { heading?: string; body?: string } }[];
+  blocks?: { id?: string; settings: { heading?: string; body?: string } }[];
+  /** Address prefix for the inline copy editor, e.g. "pages/about:values". */
+  editBase?: string;
 }
 
-const { blocks = [] } = Astro.props;
+const { blocks = [], editBase } = Astro.props;
 ---
 {blocks.length > 0 && (
   <div class="values-grid">
     {blocks.map((block) => (
       <div class="value-cell">
         <span class="value-mark"><Icon name="mark" /></span>
-        {block.settings.heading && <h3 class="value-head chunk">{block.settings.heading}</h3>}
-        {block.settings.body && <p class="value-body">{block.settings.body}</p>}
+        {block.settings.heading && (
+          <h3
+            class="value-head chunk"
+            data-line-id={editBase && block.id && `${editBase}.blocks.${block.id}.settings.heading`}
+          >{block.settings.heading}</h3>
+        )}
+        {block.settings.body && (
+          <p
+            class="value-body"
+            data-line-id={editBase && block.id && `${editBase}.blocks.${block.id}.settings.body`}
+          >{block.settings.body}</p>
+        )}
       </div>
     ))}
   </div>

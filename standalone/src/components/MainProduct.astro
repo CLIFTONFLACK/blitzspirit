@@ -194,7 +194,7 @@ const archiveLine = [
           </div>
         </div>
 
-        <h1 class="led-name chunk pdp-name">
+        <h1 class="led-name chunk pdp-name" data-line-id={`catalogue:${product.handle}.title`}>
           {startsWithThe ? (
             <><span class="the">THE</span> {titleUp.replace(/^THE /, '')}</>
           ) : (
@@ -234,6 +234,7 @@ const archiveLine = [
               strapline={product.strapline}
               paragraphs={product.dossier}
               hideStrap={true}
+              handle={product.handle}
             />
             {hookLine && <p class="pdp-hook">{hookLine}</p>}
           </div>

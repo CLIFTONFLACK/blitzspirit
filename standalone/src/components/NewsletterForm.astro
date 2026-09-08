@@ -18,6 +18,8 @@ interface Props {
   placeholder?: string;
   tags?: string;
   classPrefix?: 'nws' | 'promo';
+  /** Full editor address for the submit button's label, if it is editable. */
+  buttonLabelEditId?: string;
 }
 
 const {
@@ -27,6 +29,7 @@ const {
   placeholder = 'YOUR@EMAIL.CO.UK',
   tags = 'newsletter,backbone10',
   classPrefix = 'nws',
+  buttonLabelEditId,
 } = Astro.props;
 
 const codeLine = settings.discount.code
@@ -49,7 +52,7 @@ const codeLine = settings.discount.code
         autocapitalize="off"
         required
       />
-      <button class={`${classPrefix}-submit snap`} type="submit">{buttonLabel}</button>
+      <button class={`${classPrefix}-submit snap`} type="submit" data-line-id={buttonLabelEditId}>{buttonLabel}</button>
     </div>
   </form>
 

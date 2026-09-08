@@ -38,6 +38,8 @@ interface Props {
   dossier?: string;
   whatLabel?: string;
   plateRef?: string;
+  /** Address prefix for the inline copy editor, e.g. "pages/index:featured". */
+  editBase?: string;
 }
 
 const {
@@ -46,6 +48,7 @@ const {
   dossier = '',
   whatLabel = 'STORY',
   plateRef = 'BS_002 // ISSUE_000',
+  editBase,
 } = Astro.props;
 
 const product = getProduct(handle);
@@ -176,7 +179,11 @@ const parse = (text: string) =>
 
         <div class="actions">
           {whatLabel && (
-            <a class="what-link snap" href={href(`/products/${product.handle}`)}>{titleUp} {whatLabel}</a>
+            <a
+              class="what-link snap"
+              href={href(`/products/${product.handle}`)}
+              data-line-id={editBase && `${editBase}.settings.what_label`}
+            >{titleUp} {whatLabel}</a>
           )}
           <button
             type="button"

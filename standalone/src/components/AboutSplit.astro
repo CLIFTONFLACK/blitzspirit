@@ -21,6 +21,8 @@ interface Props {
   imageSide?: 'left' | 'right';
   ctaLabel?: string;
   ctaLink?: string;
+  /** Address prefix for the inline copy editor, e.g. "pages/about:split-started". */
+  editBase?: string;
 }
 
 const {
@@ -32,6 +34,7 @@ const {
   imageSide = 'left',
   ctaLabel,
   ctaLink,
+  editBase,
 } = Astro.props;
 
 const showVisual = !!image;
@@ -58,14 +61,20 @@ const showVisual = !!image;
   )}
 
   <div class="about-copy as-copy">
-    {indexTag && <p class="led-index tag as-index">[ {indexTag} ]</p>}
+    {indexTag && <p class="led-index tag as-index" data-line-id={editBase && `${editBase}.settings.index_tag`}>[ {indexTag} ]</p>}
 
-    {heading && <h2 class="chunk">{heading}</h2>}
+    {heading && <h2 class="chunk" data-line-id={editBase && `${editBase}.settings.heading`}>{heading}</h2>}
 
     {/* `body` is the section's richtext setting, authored in the repo's own
         page data — trusted content, not user input — so it renders as HTML
         exactly as the Liquid `{{ section.settings.body }}` did. */}
-    {body && <div class="as-body" set:html={hrefsInHtml(body)} />}
+    {body && (
+      <div
+        class="as-body"
+        data-line-id={editBase && `${editBase}.settings.body`}
+        set:html={hrefsInHtml(body)}
+      />
+    )}
 
     {ctaLabel && ctaLink && (
       <div class="as-cta">

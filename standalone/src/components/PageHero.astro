@@ -18,7 +18,9 @@ interface Props {
   headingSize?: 'xl' | 'lg';
   extraHeight?: number;
   /** meta_tag blocks, straight out of src/data/pages/*.json. */
-  blocks?: { settings: { text?: string } }[];
+  blocks?: { id?: string; settings: { text?: string } }[];
+  /** Address prefix for the inline copy editor, e.g. "pages/about:hero". */
+  editBase?: string;
 }
 
 const {
@@ -30,6 +32,7 @@ const {
   headingSize = 'xl',
   extraHeight = 0,
   blocks = [],
+  editBase,
 } = Astro.props;
 
 const heading = headingProp || pageTitle;
@@ -52,19 +55,19 @@ const pageRef = showPageRef && pageTitle ? pageTitle.toUpperCase().replaceAll(' 
 const style = extraHeight ? `--ph-extra-h: ${extraHeight}px;` : undefined;
 
 const metaSegments = blocks
-  .map((block) => block.settings.text)
-  .filter((text): text is string => !!text);
+  .map((block) => ({ id: block.id, text: block.settings.text }))
+  .filter((seg): seg is { id: string | undefined; text: string } => !!seg.text);
 ---
 <section class:list={['about-hero', 'page-hero', `page-hero--${headingSize}`]} style={style}>
   <div>
     {(indexTag || pageRef) && (
-      <p class="led-index tag ph-index">
+      <p class="led-index tag ph-index" data-line-id={editBase && `${editBase}.settings.index_tag`}>
         [ {indexTag}{indexTag && pageRef ? ' // ' : ''}{pageRef} ]
       </p>
     )}
 
     {heading && (
-      <h1 class="chunk ph-head">
+      <h1 class="chunk ph-head" data-line-id={editBase && `${editBase}.settings.heading`}>
         {lines.map((line) => (
           <>
             {line.first && redFirstLine && rawLines.length > 1 ? (
@@ -80,8 +83,8 @@ const metaSegments = blocks
 
     {metaSegments.length > 0 && (
       <p class="tag ph-meta">
-        [{metaSegments.map((text, i) => (
-          <> {text}{i < metaSegments.length - 1 ? ' //' : ''}</>
+        [{metaSegments.map((seg, i) => (
+          <> <span data-line-id={editBase && seg.id && `${editBase}.blocks.${seg.id}.settings.text`}>{seg.text}</span>{i < metaSegments.length - 1 ? ' //' : ''}</>
         ))} ]
       </p>
     )}

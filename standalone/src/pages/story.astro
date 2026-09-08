@@ -39,15 +39,17 @@ const split = (s: Record<string, any>) => ({
     headingSize={hero.heading_size}
     extraHeight={hero.extra_height}
     blocks={blocks(page, 'hero')}
+    editBase="pages/story:hero"
   />
-  <AboutSplit {...split(nineteenForty)} />
-  <AboutSplit {...split(today)} />
-  <ValuesGrid blocks={blocks(page, 'house-rules')} />
+  <AboutSplit {...split(nineteenForty)} editBase="pages/story:split-1940" />
+  <AboutSplit {...split(today)} editBase="pages/story:split-today" />
+  <ValuesGrid blocks={blocks(page, 'house-rules')} editBase="pages/story:house-rules" />
   <Newsletter
     sectionId="story"
     indexTag={news.index_tag}
     heading={news.heading}
     body={news.body}
     buttonLabel={news.button_label}
+    editBase="pages/story:newsletter"
   />
 </Base>

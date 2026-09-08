@@ -26,11 +26,13 @@ const news = settings(page, 'newsletter');
     headingSize={hero.heading_size}
     extraHeight={hero.extra_height}
     blocks={blocks(page, 'hero')}
+    editBase="pages/icons:hero"
   />
   <IconRoster
     noteText={roster.note_text}
     noteCtaLabel={roster.note_cta_label}
     blocks={blocks(page, 'roster')}
+    editBase="pages/icons:roster"
   />
   <Newsletter
     sectionId="icons"
@@ -38,5 +40,6 @@ const news = settings(page, 'newsletter');
     heading={news.heading}
     body={news.body}
     buttonLabel={news.button_label}
+    editBase="pages/icons:newsletter"
   />
 </Base>

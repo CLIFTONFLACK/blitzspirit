@@ -7,15 +7,18 @@
 // tools/validate-catalogue.mjs), so that branch would be dead code and is dropped.
 interface Props {
   rows: { label: string; value: string }[];
+  /** Product handle, so the inline editor can address these rows in catalogue.json.
+   *  Labels stay unaddressed - they are structure, not copy. */
+  handle?: string;
 }
-const { rows } = Astro.props;
+const { rows, handle } = Astro.props;
 ---
 <div class="field-manual">
   <div class="fm-head tag">[ FIELD_MANUAL // TECHNICAL_SPEC ]</div>
-  {rows.map((row) => (
+  {rows.map((row, i) => (
     <div class="fm-row">
       <span class="fm-key">{row.label.toUpperCase()}</span>
-      <span class="fm-val">{row.value}</span>
+      <span class="fm-val" data-line-id={handle && `catalogue:${handle}.fieldManual.${i}.value`}>{row.value}</span>
     </div>
   ))}
 </div>

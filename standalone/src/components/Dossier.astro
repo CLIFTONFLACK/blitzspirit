@@ -11,8 +11,11 @@ interface Props {
   strapline?: string;
   paragraphs: string[];
   hideStrap?: boolean;
+  /** Product handle. Present only when these fields come from a catalogue product,
+   *  which is what lets the inline editor address them. */
+  handle?: string;
 }
-const { title, strapline, paragraphs, hideStrap = false } = Astro.props;
+const { title, strapline, paragraphs, hideStrap = false, handle } = Astro.props;
 
 // Split on **...** keeping the delimiters, so runs alternate plain and bold.
 const parse = (text: string) =>
@@ -30,15 +33,15 @@ const hasBody = paragraphs.length > 0;
 {(strapline || hasBody) && (
   <div class="dossier">
     {strapline && !hideStrap && (
-      <p>
+      <p data-line-id={handle && `catalogue:${handle}.strapline`}>
         <span class="hit">// {title.toUpperCase()}</span>
         {' — '}{strapline}
       </p>
     )}
     {hasBody && (
       <div class="dossier-desc">
-        {paragraphs.map((paragraph) => (
-          <p>{parse(paragraph).map((run) => (run.bold ? <strong>{run.text}</strong> : run.text))}</p>
+        {paragraphs.map((paragraph, i) => (
+          <p data-line-id={handle && `catalogue:${handle}.dossier.${i}`}>{parse(paragraph).map((run) => (run.bold ? <strong>{run.text}</strong> : run.text))}</p>
         ))}
       </div>
     )}

@@ -53,6 +53,15 @@ jobs:
         working-directory: standalone
         run: npm run build
 
+      # Lives at the repo root because it needs api/_content.js - the same resolver
+      # the save endpoint uses. A mistyped annotation would otherwise only surface
+      # when someone edited that line and the save came back 400.
+      - name: Check every editable annotation resolves
+        run: node tools/check-edit-ids.mjs standalone/dist
+
+      - name: Regenerate the editor page
+        run: node tools/edit-page.mjs standalone/dist edit/index.html
+
       - name: Publish into new/
         run: |
           rm -rf new
@@ -64,7 +73,7 @@ jobs:
         run: |
           git config user.name  "blitzspirit-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add new
+          git add new edit
           if git diff --cached --quiet; then
             echo "no change to publish"
             exit 0

@@ -54,7 +54,7 @@ const shareImage = product.media[0]
 >
   <MainProduct product={product} collection={home} />
   <ProductVideo label={video.label} videoSrc={video.video_src} />
-  <ProductEditorial items={product.editorial} />
+  <ProductEditorial items={product.editorial} handle={product.handle} />
   <CrossSell products={related} />
   <PromoBand
     id={`PromoBand-${product.handle}`}

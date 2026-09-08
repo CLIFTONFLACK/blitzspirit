@@ -26,6 +26,12 @@ const faq = settings(page, 'faq');
     headingSize={hero.heading_size}
     extraHeight={hero.extra_height}
     blocks={blocks(page, 'hero')}
+    editBase="pages/help:hero"
   />
-  <Faq indexTag={faq.index_tag} intro={faq.intro} blocks={blocks(page, 'faq')} />
+  <Faq
+    indexTag={faq.index_tag}
+    intro={faq.intro}
+    blocks={blocks(page, 'faq')}
+    editBase="pages/help:faq"
+  />
 </Base>

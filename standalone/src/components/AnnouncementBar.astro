@@ -5,13 +5,22 @@
 import settings from '~/data/settings.json';
 import { href } from '~/lib/url';
 
-const messages = settings.announcement.messages.filter((m) => m.text.trim() !== '');
+// The source index rides along: empty messages are filtered out, so a message's
+// position here is not its position in settings.json, which is what the editor
+// addresses.
+const messages = settings.announcement.messages
+  .map((message, index) => ({ ...message, index }))
+  .filter((m) => m.text.trim() !== '');
 const n = messages.length;
 ---
 {n > 0 && (
   <div class={`announcement-bar announcement-bar--n${n}`}>
     {messages.map((msg, i) => (
-      <p class="announcement-bar__msg" style={`--ann-i: ${i}`}>
+      <p
+        class="announcement-bar__msg"
+        style={`--ann-i: ${i}`}
+        data-line-id={`settings:announcement.messages.${msg.index}.text`}
+      >
         {msg.link ? <a href={href(msg.link)}>{msg.text}</a> : msg.text}
       </p>
     ))}

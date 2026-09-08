@@ -57,7 +57,7 @@ const colourOption = product.options.find((o) => ['Colour', 'Color'].includes(o.
     <span class="coll-issue">[ {issueTag} ]</span>
   </a>
   <div class="coll-info">
-    <h3 class="chunk coll-name">
+    <h3 class="chunk coll-name" data-line-id={`catalogue:${product.handle}.title`}>
       {startsWithThe ? (
         <><span class="the">THE</span> {titleUp.replace(/^THE /, '')}</>
       ) : (

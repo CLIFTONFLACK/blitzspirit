@@ -26,13 +26,20 @@ const news = settings(page, 'newsletter');
     headingSize={hero.heading_size}
     extraHeight={hero.extra_height}
     blocks={blocks(page, 'hero')}
+    editBase="pages/contact:hero"
   />
-  <Faq indexTag={contact.index_tag} intro={contact.intro} blocks={blocks(page, 'contact')} />
+  <Faq
+    indexTag={contact.index_tag}
+    intro={contact.intro}
+    blocks={blocks(page, 'contact')}
+    editBase="pages/contact:contact"
+  />
   <Newsletter
     sectionId="contact"
     indexTag={news.index_tag}
     heading={news.heading}
     body={news.body}
     buttonLabel={news.button_label}
+    editBase="pages/contact:newsletter"
   />
 </Base>

@@ -12,15 +12,23 @@ import { hrefsInHtml } from '~/lib/url';
 // Also dropped: data-section-id (a Shopify section rendering id).
 interface Props {
   content?: string;
+  /** Address prefix for the inline copy editor, e.g. "pages/terms:main". */
+  editBase?: string;
 }
 
-const { content } = Astro.props;
+const { content, editBase } = Astro.props;
 ---
 <div class="main-page">
   {/* `content` is the page's rich text from the repo's own page data —
       trusted content, not user input — so it renders as HTML exactly as the
       Liquid `{{ page.content }}` did. */}
-  {content && <div class="main-page-body rte" set:html={hrefsInHtml(content)} />}
+  {content && (
+    <div
+      class="main-page-body rte"
+      data-line-id={editBase && `${editBase}.settings.content`}
+      set:html={hrefsInHtml(content)}
+    />
+  )}
 </div>
 
 <style>

@@ -21,12 +21,12 @@ const path = Astro.url.pathname;
       ))}
     </nav>
 
-    {strapline && <span class="tag outro-strap">{strapline}</span>}
+    {strapline && <span class="tag outro-strap" data-line-id="settings:outro.strapline">{strapline}</span>}
   </div>
 
   <div class="outro-foot">
     <div class="rule" aria-hidden="true">{rule}</div>
-    <div class="copyright">{copyright}</div>
+    <div class="copyright" data-line-id="settings:outro.copyright">{copyright}</div>
     <div class="rule" aria-hidden="true">{rule}</div>
   </div>
 </footer>

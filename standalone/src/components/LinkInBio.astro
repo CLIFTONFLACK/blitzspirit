@@ -31,6 +31,7 @@ import { getProduct } from '~/lib/catalogue';
 import { href } from '~/lib/url';
 
 interface LinkBlock {
+  id?: string;
   type?: string;
   settings: {
     label?: string;
@@ -47,6 +48,8 @@ interface Props {
   sub?: string;
   /** link / product / social_row blocks, straight out of src/data/pages/*.json. */
   blocks?: LinkBlock[];
+  /** Address prefix for the inline copy editor, e.g. "pages/link-in-bio:main". */
+  editBase?: string;
 }
 
 const {
@@ -54,6 +57,7 @@ const {
   heading = 'Wakey wakey.',
   sub = 'IRONIC // ICONIC // BRITISH',
   blocks = [],
+  editBase,
 } = Astro.props;
 
 const stickerImage = asset(sticker);
@@ -77,9 +81,9 @@ const socialLinks = [
       loading="eager"
     />
 
-    {heading && <h1 class="chunk lib-heading">{heading}</h1>}
+    {heading && <h1 class="chunk lib-heading" data-line-id={editBase && `${editBase}.settings.heading`}>{heading}</h1>}
 
-    {sub && <p class="tag lib-sub">[ {sub} ]</p>}
+    {sub && <p class="tag lib-sub" data-line-id={editBase && `${editBase}.settings.sub`}>[ {sub} ]</p>}
   </header>
 
   <div class="lib-stack">
@@ -88,7 +92,10 @@ const socialLinks = [
         if (!block.settings.label || !block.settings.url) return null;
         return (
           <a href={href(block.settings.url)} class="directive snap lib-link">
-            <span class="lib-link-label">{block.settings.label}</span>
+            <span
+              class="lib-link-label"
+              data-line-id={editBase && block.id && `${editBase}.blocks.${block.id}.settings.label`}
+            >{block.settings.label}</span>
             {block.settings.badge && <span class="lib-badge tag">{block.settings.badge}</span>}
           </a>
         );
