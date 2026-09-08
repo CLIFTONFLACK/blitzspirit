@@ -157,17 +157,14 @@ document.addEventListener('click', async (e) => {
 
 // ---- filter and search ----------------------------------------------
 const kinds = document.getElementById('kinds');
-const regs = document.getElementById('regs');
 const search = document.getElementById('search');
 const counter = document.getElementById('count');
 const entries = Array.from(document.querySelectorAll('.line'));
-const variants = Array.from(document.querySelectorAll('.v'));
 const groups = Array.from(document.querySelectorAll('.grouphead'));
 const copySections = Array.from(document.querySelectorAll('section[data-kind]'));
 const refSections = Array.from(document.querySelectorAll('section.reference'));
 
 let kind = 'all';
-let reg = 'both';
 
 entries.forEach((el) => {
   el._kind = el.closest('section[data-kind]').dataset.kind;
@@ -177,15 +174,8 @@ function apply() {
   const q = search.value.trim().toLowerCase();
   let shown = 0;
 
-  variants.forEach((v) => {
-    const r = v.dataset.reg;
-    v.hidden = !(reg === 'both' || r === 'locked' || r === reg);
-  });
-
   entries.forEach((el) => {
-    const anyVar = Array.from(el.querySelectorAll('.v')).some((v) => !v.hidden);
     const ok =
-      anyVar &&
       (kind === 'all' || el._kind === kind) &&
       (!q || el.textContent.toLowerCase().includes(q));
     el.hidden = !ok;
@@ -220,6 +210,5 @@ function chipset(host, onPick) {
 }
 
 chipset(kinds, (b) => (kind = b.dataset.filter));
-chipset(regs, (b) => (reg = b.dataset.reg));
 search.addEventListener('input', apply);
 apply();

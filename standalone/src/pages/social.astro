@@ -49,6 +49,12 @@ const editable = sections.flatMap((s) => s.groups.flatMap((g) => g.entries.flatM
     <meta name="theme-color" content="#0A0A0A" />
     <meta name="robots" content="noindex, nofollow" />
     <title>Social copy — BlitzSpirit</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap"
+    />
     <link rel="icon" type="image/png" href="/assets/blitzspirit-stamp.png" />
   </head>
 
@@ -60,18 +66,8 @@ const editable = sections.flatMap((s) => s.groups.flatMap((g) => g.entries.flatM
         <a class="home" href="/">← blitzspirit</a>
         <p class="eyebrow">{intro.eyebrow}</p>
         <h1 class="chunk">{intro.heading}</h1>
-        <p class="standfirst">{intro.standfirst}</p>
-        <div class="stamp">
-          {intro.stamps.map((s) => <span>{s}</span>)}
-          <span>{editable.length} LINES</span>
-        </div>
       </header>
 
-      <div class="notice">
-        <b>This page is open.</b> Anyone with the link can edit these lines, and a
-        saved change is live for everyone. The version in the repo is never lost —
-        any edited line can be put back with Revert.
-      </div>
 
       <div class="controls" role="search">
         <div class="chipset" id="kinds">
@@ -84,12 +80,6 @@ const editable = sections.flatMap((s) => s.groups.flatMap((g) => g.entries.flatM
           ))}
         </div>
 
-        <div class="chipset reg" id="regs">
-          <span class="setlabel">Register</span>
-          <button class="chip" type="button" data-reg="both" aria-pressed="true">Both</button>
-          <button class="chip" type="button" data-reg="house" aria-pressed="false">House</button>
-          <button class="chip" type="button" data-reg="eased" aria-pressed="false">Eased</button>
-        </div>
 
         <input class="search" id="search" type="search" placeholder="Search" aria-label="Search every line" />
 
@@ -199,6 +189,9 @@ const editable = sections.flatMap((s) => s.groups.flatMap((g) => g.entries.flatM
 
     <style>
       :root {
+        /* The dossier reads as a document, not as shop chrome: Montserrat for
+           everything except the ChunkFive headings, which are the brand's own face. */
+        --page-font: 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
         --khaki: #B89B5E;
         --hair: rgba(184, 155, 94, 0.28);
         --hair-hi: rgba(184, 155, 94, 0.7);
@@ -210,8 +203,8 @@ const editable = sections.flatMap((s) => s.groups.flatMap((g) => g.entries.flatM
         margin: 0;
         background: var(--ink);
         color: var(--bone);
-        font-family: var(--mono);
-        font-size: 15px;
+        font-family: var(--page-font);
+        font-size: 17px;
         line-height: 1.6;
         -webkit-font-smoothing: antialiased;
       }
@@ -225,7 +218,7 @@ const editable = sections.flatMap((s) => s.groups.flatMap((g) => g.entries.flatM
       .band {
         background: var(--signal);
         color: #fff;
-        font-size: 11px;
+        font-size: 13px;
         letter-spacing: 0.22em;
         text-transform: uppercase;
         text-align: center;
@@ -235,10 +228,10 @@ const editable = sections.flatMap((s) => s.groups.flatMap((g) => g.entries.flatM
       .mast { padding: var(--s5) 0 var(--s4); border-bottom: 1px solid var(--line); }
       .home {
         display: inline-block;
-        font-size: 11px;
+        font-size: 13px;
         letter-spacing: 0.2em;
         text-transform: uppercase;
-        color: var(--bone-dim);
+        color: #fff;
         text-decoration: none;
         margin-bottom: var(--s4);
       }
@@ -252,45 +245,27 @@ const editable = sections.flatMap((s) => s.groups.flatMap((g) => g.entries.flatM
         line-height: 0.95;
         margin: 0;
       }
-      h1.chunk { font-size: clamp(34px, 6.4vw, 68px); max-width: 18ch; }
-      h2.chunk { font-size: clamp(24px, 3.4vw, 38px); }
+      h1.chunk { font-size: clamp(36px, 6.4vw, 70px); max-width: 18ch; }
+      h2.chunk { font-size: clamp(26px, 3.4vw, 40px); }
 
       .eyebrow {
-        font-size: 11px;
+        font-size: 13px;
         letter-spacing: 0.24em;
         text-transform: uppercase;
         color: var(--khaki);
         margin: 0 0 var(--s1);
       }
 
-      .standfirst { color: var(--bone-dim); max-width: 62ch; margin: var(--s2) 0 0; font-size: 14px; letter-spacing: 0.02em; }
 
-      .stamp {
-        display: flex; flex-wrap: wrap; gap: 8px 20px;
-        margin-top: var(--s3);
-        font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--khaki);
-      }
 
-      .notice {
-        border: 1px solid var(--hair);
-        border-left: 3px solid var(--signal);
-        background: var(--panel);
-        padding: var(--s2);
-        margin-top: var(--s4);
-        font-size: 13px;
-        letter-spacing: 0.02em;
-        color: var(--bone-dim);
-        max-width: 82ch;
-      }
-      .notice b { color: var(--bone); text-transform: uppercase; letter-spacing: 0.08em; }
 
       section { padding-top: var(--s6); scroll-margin-top: 110px; }
-      .lede { color: var(--bone-dim); max-width: 68ch; margin: var(--s2) 0 0; font-size: 14px; }
+      .lede { color: #fff; max-width: 68ch; margin: var(--s2) 0 0; font-size: 16px; }
 
       h3 {
         font-family: var(--display-font);
         font-weight: 400; text-transform: uppercase; letter-spacing: 0.01em;
-        font-size: 20px; margin: 0;
+        font-size: 22px; margin: 0;
       }
       .grouphead {
         display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
@@ -298,7 +273,7 @@ const editable = sections.flatMap((s) => s.groups.flatMap((g) => g.entries.flatM
         padding-bottom: var(--s1);
         border-bottom: 1px solid var(--line);
       }
-      .grouphead .note { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bone-dim); }
+      .grouphead .note { font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: #fff; }
 
       /* ---- controls ---- */
       .controls {
@@ -310,33 +285,32 @@ const editable = sections.flatMap((s) => s.groups.flatMap((g) => g.entries.flatM
         display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center;
       }
       .chipset { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
-      .setlabel { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--bone-mute); margin-right: 4px; }
+      .setlabel { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: #fff; margin-right: 4px; }
       .chip {
-        font-family: var(--mono);
-        font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
-        color: var(--bone-dim); background: transparent;
+        font-family: var(--page-font);
+        font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase;
+        color: #fff; background: transparent;
         border: 1px solid var(--line); padding: 9px 11px; min-height: 38px;
         cursor: pointer; transition: color .18s, border-color .18s, background-color .18s;
       }
       .chip:hover { color: var(--bone); border-color: var(--line-bri); }
       .chip[aria-pressed='true'] { background: var(--signal); border-color: var(--signal); color: #fff; }
-      .chipset.reg .chip[aria-pressed='true'] { background: transparent; border-color: var(--khaki); color: var(--khaki); }
 
       .search {
         flex: 1 1 170px; min-width: 150px;
-        font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em;
+        font-family: var(--page-font); font-size: 14px; letter-spacing: 0.08em;
         color: var(--bone); background: var(--panel);
         border: 1px solid var(--line); padding: 10px 12px; min-height: 38px;
       }
-      .search::placeholder { color: var(--bone-mute); text-transform: uppercase; letter-spacing: 0.16em; font-size: 11px; }
+      .search::placeholder { color: #fff; text-transform: uppercase; letter-spacing: 0.16em; font-size: 13px; }
 
-      .count { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--khaki); white-space: nowrap; }
+      .count { font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--khaki); white-space: nowrap; }
 
       .editbar { display: flex; align-items: center; gap: 8px; margin-left: auto; }
       .chip.edit[aria-pressed='true'] { background: var(--khaki); border-color: var(--khaki); color: #000; }
       .chip.save { border-color: var(--signal); color: var(--signal); }
       .chip.save:hover { background: var(--signal); color: #fff; }
-      .status { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--bone-dim); }
+      .status { font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #fff; }
       .status[data-tone='ok'] { color: var(--khaki); }
       .status[data-tone='bad'] { color: var(--signal); }
 
@@ -351,39 +325,42 @@ const editable = sections.flatMap((s) => s.groups.flatMap((g) => g.entries.flatM
       }
       .line:hover { border-color: var(--line-bri); background: var(--panel-2); }
       .line.locked { border-left: 3px solid var(--khaki); }
-      .line > .ref { font-size: 11px; letter-spacing: 0.1em; color: var(--khaki); padding-top: 6px; font-variant-numeric: tabular-nums; }
+      .line > .ref { font-size: 13px; letter-spacing: 0.1em; color: var(--khaki); padding-top: 6px; font-variant-numeric: tabular-nums; }
 
       .vars { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
       .v { display: grid; grid-template-columns: 66px 1fr auto; gap: 12px; align-items: start; padding: 6px 0; }
       .v + .v { border-top: 1px dashed rgba(184, 155, 94, 0.16); }
 
-      .vlabel { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; padding-top: 4px; white-space: nowrap; }
+      .vlabel { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; padding-top: 4px; white-space: nowrap; }
       .v[data-reg='house'] .vlabel { color: var(--signal); }
-      .v[data-reg='eased'] .vlabel { color: var(--bone-mute); }
+      .v[data-reg='eased'] .vlabel { color: #fff; }
       .v[data-reg='locked'] .vlabel { color: var(--khaki); }
 
       .body { min-width: 0; }
       .txt {
-        margin: 0; font-size: 16px; line-height: 1.45; white-space: pre-line;
+        margin: 0; font-size: 18px; line-height: 1.45; white-space: pre-line;
         max-width: 66ch; letter-spacing: 0.01em;
       }
       .v[data-reg='locked'] .txt { color: #fff; }
 
       .dir, .editflag {
-        display: block; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
-        color: var(--bone-mute); margin-top: 7px;
+        display: block; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase;
+        color: #fff; margin-top: 7px;
       }
       .editflag { color: var(--khaki); }
+      /* A class selector outranks the browser's own [hidden] rule, so display:block
+         above would keep the flag on every line whether it has been edited or not. */
+      [hidden] { display: none !important; }
       .revert {
-        font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+        font-family: var(--page-font); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase;
         background: none; border: 0; border-bottom: 1px solid var(--hair);
         color: var(--khaki); padding: 0; cursor: pointer;
       }
       .revert:hover { color: var(--bone); }
 
       .copy {
-        font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
-        color: var(--bone-dim); background: transparent; border: 1px solid var(--line);
+        font-family: var(--page-font); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;
+        color: #fff; background: transparent; border: 1px solid var(--line);
         padding: 0 10px; height: 30px; min-width: 64px; cursor: pointer;
         transition: color .15s, border-color .15s;
       }
@@ -391,8 +368,8 @@ const editable = sections.flatMap((s) => s.groups.flatMap((g) => g.entries.flatM
       .copy.done { color: var(--signal); border-color: var(--signal); }
 
       .tag {
-        display: inline-block; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
-        color: var(--bone-mute); border: 1px solid var(--line); padding: 2px 6px; margin-top: 7px;
+        display: inline-block; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+        color: #fff; border: 1px solid var(--line); padding: 2px 6px; margin-top: 7px;
       }
       .tag.warn { color: var(--signal); border-color: rgba(255, 0, 0, 0.45); }
 
@@ -405,22 +382,22 @@ const editable = sections.flatMap((s) => s.groups.flatMap((g) => g.entries.flatM
 
       /* ---- reference ---- */
       .tablewrap { overflow-x: auto; border: 1px solid var(--line); margin-top: var(--s3); }
-      table { border-collapse: collapse; width: 100%; min-width: 720px; font-size: 13px; }
+      table { border-collapse: collapse; width: 100%; min-width: 720px; font-size: 15px; }
       th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
       thead th {
-        font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+        font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase;
         color: var(--khaki); background: var(--panel-2); white-space: nowrap;
       }
       tbody tr { background: var(--panel); }
       tbody tr:last-child td { border-bottom: 0; }
-      td .prod { font-family: var(--display-font); text-transform: uppercase; font-size: 15px; white-space: nowrap; }
-      td code { font-family: var(--mono); font-size: 12px; color: var(--khaki); white-space: nowrap; }
+      td .prod { font-family: var(--display-font); text-transform: uppercase; font-size: 17px; white-space: nowrap; }
+      td code { font-family: var(--page-font); font-size: 14px; color: var(--khaki); white-space: nowrap; }
 
       .open {
         border: 1px solid rgba(255, 0, 0, 0.4); background: var(--panel);
-        padding: var(--s2); margin-top: var(--s3); max-width: 82ch; font-size: 13px; color: var(--bone-dim);
+        padding: var(--s2); margin-top: var(--s3); max-width: 82ch; font-size: 15px; color: #fff;
       }
-      .open b { display: block; font-family: var(--display-font); text-transform: uppercase; color: var(--bone); font-size: 15px; margin-bottom: 6px; }
+      .open b { display: block; font-family: var(--display-font); text-transform: uppercase; color: var(--bone); font-size: 17px; margin-bottom: 6px; }
 
       .guard {
         border: 1px solid rgba(255, 0, 0, 0.4); background: var(--panel);
@@ -429,13 +406,13 @@ const editable = sections.flatMap((s) => s.groups.flatMap((g) => g.entries.flatM
       .guard ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 14px; }
       .guard li { padding-left: 20px; position: relative; max-width: 80ch; }
       .guard li::before { content: '—'; position: absolute; left: 0; color: var(--signal); }
-      .guard li b { display: block; font-family: var(--display-font); text-transform: uppercase; font-size: 15px; }
-      .guard li span { color: var(--bone-dim); font-size: 13px; }
+      .guard li b { display: block; font-family: var(--display-font); text-transform: uppercase; font-size: 17px; }
+      .guard li span { color: #fff; font-size: 15px; }
 
       footer {
         margin-top: var(--s7); padding-top: var(--s3); border-top: 1px solid var(--line);
         display: flex; flex-wrap: wrap; gap: 8px 24px;
-        font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--bone-mute);
+        font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase; color: #fff;
       }
 
       @media (max-width: 700px) {
