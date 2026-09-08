@@ -1,8 +1,5 @@
 /*
   tokens.css — ported from snippets/css-variables.liquid (Shopify theme v27).
-  The @font-face URL carries the /new/ deployment base literally: CSS cannot read
-  import.meta.env, and this file is not processed for base rewriting.
-
   Values are the ones committed in config/settings_data.json, now fixed constants:
   there is no theme editor on a standalone build, so a settings layer would be
   indirection with nothing on the other end. Edit here to restyle sitewide.
@@ -10,7 +7,7 @@
 
 @font-face {
   font-family: 'ChunkFive';
-  src: url('/new/assets/fonts/chunkfive.woff2') format('woff2');
+  src: url('/assets/fonts/chunkfive.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
