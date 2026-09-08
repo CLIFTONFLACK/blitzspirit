@@ -132,9 +132,18 @@ module.exports = async function handler(req, res) {
       for (var a = 0; a < addresses.length; a++) {
         var address = addresses[a];
         var result = content.applyEdit(doc, address, wanted[address]);
-        // The address resolved against the deployed data a moment ago; if it does
-        // not resolve against the repo now, the repo has moved on.
-        if (!result.ok) return res.status(409).json({ error: result.error + ' - reload and try again' });
+        if (!result.ok) {
+          // Two different failures wear the same shape here. A field that is not
+          // text - a price, a count, a nested object - was never editable and never
+          // will be, so that is the caller's mistake (400). Anything else means the
+          // address resolved against the deployed data a moment ago but not against
+          // the repo now, which means the repo moved under us (409).
+          var permanent =
+            result.error.indexOf('not editable text') === 0 ||
+            result.error.indexOf('no such path') === 0;
+          if (permanent) return res.status(400).json({ error: result.error });
+          return res.status(409).json({ error: result.error + ' - reload and try again' });
+        }
         if (result.from !== result.to) touched++;
       }
 
