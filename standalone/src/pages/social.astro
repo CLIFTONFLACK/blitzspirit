@@ -24,12 +24,11 @@ interface Variant {
   tag?: { text: string; warn: boolean };
 }
 interface Group { heading: string; note: string; entries: { ref: string; variants: Variant[] }[] }
-interface Section { id: string; kind: string; eyebrow: string; heading: string; lede: string; groups: Group[] }
+interface Section { id: string; kind: string; eyebrow: string; heading: string; groups: Group[] }
 interface Reference {
   id: string;
   eyebrow: string;
   heading: string;
-  lede: string;
   table?: { columns: string[]; rows: string[][] };
   open?: { heading: string; body: string };
   items?: { title: string; body: string }[];
@@ -111,7 +110,6 @@ const filters = [
         <section id={section.id} data-kind={section.kind}>
           <p class="eyebrow">{section.eyebrow}</p>
           <h2 class="chunk">{section.heading}</h2>
-          <p class="lede">{section.lede}</p>
 
           {section.groups.map((group) => (
             <>
@@ -151,7 +149,6 @@ const filters = [
         <section id={ref.id} class="reference">
           <p class="eyebrow">{ref.eyebrow}</p>
           <h2 class="chunk">{ref.heading}</h2>
-          <p class="lede">{ref.lede}</p>
 
           {ref.table && (
             <div class="tablewrap">
@@ -275,7 +272,6 @@ const filters = [
 
 
       section { padding-top: var(--s6); scroll-margin-top: 110px; }
-      .lede { color: #fff; max-width: 68ch; margin: var(--s2) 0 0; font-size: 16px; }
 
       h3 {
         font-family: var(--display-font);

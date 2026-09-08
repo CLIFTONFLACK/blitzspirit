@@ -6,7 +6,6 @@
       "kind": "verbatim",
       "eyebrow": "Section 01 - Locked",
       "heading": "Verbatim bank",
-      "lede": "Reproduced word for word from Brand Book v4. These are not drafts and do not get edited for a caption - if a line doesn't fit the post, use a different line. Marked LOCKED throughout.",
       "groups": [
         {
           "heading": "Core & campaign lines",
@@ -302,7 +301,6 @@
       "kind": "hook",
       "eyebrow": "Section 02 - First 1.5 seconds",
       "heading": "Hook library",
-      "lede": "Two registers per line. House is the dry front-row observer at full strength. Eased keeps the spine and drops the edge - for cold audiences, paid social, and anywhere a comment section would rather have an argument than a look at the shirt.",
       "groups": [
         {
           "heading": "A - Cold open",
@@ -1417,7 +1415,6 @@
       "kind": "caption",
       "eyebrow": "Section 03 - Under the post",
       "heading": "Caption library",
-      "lede": "Brand Book rule: the image leads, the caption annotates. These are short on purpose. Hashtags - zero to two, targeted, never a carpet.",
       "groups": [
         {
           "heading": "Drop & product",
@@ -1669,7 +1666,6 @@
       "kind": "cta",
       "eyebrow": "Section 04 - The ask",
       "heading": "CTA library",
-      "lede": "Buttons stay functional - Add to Bag, See the Collection, Notify Me. The voice sits in the line around the button. Never stack two asks in one post.",
       "groups": [
         {
           "heading": "To the shop",
@@ -2051,7 +2047,6 @@
       "kind": "dravot",
       "eyebrow": "Section 05 - Separate register",
       "heading": "The Dravot voice",
-      "lede": "For podcast posts only. Dravot has no thesis, no editorial and no closing statement - the moment he appears to be arguing something, the format is over. He never sells a shirt. Elegy with a straight face.",
       "groups": [
         {
           "heading": "Verbatim - character canon",
@@ -2279,7 +2274,6 @@
       "id": "pairings",
       "eyebrow": "Section 06 - Assembly",
       "heading": "Product pairings",
-      "lede": "Product architecture per Brand Book §5. A starting hand, not a rule.",
       "table": {
         "columns": [
           "Entry",
@@ -2356,7 +2350,6 @@
       "id": "guardrails",
       "eyebrow": "Section 07 - Where the line is",
       "heading": "Guardrails",
-      "lede": "Straight from the Brand Book's anti-pattern list, with the social-specific ones added. Check every post against it before it goes out.",
       "items": [
         {
           "title": "We do not recruit",
@@ -2392,5 +2385,250 @@
         }
       ]
     }
-  ]
+  ],
+  "pairs": {
+    "H-A-01": {
+      "caption": "C-DROP-02",
+      "cta": "A-SHOP-03"
+    },
+    "H-A-02": {
+      "caption": "C-PROD-01",
+      "cta": "A-SHOP-01"
+    },
+    "H-A-03": {
+      "caption": "C-PROD-01",
+      "cta": "A-SHOP-05"
+    },
+    "H-A-04": {
+      "caption": "C-DROP-02",
+      "cta": "A-DM-01",
+      "bot": "A-BOT-01"
+    },
+    "H-A-05": {
+      "caption": "C-DROP-04",
+      "cta": "A-LIST-04"
+    },
+    "H-A-06": {
+      "caption": "C-PROD-01",
+      "cta": "A-SHOP-03"
+    },
+    "H-A-07": {
+      "caption": "C-PROD-01",
+      "cta": "A-SHOP-02"
+    },
+    "H-A-08": {
+      "caption": "C-DROP-01",
+      "cta": "A-DM-02",
+      "bot": "A-BOT-01"
+    },
+    "H-B-01": {
+      "caption": "C-COM-01",
+      "cta": "A-SHOP-03"
+    },
+    "H-B-02": {
+      "caption": "C-COM-02",
+      "cta": "A-SHOP-01"
+    },
+    "H-B-03": {
+      "caption": "C-ARC-02",
+      "cta": "A-SHOP-06"
+    },
+    "H-B-04": {
+      "caption": "C-PROD-03",
+      "cta": "A-DM-04"
+    },
+    "H-B-05": {
+      "caption": "C-ARC-02",
+      "cta": "A-SHOP-01"
+    },
+    "H-B-06": {
+      "caption": "C-PROD-02",
+      "cta": "A-SHOP-04"
+    },
+    "H-B-07": {
+      "caption": "C-COM-01",
+      "cta": "A-DM-01"
+    },
+    "H-B-08": {
+      "caption": "C-PROD-01",
+      "cta": "A-SHOP-05"
+    },
+    "H-C-01": {
+      "caption": "C-ARC-02",
+      "cta": "A-SHOP-06"
+    },
+    "H-C-02": {
+      "caption": "C-ARC-02",
+      "cta": "A-SHOP-03"
+    },
+    "H-C-03": {
+      "caption": "C-DROP-01",
+      "cta": "A-DM-02"
+    },
+    "H-C-04": {
+      "caption": "C-PROD-01",
+      "cta": "A-DM-03"
+    },
+    "H-C-05": {
+      "caption": "C-DROP-02",
+      "cta": "A-SHOP-02"
+    },
+    "H-C-06": {
+      "caption": "C-PROD-03",
+      "cta": "A-DM-04"
+    },
+    "H-C-07": {
+      "caption": "C-ARC-01",
+      "cta": "A-SHOP-06"
+    },
+    "H-C-08": {
+      "caption": "C-ARC-01",
+      "cta": "A-LIST-02",
+      "bot": "A-BOT-03"
+    },
+    "H-D-01": {
+      "caption": "C-COM-02",
+      "cta": "A-SHOP-01"
+    },
+    "H-D-02": {
+      "caption": "C-PROD-01",
+      "cta": "A-DM-01"
+    },
+    "H-D-03": {
+      "caption": "C-COM-03",
+      "cta": "A-SHOP-01"
+    },
+    "H-D-04": {
+      "caption": "C-ARC-02",
+      "cta": "A-SHOP-01"
+    },
+    "H-D-05": {
+      "caption": "C-COM-02",
+      "cta": "A-SHOP-03"
+    },
+    "H-D-06": {
+      "caption": "C-COM-01",
+      "cta": "A-SHOP-05"
+    },
+    "H-D-07": {
+      "caption": "C-DROP-02",
+      "cta": "A-LIST-03"
+    },
+    "H-D-08": {
+      "caption": "C-PROD-01",
+      "cta": "A-SHOP-04"
+    },
+    "H-E-01": {
+      "caption": "C-COM-01",
+      "cta": "A-DM-01"
+    },
+    "H-E-02": {
+      "caption": "C-COM-02",
+      "cta": "A-SHOP-06"
+    },
+    "H-E-03": {
+      "caption": "C-PROD-03",
+      "cta": "A-DM-04",
+      "bot": "A-BOT-01"
+    },
+    "H-E-04": {
+      "caption": "C-COM-02",
+      "cta": "A-SHOP-01"
+    },
+    "H-E-05": {
+      "caption": "C-COM-01",
+      "cta": "A-SHOP-03"
+    },
+    "H-E-06": {
+      "caption": "C-COM-03",
+      "cta": "A-SHOP-04"
+    },
+    "H-E-07": {
+      "caption": "C-COM-03",
+      "cta": "A-SHOP-03"
+    },
+    "H-E-08": {
+      "caption": "C-COM-03",
+      "cta": "A-SHOP-04"
+    },
+    "H-F-01": {
+      "caption": "C-PROD-01",
+      "cta": "A-DM-03",
+      "bot": "A-BOT-01"
+    },
+    "H-F-02": {
+      "caption": "C-PROD-01",
+      "cta": "A-SHOP-04"
+    },
+    "H-F-03": {
+      "caption": "C-DROP-03",
+      "cta": "A-DM-07"
+    },
+    "H-F-04": {
+      "caption": "C-PROD-02",
+      "cta": "A-SHOP-04"
+    },
+    "H-F-05": {
+      "caption": "C-ARC-03",
+      "cta": "A-SHOP-06"
+    },
+    "H-F-06": {
+      "caption": "C-DROP-02",
+      "cta": "A-DM-05",
+      "bot": "A-BOT-02"
+    },
+    "H-F-07": {
+      "caption": "C-DROP-02",
+      "cta": "A-SHOP-03"
+    },
+    "H-F-08": {
+      "caption": "C-DROP-02",
+      "cta": "A-LIST-01"
+    },
+    "H-G-01": {
+      "caption": "C-DROP-02",
+      "cta": "A-SHOP-03"
+    },
+    "H-G-02": {
+      "caption": "C-COM-01",
+      "cta": "A-SHOP-06"
+    },
+    "H-G-03": {
+      "caption": "C-PROD-03",
+      "cta": "A-DM-04"
+    },
+    "H-G-04": {
+      "caption": "C-PROD-01",
+      "cta": "A-DM-03"
+    },
+    "H-G-05": {
+      "caption": "C-PROD-01",
+      "cta": "A-SHOP-05"
+    },
+    "H-G-06": {
+      "caption": "C-DROP-02",
+      "cta": "A-SHOP-03"
+    },
+    "H-H-01": {
+      "caption": "C-COM-02",
+      "cta": "A-SHOP-01"
+    },
+    "H-H-02": {
+      "caption": "C-PROD-02",
+      "cta": "A-SHOP-04"
+    },
+    "H-H-03": {
+      "caption": "C-COM-03",
+      "cta": "A-DM-01"
+    },
+    "H-H-04": {
+      "caption": "C-PROD-02",
+      "cta": "A-DM-06",
+      "bot": "A-BOT-02"
+    },
+    "H-H-05": {
+      "caption": "C-COM-01",
+      "cta": "A-SHOP-01"
+    }
+  }
 }
