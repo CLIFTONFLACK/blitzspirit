@@ -69,6 +69,34 @@ module.exports = async function handler(req, res) {
   }
 
   if (req.method === 'GET') {
+    // ?ids=a,b,c returns the STORED value of each field. The editor needs this
+    // because rendered text is not the value: dossier paragraphs carry **bold**
+    // markers that render as <strong>, editorial bodies carry newlines that render
+    // as <br>, titles are upper-cased, and several tags are wrapped in literal
+    // brackets by the template. Editing the rendered text would write all of that
+    // back into the JSON.
+    var idsParam = req.query && req.query.ids;
+    if (idsParam) {
+      var ids = String(idsParam).split(',').map(function (x) { return x.trim(); }).filter(Boolean);
+      if (ids.length > 400) return res.status(400).json({ error: 'too many ids' });
+
+      var byFile = {};
+      ids.forEach(function (id) {
+        if (!content.isEditableAddress(id)) return;
+        var src = sourceOf(id);
+        if (!src || SOURCES.indexOf(src) === -1) return;
+        var parsed = content.parseAddress(id);
+        if (!parsed) return;
+        (byFile[parsed.file] = byFile[parsed.file] || []).push(id);
+      });
+
+      return readValues(byFile).then(function (values) {
+        res.status(200).json({ values: values });
+      }, function (error) {
+        github.respond(res, error);
+      });
+    }
+
     return res.status(200).json({
       configured: github.configured(),
       repo: github.repo(),
@@ -176,6 +204,20 @@ module.exports = async function handler(req, res) {
     return github.respond(res, error);
   }
 };
+
+/** The stored value for each requested address, read from the branch head. */
+async function readValues(byFile) {
+  var out = {};
+  var paths = Object.keys(byFile);
+  for (var i = 0; i < paths.length; i++) {
+    var doc = JSON.parse(await github.readFile(paths[i]));
+    byFile[paths[i]].forEach(function (id) {
+      var read = content.readValue(doc, id);
+      if (read.ok) out[id] = read.value;
+    });
+  }
+  return out;
+}
 
 // Exported for tools/test-edit.mjs.
 module.exports.clean = clean;

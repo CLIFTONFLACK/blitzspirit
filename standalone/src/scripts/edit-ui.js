@@ -11,6 +11,14 @@
    Edits survive switching pages: they are held here, keyed by the field
    address, until they are saved or discarded. A field edited back to what it
    said originally stops counting as a change.
+
+   IMPORTANT: the editor edits the STORED value, never the rendered text. Those
+   are not the same thing - dossier paragraphs carry **bold** markers that render
+   as <strong>, editorial bodies carry newlines that render as <br>, product
+   titles are upper-cased and split around a <span>, and several tags are wrapped
+   in literal [ brackets ] by the template. Saving rendered text would write all
+   of that into the JSON and compound it on the next build. So the stored values
+   are fetched from /api/edit?ids=... and it is those that are shown for editing.
    ============================================================ */
 
 const frame = document.querySelector('[data-frame]');
@@ -20,8 +28,22 @@ const saveBtn = document.querySelector('[data-save]');
 const discardBtn = document.querySelector('[data-discard]');
 const statusEl = document.querySelector('[data-status]');
 
-/** address -> { text, original } for everything touched this session. */
+/** address -> { text, original } for everything touched this session.
+ *  Both are STORED values, not rendered text. */
 const edits = new Map();
+
+/** address -> stored value, fetched from the repo via the endpoint. */
+const canonical = new Map();
+
+/** Ask the endpoint what the repo actually stores for these fields. */
+async function loadCanonical(ids) {
+  const missing = ids.filter((id) => !canonical.has(id));
+  if (!missing.length) return;
+  const res = await fetch('/api/edit?ids=' + encodeURIComponent(missing.join(',')));
+  if (!res.ok) throw new Error('could not read the current copy (' + res.status + ')');
+  const body = await res.json();
+  Object.keys(body.values || {}).forEach((id) => canonical.set(id, body.values[id]));
+}
 
 /* Injected into the frame so editable text is findable and obviously editable.
    Scoped to [data-line-id] so it cannot affect anything else. */
@@ -85,7 +107,19 @@ function beginEditing(el) {
   const id = el.getAttribute('data-line-id');
   if (!id || el.isContentEditable) return;
 
-  if (!edits.has(id)) edits.set(id, { text: el.textContent, original: el.textContent });
+  // Never seed from el.textContent - see the note at the top of this file.
+  const stored = canonical.get(id);
+  if (stored === undefined) {
+    setStatus('bad', 'Cannot edit that yet - the stored copy has not loaded.');
+    return;
+  }
+
+  if (!edits.has(id)) edits.set(id, { text: stored, original: stored });
+
+  // Show the stored value while editing. For a field the template decorates -
+  // "[ TAG ]", an upper-cased title - the decoration drops away during the edit
+  // and comes back on the next build, because it lives in the template.
+  el.textContent = edits.get(id).text;
 
   el.setAttribute('data-editing', '');
   el.setAttribute('contenteditable', 'plaintext-only');
@@ -95,12 +129,8 @@ function beginEditing(el) {
     el.removeAttribute('contenteditable');
     el.removeAttribute('data-editing');
     const entry = edits.get(id);
-    if (keep) {
-      entry.text = el.textContent.replace(/\s+/g, ' ').trim();
-      el.textContent = entry.text;
-    } else {
-      el.textContent = entry.text;
-    }
+    if (keep) entry.text = el.textContent.replace(/[ \t]+/g, ' ').trim();
+    el.textContent = entry.text;
     if (entry.text !== entry.original) el.setAttribute('data-dirty', '');
     else el.removeAttribute('data-dirty');
     refreshBar();
@@ -146,10 +176,22 @@ function wireFrame() {
     if (link) event.preventDefault();
   });
 
-  paintFrame(doc);
+  const ids = [...doc.querySelectorAll('[data-line-id]')].map((el) =>
+    el.getAttribute('data-line-id')
+  );
+  if (!ids.length) {
+    setStatus('bad', 'No editable text found on this page.');
+    return;
+  }
 
-  const n = doc.querySelectorAll('[data-line-id]').length;
-  setStatus(n ? null : 'bad', n ? '' : 'No editable text found on this page.');
+  setStatus('busy', 'Reading the current copy…');
+  loadCanonical([...new Set(ids)]).then(
+    () => {
+      paintFrame(doc);
+      setStatus(null);
+    },
+    (error) => setStatus('bad', escapeHtml(error.message))
+  );
 }
 
 frame.addEventListener('load', wireFrame);

@@ -34,6 +34,10 @@ for (const file of readdirSync(join(dataDir, 'pages'))) {
   if (file.endsWith('.json')) load('pages/' + file.replace(/\.json$/, ''), join(dataDir, 'pages', file));
 }
 
+/* /social is another tool with its own id scheme and its own endpoint. Its ids are
+   not addresses into this data and are none of this check's business. */
+const NOT_OURS = ['/social/'];
+
 function htmlFiles(dir) {
   const out = [];
   for (const entry of readdirSync(dir)) {
@@ -48,6 +52,7 @@ const seen = new Map(); // address -> Set of pages it appears on
 for (const file of htmlFiles(dist)) {
   const page = file.slice(dist.length).replace(/\\/g, '/');
   const doc = readFileSync(file, 'utf8');
+  if (NOT_OURS.some((prefix) => page.startsWith(prefix))) continue;
   for (const match of doc.matchAll(/data-line-id="([^"]+)"/g)) {
     const id = match[1];
     if (!seen.has(id)) seen.set(id, new Set());
