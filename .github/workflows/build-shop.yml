@@ -1,0 +1,73 @@
+name: Build the shop
+
+# Why this exists: the Vercel project publishes this repo as-is, with no build step.
+# The shop's HTML is therefore committed under new/. When someone edits copy through
+# /edit/, the endpoint commits the changed JSON under standalone/src/data/ — and only
+# a rebuild turns that JSON into HTML. This does the rebuild and commits the result,
+# which Vercel then publishes.
+#
+# The loop is broken by paths-ignore: this workflow writes to new/, and a push that
+# only touches new/ does not trigger it again.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'standalone/**'
+      - '.github/workflows/build-shop.yml'
+  workflow_dispatch:
+
+# A second edit landing mid-build should supersede the first, not race it.
+concurrency:
+  group: build-shop
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # A shallow clone is enough; we only ever commit on top of the head.
+          fetch-depth: 1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: standalone/package-lock.json
+
+      # --include=dev because astro check lives in devDependencies, and CI sets
+      # NODE_ENV=production in some contexts - the same thing that broke the Vercel
+      # build when it was tried there.
+      - name: Install
+        working-directory: standalone
+        run: npm ci --include=dev
+
+      # Runs the full gate: catalogue validation, astro check, build, and the
+      # built-HTML content checks. A failure here must not publish anything.
+      - name: Build
+        working-directory: standalone
+        run: npm run build
+
+      - name: Publish into new/
+        run: |
+          rm -rf new
+          mkdir -p new
+          cp -R standalone/dist/. new/
+          echo "published $(find new -type f | wc -l) files"
+
+      - name: Commit if anything changed
+        run: |
+          git config user.name  "blitzspirit-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add new
+          if git diff --cached --quiet; then
+            echo "no change to publish"
+            exit 0
+          fi
+          git commit -m "Rebuild the shop" -m "Automated: standalone/ changed, so new/ was rebuilt from it. Source commit ${{ github.sha }}."
+          git push
