@@ -4,12 +4,18 @@ The ISSUE_001 shop, ported off Shopify. Astro static site, cart in the browser,
 payment through Stripe Checkout. Visual parity with the v27 Shopify theme is the
 spec — see `PORTING.md` for the conventions the port followed.
 
+**Live at https://blitz.getbrian.xyz/new/** — the original static site still serves
+the domain root, untouched.
+
 ## Where things are
 
 | | |
 |---|---|
 | **Build workspace** | `C:\dev\blitzspirit-standalone` — local NTFS |
-| **Committed copy** | `blitzspirit/standalone/` in the Drive repo |
+| **Committed source** | `standalone/` in `CLIFTONFLACK/blitzspirit` |
+| **Published build** | `new/` in the same repo |
+| **Serverless functions** | `api/checkout.js`, `api/newsletter.js`, `api/_order.js` at the repo root |
+| **Checkout tests** | `tools/test-order.mjs` at the repo root |
 | **Sync** | `powershell -File C:\dev\blitzspirit-standalone\sync-to-drive.ps1` |
 
 `npm install` cannot complete on the Google Drive volume (`EBADF` mid-write) and the
@@ -18,24 +24,46 @@ either. Source is authored locally and mirrored back; the Drive copy is what get
 committed. `sync-to-drive.ps1` is a `robocopy /MIR` excluding `node_modules`, `dist`,
 `.astro` and `.vercel`.
 
+## How this deploys
+
+The `blitzspirit` Vercel project has **no build step** — it publishes the repo as-is,
+with `api/*.js` as functions. That is how the original site has always shipped, and
+changing it would put the live site at risk for no gain. So:
+
+1. `npm run build` here, with `base: '/new'`, writes `dist/`
+2. `dist/` is copied to `new/` in the repo and **committed**
+3. pushing to `main` publishes it
+
+Committed build output is unusual, and deliberate: it is the only way to add a built
+site to a project that does not build. The trade is that a content change means a
+rebuild and a commit.
+
+Because the site lives under a sub-path, every internal link goes through
+`href()` in `src/lib/url.ts`, and rich text set with `set:html` goes through
+`hrefsInHtml()`. `tools/check-build.mjs` fails the build if any emitted `href` or
+`src` falls outside `/new/` — that check is what stops a page reaching for the old
+site's files and rendering unstyled.
+
 ## Commands
 
 ```
-npm run dev        # dev server on :4321
-npm run build      # validate -> test -> typecheck -> build -> content check
+npm run dev        # dev server on :4321 (serves at /new/)
+npm run build      # validate -> typecheck -> build -> content check
 npm run validate   # catalogue invariants
-npm run test       # checkout pricing and validation
 npm run check      # astro check
 ```
 
-`build` will not produce output if any gate fails. Each gate has been negative-tested:
-the invariant was broken on purpose and watched to fail. That is the standard for
-adding a new one — a check nobody has seen go red is decoration.
+From the repo root, `node tools/test-order.mjs` covers the checkout pricing,
+validation and Stripe form encoding — plain node, no dependencies.
+
+`build` will not produce output if any gate fails. Each gate has been
+negative-tested: the invariant was broken on purpose and watched to fail. That is the
+standard for adding a new one — a check nobody has seen go red is decoration.
 
 ## Data
 
 Everything the storefront renders is committed JSON under `src/data/`. There is no CMS
-and no API; editing the shop means editing these files and redeploying.
+and no API; editing the shop means editing these files, rebuilding and redeploying.
 
 | File | What it holds |
 |---|---|
@@ -55,11 +83,17 @@ stable URL as the favicon and OG image.
 ## Commerce
 
 The cart is an array in `localStorage` (`bs_cart`), rendered by `src/scripts/cart.js`
-from a stripped index at `/cart-index.json`. Pressing CHECKOUT posts the variant ids
-and quantities to `/api/checkout`, a Vercel Function that **re-prices the whole bag
-from the catalogue** before creating a Stripe Checkout Session. A shopper who edits
-localStorage changes what they are buying, never what they pay — `tools/test-order.mjs`
-covers that directly.
+from a stripped index at `/new/cart-index.json`. Pressing CHECKOUT posts the variant
+ids and quantities to `/api/checkout` — the root project's function, which sits
+outside this site's base — and that function **re-prices the whole bag from the
+catalogue** before creating a Stripe Checkout Session. A shopper who edits
+localStorage changes what they are buying, never what they pay;
+`tools/test-order.mjs` covers that directly.
+
+The functions are dependency-free CommonJS matching the project's existing
+`admin.js` and `feedback.js`, and Stripe is called over its REST API with `fetch`
+rather than the `stripe` package — so the project still needs no `package.json` and
+its build behaviour is unchanged.
 
 - Prices are VAT-inclusive, so line items and shipping use `tax_behavior: 'inclusive'`
 - UK delivery is £3.95, free at £40 and over, decided from the server-side subtotal
@@ -71,7 +105,7 @@ Every page still renders and reads completely.
 
 ## Environment
 
-Set in the Vercel project (see `.env.example`):
+Set these in the `clifton-ai-team/blitzspirit` Vercel project:
 
 | Variable | Needed for |
 |---|---|
