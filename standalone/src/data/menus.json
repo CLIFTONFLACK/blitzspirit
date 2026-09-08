@@ -1,28 +1,48 @@
 {
   "main": [
-    { "title": "HOME", "url": "/" },
+    {
+      "title": "HOME",
+      "url": "/"
+    },
     {
       "title": "ABOUT",
       "url": "/about",
       "children": [
-        { "title": "ABOUT US", "url": "/about" },
-        { "title": "HELP", "url": "/help" },
-        { "title": "CONTACT", "url": "/contact" }
+        {
+          "title": "ABOUT US",
+          "url": "/about"
+        },
+        {
+          "title": "HELP",
+          "url": "/help"
+        },
+        {
+          "title": "CONTACT",
+          "url": "/contact"
+        }
       ]
     },
     {
       "title": "THE COLLECTIONS",
-      "url": "/collections/all",
-      "children": [
-        { "title": "THE RANGE", "url": "/collections/all" },
-        { "title": "DEALS", "url": "/collections/deals" }
-      ]
+      "url": "/collections/all"
     }
   ],
   "footer": [
-    { "title": "ABOUT", "url": "/about" },
-    { "title": "SIZE GUIDE", "url": "/help#size-guide" },
-    { "title": "RETURNS", "url": "/help#returns" },
-    { "title": "CONTACT", "url": "/help#contact" }
+    {
+      "title": "ABOUT",
+      "url": "/about"
+    },
+    {
+      "title": "SIZE GUIDE",
+      "url": "/help#size-guide"
+    },
+    {
+      "title": "RETURNS",
+      "url": "/help#returns"
+    },
+    {
+      "title": "CONTACT",
+      "url": "/help#contact"
+    }
   ]
 }
