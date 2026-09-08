@@ -51,6 +51,11 @@ async function call(cfg, path, options) {
     var e = new Error('github ' + res.status + ' on ' + path);
     e.status = res.status;
     e.detail = json && json.message;
+    // Which call was refused separates the causes: a denial on the very first
+    // write (blobs) is a missing Contents:write permission, whereas reads
+    // succeeding and only the final ref update failing points at branch
+    // protection instead.
+    e.step = (options && options.method ? options.method : 'GET') + ' ' + path.split('?')[0];
     throw e;
   }
   return json;
@@ -74,6 +79,14 @@ async function readFile(path) {
  * @param {string} message
  * @returns {Promise<{sha: string, url: string}>}
  */
+/** What the token can actually do on this repo, straight from GitHub. */
+async function permissions() {
+  var cfg = config();
+  if (!cfg) throw notConfigured();
+  var repo = await call(cfg, '/repos/' + cfg.repo, { method: 'GET' });
+  return repo.permissions || {};
+}
+
 async function commitFiles(files, message) {
   var cfg = config();
   if (!cfg) throw notConfigured();
@@ -141,6 +154,7 @@ function respond(res, error) {
     error: 'could not publish',
     githubStatus: error && error.status,
     githubSays: error && error.detail,
+    failedAt: error && error.step,
   });
 }
 
@@ -149,6 +163,7 @@ module.exports = {
   repo: function () { var c = config(); return c && c.repo; },
   branch: function () { var c = config(); return c && c.branch; },
   readFile: readFile,
+  permissions: permissions,
   commitFiles: commitFiles,
   respond: respond,
 };

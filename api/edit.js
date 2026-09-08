@@ -97,6 +97,15 @@ module.exports = async function handler(req, res) {
       });
     }
 
+    // ?probe=1 asks GitHub what this token can actually do here, which is the
+    // quickest way to tell a read-only token from a repo it cannot see at all.
+    if (req.query && req.query.probe) {
+      return github.permissions().then(
+        function (perms) { res.status(200).json({ repo: github.repo(), permissions: perms }); },
+        function (error) { github.respond(res, error); }
+      );
+    }
+
     return res.status(200).json({
       configured: github.configured(),
       repo: github.repo(),
