@@ -15,9 +15,14 @@
     "of outputDirectory.",
     "",
     "The redirects keep every URL that was ever live working - including the",
-    "/new/assets/... the committed /social page still asks for."
+    "/new/assets/... the committed /social page still asks for.",
+    "",
+    "framework:null stops Vercel auto-detecting Astro from standalone/ and",
+    "replacing buildCommand with a bare `astro build`, which is what failed with",
+    "\"astro: command not found\" - it ran before anything installed standalone/."
   ],
-  "installCommand": "cd standalone && npm ci --include=dev",
+  "framework": null,
+  "installCommand": "echo \"dependencies are installed by the build step\"",
   "buildCommand": "npm run build",
   "outputDirectory": "out",
   "redirects": [
