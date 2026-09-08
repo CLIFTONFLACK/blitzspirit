@@ -1,30 +1,18 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "comment": [
-    "The shop serves the domain root; the original static site is at /old/.",
+    "Redirects only. This project publishes the repo as-is - no build step, no",
+    "output directory - which is the arrangement that actually works here.",
     "",
-    "This project now HAS a build step, which it did not before. It is required:",
-    "copy is edited through /edit/, an edit commits JSON, and only a rebuild turns",
-    "that JSON into HTML. Nothing generated is committed any more.",
-    "",
-    "installCommand needs --include=dev: Vercel sets NODE_ENV=production, npm ci",
-    "then skips devDependencies, and `astro check` would try to auto-install",
-    "@astrojs/check at build time - which a non-interactive build cannot do.",
-    "",
-    "Serverless functions still come from the repo's api/ directory, independently",
-    "of outputDirectory.",
+    "The shop's built HTML is therefore committed at the repo root by",
+    "tools/publish.mjs, and rebuilt by .github/workflows/build-shop.yml whenever",
+    "standalone/ changes. Generated files sitting beside source is the cost of",
+    "needing no Vercel configuration.",
     "",
     "The redirects keep every URL that was ever live working - including the",
-    "/new/assets/... the committed /social page still asks for.",
-    "",
-    "framework:null stops Vercel auto-detecting Astro from standalone/ and",
-    "replacing buildCommand with a bare `astro build`, which is what failed with",
-    "\"astro: command not found\" - it ran before anything installed standalone/."
+    "/new/assets/... the committed /social page still asks for, since it was",
+    "generated while the shop lived under /new/."
   ],
-  "framework": null,
-  "installCommand": "echo \"dependencies are installed by the build step\"",
-  "buildCommand": "npm run build",
-  "outputDirectory": "out",
   "redirects": [
     {
       "source": "/new",

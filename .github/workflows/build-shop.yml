@@ -1,16 +1,14 @@
 name: Build the shop
 
-# Vercel builds and deploys this repo now, so this workflow does NOT publish
-# anything. It runs the identical build as a check.
+# Vercel publishes this repo as-is, with no build step. So the shop's HTML has to be
+# committed at the repo root, and something has to put it there when the source
+# changes - which is this.
 #
-# Two reasons that is worth the minute it takes:
-#  - Vercel's build logs are not readable from every environment this project is
-#    worked on from. These are. When a deploy fails, this says whether the build
-#    itself is sound or whether the difference is Vercel's environment.
-#  - It gates pull requests before a broken build reaches a deployment.
+# It matters most for the copy editor: /edit/ commits JSON to standalone/src/data,
+# and only a rebuild turns that JSON into HTML.
 #
-# It runs the same commands vercel.json does, deliberately. If they drift, this
-# stops being evidence about the deploy.
+# The loop is broken by paths: this writes the published entries at the repo root and
+# standalone/dist, neither of which is in the trigger list.
 
 on:
   push:
@@ -18,19 +16,16 @@ on:
     paths:
       - 'standalone/**'
       - 'tools/**'
-      - 'api/**'
-      - 'package.json'
-      - 'vercel.json'
       - '.github/workflows/build-shop.yml'
   pull_request:
   workflow_dispatch:
 
 concurrency:
   group: build-shop-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -44,18 +39,36 @@ jobs:
           cache: npm
           cache-dependency-path: standalone/package-lock.json
 
-      # Exactly what Vercel runs: its buildCommand, nothing prepared beforehand.
-      # Installing separately here would let the two drift - which it did, hiding a
-      # build script that used `npm ci --prefix`, a form that does not behave like
-      # running npm ci inside the directory.
-      - name: Build (the same command Vercel runs)
-        run: npm run build
+      - name: Install
+        run: cd standalone && npm ci --include=dev
+
+      # The full gate: catalogue validation, astro check, the build, and the
+      # built-HTML content checks.
+      - name: Build
+        run: cd standalone && npm run build
 
       # Nothing else connects the editor's annotations to its save endpoint. A
       # mistyped address would otherwise only surface when someone edited that line
       # and the save came back 400.
       - name: Check every editable annotation resolves
-        run: npm run check-edit-ids
+        run: node tools/check-edit-ids.mjs standalone/dist
 
       - name: Checkout and content tests
-        run: npm test
+        run: node tools/test-order.mjs && node tools/test-content.mjs
+
+      - name: Publish to the repo root
+        run: node tools/publish.mjs
+
+      # Pull requests get the checks but must not publish - only main does.
+      - name: Commit if anything changed
+        if: github.event_name != 'pull_request'
+        run: |
+          git config user.name  "blitzspirit-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add -A -- . ':!standalone/dist'
+          if git diff --cached --quiet; then
+            echo "no change to publish"
+            exit 0
+          fi
+          git commit -m "Rebuild the shop" -m "Automated: standalone/ changed, so the published site was rebuilt from it. Source commit ${{ github.sha }}."
+          git push

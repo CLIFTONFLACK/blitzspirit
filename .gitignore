@@ -1,13 +1,8 @@
 .fbconfig
 
-# Build output. tools/assemble.mjs writes out/ from standalone/dist plus old/ and
-# social/, and Vercel serves that - none of it is committed.
-out/
+# The shop's built output IS committed at the repo root - Vercel publishes the repo
+# as-is. tools/publish.mjs writes it and records what it wrote in .published.
 standalone/node_modules/
 standalone/dist/
 standalone/.astro/
 standalone/.vercel/
-
-# The root package.json carries scripts only - no deps, so no lockfile.
-# Anchored: standalone/package-lock.json IS committed, and npm ci requires it.
-/package-lock.json
