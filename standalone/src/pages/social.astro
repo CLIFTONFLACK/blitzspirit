@@ -23,7 +23,9 @@ interface Variant {
   dir?: string;
   tag?: { text: string; warn: boolean };
 }
-interface Group { heading: string; note: string; entries: { ref: string; variants: Variant[] }[] }
+interface Entry { ref: string; variants: Variant[] }
+interface Group { heading: string; note: string; entries: Entry[] }
+interface Part { role: string | null; entry: Entry }
 interface Section { id: string; kind: string; eyebrow: string; heading: string; groups: Group[] }
 interface Reference {
   id: string;
@@ -43,10 +45,78 @@ const editable = sections.flatMap((s) => s.groups.flatMap((g) => g.entries.flatM
 // what is locked to the Brand Book, what was written beyond it, and Dravot, who
 // has his own voice and never sells a shirt. Hooks, captions and CTAs sit in one
 // group because they are used together - a hook needs its caption and its ask.
+// Every entry, addressable by its ref, so a set can name its parts.
+const byRef: Map<string, Entry> = new Map(
+  sections.flatMap((s) => s.groups.flatMap((g) => g.entries.map((e) => [e.ref, e]))),
+);
+const pairs = (page as any).pairs as Record<string, { caption: string; cta: string; bot?: string }>;
+
+/** A set is what actually gets posted: the hook, the caption under it, the ask that
+ *  closes it, and - where the ask is a DM keyword - the reply the bot sends back.
+ *  Captions and CTAs repeat across sets. That is not a shortcut: a caption is
+ *  reusable and a hook is not, and pretending otherwise would mean padding. */
+const setsFor = (entry: Entry): Part[] => {
+  const pair = pairs[entry.ref];
+  if (!pair) return [{ role: null, entry }];
+  const parts: Part[] = [
+    { role: 'Hook', entry },
+    { role: 'Caption', entry: byRef.get(pair.caption)! },
+    { role: 'CTA', entry: byRef.get(pair.cta)! },
+  ];
+  if (pair.bot) parts.push({ role: 'Auto-DM', entry: byRef.get(pair.bot)! });
+  return parts;
+};
+
+// The page shows three things: what is locked, what is ready to post, and Dravot.
+// Captions and CTAs no longer stand alone - they arrive inside the sets.
+const view = [
+  ...sections
+    .filter((s) => s.kind === 'verbatim')
+    .map((s) => ({
+      id: s.id,
+      kind: s.kind,
+      eyebrow: s.eyebrow,
+      heading: s.heading,
+      groups: s.groups.map((g) => ({
+        heading: g.heading,
+        note: g.note,
+        sets: g.entries.map((e) => ({ ref: e.ref, parts: [{ role: null, entry: e }] })),
+      })),
+    })),
+  ...sections
+    .filter((s) => s.kind === 'hook')
+    .map((s) => ({
+      id: 'beyond',
+      kind: 'beyond',
+      eyebrow: 'Section 02 - Ready to post',
+      heading: 'Beyond Brand Book',
+      groups: s.groups.map((g) => ({
+        heading: g.heading,
+        note: g.note,
+        sets: g.entries.map((e) => ({ ref: e.ref, parts: setsFor(e) })),
+      })),
+    })),
+  ...sections
+    .filter((s) => s.kind === 'dravot')
+    .map((s) => ({
+      id: s.id,
+      kind: s.kind,
+      eyebrow: s.eyebrow,
+      heading: s.heading,
+      groups: s.groups.map((g) => ({
+        heading: g.heading,
+        note: g.note,
+        sets: g.entries.map((e) => ({ ref: e.ref, parts: [{ role: null, entry: e }] })),
+      })),
+    })),
+];
+
+const setCount = view.reduce((n, s) => n + s.groups.reduce((m, g) => m + g.sets.length, 0), 0);
+
 const filters = [
   { label: 'All', kinds: [] },
   { label: 'From Brand Book', kinds: ['verbatim'] },
-  { label: 'Beyond Brand Book', kinds: ['hook', 'caption', 'cta'] },
+  { label: 'Beyond Brand Book', kinds: ['beyond'] },
   { label: 'Dravot says', kinds: ['dravot'] },
 ];
 ---
@@ -97,7 +167,7 @@ const filters = [
 
         <input class="search" id="search" type="search" placeholder="Search" aria-label="Search every line" />
 
-        <span class="count" id="count">{editable.length} entries</span>
+        <span class="count" id="count">{setCount} entries</span>
 
         <div class="editbar">
           <button class="chip edit" type="button" id="editToggle" aria-pressed="false">Edit</button>
@@ -106,7 +176,7 @@ const filters = [
         </div>
       </div>
 
-      {sections.map((section) => (
+      {view.map((section) => (
         <section id={section.id} data-kind={section.kind}>
           <p class="eyebrow">{section.eyebrow}</p>
           <h2 class="chunk">{section.heading}</h2>
@@ -118,25 +188,32 @@ const filters = [
                 <span class="note">{group.note}</span>
               </div>
               <div class="lines">
-                {group.entries.map((entry) => (
-                  <div class={'line' + (entry.variants[0].reg === 'locked' ? ' locked' : '')}>
-                    <span class="ref">{entry.ref}</span>
-                    <div class="vars">
-                      {entry.variants.map((v) => (
-                        <div class="v" data-reg={v.reg}>
-                          <span class="vlabel">{v.label}</span>
-                          <div class="body">
-                            <p class="txt" data-line-id={v.id} data-seed={v.text}>{v.text}</p>
-                            {v.tag && <span class={'tag' + (v.tag.warn ? ' warn' : '')}>{v.tag.text}</span>}
-                            {v.dir && <span class="dir">{v.dir}</span>}
-                            <span class="editflag" hidden>
-                              Edited · <button class="revert" type="button" data-revert={v.id}>Revert</button>
-                            </span>
-                          </div>
-                          <button class="copy" type="button">Copy</button>
+                {group.sets.map((set) => (
+                  <div class={'line' + (set.parts.length > 1 ? ' set' : '') + (set.parts[0].entry.variants[0].reg === 'locked' ? ' locked' : '')}>
+                    {set.parts.map((part) => (
+                      <div class="part">
+                        <div class="partmeta">
+                          {part.role && <span class="role">{part.role}</span>}
+                          <span class="ref">{part.entry.ref}</span>
                         </div>
-                      ))}
-                    </div>
+                        <div class="vars">
+                          {part.entry.variants.map((v) => (
+                            <div class="v" data-reg={v.reg}>
+                              <span class="vlabel">{v.label}</span>
+                              <div class="body">
+                                <p class="txt" data-line-id={v.id} data-seed={v.text}>{v.text}</p>
+                                {v.tag && <span class={'tag' + (v.tag.warn ? ' warn' : '')}>{v.tag.text}</span>}
+                                {v.dir && <span class="dir">{v.dir}</span>}
+                                <span class="editflag" hidden>
+                                  Edited · <button class="revert" type="button" data-revert={v.id}>Revert</button>
+                                </span>
+                              </div>
+                              <button class="copy" type="button">Copy</button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 ))}
               </div>
@@ -328,6 +405,21 @@ const filters = [
       /* ---- entries ---- */
       .lines { display: flex; flex-direction: column; gap: 8px; }
 
+      /* A set is one postable thing: hook, caption, ask. The parts stack inside a
+         single frame so the eye reads them as one item, with a hairline between. */
+      .line.set { display: block; padding: 0; }
+      .line.set .part { display: grid; grid-template-columns: 86px 1fr; gap: 14px; padding: 12px 14px 12px 16px; }
+      .line.set .part + .part { border-top: 1px solid var(--line); }
+      .line.set .part:first-child { background: rgba(255, 255, 255, 0.02); }
+
+      .partmeta { display: flex; flex-direction: column; gap: 4px; padding-top: 6px; }
+      .role {
+        font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+        color: var(--signal); font-weight: 600;
+      }
+      .line.set .part:not(:first-child) .role { color: var(--khaki); }
+      .partmeta .ref { font-size: 12px; letter-spacing: 0.1em; color: #fff; font-variant-numeric: tabular-nums; }
+
       .line {
         display: grid; grid-template-columns: 86px 1fr; gap: 14px;
         background: var(--panel); border: 1px solid var(--line);
@@ -336,7 +428,8 @@ const filters = [
       }
       .line:hover { border-color: var(--line-bri); background: var(--panel-2); }
       .line.locked { border-left: 3px solid var(--khaki); }
-      .line > .ref { font-size: 13px; letter-spacing: 0.1em; color: var(--khaki); padding-top: 6px; font-variant-numeric: tabular-nums; }
+      .line:not(.set) { grid-template-columns: 86px 1fr; }
+      .line:not(.set) > .part { display: contents; }
 
       .vars { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
       .v { display: grid; grid-template-columns: 66px 1fr auto; gap: 12px; align-items: start; padding: 6px 0; }
@@ -428,7 +521,8 @@ const filters = [
 
       @media (max-width: 700px) {
         .line { grid-template-columns: 1fr; gap: 8px; }
-        .line > .ref { padding-top: 0; }
+        .line.set .part { grid-template-columns: 1fr; gap: 8px; }
+        .partmeta { flex-direction: row; align-items: baseline; gap: 10px; padding-top: 0; }
         .v { grid-template-columns: 1fr; gap: 6px; }
         .vlabel { padding-top: 0; }
         .copy { justify-self: start; }

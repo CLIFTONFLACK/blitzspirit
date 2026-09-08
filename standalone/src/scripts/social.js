@@ -11,7 +11,15 @@
 // ---- overrides -------------------------------------------------------
 // The page is already correct when this runs; everything here is an overlay.
 const lines = Array.from(document.querySelectorAll('.txt'));
-const byId = new Map(lines.map((el) => [el.dataset.lineId, el]));
+// A caption or CTA belongs to several sets, so one id addresses several elements.
+// Everything below works on the group, or an edit would appear in one set and not
+// the others, and a save would carry whichever copy the map happened to keep.
+const byId = new Map();
+for (const el of lines) {
+  const group = byId.get(el.dataset.lineId);
+  if (group) group.push(el);
+  else byId.set(el.dataset.lineId, [el]);
+}
 const status = document.getElementById('status');
 const saveBtn = document.getElementById('save');
 const editToggle = document.getElementById('editToggle');
@@ -21,18 +29,24 @@ const say = (msg, tone) => {
   status.dataset.tone = tone || '';
 };
 
-function markEdited(el, edited) {
-  const flag = el.parentElement.querySelector('.editflag');
-  if (flag) flag.hidden = !edited;
-  el.dataset.edited = edited ? '1' : '';
+function markEdited(id, edited) {
+  for (const el of byId.get(id) ?? []) {
+    const flag = el.parentElement.querySelector('.editflag');
+    if (flag) flag.hidden = !edited;
+    el.dataset.edited = edited ? '1' : '';
+  }
+}
+
+/** Put the same text into every copy of a line, so the sets never disagree. */
+function setText(id, text) {
+  for (const el of byId.get(id) ?? []) el.textContent = text;
 }
 
 function applyOverrides(map) {
   for (const [id, text] of Object.entries(map || {})) {
-    const el = byId.get(id);
-    if (!el) continue;
-    el.textContent = text;
-    markEdited(el, true);
+    if (!byId.has(id)) continue;
+    setText(id, text);
+    markEdited(id, true);
   }
 }
 
@@ -102,12 +116,18 @@ const dirty = () =>
 
 document.addEventListener('input', (e) => {
   if (!e.target.classList || !e.target.classList.contains('txt')) return;
-  const n = dirty().length;
+  for (const el of byId.get(e.target.dataset.lineId) ?? []) {
+    if (el !== e.target) el.textContent = e.target.textContent;
+  }
+  // A shared caption is one changed line however many sets show it.
+  const n = new Set(dirty().map((el) => el.dataset.lineId)).size;
   saveBtn.textContent = n ? `Save (${n})` : 'Save';
 });
 
 saveBtn.addEventListener('click', async () => {
-  const edits = dirty().map((el) => ({ id: el.dataset.lineId, text: el.textContent.trim() }));
+  const edits = [
+    ...new Map(dirty().map((el) => [el.dataset.lineId, el.textContent.trim()])),
+  ].map(([id, text]) => ({ id, text }));
   if (!edits.length) return say('Nothing changed.', '');
   saveBtn.disabled = true;
   say('Saving…', '');
@@ -120,9 +140,9 @@ saveBtn.addEventListener('click', async () => {
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'save failed');
     edits.forEach(({ id, text }) => {
-      const el = byId.get(id);
-      el.dataset.current = text;
-      markEdited(el, text.trim() !== el.dataset.seed.trim());
+      const copies = byId.get(id) ?? [];
+      for (const el of copies) el.dataset.current = text;
+      markEdited(id, text.trim() !== copies[0].dataset.seed.trim());
     });
     saveBtn.textContent = 'Save';
     say(`Saved ${edits.length} line${edits.length === 1 ? '' : 's'}.`, 'ok');
@@ -137,7 +157,6 @@ document.addEventListener('click', async (e) => {
   const btn = e.target.closest('.revert');
   if (!btn) return;
   const id = btn.dataset.revert;
-  const el = byId.get(id);
   say('Reverting…', '');
   try {
     const res = await fetch('/api/social', {
@@ -146,9 +165,10 @@ document.addEventListener('click', async (e) => {
       body: JSON.stringify({ op: 'revert', ids: [id] }),
     });
     if (!res.ok) throw new Error();
-    el.textContent = el.dataset.seed;
-    delete el.dataset.current;
-    markEdited(el, false);
+    const seed = byId.get(id)[0].dataset.seed;
+    setText(id, seed);
+    for (const copy of byId.get(id)) delete copy.dataset.current;
+    markEdited(id, false);
     say('Reverted to the repo version.', 'ok');
   } catch (err) {
     say('Revert failed.', 'bad');
