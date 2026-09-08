@@ -6,24 +6,10 @@
     },
     {
       "title": "ABOUT",
-      "url": "/about",
-      "children": [
-        {
-          "title": "ABOUT US",
-          "url": "/about"
-        },
-        {
-          "title": "HELP",
-          "url": "/help"
-        },
-        {
-          "title": "CONTACT",
-          "url": "/contact"
-        }
-      ]
+      "url": "/about"
     },
     {
-      "title": "THE COLLECTIONS",
+      "title": "THE COLLECTION",
       "url": "/collections/all"
     }
   ],

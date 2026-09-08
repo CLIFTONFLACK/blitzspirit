@@ -19,7 +19,7 @@
     ]
   },
   "masthead": {
-    "longTag": "[ LATEST ISSUE_001 ]",
+    "longTag": "",
     "showAccount": false
   },
   "outro": {
@@ -49,9 +49,9 @@
     "exitIntent": true
   },
   "social": {
-    "instagram": "",
+    "instagram": "#",
     "tiktok": "",
-    "x": "",
+    "x": "#",
     "facebook": ""
   }
 }

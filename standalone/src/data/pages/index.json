@@ -18,7 +18,7 @@
         "issue_override": "",
         "dossier": "",
         "what_label": "STORY",
-        "plate_ref": "BS_002 // ISSUE_000"
+        "plate_ref": "BS_002 // ISSUE_001"
       }
     },
     {
@@ -61,17 +61,18 @@
             "index_label": "",
             "force_dark": false
           }
+        },
+        {
+          "id": "item_cap",
+          "type": "item",
+          "settings": {
+            "product": "the-cap",
+            "dossier": "",
+            "index_label": "",
+            "force_dark": false
+          }
         }
       ]
-    },
-    {
-      "id": "equipment",
-      "type": "equipment-feature",
-      "settings": {
-        "label": "[ RECOMMENDED CONDIMENT ]",
-        "product": "the-cap",
-        "issue_tag": "ISSUE_001 // EQUIPMENT"
-      }
     },
     {
       "id": "promo_band_VF78L7",

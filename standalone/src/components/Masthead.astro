@@ -9,9 +9,20 @@
 // hydrates it from localStorage on load (there is no request-time cart object to
 // read). Everything else is markup-for-markup identical.
 import Icon from './Icon.astro';
-import menus from '~/data/menus.json';
+import menusData from '~/data/menus.json';
 import settings from '~/data/settings.json';
 import { href } from '~/lib/url';
+
+/** A menu entry may carry a dropdown. Declared rather than inferred: when no entry
+ *  happens to have children, TypeScript narrows the JSON to a shape without the
+ *  field and the dropdown branch stops compiling — a property of today's data, not
+ *  of the menu. */
+interface MenuItem {
+  title: string;
+  url: string;
+  children?: { title: string; url: string }[];
+}
+const menus = menusData as { main: MenuItem[]; footer: MenuItem[] };
 
 const social = settings.social;
 const socialLinks = [

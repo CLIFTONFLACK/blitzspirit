@@ -31,23 +31,23 @@
       "tags": [],
       "price": 2800,
       "compareAtPrice": null,
-      "issue": "ISSUE_000",
+      "issue": "ISSUE_001",
       "indexRef": "LIMITED EDITION",
       "limited": true,
       "strapline": "colour print. The old guard in full regalia.",
       "dossier": [
         "The bowler hat draped in Union Jack. The umbrella crossed like a weapon. The skull wearing it all with a grin that says: **I was here before you and I’ll be here after**.",
-        "Colour print on OXY_BLACK. This is Issue 000 — before the archive started, when it was just one image and a name that hadn’t been earned yet.",
+        "Colour print on OXY_BLACK. The first image the archive was built around — one print, one question, and a name that hadn’t been earned yet.",
         "**220gsm heavyweight cotton. Colour screen printed in Britain. Wash inside out at 30°C. No tumble dry.**"
       ],
       "fieldManual": [
         {
           "label": "ENTRY",
-          "value": "ISSUE_000 // THE ESTABLISHMENT"
+          "value": "ISSUE_001 // THE ESTABLISHMENT"
         },
         {
           "label": "EDITION",
-          "value": "LIMITED // PRE-ARCHIVE // NOT REPEATED"
+          "value": "LIMITED // NOT REPEATED"
         },
         {
           "label": "PRINT",
@@ -76,12 +76,12 @@
       ],
       "editorial": [
         {
-          "heading": "Issue Zero.",
-          "body": "Before the archive. Before the numbering. When it was one print, one question, and a name that hadn’t been earned yet. The Establishment was the first image — the skull in the Union Jack bowler, the crossed umbrellas below it. The whole brand is an argument with this image. This is where the argument started. [PLACEHOLDER — REPLACE WITH FINAL COPY]"
+          "heading": "Where it started.",
+          "body": "The first image: the skull in the Union Jack bowler, the crossed umbrellas below it. One print, one question, and a name that hadn’t been earned yet. The whole brand is an argument with this image, and this is where the argument started. [PLACEHOLDER — REPLACE WITH FINAL COPY]"
         },
         {
           "heading": "The Craft.",
-          "body": "220gsm ring-spun cotton. Colour water-based screen print, applied in Britain. The extra complexity of a colour print is deliberate — Issue 000 earns its edition status in every layer. Soft hand-feel that improves with washing. No cracking, no fading, no apologies. Wash inside out at 30°C — tumble dryers are for quitters. [PLACEHOLDER — REPLACE WITH FINAL COPY]"
+          "body": "220gsm ring-spun cotton. Colour water-based screen print, applied in Britain. The extra complexity of a colour print is deliberate — this edition earns its status in every layer. Soft hand-feel that improves with washing. No cracking, no fading, no apologies. Wash inside out at 30°C — tumble dryers are for quitters. [PLACEHOLDER — REPLACE WITH FINAL COPY]"
         }
       ],
       "options": [
