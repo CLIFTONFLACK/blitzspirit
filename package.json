@@ -3,7 +3,7 @@
   "private": true,
   "description": "BlitzSpirit \u2014 the shop at the root, the original static site at /old/.",
   "scripts": {
-    "build": "npm --prefix standalone ci --include=dev --no-audit --no-fund && npm --prefix standalone run build && node tools/assemble.mjs",
+    "build": "cd standalone && npm ci --include=dev --no-audit --no-fund && npm run build && cd .. && node tools/assemble.mjs",
     "test": "node tools/test-order.mjs && node tools/test-content.mjs",
     "check-edit-ids": "node tools/check-edit-ids.mjs standalone/dist"
   }

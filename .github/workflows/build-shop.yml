@@ -44,14 +44,11 @@ jobs:
           cache: npm
           cache-dependency-path: standalone/package-lock.json
 
-      # Mirrors vercel.json installCommand.
-      - name: Install
-        run: cd standalone && npm ci --include=dev
-
-      # Mirrors vercel.json buildCommand. Runs the full gate inside standalone -
-      # catalogue validation, astro check, the build, the built-HTML checks - then
-      # assembles the deployable tree.
-      - name: Build
+      # Exactly what Vercel runs: its buildCommand, nothing prepared beforehand.
+      # Installing separately here would let the two drift - which it did, hiding a
+      # build script that used `npm ci --prefix`, a form that does not behave like
+      # running npm ci inside the directory.
+      - name: Build (the same command Vercel runs)
         run: npm run build
 
       # Nothing else connects the editor's annotations to its save endpoint. A
