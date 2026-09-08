@@ -1,18 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "comment": [
-    "Redirects only. This project publishes the repo as-is - no build step, no",
-    "output directory - which is the arrangement that actually works here.",
-    "",
-    "The shop's built HTML is therefore committed at the repo root by",
-    "tools/publish.mjs, and rebuilt by .github/workflows/build-shop.yml whenever",
-    "standalone/ changes. Generated files sitting beside source is the cost of",
-    "needing no Vercel configuration.",
-    "",
-    "The redirects keep every URL that was ever live working - including the",
-    "/new/assets/... the committed /social page still asks for, since it was",
-    "generated while the shop lived under /new/."
-  ],
   "redirects": [
     {
       "source": "/new",
