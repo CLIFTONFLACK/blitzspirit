@@ -134,7 +134,14 @@ function respond(res, error) {
     return res.status(409).json({ error: 'someone else saved first - reload and try again' });
   }
   console.error('github: ' + (error && error.message), error && error.detail);
-  return res.status(502).json({ error: 'could not publish' });
+  // Pass GitHub's own status and message through. They describe the REQUEST - a
+  // missing permission, a protected branch - and never contain the token. A bare
+  // "could not publish" leaves whoever set the token up with nothing to go on.
+  return res.status(502).json({
+    error: 'could not publish',
+    githubStatus: error && error.status,
+    githubSays: error && error.detail,
+  });
 }
 
 module.exports = {
