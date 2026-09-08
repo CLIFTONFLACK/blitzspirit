@@ -1,25 +1,27 @@
 name: Build the shop
 
-# Why this exists: the Vercel project publishes this repo as-is, with no build step.
-# The shop's HTML is therefore committed under new/. When someone edits copy through
-# /edit/, the endpoint commits the changed JSON under standalone/src/data/ — and only
-# a rebuild turns that JSON into HTML. This does the rebuild and commits the result,
-# which Vercel then publishes.
+# Vercel publishes this repo as-is, with no build step. So the shop's HTML has to be
+# committed at the repo root, and something has to put it there when the source
+# changes - which is this.
 #
-# The loop is broken by paths-ignore: this workflow writes to new/, and a push that
-# only touches new/ does not trigger it again.
+# It matters most for the copy editor: /edit/ commits JSON to standalone/src/data,
+# and only a rebuild turns that JSON into HTML.
+#
+# The loop is broken by paths: this writes the published entries at the repo root and
+# standalone/dist, neither of which is in the trigger list.
 
 on:
   push:
     branches: [main]
     paths:
       - 'standalone/**'
+      - 'tools/**'
       - '.github/workflows/build-shop.yml'
+  pull_request:
   workflow_dispatch:
 
-# A second edit landing mid-build should supersede the first, not race it.
 concurrency:
-  group: build-shop
+  group: build-shop-${{ github.ref }}
   cancel-in-progress: false
 
 permissions:
@@ -30,9 +32,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          # A shallow clone is enough; we only ever commit on top of the head.
-          fetch-depth: 1
 
       - uses: actions/setup-node@v4
         with:
@@ -40,43 +39,36 @@ jobs:
           cache: npm
           cache-dependency-path: standalone/package-lock.json
 
-      # --include=dev because astro check lives in devDependencies, and CI sets
-      # NODE_ENV=production in some contexts - the same thing that broke the Vercel
-      # build when it was tried there.
       - name: Install
-        working-directory: standalone
-        run: npm ci --include=dev
+        run: cd standalone && npm ci --include=dev
 
-      # Runs the full gate: catalogue validation, astro check, build, and the
-      # built-HTML content checks. A failure here must not publish anything.
+      # The full gate: catalogue validation, astro check, the build, and the
+      # built-HTML content checks.
       - name: Build
-        working-directory: standalone
-        run: npm run build
+        run: cd standalone && npm run build
 
-      # Lives at the repo root because it needs api/_content.js - the same resolver
-      # the save endpoint uses. A mistyped annotation would otherwise only surface
-      # when someone edited that line and the save came back 400.
+      # Nothing else connects the editor's annotations to its save endpoint. A
+      # mistyped address would otherwise only surface when someone edited that line
+      # and the save came back 400.
       - name: Check every editable annotation resolves
         run: node tools/check-edit-ids.mjs standalone/dist
 
-      - name: Regenerate the editor page
-        run: node tools/edit-page.mjs standalone/dist edit/index.html
+      - name: Checkout and content tests
+        run: node tools/test-order.mjs && node tools/test-content.mjs
 
-      - name: Publish into new/
-        run: |
-          rm -rf new
-          mkdir -p new
-          cp -R standalone/dist/. new/
-          echo "published $(find new -type f | wc -l) files"
+      - name: Publish to the repo root
+        run: node tools/publish.mjs
 
+      # Pull requests get the checks but must not publish - only main does.
       - name: Commit if anything changed
+        if: github.event_name != 'pull_request'
         run: |
           git config user.name  "blitzspirit-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add new edit
+          git add -A -- . ':!standalone/dist'
           if git diff --cached --quiet; then
             echo "no change to publish"
             exit 0
           fi
-          git commit -m "Rebuild the shop" -m "Automated: standalone/ changed, so new/ was rebuilt from it. Source commit ${{ github.sha }}."
+          git commit -m "Rebuild the shop" -m "Automated: standalone/ changed, so the published site was rebuilt from it. Source commit ${{ github.sha }}."
           git push

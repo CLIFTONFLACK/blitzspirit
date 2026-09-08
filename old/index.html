@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BLITZSPIRIT â€" Heritage With Teeth | British Apparel</title>
+<meta name="description" content="Proud and unapologetic British heritage apparel. Not here to be liked. The Boudica, The Establishment, Roll Call, The Frequency." />
+<link rel="canonical" href="https://blitzspirit.vercel.app/" />
+
+<!--
+  BLITZSPIRIT â€" homepage (brutalist "newui" build).
+  Design system locked by client brief: ChunkFive + native monospace,
+  border-radius:0, transition:0ms, 1px crisp borders, monochrome concrete,
+  signal red rationed. Previous heritage homepage preserved at /heritage.html
+-->
+
+<link rel="preload" href="assets/newui/fonts/chunkfive.woff2" as="font" type="font/woff2" crossorigin />
+
+<style>
+/* ============================================================
+   0. FONTS â€" ChunkFive = display voice. Monospace = ledger.
+   ============================================================ */
+@font-face {
+  font-family: "ChunkFive";
+  src: url("assets/newui/fonts/chunkfive.woff2") format("woff2"),
+       url("assets/newui/fonts/chunkfive.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+
+/* ============================================================
+   1. TOKENS
+   ============================================================ */
+:root {
+  --ink:#0A0A0A; --panel:#111; --panel-2:#181818; --line:#2a2a2a; --line-bri:#3a3a3a;
+  --bone:#ECECEC; --bone-dim:#8A8A8A; --bone-mute:#5A5A5A;
+  --plate:#EAE8E2;            /* neutral product plate â€" reads dark AND light garments */
+  --signal:#FF0000;          /* the only accent â€" rationed */
+  --brand-red:#C23030;       /* logo badge red â€" used for "THE" in product names */
+  --tex-hero:url("assets/newui/hero-panel-concrete.jpg");
+  --tex-hero-bg:url("assets/newui/hero-wall-v3.jpg");   /* dark metal-panel wall â€" homepage hero only */
+  --tex-char:url("assets/newui/dark-charcoal-concrete.jpg");
+  --tex-crack:url("assets/newui/dark-cracked-concrete.jpg");
+  --mono: ui-monospace,"SF Mono",SFMono-Regular,Menlo,Monaco,Consolas,"Roboto Mono",monospace;
+  --s1:8px; --s2:16px; --s3:24px; --s4:32px; --s5:48px; --s6:64px; --s7:96px;
+}
+
+/* ============================================================
+   2. RESET â€" brutalist: no softness anywhere
+   ============================================================ */
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; border-radius:0 !important; }
+html { scroll-behavior:smooth; }
+body {
+  background:var(--ink); color:var(--bone); font-family:var(--mono);
+  font-size:14px; line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+img { display:block; max-width:100%; }
+button { font:inherit; color:inherit; background:none; border:none; cursor:pointer; }
+a { color:inherit; text-decoration:none; }
+::selection { background:var(--signal); color:#fff; }
+.snap { transition:none !important; }
+.chunk { font-family:"ChunkFive",Georgia,serif; text-transform:uppercase; letter-spacing:-0.01em; line-height:0.95; }
+.tag { font-family:var(--mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#fff; }
+.tag-mute { color:var(--bone-mute); }
+.rule { color:var(--line-bri); user-select:none; white-space:nowrap; overflow:hidden; }
+:focus-visible { outline:2px solid var(--signal); outline-offset:2px; }
+
+/* ============================================================
+   3. FIXED HEADER
+   ============================================================ */
+.masthead {
+  position:fixed; top:0; left:0; right:0; z-index:50;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px var(--s3); background:rgba(10,10,10,0.82);
+  backdrop-filter:blur(2px); border-bottom:1px solid var(--line);
+}
+.masthead .nodes { display:flex; gap:var(--s3); }
+.nodes--left { display:flex; gap:var(--s3); align-items:center; overflow:hidden; min-width:0; }
+.nodes--right { display:flex; gap:var(--s2); align-items:center; flex-shrink:0; }
+.mh-long { color:var(--bone-mute); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:none; }
+.mh-social { display:flex; align-items:center; color:var(--bone); line-height:1; }
+.mh-social:hover { color:var(--bone); }
+.masthead .tag { color:#fff; font-size:13px; }
+.masthead .mh-long { color:var(--signal); }
+.masthead a:hover,.masthead button:hover { color:var(--bone); }
+.masthead .bag b { color:var(--signal); font-weight:400; }
+
+/* ============================================================
+   4. BLOCK 1 â€" HERO
+   ============================================================ */
+.hero {
+  position:relative; min-height:100vh; display:flex; flex-direction:column; justify-content:space-between;
+  padding:96px var(--s3) var(--s3);
+  background:linear-gradient(rgba(10,10,10,0.36),rgba(10,10,10,0.47)),var(--tex-hero-bg) center/cover no-repeat;
+  border-bottom:1px solid var(--line);
+}
+.hero-corner,.hero-foot { display:flex; justify-content:space-between; align-items:center; gap:var(--s3); }
+/* torn sticker logo bursts off the wall in the top-left, per the v3 composite */
+@keyframes sticker-float {
+  0%   { transform:translateY(0)     rotate(-1.2deg); }
+  50%  { transform:translateY(-11px) rotate(1.4deg); }
+  100% { transform:translateY(0)     rotate(-1.2deg); }
+}
+.hero-logo { width:clamp(270px,39vw,510px); height:auto; filter:url(#sharpen) drop-shadow(2px 4px 10px rgba(0,0,0,.85)); animation:sticker-float 6s ease-in-out infinite; transform-origin:center bottom; }
+.hero-title-wrap { margin:auto 0; text-align:center; }
+.hero h1 {
+  color:#E6DECB; font-size:clamp(2.4rem,7vw,5.25rem);
+  max-width:22ch; margin:0 auto; text-shadow:0 2px 40px rgba(0,0,0,.6);
+}
+.hero-tagline {
+  color:#D8CFB9; font-size:clamp(0.95rem,2.4vw,1.5rem); letter-spacing:0.04em;
+  margin-top:var(--s4); text-shadow:0 2px 22px rgba(0,0,0,.7);
+}
+.hero-status { display:block; margin-top:var(--s2); color:#fff; }
+.hero-cta {
+  display:inline-block; margin-top:var(--s5); font-family:var(--mono);
+  font-size:13px; letter-spacing:0.28em; text-transform:uppercase; color:var(--bone);
+  transition:color .15s;
+}
+.hero-cta:hover,.hero-cta:focus-visible { color:var(--signal); }
+
+/* ============================================================
+   4a. FEATURED PRODUCT â€" elevated showcase (The Establishment)
+   ============================================================ */
+.featured { position:relative; display:grid; grid-template-columns:1.05fr 1fr; min-height:78vh; border-bottom:1px solid var(--line); }
+.featured-visual { position:relative; display:flex; align-items:center; justify-content:center; padding:var(--s6) var(--s5); border-right:1px solid var(--line);
+  background:linear-gradient(rgba(205,205,205,.9),rgba(188,188,188,.9)),var(--tex-hero) center/cover no-repeat; }
+.featured-plate { width:min(84%,500px); aspect-ratio:1/1.12; background:var(--plate); border:1px solid #000; box-shadow:0 30px 90px rgba(0,0,0,.7); outline:2px solid var(--signal); outline-offset:10px; display:flex; align-items:center; justify-content:center; padding:6%; position:relative; }
+.featured-plate img { width:100%; height:100%; object-fit:contain; }
+.featured-plate .plate-cnr { position:absolute; bottom:8px; right:10px; font-size:9px; letter-spacing:.1em; color:#9a958c; }
+.featured-ledger { background:var(--panel); display:flex; flex-direction:column; justify-content:center; gap:var(--s3); padding:clamp(28px,5vw,72px); }
+.featured-eyebrow { display:inline-block; border:1px solid var(--signal); color:var(--signal); padding:6px 13px; font-size:11px; letter-spacing:.2em; text-transform:uppercase; margin-bottom:var(--s3); }
+.featured-name { color:#E6DECB; font-size:clamp(1.8rem,3.4vw,2.9rem); margin:0 0 72px; line-height:.95; }
+.featured-name .the { color:var(--brand-red); }
+.featured .dossier { background:linear-gradient(rgba(205,205,205,.92),rgba(188,188,188,.92)),var(--tex-hero) center/cover; border:1px solid rgba(0,0,0,.4); padding:var(--s3); }
+.featured .dossier p { font-family:"ChunkFive",Georgia,serif; text-transform:uppercase; letter-spacing:.01em; color:#2a2722; font-size:clamp(.9rem,1.8vw,1.1rem); line-height:1.15; }
+.featured .dossier p + p { margin-top:28px; }
+.featured .dossier .hit { color:#0a0a0a; }
+.featured-foot { display:flex; flex-direction:column; gap:var(--s3); }
+
+/* ============================================================
+   4b. PROMO â€" newsletter capture (Blitz milkman) â€" 2-col, no scrim
+   ============================================================ */
+.promo {
+  position:relative; padding:var(--s7) var(--s3); border-bottom:1px solid var(--line); overflow:hidden;
+}
+.promo::before {
+  content:""; position:absolute; inset:0; z-index:0;
+  background:url("assets/newui/promo-milkman.jpg") center/cover no-repeat; transform:scaleX(-1);
+}
+.promo-inner { position:relative; z-index:1; max-width:1120px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:var(--s6); align-items:center; }
+.promo-text { text-align:left; max-width:560px; }
+.promo-tag { margin-bottom:var(--s3); color:var(--bone); text-shadow:0 1px 6px #000; }
+.promo-title { color:#E6DECB; font-size:clamp(2.2rem,5.2vw,4.2rem); text-shadow:0 2px 4px #000,0 4px 30px rgba(0,0,0,.9); margin-bottom:var(--s3); }
+.promo-sub { color:#E6DECB; font-family:"ChunkFive",Georgia,serif; font-size:clamp(.95rem,2.1vw,1.2rem); letter-spacing:0.01em; text-transform:uppercase; text-shadow:0 1px 5px #000; margin-bottom:0; }
+.promo-form { max-width:520px; margin-top:var(--s4); }
+.promo-cta { display:block; color:#fff; text-shadow:0 1px 5px #000; margin-bottom:var(--s2); }
+.promo-row { display:flex; border:1px solid var(--bone-dim); background:rgba(0,0,0,0.55); }
+.promo-input { flex:1; min-width:0; background:transparent; border:none; color:#fff; font-family:var(--mono); font-size:13px; letter-spacing:.08em; text-transform:uppercase; padding:16px; }
+.promo-input::placeholder { color:var(--bone-mute); }
+.promo-input:focus { outline:none; }
+.promo-submit { border:none; border-left:1px solid var(--bone-dim); background:var(--signal); color:#fff; font-size:12px; letter-spacing:.16em; text-transform:uppercase; padding:0 24px; white-space:nowrap; }
+.promo-submit:hover { background:#fff; color:var(--ink); }
+.promo-done { color:var(--signal); }
+
+/* ============================================================
+   5. BLOCK 2 â€" APPAREL ARCHIVE (50/50)
+   ============================================================ */
+.archive { display:flex; flex-direction:column; }
+.item { display:grid; grid-template-columns:1fr 1fr; min-height:78vh; border-bottom:1px solid var(--line); }
+
+.item-visual {
+  position:relative; display:flex; align-items:center; justify-content:center;
+  padding:var(--s5); border-right:1px solid var(--line);
+  background:linear-gradient(rgba(205,205,205,.9),rgba(188,188,188,.9)),var(--tex-hero) center/cover no-repeat;
+}
+.item--dark .item-visual {
+  background:linear-gradient(rgba(10,10,10,.62),rgba(10,10,10,.78)),var(--tex-char) center/cover no-repeat;
+}
+.item-asset-ref { position:absolute; top:var(--s3); left:var(--s3); z-index:2; }
+.item--dark .item-asset-ref { color:var(--bone); }
+
+/* Product plate â€" white catalogue card; image swaps on colourway */
+.plate {
+  width:min(82%,420px); aspect-ratio:1/1.12; background:var(--plate);
+  border:1px solid #0c0c0c; box-shadow:0 24px 60px rgba(0,0,0,.4);
+  display:flex; align-items:center; justify-content:center; padding:6%;
+  position:relative;
+}
+.item--dark .plate { border-color:#000; box-shadow:0 24px 70px rgba(0,0,0,.7); }
+.plate img { width:100%; height:100%; object-fit:contain; }
+.plate .plate-cnr { position:absolute; bottom:8px; right:10px; font-size:9px; letter-spacing:.1em; color:#9a958c; }
+
+/* Ledger */
+.item-ledger { background:var(--panel); display:flex; flex-direction:column; justify-content:space-between; padding:clamp(24px,4vw,56px); }
+.item--dark .item-ledger { background:#0c0c0c; }
+.led-index { display:inline-block; background:#fff; color:var(--signal); padding:4px 10px; margin-bottom:var(--s5); }
+.item--dark .led-index { background:#fff; color:var(--signal); }
+.led-name { color:#E6DECB; font-size:clamp(1.9rem,3.6vw,3rem); margin-bottom:var(--s5); }
+.led-name .the { color:var(--brand-red); }
+
+.cw { border:1px solid var(--line); padding:var(--s2); margin-bottom:var(--s4); }
+.cw-label { display:block; margin-bottom:10px; }
+.cw-opts { display:flex; gap:10px; flex-wrap:wrap; }
+.cw-opt { display:inline-flex; align-items:center; gap:8px; border:1px solid var(--line-bri); padding:6px 12px; font-size:12px; letter-spacing:.08em; color:var(--bone); }
+.cw-opt .dot { width:11px; height:11px; border:1px solid #000; background:var(--dot,#000); }
+.cw-opt:hover { color:var(--bone); border-color:var(--bone); }
+.cw-opt[aria-pressed="true"] { background:var(--bone); color:var(--ink); border-color:var(--bone); }
+.item--dark .cw-opt[aria-pressed="true"] { background:var(--signal); color:#fff; border-color:var(--signal); }
+
+.dossier { background:linear-gradient(rgba(205,205,205,.92),rgba(188,188,188,.92)),var(--tex-hero) center/cover; border:1px solid rgba(0,0,0,.4); padding:var(--s3); }
+.dossier p { font-family:"ChunkFive",Georgia,serif; text-transform:uppercase; letter-spacing:.01em; color:#2a2722; font-size:clamp(.9rem,1.8vw,1.1rem); line-height:1.15; }
+.dossier p + p { margin-top:28px; }
+.dossier .hit { color:#0a0a0a; }
+.item-ledger .dossier { margin:0 -10px; }
+.item--dark .dossier { background:linear-gradient(rgba(10,10,10,.6),rgba(10,10,10,.78)),var(--tex-char) center/cover; border:1px solid #000; }
+.item--dark .dossier p { color:var(--bone); }
+.item--dark .dossier .hit { color:#fff; }
+
+/* selectors + CTA inside dossier — light cards invert to dark text */
+.dossier .cw-size-wrap { margin-top:var(--s3); }
+.dossier .cw { border-right-color:#E6DECB; }
+.dossier .cw-size-wrap { border-color:#E6DECB; }
+.dossier .cw-label { color:#2a2722; }
+.dossier .sizes { border-color:#E6DECB; }
+.dossier .size-pill { color:#2a2722; border-color:rgba(0,0,0,.25); }
+.dossier .size-pill:hover { border-color:#0a0a0a; color:#0a0a0a; }
+.dossier .size-pill[aria-pressed="true"] { background:#2a2722; color:var(--bone); border-color:#2a2722; }
+.dossier .directive { color:#2a2722; border-color:rgba(0,0,0,.3); margin-top:var(--s2); }
+.dossier .directive:hover { background:#2a2722; color:var(--bone); border-color:#2a2722; }
+/* dark cards restore light-text scheme */
+.item--dark .dossier .cw-label { color:var(--bone); }
+.item--dark .dossier .sizes { border-color:var(--line); }
+.item--dark .dossier .size-pill { color:var(--bone); border-color:var(--line-bri); }
+.item--dark .dossier .size-pill:hover { border-color:var(--bone); color:var(--bone); }
+.item--dark .dossier .size-pill[aria-pressed="true"] { background:var(--bone); color:var(--ink); border-color:var(--bone); }
+.item--dark .dossier .directive { color:var(--bone); border-color:var(--bone-dim); }
+.item--dark .dossier .directive:hover { background:var(--bone); color:var(--ink); border-color:var(--bone); }
+
+.sizes { display:flex; align-items:center; gap:10px; margin-bottom:var(--s2); flex-wrap:wrap; }
+.size-pill { border:1px solid var(--line-bri); padding:7px 13px; font-size:12px; color:var(--bone); min-width:40px; text-align:center; }
+.size-pill:hover { border-color:var(--bone); color:var(--bone); }
+.size-pill[aria-pressed="true"] { background:var(--bone); color:var(--ink); border-color:var(--bone); }
+
+.directive { width:100%; border:1px solid var(--bone-dim); padding:18px; text-align:center; font-size:13px; letter-spacing:.18em; text-transform:uppercase; color:var(--bone); }
+.directive:hover { background:var(--bone); color:var(--ink); border-color:var(--bone); }
+.directive--red { border-color:var(--line-bri); color:var(--bone); }
+.directive--red:hover { background:transparent; color:var(--signal); border-color:var(--signal); }
+.directive--flicker:hover { animation:flicker .45s infinite steps(1); }
+.actions { display:flex; gap:var(--s2); flex-wrap:wrap; }
+.actions .directive { flex:1 1 180px; width:auto; }
+.directive--ghost { border-color:var(--line-bri); color:var(--bone); text-decoration:none; }
+.directive--ghost:hover { background:transparent; color:var(--bone); border-color:var(--bone); }
+@keyframes flicker { 0%,100%{opacity:1} 8%{opacity:.25} 10%{opacity:1} 20%{opacity:.6} 22%{opacity:1} 60%{opacity:1} 62%{opacity:.4} 64%{opacity:1} }
+@keyframes signal-in { 0%{opacity:0;letter-spacing:.1em} 18%{opacity:1;letter-spacing:.01em} 28%{opacity:.05} 44%{opacity:1} 58%{opacity:.35} 72%{opacity:1} 100%{opacity:1} }
+.dossier .hit { opacity:0; }
+.dossier .hit.hit--live { animation:signal-in .85s ease-out forwards; }
+
+/* ============================================================
+   6. BLOCK 3 â€" RECOMMENDED CONDIMENT
+   ============================================================ */
+.equipment { background:var(--panel); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+.condiment-inner { max-width:960px; margin:0 auto; padding:var(--s5) var(--s3); }
+.condiment-label { margin-bottom:var(--s5); color:var(--bone-mute); }
+.condiment-body { display:grid; grid-template-columns:1fr 1fr; gap:var(--s6); align-items:center; }
+.condiment-visual img { width:100%; display:block; background:var(--plate); border:1px solid var(--line); padding:var(--s4); }
+.condiment-name { font-size:clamp(2.4rem,5vw,3.5rem); line-height:1; margin-bottom:var(--s3); }
+.condiment-name .the { color:var(--brand-red); }
+.condiment-price { margin-bottom:var(--s3); color:var(--bone); }
+.condiment-cw { margin-bottom:var(--s3); }
+.condiment-cw .cw { border-color:var(--line-bri); }
+@media(max-width:640px){ .condiment-body { grid-template-columns:1fr; } }
+
+/* ============================================================
+   7. BLOCK 4 â€" OUTRO MONUMENT
+   ============================================================ */
+.outro { text-align:center; padding:var(--s7) var(--s3); background:linear-gradient(rgba(6,6,6,.78),rgba(6,6,6,.88)),var(--tex-crack) center/cover no-repeat; }
+.rollcall { display:flex; flex-direction:column; gap:var(--s4); margin:var(--s5) 0; }
+.rc-item { position:relative; display:flex; justify-content:center; align-items:center; line-height:1; padding:2px 0; }
+.rc-name { font-family:"ChunkFive",serif; text-transform:uppercase; font-size:clamp(1.8rem,5vw,3.2rem); color:var(--bone-mute); letter-spacing:-0.01em; }
+.rc-item:hover .rc-name { color:#fff; opacity:0; }
+.rc-meta { position:absolute; inset:0; display:none; align-items:center; justify-content:center; font-family:var(--mono); font-size:clamp(.7rem,1.6vw,.95rem); letter-spacing:.16em; color:var(--signal); }
+.rc-item:hover .rc-meta { display:flex; }
+.outro-foot { max-width:720px; margin:var(--s5) auto 0; }
+.outro-foot .line { color:var(--bone); letter-spacing:.04em; text-transform:uppercase; padding:var(--s2) 0; }
+.copyright { margin-top:var(--s4); font-size:10px; color:var(--bone-mute); letter-spacing:.16em; }
+
+/* ============================================================
+   8. MINI-CART DRAWER â€" frictionless transactional utility
+   ============================================================ */
+.cart-overlay { position:fixed; inset:0; background:rgba(0,0,0,.72); z-index:60; opacity:0; visibility:hidden; transition:opacity 150ms ease; }
+.cart-overlay.open { opacity:1; visibility:visible; }
+.cart { position:fixed; top:0; right:0; height:100%; width:min(440px,100%); background:#000; border-left:1px solid var(--line); z-index:70; transform:translateX(100%); transition:transform 180ms cubic-bezier(.16,1,.3,1); display:flex; flex-direction:column; padding:var(--s3); }
+.cart.open { transform:translateX(0); }
+.cart-head { display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--line); padding-bottom:var(--s2); margin-bottom:var(--s3); }
+.cart-close { border:1px solid var(--line); padding:6px 10px; font-size:11px; letter-spacing:.1em; color:var(--bone); text-transform:uppercase; }
+.cart-close:hover { border-color:var(--bone); color:var(--bone); }
+.cart-items { flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:var(--s2); }
+.cart-empty { border:1px dashed var(--line); padding:var(--s5) var(--s3); text-align:center; color:var(--bone-mute); font-size:11px; letter-spacing:.14em; text-transform:uppercase; }
+.cart-row { border:1px solid var(--line); background:var(--panel); padding:var(--s2); display:flex; justify-content:space-between; gap:var(--s2); }
+.ci-name { color:#fff; font-size:12px; letter-spacing:.08em; text-transform:uppercase; }
+.ci-meta { color:var(--bone-mute); font-size:10px; letter-spacing:.06em; margin-top:5px; text-transform:uppercase; }
+.ci-rm { color:var(--bone-mute); font-size:10px; letter-spacing:.12em; align-self:flex-start; text-transform:uppercase; }
+.ci-rm:hover { color:var(--signal); }
+.cart-foot { border-top:1px solid var(--line); padding-top:var(--s3); margin-top:var(--s3); }
+.cart-sum { display:flex; justify-content:space-between; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--bone); margin-bottom:var(--s2); }
+.cart-sum b { color:#fff; font-weight:400; }
+.cart-checkout { width:100%; border:1px solid var(--signal); background:var(--signal); color:#fff; padding:16px; font-size:12px; letter-spacing:.18em; text-transform:uppercase; }
+.cart-checkout:hover { background:#fff; color:var(--ink); border-color:#fff; }
+.cart-note { font-size:9px; color:var(--bone-mute); text-align:center; letter-spacing:.08em; margin-top:10px; text-transform:uppercase; }
+
+/* ============================================================
+   9. RESPONSIVE
+   ============================================================ */
+@media (max-width:860px) {
+  .item { grid-template-columns:1fr; min-height:0; }
+  .item-visual { border-right:none; border-bottom:1px solid var(--line); padding:var(--s5); }
+  .eq-grid { grid-template-columns:1fr; }
+  .spec { grid-template-columns:1fr; }
+  .spec .directive { width:100%; }
+  .masthead { padding:10px var(--s2); font-size:10px; }
+  .masthead .nodes { gap:var(--s2); }
+  .hero-corner .tag,.hero-foot .tag { font-size:9px; }
+  .featured { grid-template-columns:1fr; }
+  .featured-visual { border-right:none; border-bottom:1px solid var(--line); padding:var(--s5); }
+  .promo-inner { grid-template-columns:1fr; gap:var(--s4); }
+  .promo-text { text-align:center; }
+}
+@media (max-width:480px) {
+  .masthead { white-space:nowrap; font-size:9px; letter-spacing:.06em; }
+  .masthead .nodes { gap:12px; }
+  .mh-long { display:none; }              /* collapse to [ ISSUE_001 ] on phones */
+  .promo-row { flex-direction:column; }
+  .promo-submit { border-left:none; border-top:1px solid var(--bone-dim); padding:14px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  html { scroll-behavior:auto; }
+  .directive--flicker:hover { animation:none; }
+}
+/* CW + sizes side by side */
+.cw-size-wrap { margin-bottom:var(--s3); display:flex; border:1px solid #E6DECB; }
+.cw-size-wrap .cw { flex:1; margin-bottom:0; border:none; border-right:1px solid #E6DECB; }
+.cw-size-wrap .sizes { flex:1; border:none; padding:var(--s2); margin-bottom:0; flex-wrap:wrap; align-content:flex-start; }
+/* What-is link inside dossier */
+.dossier .what-link { display:block; margin-top:var(--s3); border:1px solid var(--signal); padding:12px var(--s2); font-size:13px; letter-spacing:.15em; text-transform:uppercase; color:var(--signal); text-align:center; font-family:var(--mono); }
+.dossier .what-link:hover { border-color:#0a0a0a; color:#fff; background:#0a0a0a; }
+.item--dark .dossier .what-link { border-color:var(--signal); color:var(--signal); }
+.item--dark .dossier .what-link:hover { border-color:#fff; color:#0a0a0a; background:#fff; }
+@media (min-width:1100px) { .mh-long { display:inline; } }
+</style>
+</head>
+<body>
+
+<!-- MINI-CART DRAWER -->
+<div class="cart-overlay" id="cartOverlay"></div>
+<aside class="cart" id="cart" aria-hidden="true" aria-label="Current bag">
+  <div class="cart-head">
+    <span class="tag">[ SYSTEM_LEDGER // CURRENT_BAG ]</span>
+    <button class="cart-close snap" id="cartClose">[ CLOSE ]</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty" id="cartEmpty">[ LEDGER EMPTY // NO ASSETS ALLOCATED ]</div>
+  </div>
+  <div class="cart-foot">
+    <div class="cart-sum"><span>[ ITEMS ALLOCATED ]</span><b id="cartTotal">0</b></div>
+    <button class="cart-checkout snap">[ PROCEED TO SECURE CHECKOUT ]</button>
+    <div class="cart-note">Interface drops away at checkout // routes to native encrypted payment.</div>
+  </div>
+</aside>
+
+<header class="masthead">
+  <nav class="nodes nodes--left">
+    <a href="index.html" class="tag">[ HOME ]</a>
+    <a href="about.html" class="tag">[ ABOUT ]</a>
+    <a href="collection.html" class="tag">[ THE COLLECTIONS ]</a>
+    <span class="tag mh-long">[ LATEST COLLECTION // ISSUE_001 ]</span>
+  </nav>
+  <nav class="nodes nodes--right">
+    <a href="#" class="tag mh-social" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+    <a href="#" class="tag mh-social" aria-label="X" target="_blank" rel="noopener noreferrer"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.74l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+    <button class="tag bag" id="bagBtn" aria-label="Open bag">[ BAG (<b id="bagCount">0</b>) ]</button>
+  </nav>
+</header>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none;position:absolute" aria-hidden="true"><defs><filter id="sharpen" x="0" y="0" width="100%" height="100%" color-interpolation-filters="linearRGB"><feConvolveMatrix order="3" preserveAlpha="true" kernelMatrix="0 -0.5 0 -0.5 3 -0.5 0 -0.5 0"/></filter></defs></svg>
+<!-- BLOCK 1 â€" HERO -->
+<section class="hero" id="top">
+  <div class="hero-corner">
+    <img class="hero-logo" src="assets/newui/blitzspirit-sticker.png" alt="BLITZSPIRIT" />
+    <span class="tag tag-mute">SYS_REF // 47-CONCRETE-SEAMS</span>
+  </div>
+  <div class="hero-title-wrap">
+    <h1 class="chunk">NOT HERE TO BE LIKED.</h1>
+    <div class="hero-tagline chunk">PROUD. UNAPOLOGETIC. OCCASIONALLY DIFFICULT.</div>
+    <div class="hero-status tag tag-mute">STATUS: UNMOVING  //  PROCESS: UNFILTERED  //  OUTPUT: UNITY</div>
+    <a class="hero-cta" href="collection.html">[ SEE THE COLLECTION ]</a>
+  </div>
+  <div class="hero-foot">
+    <span class="tag tag-mute">EST. 2026 // BRITISH STUBBORNNESS</span>
+    
+  </div>
+</section>
+
+<!-- ISSUE_000 LIMITED EDITION â€" THE ESTABLISHMENT (sole product in the range) -->
+<section class="featured" data-product="establishment" aria-label="Issue 000 limited edition">
+  <div class="featured-visual">
+    <span class="item-asset-ref tag">[ ISSUE_000 // LIMITED EDITION ]</span>
+    <div class="featured-plate">
+      <img src="assets/tee-skull-black-colour.jpg" alt="The Establishment tee â€" bowler-hatted skull over crossed umbrellas" />
+      <span class="plate-cnr">BS_002 // ISSUE_000</span>
+    </div>
+  </div>
+  <div class="featured-ledger">
+    <div class="dossier">
+      <span class="featured-eyebrow">★ ISSUE_000 // LIMITED EDITION</span>
+      <h2 class="featured-name chunk"><span class="the">THE</span> ESTABLISHMENT</h2>
+      <p class="hit">THE OLD GUARD IS GONE. THE UNIFORM REMAINS.</p>
+      <p>A BOWLER HAT. AN UMBRELLA.</p>
+      <p>A GRIN FOR THE FRONT ROW, NOT THE FRONT BENCH.</p>
+      <a class="what-link" data-what href="product-establishment.html">WHAT IS</a>
+      <div class="cw-size-wrap">
+        <button class="cw-opt snap" aria-pressed="true" data-cw="OXY_BLACK" style="display:none">OXY_BLACK</button>
+        <div class="sizes"><span class="tag" style="margin-right:4px">[ CHOOSE SIZE ]</span>
+          <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
+      </div>
+      <div class="actions">
+        <button class="directive snap" data-idle="[ ADD TO BAG ]" data-hover="[ ADD TO BAG ]" data-add>[ ADD TO BAG ]</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROMO â€" NEWSLETTER CAPTURE -->
+<section class="promo" aria-label="Newsletter signup">
+  <div class="promo-inner">
+    <div class="promo-text">
+      <div class="promo-tag tag">[ DISPATCH // STAND BY ]</div>
+      <h2 class="promo-title chunk">GOT MORE BOTTLE<br>THAN THE MILKMAN</h2>
+      <p class="promo-sub">Put the kettle on, time for a nice cup of tea!</p>
+      <form class="promo-form" novalidate>
+        <label class="promo-cta tag" for="promo-email">ENTER YOUR EMAIL ADDRESS TO BE THE FIRST IN THE KNOW</label>
+        <div class="promo-row">
+          <input id="promo-email" class="promo-input" type="email" placeholder="NAME@DOMAIN.CO.UK" autocomplete="email" required />
+          <button class="promo-submit snap" type="submit">[ NOTIFY ME ]</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- BLOCK 2 â€" APPAREL ARCHIVE -->
+<main class="archive">
+
+  <!-- 01 BOUDICA -->
+  <article class="item" data-product="boudica">
+    <div class="item-visual">
+      
+      <div class="plate">
+        <img data-plate alt="Boudica tee â€" Britannia with trident and Union Jack shield, chalk white" src="assets/tee-boudica-offwhite.jpg" />
+        <span class="plate-cnr">#01 // THE BOUDICA</span>
+      </div>
+    </div>
+    <div class="item-ledger">
+      <div>
+        <div class="dossier">
+          <div class="led-index tag">[ ★ ISSUE_001 // #01 // BOUDICA ]</div>
+          <h2 class="led-name chunk"><span class="the">THE</span> BOUDICA</h2>
+          <p class="hit">BOUDICA DOESN'T ASK. SHE DOESN'T EXPLAIN.</p>
+          <p>SHE STANDS. UNBOWED. UNBROKEN. UNFORGIVING.</p>
+          <p>THIS ISN'T A QUEEN FOR CEREMONY.</p>
+          <a class="what-link" data-what href="product.html">WHAT IS</a>
+
+        <div class="cw-size-wrap">
+          <div class="cw">
+            <span class="cw-label tag">[ CHOOSE COLOUR ]</span>
+            <div class="cw-opts">
+              <button class="cw-opt snap" aria-pressed="false" data-cw="OXY_BLACK"   data-img="assets/tee-boudica-black.jpg"    style="--dot:#0a0a0a">OXY_BLACK</button>
+              <button class="cw-opt snap" aria-pressed="true"  data-cw="CHALK_WHITE" data-img="assets/tee-boudica-offwhite.jpg" style="--dot:#e7e7e2">CHALK_WHITE</button>
+            </div>
+          </div>
+          <div class="sizes"><span class="tag" style="margin-right:4px">[ CHOOSE SIZE ]</span>
+            <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
+        </div>
+        <div class="actions">
+          <button class="directive snap" data-idle="[ ADD TO BAG ]" data-hover="[ ADD TO BAG ]" data-add>[ ADD TO BAG ]</button>
+        </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- 03 ROLL CALL (CHARCOAL SHIFT) -->
+  <article class="item item--dark" data-product="rollcall">
+    <div class="item-visual">
+      
+      <div class="plate">
+        <img data-plate alt="Roll Call tee â€" Tommy, Katie, Winston & Boudica names roll-call type, white" src="assets/tee-tommy-white.jpg" />
+        <span class="plate-cnr">#03 // THE ROLL CALL</span>
+      </div>
+    </div>
+    <div class="item-ledger">
+      <div>
+        <div class="dossier">
+          <div class="led-index tag">[ ★ ISSUE_001 // #03 // ROLL CALL ]</div>
+          <h2 class="led-name chunk"><span class="the">THE</span> ROLL CALL</h2>
+          <p class="hit">THE NAMES OF WHO REFUSE TO BACK DOWN.</p>
+          <p>REBEL. FIREBRAND. STATESMAN &amp; QUEEN.</p>
+          <p class="hit">ROLL CALL OF BRITISH STUBBORNNESS. CLASS IS IN SESSION.</p>
+          <a class="what-link" data-what href="product-roll-call.html">WHAT IS</a>
+
+        <div class="cw-size-wrap">
+          <div class="cw">
+            <span class="cw-label tag">[ CHOOSE COLOUR ]</span>
+            <div class="cw-opts">
+              <button class="cw-opt snap" aria-pressed="false" data-cw="OXY_BLACK"   data-img="assets/tee-tommy-black.jpg" style="--dot:#0a0a0a">OXY_BLACK</button>
+              <button class="cw-opt snap" aria-pressed="true"  data-cw="CHALK_WHITE" data-img="assets/tee-tommy-white.jpg" style="--dot:#e7e7e2">CHALK_WHITE</button>
+            </div>
+          </div>
+          <div class="sizes"><span class="tag" style="margin-right:4px">[ CHOOSE SIZE ]</span>
+            <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
+        </div>
+        <div class="actions">
+          <button class="directive snap" data-idle="[ ADD TO BAG ]" data-hover="[ ADD TO BAG ]" data-add>[ ADD TO BAG ]</button>
+        </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- 04 THE FREQUENCY -->
+  <article class="item" data-product="frequency">
+    <div class="item-visual">
+      
+      <div class="plate">
+        <img data-plate alt="The Frequency tee â€" RAF roundel target graphic, chalk white" src="assets/tee-roundel-navy.jpg" />
+        <span class="plate-cnr">#04 // THE FREQUENCY</span>
+      </div>
+    </div>
+    <div class="item-ledger">
+      <div>
+        <div class="dossier">
+          <div class="led-index tag">[ ★ ISSUE_001 // #04 // THE FREQUENCY ]</div>
+          <h2 class="led-name chunk"><span class="the">THE</span> FREQUENCY</h2>
+          <p class="hit">TARGET FROM A DISTANCE. ATTITUDE UP CLOSE.</p>
+          <p>BUILT WITHIN THE SYSTEM IT REFUSES TO OBEY.</p>
+          <p class="hit">NO SIGNAL CHANGE. TRANSMISSION AUTHORISED.</p>
+          <a class="what-link" data-what href="product-roundel.html">WHAT IS</a>
+
+        <div class="cw-size-wrap">
+          <div class="cw">
+            <span class="cw-label tag">[ CHOOSE COLOUR ]</span>
+            <div class="cw-opts">
+              <button class="cw-opt snap" aria-pressed="false" data-cw="OXY_BLACK"   data-img="assets/tee-roundel-black.jpg"    style="--dot:#0a0a0a">OXY_BLACK</button>
+              <button class="cw-opt snap" aria-pressed="true"  data-cw="CHALK_WHITE" data-img="assets/tee-roundel-navy.jpg"     style="--dot:#e7e7e2">CHALK_WHITE</button>
+              <button class="cw-opt snap" aria-pressed="false" data-cw="SYSTEM_NAVY" data-img="assets/tee-roundel-offwhite.jpg" style="--dot:#1f2a3d">SYSTEM_NAVY</button>
+            </div>
+          </div>
+          <div class="sizes"><span class="tag" style="margin-right:4px">[ CHOOSE SIZE ]</span>
+            <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
+        </div>
+        <div class="actions">
+          <button class="directive snap" data-idle="[ ADD TO BAG ]" data-hover="[ ADD TO BAG ]" data-add>[ ADD TO BAG ]</button>
+        </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- 05 THE CLERK -->
+  <article class="item item--dark" data-product="clerk">
+    <div class="item-visual">
+      
+      <div class="plate">
+        <img data-plate alt="The Clerk tee â€" bowler-hatted skull over crossed umbrellas, charcoal print, oxy black" src="assets/tee-clerk-black.jpg" />
+        <span class="plate-cnr">#05 // THE CLERK</span>
+      </div>
+    </div>
+    <div class="item-ledger">
+      <div>
+        <div class="dossier">
+          <div class="led-index tag">[ ★ ISSUE_001 // #05 // THE CLERK ]</div>
+          <h2 class="led-name chunk"><span class="the">THE</span> CLERK</h2>
+          <p class="hit">EMPIRES NEED CLERKS. THIS ONE STAYED PAST CLOSING.</p>
+          <p>BOWLER HAT. CROSSED BROLLIES. LEDGERS WON'T BALANCE.</p>
+          <p class="hit">STILL AT THE DESK. STILL REFUSING TO BE ERASED.</p>
+          <a class="what-link" data-what href="product-skull.html">WHAT IS</a>
+
+        <div class="cw-size-wrap">
+          <div class="cw">
+            <span class="cw-label tag">[ CHOOSE COLOUR ]</span>
+            <div class="cw-opts">
+              <button class="cw-opt snap" aria-pressed="true"  data-cw="OXY_BLACK"   data-img="assets/tee-clerk-black.jpg" style="--dot:#0a0a0a">OXY_BLACK</button>
+              <button class="cw-opt snap" aria-pressed="false" data-cw="CHALK_WHITE" data-img="assets/tee-clerk-white.jpg" style="--dot:#e7e7e2">CHALK_WHITE</button>
+            </div>
+          </div>
+          <div class="sizes"><span class="tag" style="margin-right:4px">[ CHOOSE SIZE ]</span>
+            <button class="size-pill snap">S</button><button class="size-pill snap">M</button><button class="size-pill snap">L</button><button class="size-pill snap">XL</button></div>
+        </div>
+        <div class="actions">
+          <button class="directive snap" data-idle="[ ADD TO BAG ]" data-hover="[ ADD TO BAG ]" data-add>[ ADD TO BAG ]</button>
+        </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+</main>
+
+<!-- BLOCK 3 â€" RECOMMENDED CONDIMENT -->
+<section class="equipment" id="equipment">
+  <div class="condiment-inner">
+    <div class="condiment-label tag">[ RECOMMENDED CONDIMENT ]</div>
+    <div class="condiment-body">
+      <div class="condiment-visual">
+        <img id="capImg" src="assets/cap-black.jpg" alt="The Cap — OXY_BLACK" />
+      </div>
+      <div class="condiment-info">
+        <div class="tag" style="margin-bottom:var(--s2)">[ ISSUE_001 // EQUIPMENT ]</div>
+        <h2 class="chunk condiment-name"><span class="the">THE</span> CAP</h2>
+        <div class="condiment-cw">
+          <div class="cw">
+            <span class="cw-label tag">[ CHOOSE COLOUR ]</span>
+            <div class="cw-opts">
+              <button class="cw-opt snap" aria-pressed="true"  data-cw="OXY_BLACK"   data-img="assets/cap-black.jpg"  style="--dot:#0a0a0a">OXY_BLACK</button>
+              <button class="cw-opt snap" aria-pressed="false" data-cw="SYSTEM_NAVY" data-img="assets/cap-navy.jpg"   style="--dot:#1f2a3d">SYSTEM_NAVY</button>
+              <button class="cw-opt snap" aria-pressed="false" data-cw="CHALK_STONE" data-img="assets/cap-cream.jpg"  style="--dot:#e8dfc0">CHALK_STONE</button>
+            </div>
+          </div>
+        </div>
+        <div class="condiment-price tag">&#163;22.00</div>
+        <div class="actions">
+          <button class="directive snap" data-add>[ ADD TO BAG ]</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER â€" closing concrete slab -->
+<footer class="outro">
+  <div class="outro-foot">
+    <div class="rule">------------------------------------------------------------------</div>
+    <div class="copyright">Â© 2026 BLITZSPIRIT SYSTEM CO. // ALL RIGHTS RESERVED // SECURITY OVERRIDE PRIMED.</div>
+    <div class="rule">------------------------------------------------------------------</div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  /* Colourway: swap plate image + label instantly */
+  document.querySelectorAll(".item").forEach(function (item) {
+    var opts = item.querySelectorAll(".cw-opt");
+    var img = item.querySelector("[data-plate]");
+    opts.forEach(function (opt) {
+      opt.addEventListener("click", function () {
+        opts.forEach(function (o) { o.setAttribute("aria-pressed", "false"); });
+        opt.setAttribute("aria-pressed", "true");
+        if (img && opt.dataset.img) img.src = opt.dataset.img;
+      });
+    });
+  });
+
+  /* Size pills */
+  document.querySelectorAll(".sizes").forEach(function (row) {
+    var pills = row.querySelectorAll(".size-pill");
+    pills.forEach(function (pill) {
+      pill.addEventListener("click", function () {
+        pills.forEach(function (p) { p.setAttribute("aria-pressed", "false"); });
+        pill.setAttribute("aria-pressed", "true");
+      });
+    });
+  });
+
+  /* Secondary "what is" buttons â€" label + route per product */
+  var whatUrls = {
+    establishment: "product-establishment.html",
+    boudica:       "product.html",
+    rollcall:      "product-roll-call.html",
+    frequency:     "product-roundel.html",
+    clerk:         "product-skull.html"
+  };
+  document.querySelectorAll("[data-what]").forEach(function (el) {
+    var item = el.closest("[data-product]");
+    var nameEl = item ? item.querySelector(".led-name, .featured-name") : null;
+    if (nameEl) el.textContent = "WHAT IS '" + nameEl.textContent.trim() + "'";
+    var key = item ? item.dataset.product : null;
+    if (key && whatUrls[key]) el.href = whatUrls[key];
+  });
+
+  /* Directive buttons: instant text swap */
+  document.querySelectorAll(".directive[data-hover]").forEach(function (btn) {
+    var idle = btn.dataset.idle, hover = btn.dataset.hover;
+    var on = function () { btn.textContent = hover; }, off = function () { btn.textContent = idle; };
+    btn.addEventListener("mouseenter", on); btn.addEventListener("mouseleave", off);
+    btn.addEventListener("focus", on); btn.addEventListener("blur", off);
+  });
+
+  /* Mini-cart drawer â€" staged ledger + frictionless open/close */
+  var cart = [];
+  var bagCount = document.getElementById("bagCount");
+  var drawer   = document.getElementById("cart");
+  var overlay  = document.getElementById("cartOverlay");
+  var itemsEl  = document.getElementById("cartItems");
+  var emptyEl  = document.getElementById("cartEmpty");
+  var totalEl  = document.getElementById("cartTotal");
+
+  function openCart()  { drawer.classList.add("open");    overlay.classList.add("open");    drawer.setAttribute("aria-hidden", "false"); }
+  function closeCart() { drawer.classList.remove("open"); overlay.classList.remove("open"); drawer.setAttribute("aria-hidden", "true"); }
+
+  document.getElementById("bagBtn").addEventListener("click", openCart);
+  document.getElementById("cartClose").addEventListener("click", closeCart);
+  overlay.addEventListener("click", closeCart);
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeCart(); });
+
+  function renderCart() {
+    bagCount.textContent = cart.length;
+    totalEl.textContent  = cart.length;
+    itemsEl.querySelectorAll(".cart-row").forEach(function (r) { r.remove(); });
+    emptyEl.style.display = cart.length ? "none" : "";
+    cart.forEach(function (it, i) {
+      var row = document.createElement("div");
+      row.className = "cart-row";
+      row.innerHTML =
+        '<div><div class="ci-name">' + it.name + '</div>' +
+        '<div class="ci-meta">SIZE: ' + it.size + ' / COLOUR: ' + it.colour + '</div></div>' +
+        '<button class="ci-rm snap" data-i="' + i + '">[ REMOVE ]</button>';
+      itemsEl.appendChild(row);
+    });
+    itemsEl.querySelectorAll(".ci-rm").forEach(function (b) {
+      b.addEventListener("click", function () { cart.splice(+b.dataset.i, 1); renderCart(); });
+    });
+  }
+
+  document.querySelectorAll("[data-add]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var item = btn.closest("[data-product]");
+      var nameEl = item ? item.querySelector(".led-name, .featured-name") : null;
+      var name = "ITEM", size = "OS", colour = "OS";
+      if (nameEl) {
+        name = nameEl.textContent.trim();
+        var ps = item.querySelector('.size-pill[aria-pressed="true"]'); if (ps) size = ps.textContent.trim();
+        var pc = item.querySelector('.cw-opt[aria-pressed="true"]');    if (pc) colour = pc.dataset.cw || pc.textContent.trim();
+      } else {
+        var capOpt = document.querySelector('#equipment .cw-opt[aria-pressed="true"]');
+        name = "THE CAP"; colour = capOpt ? capOpt.dataset.cw : "OXY_BLACK";
+      }
+      cart.push({ name: name, size: size, colour: colour });
+      renderCart();
+      openCart();
+    });
+  });
+
+  renderCart();
+
+  /* Condiment cap colourway selector */
+  var capImg = document.getElementById("capImg");
+  var capOpts = document.querySelectorAll("#equipment .cw-opt");
+  capOpts.forEach(function (opt) {
+    opt.addEventListener("click", function () {
+      capOpts.forEach(function (o) { o.setAttribute("aria-pressed", "false"); });
+      opt.setAttribute("aria-pressed", "true");
+      if (capImg && opt.dataset.img) { capImg.src = opt.dataset.img; capImg.alt = "The Cap — " + opt.dataset.cw; }
+    });
+  });
+
+  /* Signal-in animation on .hit paragraphs when scrolled into view */
+  var hitEls = document.querySelectorAll('.dossier .hit');
+  function fireHit(el) { el.classList.add('hit--live'); }
+  if ('IntersectionObserver' in window) {
+    var hitObs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) { fireHit(e.target); hitObs.unobserve(e.target); }
+      });
+    }, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
+    hitEls.forEach(function(el) { hitObs.observe(el); });
+  } else {
+    hitEls.forEach(fireHit);
+  }
+  /* Safety: reveal any .hit still invisible after 3s (observer miss) */
+  setTimeout(function(){ hitEls.forEach(fireHit); }, 3000);
+
+  /* Promo newsletter capture â€" instant confirmation, no backend */
+  var promoForm = document.querySelector(".promo-form");
+  if (promoForm) {
+    promoForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var email = document.getElementById("promo-email");
+      if (!email.value || !email.checkValidity()) { email.focus(); return; }
+      promoForm.innerHTML = '<div class="promo-cta tag promo-done">[ SECURED // YOU\'RE FIRST IN THE KNOW ]</div>';
+    });
+  }
+})();
+</script>
+<script src="assets/newui/feedback-widget.js" defer></script>
+</body>
+</html>
+

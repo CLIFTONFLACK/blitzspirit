@@ -1,0 +1,100 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/new",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/new/:path*",
+      "destination": "/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/collection.html",
+      "destination": "/old/collection.html",
+      "permanent": true
+    },
+    {
+      "source": "/heritage.html",
+      "destination": "/old/heritage.html",
+      "permanent": true
+    },
+    {
+      "source": "/admin.html",
+      "destination": "/old/admin.html",
+      "permanent": true
+    },
+    {
+      "source": "/about.html",
+      "destination": "/old/about.html",
+      "permanent": true
+    },
+    {
+      "source": "/help.html",
+      "destination": "/old/help.html",
+      "permanent": true
+    },
+    {
+      "source": "/icons.html",
+      "destination": "/old/icons.html",
+      "permanent": true
+    },
+    {
+      "source": "/story.html",
+      "destination": "/old/story.html",
+      "permanent": true
+    },
+    {
+      "source": "/product.html",
+      "destination": "/old/product.html",
+      "permanent": true
+    },
+    {
+      "source": "/product-cap.html",
+      "destination": "/old/product-cap.html",
+      "permanent": true
+    },
+    {
+      "source": "/product-establishment.html",
+      "destination": "/old/product-establishment.html",
+      "permanent": true
+    },
+    {
+      "source": "/product-roll-call.html",
+      "destination": "/old/product-roll-call.html",
+      "permanent": true
+    },
+    {
+      "source": "/product-roundel.html",
+      "destination": "/old/product-roundel.html",
+      "permanent": true
+    },
+    {
+      "source": "/product-skull.html",
+      "destination": "/old/product-skull.html",
+      "permanent": true
+    },
+    {
+      "source": "/light/:path*",
+      "destination": "/old/light/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/newui.css",
+      "destination": "/old/newui.css",
+      "permanent": true
+    },
+    {
+      "source": "/styles.css",
+      "destination": "/old/styles.css",
+      "permanent": true
+    },
+    {
+      "source": "/main.js",
+      "destination": "/old/main.js",
+      "permanent": true
+    }
+  ]
+}
