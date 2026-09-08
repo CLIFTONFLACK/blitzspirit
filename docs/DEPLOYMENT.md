@@ -9,9 +9,8 @@ So:
 
 | Path | What it is |
 |---|---|
-| repo root | the shop's built HTML - **generated**, committed, listed in `.published` |
+| repo root | the shop's built HTML, including `/edit/` and `/social` - **generated**, committed, listed in `.published` |
 | `old/` | the original static site, moved verbatim; every path in it was relative |
-| `social/` | the copy dossier, a prebuilt page |
 | `standalone/` | the shop's Astro source - the thing you actually edit |
 | `api/` | serverless functions, picked up by Vercel from here regardless |
 

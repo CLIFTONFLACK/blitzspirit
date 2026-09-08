@@ -22,9 +22,14 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = process.argv[2] ?? join(root, 'standalone', 'dist');
 const manifestPath = join(root, '.published');
 
-/** Never published over, whatever a manifest might claim. */
+/** Never published over, whatever a manifest might claim.
+ *
+ *  `social` is deliberately NOT here: the dossier used to be a prebuilt page
+ *  committed at social/, but its Astro source is on main now, so Astro builds it
+ *  like any other page and it is published output. Listing it as source made the
+ *  publish refuse to run at all. */
 const SOURCE = new Set([
-  'api', 'standalone', 'tools', 'docs', 'old', 'social', 'shopify-theme', 'dist',
+  'api', 'standalone', 'tools', 'docs', 'old', 'shopify-theme', 'dist',
   '.github', '.git', '.gitignore', '.vercelignore', '.published', 'vercel.json',
   'package.json', 'package-lock.json', 'README.md', 'node_modules', 'out',
 ]);
