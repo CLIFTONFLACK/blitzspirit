@@ -4,7 +4,8 @@
 # and Vercel serves that - none of it is committed.
 out/
 # The root package.json carries scripts only - no deps, so no lockfile.
-package-lock.json
+# Anchored: standalone/package-lock.json IS committed, and npm ci requires it.
+/package-lock.json
 standalone/node_modules/
 standalone/dist/
 standalone/.astro/
