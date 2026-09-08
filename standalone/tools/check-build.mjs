@@ -215,6 +215,50 @@ if (!existsSync(indexFile)) {
   }
 }
 
+/**
+ * /social - the internal copy dossier. It carries no shop chrome by design, so the
+ * CHROME assertions above would be wrong for it. What matters instead is that every
+ * line in social.json reached the HTML and that the editing hooks are present:
+ * without the id attributes the page still looks finished and silently cannot save.
+ */
+{
+  const route = '/social';
+  const doc = html(route);
+  if (!doc) {
+    fail(route, 'page was not built');
+  } else {
+    const social = JSON.parse(readFileSync(join(root, 'src/data/pages/social.json'), 'utf8'));
+    const variants = social.sections.flatMap((s) =>
+      s.groups.flatMap((g) => g.entries.flatMap((e) => e.variants)),
+    );
+
+    const missing = variants.filter((v) => !doc.includes(`data-line-id="${v.id}"`));
+    if (missing.length) {
+      fail(route, `${missing.length} line(s) not rendered, first: ${missing[0].id}`);
+    }
+
+    // An id on an empty paragraph would save nothing - the copy has to be there too.
+    const sample = variants.find((v) => v.reg === 'locked') ?? variants[0];
+    if (!doc.includes(sample.text.split('\n')[0].slice(0, 30))) {
+      fail(route, 'copy text missing from the page');
+    }
+
+    // The editor ships as a bundled module, so the endpoint is in the JS, not the
+    // HTML. Follow the script the page actually loads and look inside it.
+    const script = doc.match(/<script type="module" src="([^"]+)"/);
+    if (!script) {
+      fail(route, 'no module script on the page');
+    } else {
+      const bundle = join(dist, script[1].slice(BASE.length));
+      if (!existsSync(bundle)) fail(route, `script ${script[1]} not in the build`);
+      else if (!readFileSync(bundle, 'utf8').includes('/api/social')) {
+        fail(route, 'editor is not wired to its endpoint');
+      }
+    }
+    if (!/name="robots"[^>]*noindex/.test(doc)) fail(route, 'internal page is not noindex');
+  }
+}
+
 if (failures.length) {
   console.error(`build check failed - ${failures.length} problem(s):`);
   for (const f of failures) console.error('  -', f);

@@ -23,8 +23,9 @@ export default defineConfig({
   integrations: [
     sitemap({
       // The checkout outcome pages are dead ends a shopper reaches from Stripe;
-      // they have nothing to index.
-      filter: (page) => !page.includes('/checkout/'),
+      // they have nothing to index. /social is an internal working page - it is
+      // noindex in its own head, and listing it here would contradict that.
+      filter: (page) => !page.includes('/checkout/') && !page.includes('/social'),
     }),
   ],
   devToolbar: { enabled: false },
