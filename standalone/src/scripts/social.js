@@ -1,9 +1,9 @@
 /* ============================================================
-   social.js — the copy dossier's filters, copy buttons and editor.
+   social.js - the copy dossier's filters, copy buttons and editor.
 
    The page at /social is complete before this runs: every line is rendered
    server-side from src/data/pages/social.json. This file only ever overlays what
-   has been changed since — it fetches the overrides, applies them, and posts edits
+   has been changed since - it fetches the overrides, applies them, and posts edits
    back to /api/social. If the fetch fails, the committed copy is what stays on
    screen, which is the right fallback.
    ============================================================ */
@@ -76,7 +76,7 @@ function fallback(text, done) {
     document.execCommand('copy');
     done();
   } catch (err) {
-    /* nothing to do — the text is still selectable on the page */
+    /* nothing to do - the text is still selectable on the page */
   }
   document.body.removeChild(ta);
 }
@@ -127,7 +127,7 @@ saveBtn.addEventListener('click', async () => {
     saveBtn.textContent = 'Save';
     say(`Saved ${edits.length} line${edits.length === 1 ? '' : 's'}.`, 'ok');
   } catch (err) {
-    say('Save failed — your text is still on screen. Copy it before reloading.', 'bad');
+    say('Save failed - your text is still on screen. Copy it before reloading.', 'bad');
   } finally {
     saveBtn.disabled = false;
   }
@@ -176,7 +176,7 @@ function apply() {
 
   entries.forEach((el) => {
     const ok =
-      (kind === 'all' || el._kind === kind) &&
+      (kind === 'all' || kind.split(',').includes(el._kind)) &&
       (!q || el.textContent.toLowerCase().includes(q));
     el.hidden = !ok;
     if (ok) shown += 1;

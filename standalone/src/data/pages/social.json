@@ -4,13 +4,13 @@
     {
       "id": "verbatim",
       "kind": "verbatim",
-      "eyebrow": "Section 01 — Locked",
+      "eyebrow": "Section 01 - Locked",
       "heading": "Verbatim bank",
-      "lede": "Reproduced word for word from Brand Book v4. These are not drafts and do not get edited for a caption — if a line doesn't fit the post, use a different line. Marked LOCKED throughout.",
+      "lede": "Reproduced word for word from Brand Book v4. These are not drafts and do not get edited for a caption - if a line doesn't fit the post, use a different line. Marked LOCKED throughout.",
       "groups": [
         {
           "heading": "Core & campaign lines",
-          "note": "Section 1 — the core line does not rotate; campaign lines do",
+          "note": "Section 1 - the core line does not rotate; campaign lines do",
           "entries": [
             {
               "ref": "V-CORE-01",
@@ -107,7 +107,7 @@
         },
         {
           "heading": "Product copy",
-          "note": "Section 6 — use whole or take a single line; never paraphrase",
+          "note": "Section 6 - use whole or take a single line; never paraphrase",
           "entries": [
             {
               "ref": "V-PROD-BOU",
@@ -179,7 +179,7 @@
         },
         {
           "heading": "State & edge copy",
-          "note": "Section 7 — reuse these on social wherever the situation matches",
+          "note": "Section 7 - reuse these on social wherever the situation matches",
           "entries": [
             {
               "ref": "V-EDGE-01",
@@ -188,7 +188,7 @@
                   "id": "V-EDGE-01:locked",
                   "reg": "locked",
                   "label": "Sold out",
-                  "text": "Gone. Add your name — we'll tell you if it comes back."
+                  "text": "Gone. Add your name - we'll tell you if it comes back."
                 }
               ]
             },
@@ -255,7 +255,7 @@
                   "reg": "locked",
                   "label": "Dispatch",
                   "text": "Order received. Stand by.",
-                  "dir": "Use as: email subject line — also works as a story frame on drop day"
+                  "dir": "Use as: email subject line - also works as a story frame on drop day"
                 }
               ]
             },
@@ -300,12 +300,12 @@
     {
       "id": "hooks",
       "kind": "hook",
-      "eyebrow": "Section 02 — First 1.5 seconds",
+      "eyebrow": "Section 02 - First 1.5 seconds",
       "heading": "Hook library",
-      "lede": "Two registers per line. House is the dry front-row observer at full strength. Eased keeps the spine and drops the edge — for cold audiences, paid social, and anywhere a comment section would rather have an argument than a look at the shirt.",
+      "lede": "Two registers per line. House is the dry front-row observer at full strength. Eased keeps the spine and drops the edge - for cold audiences, paid social, and anywhere a comment section would rather have an argument than a look at the shirt.",
       "groups": [
         {
-          "heading": "A — Cold open",
+          "heading": "A - Cold open",
           "note": "Straight declaration. No setup, no explanation.",
           "entries": [
             {
@@ -384,7 +384,7 @@
                   "reg": "house",
                   "label": "House",
                   "text": "Wakey wakey.",
-                  "dir": "Campaign line — deadpan delivery, no smile after it"
+                  "dir": "Campaign line - deadpan delivery, no smile after it"
                 },
                 {
                   "id": "H-A-05:eased",
@@ -450,7 +450,7 @@
           ]
         },
         {
-          "heading": "B — Dry observation",
+          "heading": "B - Dry observation",
           "note": "The register that carries the brand. Noticing, not arguing.",
           "entries": [
             {
@@ -580,7 +580,7 @@
                   "reg": "house",
                   "label": "House",
                   "text": "If a design only works because you agree with it, it isn't finished.",
-                  "dir": "Straight from the product test — Brand Book §4"
+                  "dir": "Straight from the product test - Brand Book §4"
                 },
                 {
                   "id": "H-B-08:eased",
@@ -593,7 +593,7 @@
           ]
         },
         {
-          "heading": "C — Heritage",
+          "heading": "C - Heritage",
           "note": "Wry affection, not a call to arms. Facts checked; keep them that way.",
           "entries": [
             {
@@ -639,7 +639,7 @@
                   "reg": "house",
                   "label": "House",
                   "text": "Boudica burned three Roman cities. She doesn't appear in the polite version.",
-                  "dir": "Fact check: Camulodunum, Londinium, Verulamium — AD 60/61"
+                  "dir": "Fact check: Camulodunum, Londinium, Verulamium - AD 60/61"
                 },
                 {
                   "id": "H-C-03:eased",
@@ -710,7 +710,7 @@
                   "reg": "house",
                   "label": "House",
                   "text": "7 July 2005. A newspaper on a flight out of London. Two words.",
-                  "dir": "Origin story — Brand Book §1. Highest-performing brand post there is; use it sparingly"
+                  "dir": "Origin story - Brand Book §1. Highest-performing brand post there is; use it sparingly"
                 },
                 {
                   "id": "H-C-07:eased",
@@ -740,7 +740,7 @@
           ]
         },
         {
-          "heading": "D — POV",
+          "heading": "D - POV",
           "note": "On-screen text, no voiceover. Highest share rate of any format.",
           "entries": [
             {
@@ -853,7 +853,7 @@
                   "reg": "house",
                   "label": "House",
                   "text": "POV: not joining anything, thanks.",
-                  "dir": "Note: \"They are not joiners\" — Brand Book §1"
+                  "dir": "Note: \"They are not joiners\" - Brand Book §1"
                 },
                 {
                   "id": "H-D-07:eased",
@@ -883,7 +883,7 @@
           ]
         },
         {
-          "heading": "E — Question",
+          "heading": "E - Question",
           "note": "Ask it, then genuinely stop. Don't answer it in the caption.",
           "entries": [
             {
@@ -894,7 +894,7 @@
                   "reg": "house",
                   "label": "House",
                   "text": "Name one thing we still do properly.",
-                  "dir": "Direction: best answer gets printed — only say it if you'll do it"
+                  "dir": "Direction: best answer gets printed - only say it if you'll do it"
                 },
                 {
                   "id": "H-E-01:eased",
@@ -929,7 +929,7 @@
                   "reg": "house",
                   "label": "House",
                   "text": "How many of these names can you actually place?",
-                  "dir": "Pairs with: Roll Call — slow pan down the print"
+                  "dir": "Pairs with: Roll Call - slow pan down the print"
                 },
                 {
                   "id": "H-E-03:eased",
@@ -952,7 +952,7 @@
                   "id": "H-E-04:eased",
                   "reg": "eased",
                   "label": "Eased",
-                  "text": "Most British thing you've ever done in a crisis — go."
+                  "text": "Most British thing you've ever done in a crisis - go."
                 }
               ]
             },
@@ -986,7 +986,7 @@
                   "id": "H-E-06:eased",
                   "reg": "eased",
                   "label": "Eased",
-                  "text": "Black, chalk or navy — pick one."
+                  "text": "Black, chalk or navy - pick one."
                 }
               ]
             },
@@ -1027,7 +1027,7 @@
           ]
         },
         {
-          "heading": "F — Design detail",
+          "heading": "F - Design detail",
           "note": "Warm audiences. Open on the garment; the brand does the talking through the object.",
           "entries": [
             {
@@ -1038,13 +1038,13 @@
                   "reg": "house",
                   "label": "House",
                   "text": "Look closer. That's the whole design.",
-                  "dir": "Pairs with: The Frequency — roundel built from the wordmark, not flat colour"
+                  "dir": "Pairs with: The Frequency - roundel built from the wordmark, not flat colour"
                 },
                 {
                   "id": "H-F-01:eased",
                   "reg": "eased",
                   "label": "Eased",
-                  "text": "Look closer — there's a second thing going on in there."
+                  "text": "Look closer - there's a second thing going on in there."
                 }
               ]
             },
@@ -1138,7 +1138,7 @@
                   "id": "H-F-06:eased",
                   "reg": "eased",
                   "label": "Eased",
-                  "text": "Issue_000 — the plain mark. Where the whole thing started."
+                  "text": "Issue_000 - the plain mark. Where the whole thing started."
                 }
               ]
             },
@@ -1187,7 +1187,7 @@
           ]
         },
         {
-          "heading": "G — Listicle",
+          "heading": "G - Listicle",
           "note": "The number in the hook is a promise about watch time. Deliver every item.",
           "entries": [
             {
@@ -1295,7 +1295,7 @@
           ]
         },
         {
-          "heading": "H — Social proof",
+          "heading": "H - Social proof",
           "note": "Only with the real screenshot, review or message on screen. Never as a bare claim.",
           "entries": [
             {
@@ -1398,7 +1398,7 @@
                   "reg": "house",
                   "label": "House",
                   "text": "Replying to the comment that got the most likes last time.",
-                  "dir": "Direction: reply/stitch format — best free reach on both platforms"
+                  "dir": "Direction: reply/stitch format - best free reach on both platforms"
                 },
                 {
                   "id": "H-H-05:eased",
@@ -1415,9 +1415,9 @@
     {
       "id": "captions",
       "kind": "caption",
-      "eyebrow": "Section 03 — Under the post",
+      "eyebrow": "Section 03 - Under the post",
       "heading": "Caption library",
-      "lede": "Brand Book rule: the image leads, the caption annotates. These are short on purpose. Hashtags — zero to two, targeted, never a carpet.",
+      "lede": "Brand Book rule: the image leads, the caption annotates. These are short on purpose. Hashtags - zero to two, targeted, never a carpet.",
       "groups": [
         {
           "heading": "Drop & product",
@@ -1436,7 +1436,7 @@
                   "id": "C-DROP-01:eased",
                   "reg": "eased",
                   "label": "Eased",
-                  "text": "Boudica — out now.\n\nChalk and black. Link in bio."
+                  "text": "Boudica - out now.\n\nChalk and black. Link in bio."
                 }
               ]
             },
@@ -1447,13 +1447,13 @@
                   "id": "C-DROP-02:house",
                   "reg": "house",
                   "label": "House",
-                  "text": "Issue_001. Five entries. Nothing decorative.\n\nSee the collection — link in bio."
+                  "text": "Issue_001. Five entries. Nothing decorative.\n\nSee the collection - link in bio."
                 },
                 {
                   "id": "C-DROP-02:eased",
                   "reg": "eased",
                   "label": "Eased",
-                  "text": "Issue_001 is live — five designs, one idea each.\n\nLink in bio."
+                  "text": "Issue_001 is live - five designs, one idea each.\n\nLink in bio."
                 }
               ]
             },
@@ -1470,7 +1470,7 @@
                   "id": "C-DROP-03:eased",
                   "reg": "eased",
                   "label": "Eased",
-                  "text": "Caps live in Equipment — always stocked, never a limited drop."
+                  "text": "Caps live in Equipment - always stocked, never a limited drop."
                 }
               ]
             },
@@ -1525,7 +1525,7 @@
                   "id": "C-PROD-02:eased",
                   "reg": "eased",
                   "label": "Eased",
-                  "text": "Regular fit, true to size. Between sizes, go up — it's a heavier cotton."
+                  "text": "Regular fit, true to size. Between sizes, go up - it's a heavier cotton."
                 }
               ]
             },
@@ -1542,7 +1542,7 @@
                   "id": "C-PROD-03:eased",
                   "reg": "eased",
                   "label": "Eased",
-                  "text": "No symbols on this one — just the names of people who wouldn't back down."
+                  "text": "No symbols on this one - just the names of people who wouldn't back down."
                 }
               ]
             }
@@ -1565,7 +1565,7 @@
                   "id": "C-ARC-01:eased",
                   "reg": "eased",
                   "label": "Eased",
-                  "text": "The name came from a newspaper read on a flight out of London on 7 July 2005 — two words that seemed worth wearing.\n\nTwenty years later, here we are."
+                  "text": "The name came from a newspaper read on a flight out of London on 7 July 2005 - two words that seemed worth wearing.\n\nTwenty years later, here we are."
                 }
               ]
             },
@@ -1622,7 +1622,7 @@
                   "id": "C-COM-01:eased",
                   "reg": "eased",
                   "label": "Eased",
-                  "text": "What do we still do better than anyone else?\n\nBest answer gets printed — and the first one off the run."
+                  "text": "What do we still do better than anyone else?\n\nBest answer gets printed - and the first one off the run."
                 }
               ]
             },
@@ -1667,9 +1667,9 @@
     {
       "id": "ctas",
       "kind": "cta",
-      "eyebrow": "Section 04 — The ask",
+      "eyebrow": "Section 04 - The ask",
       "heading": "CTA library",
-      "lede": "Buttons stay functional — Add to Bag, See the Collection, Notify Me. The voice sits in the line around the button. Never stack two asks in one post.",
+      "lede": "Buttons stay functional - Add to Bag, See the Collection, Notify Me. The voice sits in the line around the button. Never stack two asks in one post.",
       "groups": [
         {
           "heading": "To the shop",
@@ -1705,7 +1705,7 @@
                   "id": "A-SHOP-02:eased",
                   "reg": "eased",
                   "label": "Eased",
-                  "text": "[PRODUCT] is available now — link in bio."
+                  "text": "[PRODUCT] is available now - link in bio."
                 }
               ]
             },
@@ -1722,7 +1722,7 @@
                   "id": "A-SHOP-03:eased",
                   "reg": "eased",
                   "label": "Eased",
-                  "text": "See the collection — link in bio."
+                  "text": "See the collection - link in bio."
                 }
               ]
             },
@@ -1751,7 +1751,7 @@
                   "reg": "house",
                   "label": "House",
                   "text": "Buy it or don't. We're not going to chase you about it.",
-                  "dir": "The anti-CTA. Use sparingly — converts well on cold traffic, wears thin fast"
+                  "dir": "The anti-CTA. Use sparingly - converts well on cold traffic, wears thin fast"
                 },
                 {
                   "id": "A-SHOP-05:eased",
@@ -1774,7 +1774,7 @@
                   "id": "A-SHOP-06:eased",
                   "reg": "eased",
                   "label": "Eased",
-                  "text": "The story behind it is in the Archive — link in bio."
+                  "text": "The story behind it is in the Archive - link in bio."
                 }
               ]
             }
@@ -1791,7 +1791,7 @@
                   "id": "A-LIST-01:house",
                   "reg": "house",
                   "label": "House",
-                  "text": "Gone. Add your name — we'll tell you if it comes back.",
+                  "text": "Gone. Add your name - we'll tell you if it comes back.",
                   "dir": "Verbatim from the out-of-stock state copy. Keep it word for word"
                 },
                 {
@@ -1815,7 +1815,7 @@
                   "id": "A-LIST-02:eased",
                   "reg": "eased",
                   "label": "Eased",
-                  "text": "Not live yet — sign up and we'll email you when it is."
+                  "text": "Not live yet - sign up and we'll email you when it is."
                 }
               ]
             },
@@ -1849,7 +1849,7 @@
                   "id": "A-LIST-04:eased",
                   "reg": "eased",
                   "label": "Eased",
-                  "text": "The list gets first look — twenty-four hours, that's the whole advantage."
+                  "text": "The list gets first look - twenty-four hours, that's the whole advantage."
                 }
               ]
             }
@@ -1857,7 +1857,7 @@
         },
         {
           "heading": "DM keyword",
-          "note": "Say the keyword out loud AND put it on screen — spoken only loses half the triggers.",
+          "note": "Say the keyword out loud AND put it on screen - spoken only loses half the triggers.",
           "entries": [
             {
               "ref": "A-DM-01",
@@ -1867,7 +1867,7 @@
                   "reg": "house",
                   "label": "House",
                   "text": "Comment ISSUE. We'll send it over.",
-                  "dir": "Keyword: ISSUE — current collection page"
+                  "dir": "Keyword: ISSUE - current collection page"
                 },
                 {
                   "id": "A-DM-01:eased",
@@ -1885,7 +1885,7 @@
                   "reg": "house",
                   "label": "House",
                   "text": "Comment BOUDICA. It'll be in your messages before you've scrolled on.",
-                  "dir": "Keyword: BOUDICA — product page"
+                  "dir": "Keyword: BOUDICA - product page"
                 },
                 {
                   "id": "A-DM-02:eased",
@@ -1903,7 +1903,7 @@
                   "reg": "house",
                   "label": "House",
                   "text": "Comment FREQUENCY if you want the navy.",
-                  "dir": "Keyword: FREQUENCY — product page"
+                  "dir": "Keyword: FREQUENCY - product page"
                 },
                 {
                   "id": "A-DM-03:eased",
@@ -1921,7 +1921,7 @@
                   "reg": "house",
                   "label": "House",
                   "text": "Comment ROLL CALL and we'll send you who's actually on it.",
-                  "dir": "Keyword: ROLL CALL — pairs with H-E-03"
+                  "dir": "Keyword: ROLL CALL - pairs with H-E-03"
                 },
                 {
                   "id": "A-DM-04:eased",
@@ -1939,7 +1939,7 @@
                   "reg": "house",
                   "label": "House",
                   "text": "Comment STAMP for Issue_000.",
-                  "dir": "Keyword: STAMP — permanent baseline product"
+                  "dir": "Keyword: STAMP - permanent baseline product"
                 },
                 {
                   "id": "A-DM-05:eased",
@@ -1957,7 +1957,7 @@
                   "reg": "house",
                   "label": "House",
                   "text": "Comment SIZE. Guide comes back, no sales pitch attached.",
-                  "dir": "Keyword: SIZE — use on objection-handling posts"
+                  "dir": "Keyword: SIZE - use on objection-handling posts"
                 },
                 {
                   "id": "A-DM-06:eased",
@@ -1975,7 +1975,7 @@
                   "reg": "house",
                   "label": "House",
                   "text": "Comment EQUIPMENT for the caps.",
-                  "dir": "Keyword: EQUIPMENT — permanent headwear line"
+                  "dir": "Keyword: EQUIPMENT - permanent headwear line"
                 },
                 {
                   "id": "A-DM-07:eased",
@@ -2004,7 +2004,7 @@
                   "id": "A-BOT-01:eased",
                   "reg": "eased",
                   "label": "Eased",
-                  "text": "Here's the link: [LINK]\n\nAny questions, just reply — a person reads these."
+                  "text": "Here's the link: [LINK]\n\nAny questions, just reply - a person reads these."
                 }
               ]
             },
@@ -2021,7 +2021,7 @@
                   "id": "A-BOT-02:eased",
                   "reg": "eased",
                   "label": "Eased",
-                  "text": "[LINK]\n\nRegular fit, true to size — if you're between sizes, size up. Shout if you want a hand."
+                  "text": "[LINK]\n\nRegular fit, true to size - if you're between sizes, size up. Shout if you want a hand."
                 }
               ]
             },
@@ -2038,7 +2038,7 @@
                   "id": "A-BOT-03:eased",
                   "reg": "eased",
                   "label": "Eased",
-                  "text": "It's not live yet — the list is here: [LINK]\n\nWe'll email you the moment it opens, and not before."
+                  "text": "It's not live yet - the list is here: [LINK]\n\nWe'll email you the moment it opens, and not before."
                 }
               ]
             }
@@ -2049,12 +2049,12 @@
     {
       "id": "dravot",
       "kind": "dravot",
-      "eyebrow": "Section 05 — Separate register",
+      "eyebrow": "Section 05 - Separate register",
       "heading": "The Dravot voice",
-      "lede": "For podcast posts only. Dravot has no thesis, no editorial and no closing statement — the moment he appears to be arguing something, the format is over. He never sells a shirt. Elegy with a straight face.",
+      "lede": "For podcast posts only. Dravot has no thesis, no editorial and no closing statement - the moment he appears to be arguing something, the format is over. He never sells a shirt. Elegy with a straight face.",
       "groups": [
         {
-          "heading": "Verbatim — character canon",
+          "heading": "Verbatim - character canon",
           "note": "Lifted from the personality and mission docs. Safe to post as-is.",
           "entries": [
             {
@@ -2065,7 +2065,7 @@
                   "reg": "locked",
                   "label": "Locked",
                   "text": "A dead man interviews the dead and the mythic about a country that's forgotten what it used to be.",
-                  "dir": "The premise line. Use as the channel bio or a pinned post — nowhere else"
+                  "dir": "The premise line. Use as the channel bio or a pinned post - nowhere else"
                 }
               ]
             },
@@ -2112,7 +2112,7 @@
                   "reg": "locked",
                   "label": "Locked",
                   "text": "You had it. What was it, and where did it go?",
-                  "dir": "The question under every episode. Never stated on the show — safe as a caption"
+                  "dir": "The question under every episode. Never stated on the show - safe as a caption"
                 }
               ]
             }
@@ -2238,7 +2238,7 @@
                   "reg": "eased",
                   "label": "Eased",
                   "text": "New episode is up. Link in bio.",
-                  "dir": "Note: the only permitted CTA in this register — never a product link"
+                  "dir": "Note: the only permitted CTA in this register - never a product link"
                 }
               ]
             },
@@ -2265,19 +2265,19 @@
     }
   ],
   "intro": {
-    "eyebrow": "Internal — copy dossier",
+    "eyebrow": "Internal - copy dossier",
     "heading": "Hooks. Captions. Calls to action.",
-    "standfirst": "Instagram and TikTok copy, governed by Brand Book v4. Locked lines are reproduced verbatim. Everything else comes in two registers: House — the brand voice at full strength — and Eased — softer edge, same spine.",
+    "standfirst": "Instagram and TikTok copy, governed by Brand Book v4. Locked lines are reproduced verbatim. Everything else comes in two registers: House - the brand voice at full strength - and Eased - softer edge, same spine.",
     "stamps": [
       "ISSUE 002",
       "SOURCE // BRAND BOOK v4.0"
     ],
-    "band": "Internal copy dossier — governed by Brand Book v4.0, June 2026"
+    "band": "Internal copy dossier - governed by Brand Book v4.0, June 2026"
   },
   "reference": [
     {
       "id": "pairings",
-      "eyebrow": "Section 06 — Assembly",
+      "eyebrow": "Section 06 - Assembly",
       "heading": "Product pairings",
       "lede": "Product architecture per Brand Book §5. A starting hand, not a rule.",
       "table": {
@@ -2291,7 +2291,7 @@
         "rows": [
           [
             "Issue_000",
-            "Permanent baseline. The plain mark — easiest first purchase.",
+            "Permanent baseline. The plain mark - easiest first purchase.",
             "H-F-06",
             "C-PROD-01",
             "A-DM-05"
@@ -2340,7 +2340,7 @@
           ],
           [
             "Dravot",
-            "Top of funnel. Brand-building only — never sells product.",
+            "Top of funnel. Brand-building only - never sells product.",
             "D-CAN-01",
             "D-05",
             "D-07 eased"
@@ -2348,13 +2348,13 @@
         ]
       },
       "open": {
-        "heading": "Open item — needs a decision",
+        "heading": "Open item - needs a decision",
         "body": "The live site carries product art named Tommy, Skull, Tea and Roundel. Brand Book v4 §5 lists Issue_001 as The Establishment, Boudica, The Clerk, The Frequency and Roll Call, with no Tommy or Tea entry. Either the site is ahead of the book or the book is ahead of the site."
       }
     },
     {
       "id": "guardrails",
-      "eyebrow": "Section 07 — Where the line is",
+      "eyebrow": "Section 07 - Where the line is",
       "heading": "Guardrails",
       "lede": "Straight from the Brand Book's anti-pattern list, with the social-specific ones added. Check every post against it before it goes out.",
       "items": [
@@ -2364,11 +2364,11 @@
         },
         {
           "title": "Not party political, not activist, not victimhood-driven",
-          "body": "Straight from the \"We Are Not\" list. No parties, politicians, campaigns, current affairs, or grievance framing. Audience is 30–60 across class and political leaning — the moment the brand picks a side it loses half of them."
+          "body": "Straight from the \"We Are Not\" list. No parties, politicians, campaigns, current affairs, or grievance framing. Audience is 30–60 across class and political leaning - the moment the brand picks a side it loses half of them."
         },
         {
           "title": "Banned words",
-          "body": "System. Deploy. Weapon. Resistance. Revolution. Uniform. Also avoid surrender, armoury, conscription, arsenal. Cosy period texture is welcome instead — Home Guard, Quartermaster's, Dispatched, Field Manual."
+          "body": "System. Deploy. Weapon. Resistance. Revolution. Uniform. Also avoid surrender, armoury, conscription, arsenal. Cosy period texture is welcome instead - Home Guard, Quartermaster's, Dispatched, Field Manual."
         },
         {
           "title": "Never explain the joke",
@@ -2376,11 +2376,11 @@
         },
         {
           "title": "Claims must be evidenced",
-          "body": "Anything tagged red on this page is a real-world claim — price, stock, limited runs, customer messages. UK advertising rules apply to organic posts too, not just paid."
+          "body": "Anything tagged red on this page is a real-world claim - price, stock, limited runs, customer messages. UK advertising rules apply to organic posts too, not just paid."
         },
         {
           "title": "Paid social is narrower still",
-          "body": "Campaign-line led, one line, product or graphic carries it. Target on interests — British heritage, independent brands, history, dry humour. Never target political categories. Run Eased register in paid; keep House organic."
+          "body": "Campaign-line led, one line, product or graphic carries it. Target on interests - British heritage, independent brands, history, dry humour. Never target political categories. Run Eased register in paid; keep House organic."
         },
         {
           "title": "No people in brand imagery",

@@ -1,5 +1,5 @@
 ---
-// social — the internal copy dossier: hooks, captions and CTAs for IG and TikTok.
+// social - the internal copy dossier: hooks, captions and CTAs for IG and TikTok.
 //
 // Not part of the shop. It carries no masthead, cart or footer on purpose: it is a
 // working tool for whoever is writing posts, and the shop chrome would only get in
@@ -8,7 +8,7 @@
 // Copy lives in src/data/pages/social.json and is rendered server-side, so the page
 // is complete and readable before any script runs. Edits are overlaid on top: the
 // browser fetches /api/social, swaps in any line that has been changed, and posts
-// changes back. The JSON in the repo stays the canonical version — an override can
+// changes back. The JSON in the repo stays the canonical version - an override can
 // always be reverted to it.
 import '~/styles/tokens.css';
 import page from '~/data/pages/social.json';
@@ -39,6 +39,17 @@ const intro = page.intro;
 const sections = page.sections as Section[];
 const reference = page.reference as Reference[];
 const editable = sections.flatMap((s) => s.groups.flatMap((g) => g.entries.flatMap((e) => e.variants)));
+
+// The chips are named for where the copy comes from, not for the shape of it:
+// what is locked to the Brand Book, what was written beyond it, and Dravot, who
+// has his own voice and never sells a shirt. Hooks, captions and CTAs sit in one
+// group because they are used together - a hook needs its caption and its ask.
+const filters = [
+  { label: 'All', kinds: [] },
+  { label: 'From Brand Book', kinds: ['verbatim'] },
+  { label: 'Beyond Brand Book', kinds: ['hook', 'caption', 'cta'] },
+  { label: 'Dravot says', kinds: ['dravot'] },
+];
 ---
 
 <!doctype html>
@@ -48,7 +59,7 @@ const editable = sections.flatMap((s) => s.groups.flatMap((g) => g.entries.flatM
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0A0A0A" />
     <meta name="robots" content="noindex, nofollow" />
-    <title>Social copy — BlitzSpirit</title>
+    <title>Social copy - BlitzSpirit</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -72,10 +83,14 @@ const editable = sections.flatMap((s) => s.groups.flatMap((g) => g.entries.flatM
       <div class="controls" role="search">
         <div class="chipset" id="kinds">
           <span class="setlabel">Show</span>
-          <button class="chip" type="button" data-filter="all" aria-pressed="true">All</button>
-          {sections.map((s) => (
-            <button class="chip" type="button" data-filter={s.kind} aria-pressed="false">
-              {s.id}
+          {filters.map((f, i) => (
+            <button
+              class="chip"
+              type="button"
+              data-filter={f.kinds.join(',') || 'all'}
+              aria-pressed={i === 0 ? 'true' : 'false'}
+            >
+              {f.label}
             </button>
           ))}
         </div>
@@ -177,7 +192,7 @@ const editable = sections.flatMap((s) => s.groups.flatMap((g) => g.entries.flatM
       ))}
 
       <footer>
-        <span>Blitzspirit — copy dossier, Issue 002</span>
+        <span>Blitzspirit - copy dossier, Issue 002</span>
         <span>Governed by Brand Book v4.0</span>
         <span>Built for the stubborn</span>
       </footer>
@@ -405,7 +420,7 @@ const editable = sections.flatMap((s) => s.groups.flatMap((g) => g.entries.flatM
       }
       .guard ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 14px; }
       .guard li { padding-left: 20px; position: relative; max-width: 80ch; }
-      .guard li::before { content: '—'; position: absolute; left: 0; color: var(--signal); }
+      .guard li::before { content: '-'; position: absolute; left: 0; color: var(--signal); }
       .guard li b { display: block; font-family: var(--display-font); text-transform: uppercase; font-size: 17px; }
       .guard li span { color: #fff; font-size: 15px; }
 
