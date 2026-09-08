@@ -65,7 +65,9 @@ jobs:
         run: |
           git config user.name  "blitzspirit-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add -A -- . ':!standalone/dist'
+          # .gitignore already excludes standalone/dist; naming an ignored path in a
+          # pathspec makes git error out instead of skipping it.
+          git add -A
           if git diff --cached --quiet; then
             echo "no change to publish"
             exit 0
