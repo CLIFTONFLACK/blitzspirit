@@ -100,8 +100,18 @@ module.exports = async function handler(req, res) {
     // ?probe=1 asks GitHub what this token can actually do here, which is the
     // quickest way to tell a read-only token from a repo it cannot see at all.
     if (req.query && req.query.probe) {
-      return github.permissions().then(
-        function (perms) { res.status(200).json({ repo: github.repo(), permissions: perms }); },
+      // Deliberately narrow: whether this token can publish, not the account's
+      // full permission set. /edit/ is ungated, so it says the least that is
+      // still useful for setting the token up.
+      return github.canWrite().then(
+        function (ok) {
+          res.status(200).json({
+            repo: github.repo(),
+            branch: github.branch(),
+            canPublish: ok,
+            hint: ok ? undefined : 'the token needs Contents: Read and write on this repository',
+          });
+        },
         function (error) { github.respond(res, error); }
       );
     }

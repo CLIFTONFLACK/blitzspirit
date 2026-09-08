@@ -79,12 +79,25 @@ async function readFile(path) {
  * @param {string} message
  * @returns {Promise<{sha: string, url: string}>}
  */
-/** What the token can actually do on this repo, straight from GitHub. */
-async function permissions() {
+/** Can this token actually publish? Asks GitHub rather than assuming.
+ *
+ *  Note the repo endpoint's `permissions` describe the ACCOUNT's access, not the
+ *  token's granted scopes - a read-only fine-grained PAT on an admin's repo still
+ *  reports admin:true. So this probes the write path itself, with a request that
+ *  changes nothing: creating an empty blob is inert unless a tree references it. */
+async function canWrite() {
   var cfg = config();
   if (!cfg) throw notConfigured();
-  var repo = await call(cfg, '/repos/' + cfg.repo, { method: 'GET' });
-  return repo.permissions || {};
+  try {
+    await call(cfg, '/repos/' + cfg.repo + '/git/blobs', {
+      method: 'POST',
+      body: JSON.stringify({ content: '', encoding: 'utf-8' }),
+    });
+    return true;
+  } catch (error) {
+    if (error.status === 403 || error.status === 404) return false;
+    throw error;
+  }
 }
 
 async function commitFiles(files, message) {
@@ -163,7 +176,7 @@ module.exports = {
   repo: function () { var c = config(); return c && c.repo; },
   branch: function () { var c = config(); return c && c.branch; },
   readFile: readFile,
-  permissions: permissions,
+  canWrite: canWrite,
   commitFiles: commitFiles,
   respond: respond,
 };
