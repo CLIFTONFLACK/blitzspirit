@@ -1,8 +1,8 @@
 .fbconfig
 
-# The standalone shop is authored in standalone/ and built into new/.
-# Build artefacts and dependencies never get committed; new/ deliberately does,
-# because this project has no build step - Vercel publishes the repo as-is.
+# Build output. tools/assemble.mjs writes out/ from standalone/dist + old/,
+# and Vercel serves that - none of it is committed.
+out/
 standalone/node_modules/
 standalone/dist/
 standalone/.astro/

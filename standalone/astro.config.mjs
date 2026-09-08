@@ -2,15 +2,17 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
-// The site is served from /new/ inside the existing `blitzspirit` Vercel project,
-// which still serves the original static site at the root. That project has no build
-// step - it publishes the repo as-is - so this builds to static files that get
-// committed into the repo's `new/` directory. No adapter: nothing here runs on a
-// server. The two serverless functions live in the repo root's api/ directory,
-// alongside the ones the old site already uses.
+// This is now the main site, served from the domain root; the original static site
+// moved to /old/. The `blitzspirit` Vercel project has no build step - it publishes
+// the repo as-is - so this builds to static files that get committed into the repo
+// root. No adapter: nothing here runs on a server. The serverless functions live in
+// the repo's api/ directory, alongside the ones the old site already used.
+//
+// `base` is '/' again, so href() and hrefsInHtml() in src/lib/url.ts are pass-throughs.
+// They stay in place: they cost nothing and they are what makes a future move to
+// another sub-path a config change rather than a sweep of every link.
 export default defineConfig({
   site: 'https://blitz.getbrian.xyz',
-  base: '/new',
   trailingSlash: 'ignore',
   output: 'static',
   build: {
