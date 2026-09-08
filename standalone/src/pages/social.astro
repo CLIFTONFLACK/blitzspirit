@@ -1,0 +1,455 @@
+---
+// social — the internal copy dossier: hooks, captions and CTAs for IG and TikTok.
+//
+// Not part of the shop. It carries no masthead, cart or footer on purpose: it is a
+// working tool for whoever is writing posts, and the shop chrome would only get in
+// the way. It is noindex, and excluded from the sitemap in astro.config.mjs.
+//
+// Copy lives in src/data/pages/social.json and is rendered server-side, so the page
+// is complete and readable before any script runs. Edits are overlaid on top: the
+// browser fetches /api/social, swaps in any line that has been changed, and posts
+// changes back. The JSON in the repo stays the canonical version — an override can
+// always be reverted to it.
+import '~/styles/tokens.css';
+import page from '~/data/pages/social.json';
+
+// TypeScript infers a union of every literal shape in the JSON, which makes the
+// optional fields unreachable. These are the shapes the file actually has.
+interface Variant {
+  id: string;
+  reg: 'house' | 'eased' | 'locked' | string;
+  label: string;
+  text: string;
+  dir?: string;
+  tag?: { text: string; warn: boolean };
+}
+interface Group { heading: string; note: string; entries: { ref: string; variants: Variant[] }[] }
+interface Section { id: string; kind: string; eyebrow: string; heading: string; lede: string; groups: Group[] }
+interface Reference {
+  id: string;
+  eyebrow: string;
+  heading: string;
+  lede: string;
+  table?: { columns: string[]; rows: string[][] };
+  open?: { heading: string; body: string };
+  items?: { title: string; body: string }[];
+}
+
+const intro = page.intro;
+const sections = page.sections as Section[];
+const reference = page.reference as Reference[];
+const editable = sections.flatMap((s) => s.groups.flatMap((g) => g.entries.flatMap((e) => e.variants)));
+---
+
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0A0A0A" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Social copy — BlitzSpirit</title>
+    <link rel="icon" type="image/png" href="/assets/blitzspirit-stamp.png" />
+  </head>
+
+  <body>
+    <div class="band">{intro.band}</div>
+
+    <div class="wrap">
+      <header class="mast">
+        <a class="home" href="/">← blitzspirit</a>
+        <p class="eyebrow">{intro.eyebrow}</p>
+        <h1 class="chunk">{intro.heading}</h1>
+        <p class="standfirst">{intro.standfirst}</p>
+        <div class="stamp">
+          {intro.stamps.map((s) => <span>{s}</span>)}
+          <span>{editable.length} LINES</span>
+        </div>
+      </header>
+
+      <div class="notice">
+        <b>This page is open.</b> Anyone with the link can edit these lines, and a
+        saved change is live for everyone. The version in the repo is never lost —
+        any edited line can be put back with Revert.
+      </div>
+
+      <div class="controls" role="search">
+        <div class="chipset" id="kinds">
+          <span class="setlabel">Show</span>
+          <button class="chip" type="button" data-filter="all" aria-pressed="true">All</button>
+          {sections.map((s) => (
+            <button class="chip" type="button" data-filter={s.kind} aria-pressed="false">
+              {s.id}
+            </button>
+          ))}
+        </div>
+
+        <div class="chipset reg" id="regs">
+          <span class="setlabel">Register</span>
+          <button class="chip" type="button" data-reg="both" aria-pressed="true">Both</button>
+          <button class="chip" type="button" data-reg="house" aria-pressed="false">House</button>
+          <button class="chip" type="button" data-reg="eased" aria-pressed="false">Eased</button>
+        </div>
+
+        <input class="search" id="search" type="search" placeholder="Search" aria-label="Search every line" />
+
+        <span class="count" id="count">{editable.length} entries</span>
+
+        <div class="editbar">
+          <button class="chip edit" type="button" id="editToggle" aria-pressed="false">Edit</button>
+          <button class="chip save" type="button" id="save" hidden>Save</button>
+          <span class="status" id="status" role="status" aria-live="polite"></span>
+        </div>
+      </div>
+
+      {sections.map((section) => (
+        <section id={section.id} data-kind={section.kind}>
+          <p class="eyebrow">{section.eyebrow}</p>
+          <h2 class="chunk">{section.heading}</h2>
+          <p class="lede">{section.lede}</p>
+
+          {section.groups.map((group) => (
+            <>
+              <div class="grouphead">
+                <h3>{group.heading}</h3>
+                <span class="note">{group.note}</span>
+              </div>
+              <div class="lines">
+                {group.entries.map((entry) => (
+                  <div class={'line' + (entry.variants[0].reg === 'locked' ? ' locked' : '')}>
+                    <span class="ref">{entry.ref}</span>
+                    <div class="vars">
+                      {entry.variants.map((v) => (
+                        <div class="v" data-reg={v.reg}>
+                          <span class="vlabel">{v.label}</span>
+                          <div class="body">
+                            <p class="txt" data-line-id={v.id} data-seed={v.text}>{v.text}</p>
+                            {v.tag && <span class={'tag' + (v.tag.warn ? ' warn' : '')}>{v.tag.text}</span>}
+                            {v.dir && <span class="dir">{v.dir}</span>}
+                            <span class="editflag" hidden>
+                              Edited · <button class="revert" type="button" data-revert={v.id}>Revert</button>
+                            </span>
+                          </div>
+                          <button class="copy" type="button">Copy</button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          ))}
+        </section>
+      ))}
+
+      {reference.map((ref) => (
+        <section id={ref.id} class="reference">
+          <p class="eyebrow">{ref.eyebrow}</p>
+          <h2 class="chunk">{ref.heading}</h2>
+          <p class="lede">{ref.lede}</p>
+
+          {ref.table && (
+            <div class="tablewrap">
+              <table>
+                <thead>
+                  <tr>{ref.table.columns.map((c) => <th scope="col">{c}</th>)}</tr>
+                </thead>
+                <tbody>
+                  {ref.table.rows.map((row) => (
+                    <tr>
+                      {row.map((cell, i) => (
+                        <td>{i === 0 ? <span class="prod">{cell}</span> : i > 1 ? <code>{cell}</code> : cell}</td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {ref.open && (
+            <div class="open">
+              <b>{ref.open.heading}</b>
+              <span>{ref.open.body}</span>
+            </div>
+          )}
+
+          {ref.items && (
+            <div class="guard">
+              <ul>
+                {ref.items.map((item) => (
+                  <li><b>{item.title}</b><span>{item.body}</span></li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </section>
+      ))}
+
+      <footer>
+        <span>Blitzspirit — copy dossier, Issue 002</span>
+        <span>Governed by Brand Book v4.0</span>
+        <span>Built for the stubborn</span>
+      </footer>
+    </div>
+
+    <script>
+      import '~/scripts/social.js';
+    </script>
+
+    <style>
+      :root {
+        --khaki: #B89B5E;
+        --hair: rgba(184, 155, 94, 0.28);
+        --hair-hi: rgba(184, 155, 94, 0.7);
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        background: var(--ink);
+        color: var(--bone);
+        font-family: var(--mono);
+        font-size: 15px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .wrap { max-width: 1140px; margin: 0 auto; padding: 0 var(--s3) var(--s7); }
+
+      a { color: var(--bone); }
+      ::selection { background: var(--signal); color: #fff; }
+      :focus-visible { outline: 2px solid var(--khaki); outline-offset: 2px; }
+
+      .band {
+        background: var(--signal);
+        color: #fff;
+        font-size: 11px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        text-align: center;
+        padding: 9px var(--s2);
+      }
+
+      .mast { padding: var(--s5) 0 var(--s4); border-bottom: 1px solid var(--line); }
+      .home {
+        display: inline-block;
+        font-size: 11px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--bone-dim);
+        text-decoration: none;
+        margin-bottom: var(--s4);
+      }
+      .home:hover { color: var(--bone); }
+
+      .chunk {
+        font-family: var(--display-font);
+        font-weight: 400;
+        text-transform: uppercase;
+        letter-spacing: -0.01em;
+        line-height: 0.95;
+        margin: 0;
+      }
+      h1.chunk { font-size: clamp(34px, 6.4vw, 68px); max-width: 18ch; }
+      h2.chunk { font-size: clamp(24px, 3.4vw, 38px); }
+
+      .eyebrow {
+        font-size: 11px;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: var(--khaki);
+        margin: 0 0 var(--s1);
+      }
+
+      .standfirst { color: var(--bone-dim); max-width: 62ch; margin: var(--s2) 0 0; font-size: 14px; letter-spacing: 0.02em; }
+
+      .stamp {
+        display: flex; flex-wrap: wrap; gap: 8px 20px;
+        margin-top: var(--s3);
+        font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--khaki);
+      }
+
+      .notice {
+        border: 1px solid var(--hair);
+        border-left: 3px solid var(--signal);
+        background: var(--panel);
+        padding: var(--s2);
+        margin-top: var(--s4);
+        font-size: 13px;
+        letter-spacing: 0.02em;
+        color: var(--bone-dim);
+        max-width: 82ch;
+      }
+      .notice b { color: var(--bone); text-transform: uppercase; letter-spacing: 0.08em; }
+
+      section { padding-top: var(--s6); scroll-margin-top: 110px; }
+      .lede { color: var(--bone-dim); max-width: 68ch; margin: var(--s2) 0 0; font-size: 14px; }
+
+      h3 {
+        font-family: var(--display-font);
+        font-weight: 400; text-transform: uppercase; letter-spacing: 0.01em;
+        font-size: 20px; margin: 0;
+      }
+      .grouphead {
+        display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+        margin: var(--s4) 0 var(--s2);
+        padding-bottom: var(--s1);
+        border-bottom: 1px solid var(--line);
+      }
+      .grouphead .note { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bone-dim); }
+
+      /* ---- controls ---- */
+      .controls {
+        position: sticky; top: 0; z-index: 20;
+        background: var(--ink);
+        border-bottom: 1px solid var(--line);
+        padding: 12px 0 10px;
+        margin-top: var(--s4);
+        display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center;
+      }
+      .chipset { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+      .setlabel { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--bone-mute); margin-right: 4px; }
+      .chip {
+        font-family: var(--mono);
+        font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+        color: var(--bone-dim); background: transparent;
+        border: 1px solid var(--line); padding: 9px 11px; min-height: 38px;
+        cursor: pointer; transition: color .18s, border-color .18s, background-color .18s;
+      }
+      .chip:hover { color: var(--bone); border-color: var(--line-bri); }
+      .chip[aria-pressed='true'] { background: var(--signal); border-color: var(--signal); color: #fff; }
+      .chipset.reg .chip[aria-pressed='true'] { background: transparent; border-color: var(--khaki); color: var(--khaki); }
+
+      .search {
+        flex: 1 1 170px; min-width: 150px;
+        font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em;
+        color: var(--bone); background: var(--panel);
+        border: 1px solid var(--line); padding: 10px 12px; min-height: 38px;
+      }
+      .search::placeholder { color: var(--bone-mute); text-transform: uppercase; letter-spacing: 0.16em; font-size: 11px; }
+
+      .count { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--khaki); white-space: nowrap; }
+
+      .editbar { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+      .chip.edit[aria-pressed='true'] { background: var(--khaki); border-color: var(--khaki); color: #000; }
+      .chip.save { border-color: var(--signal); color: var(--signal); }
+      .chip.save:hover { background: var(--signal); color: #fff; }
+      .status { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--bone-dim); }
+      .status[data-tone='ok'] { color: var(--khaki); }
+      .status[data-tone='bad'] { color: var(--signal); }
+
+      /* ---- entries ---- */
+      .lines { display: flex; flex-direction: column; gap: 8px; }
+
+      .line {
+        display: grid; grid-template-columns: 86px 1fr; gap: 14px;
+        background: var(--panel); border: 1px solid var(--line);
+        padding: 12px 14px 12px 16px;
+        transition: border-color .18s, background-color .18s;
+      }
+      .line:hover { border-color: var(--line-bri); background: var(--panel-2); }
+      .line.locked { border-left: 3px solid var(--khaki); }
+      .line > .ref { font-size: 11px; letter-spacing: 0.1em; color: var(--khaki); padding-top: 6px; font-variant-numeric: tabular-nums; }
+
+      .vars { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+      .v { display: grid; grid-template-columns: 66px 1fr auto; gap: 12px; align-items: start; padding: 6px 0; }
+      .v + .v { border-top: 1px dashed rgba(184, 155, 94, 0.16); }
+
+      .vlabel { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; padding-top: 4px; white-space: nowrap; }
+      .v[data-reg='house'] .vlabel { color: var(--signal); }
+      .v[data-reg='eased'] .vlabel { color: var(--bone-mute); }
+      .v[data-reg='locked'] .vlabel { color: var(--khaki); }
+
+      .body { min-width: 0; }
+      .txt {
+        margin: 0; font-size: 16px; line-height: 1.45; white-space: pre-line;
+        max-width: 66ch; letter-spacing: 0.01em;
+      }
+      .v[data-reg='locked'] .txt { color: #fff; }
+
+      .dir, .editflag {
+        display: block; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+        color: var(--bone-mute); margin-top: 7px;
+      }
+      .editflag { color: var(--khaki); }
+      .revert {
+        font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+        background: none; border: 0; border-bottom: 1px solid var(--hair);
+        color: var(--khaki); padding: 0; cursor: pointer;
+      }
+      .revert:hover { color: var(--bone); }
+
+      .copy {
+        font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+        color: var(--bone-dim); background: transparent; border: 1px solid var(--line);
+        padding: 0 10px; height: 30px; min-width: 64px; cursor: pointer;
+        transition: color .15s, border-color .15s;
+      }
+      .copy:hover { color: var(--bone); border-color: var(--line-bri); }
+      .copy.done { color: var(--signal); border-color: var(--signal); }
+
+      .tag {
+        display: inline-block; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+        color: var(--bone-mute); border: 1px solid var(--line); padding: 2px 6px; margin-top: 7px;
+      }
+      .tag.warn { color: var(--signal); border-color: rgba(255, 0, 0, 0.45); }
+
+      /* editing state */
+      body[data-edit='on'] .txt {
+        outline: 1px dashed var(--hair); outline-offset: 4px; cursor: text;
+      }
+      body[data-edit='on'] .txt:focus { outline: 1px solid var(--khaki); background: #000; }
+      .txt[data-edited='1'] { border-left: 2px solid var(--khaki); padding-left: 10px; margin-left: -12px; }
+
+      /* ---- reference ---- */
+      .tablewrap { overflow-x: auto; border: 1px solid var(--line); margin-top: var(--s3); }
+      table { border-collapse: collapse; width: 100%; min-width: 720px; font-size: 13px; }
+      th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+      thead th {
+        font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+        color: var(--khaki); background: var(--panel-2); white-space: nowrap;
+      }
+      tbody tr { background: var(--panel); }
+      tbody tr:last-child td { border-bottom: 0; }
+      td .prod { font-family: var(--display-font); text-transform: uppercase; font-size: 15px; white-space: nowrap; }
+      td code { font-family: var(--mono); font-size: 12px; color: var(--khaki); white-space: nowrap; }
+
+      .open {
+        border: 1px solid rgba(255, 0, 0, 0.4); background: var(--panel);
+        padding: var(--s2); margin-top: var(--s3); max-width: 82ch; font-size: 13px; color: var(--bone-dim);
+      }
+      .open b { display: block; font-family: var(--display-font); text-transform: uppercase; color: var(--bone); font-size: 15px; margin-bottom: 6px; }
+
+      .guard {
+        border: 1px solid rgba(255, 0, 0, 0.4); background: var(--panel);
+        padding: var(--s3); margin-top: var(--s3);
+      }
+      .guard ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 14px; }
+      .guard li { padding-left: 20px; position: relative; max-width: 80ch; }
+      .guard li::before { content: '—'; position: absolute; left: 0; color: var(--signal); }
+      .guard li b { display: block; font-family: var(--display-font); text-transform: uppercase; font-size: 15px; }
+      .guard li span { color: var(--bone-dim); font-size: 13px; }
+
+      footer {
+        margin-top: var(--s7); padding-top: var(--s3); border-top: 1px solid var(--line);
+        display: flex; flex-wrap: wrap; gap: 8px 24px;
+        font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--bone-mute);
+      }
+
+      @media (max-width: 700px) {
+        .line { grid-template-columns: 1fr; gap: 8px; }
+        .line > .ref { padding-top: 0; }
+        .v { grid-template-columns: 1fr; gap: 6px; }
+        .vlabel { padding-top: 0; }
+        .copy { justify-self: start; }
+        .editbar { margin-left: 0; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * { transition: none !important; }
+      }
+    </style>
+  </body>
+</html>
