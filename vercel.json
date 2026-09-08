@@ -7,6 +7,16 @@
       "permanent": true
     },
     {
+      "source": "/new/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/new/:path*/",
+      "destination": "/:path*",
+      "permanent": true
+    },
+    {
       "source": "/new/:path*",
       "destination": "/:path*",
       "permanent": true
@@ -79,11 +89,6 @@
     {
       "source": "/light/:path*",
       "destination": "/old/light/:path*",
-      "permanent": true
-    },
-    {
-      "source": "/newui.css",
-      "destination": "/old/newui.css",
       "permanent": true
     },
     {
