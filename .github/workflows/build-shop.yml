@@ -1,38 +1,42 @@
 name: Build the shop
 
-# Why this exists: the Vercel project publishes this repo as-is, with no build step.
-# The shop's HTML is therefore committed under new/. When someone edits copy through
-# /edit/, the endpoint commits the changed JSON under standalone/src/data/ — and only
-# a rebuild turns that JSON into HTML. This does the rebuild and commits the result,
-# which Vercel then publishes.
+# Vercel builds and deploys this repo now, so this workflow does NOT publish
+# anything. It runs the identical build as a check.
 #
-# The loop is broken by paths-ignore: this workflow writes to new/, and a push that
-# only touches new/ does not trigger it again.
+# Two reasons that is worth the minute it takes:
+#  - Vercel's build logs are not readable from every environment this project is
+#    worked on from. These are. When a deploy fails, this says whether the build
+#    itself is sound or whether the difference is Vercel's environment.
+#  - It gates pull requests before a broken build reaches a deployment.
+#
+# It runs the same commands vercel.json does, deliberately. If they drift, this
+# stops being evidence about the deploy.
 
 on:
   push:
     branches: [main]
     paths:
       - 'standalone/**'
+      - 'tools/**'
+      - 'api/**'
+      - 'package.json'
+      - 'vercel.json'
       - '.github/workflows/build-shop.yml'
+  pull_request:
   workflow_dispatch:
 
-# A second edit landing mid-build should supersede the first, not race it.
 concurrency:
-  group: build-shop
-  cancel-in-progress: false
+  group: build-shop-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          # A shallow clone is enough; we only ever commit on top of the head.
-          fetch-depth: 1
 
       - uses: actions/setup-node@v4
         with:
@@ -40,43 +44,21 @@ jobs:
           cache: npm
           cache-dependency-path: standalone/package-lock.json
 
-      # --include=dev because astro check lives in devDependencies, and CI sets
-      # NODE_ENV=production in some contexts - the same thing that broke the Vercel
-      # build when it was tried there.
+      # Mirrors vercel.json installCommand.
       - name: Install
-        working-directory: standalone
-        run: npm ci --include=dev
+        run: cd standalone && npm ci --include=dev
 
-      # Runs the full gate: catalogue validation, astro check, build, and the
-      # built-HTML content checks. A failure here must not publish anything.
+      # Mirrors vercel.json buildCommand. Runs the full gate inside standalone -
+      # catalogue validation, astro check, the build, the built-HTML checks - then
+      # assembles the deployable tree.
       - name: Build
-        working-directory: standalone
         run: npm run build
 
-      # Lives at the repo root because it needs api/_content.js - the same resolver
-      # the save endpoint uses. A mistyped annotation would otherwise only surface
-      # when someone edited that line and the save came back 400.
+      # Nothing else connects the editor's annotations to its save endpoint. A
+      # mistyped address would otherwise only surface when someone edited that line
+      # and the save came back 400.
       - name: Check every editable annotation resolves
-        run: node tools/check-edit-ids.mjs standalone/dist
+        run: npm run check-edit-ids
 
-      - name: Regenerate the editor page
-        run: node tools/edit-page.mjs standalone/dist edit/index.html
-
-      - name: Publish into new/
-        run: |
-          rm -rf new
-          mkdir -p new
-          cp -R standalone/dist/. new/
-          echo "published $(find new -type f | wc -l) files"
-
-      - name: Commit if anything changed
-        run: |
-          git config user.name  "blitzspirit-bot"
-          git config user.email "bot@users.noreply.github.com"
-          git add new edit
-          if git diff --cached --quiet; then
-            echo "no change to publish"
-            exit 0
-          fi
-          git commit -m "Rebuild the shop" -m "Automated: standalone/ changed, so new/ was rebuilt from it. Source commit ${{ github.sha }}."
-          git push
+      - name: Checkout and content tests
+        run: npm test
