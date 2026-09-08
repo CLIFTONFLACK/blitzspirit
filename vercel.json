@@ -12,10 +12,14 @@
     "outputDirectory.",
     "",
     "The redirects keep every URL that was ever live working: the shop's brief stay at",
-    "/new/, and the original site's own pages."
+    "/new/, and the original site's own pages.",
+    "",
+    "installCommand needs --include=dev: Vercel sets NODE_ENV=production, npm ci",
+    "then skips devDependencies, and `astro check` would try to auto-install",
+    "@astrojs/check at build time - which a non-interactive build cannot do."
   ],
-  "installCommand": "npm --prefix standalone ci",
-  "buildCommand": "npm --prefix standalone run build && node tools/assemble.mjs",
+  "installCommand": "cd standalone && npm ci --include=dev",
+  "buildCommand": "npm run build",
   "outputDirectory": "out",
   "redirects": [
     {
