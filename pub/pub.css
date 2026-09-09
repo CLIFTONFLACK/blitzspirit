@@ -80,9 +80,31 @@ html[data-room='pub'] {
          The panelling stays underneath all of it, so a photo with the wrong
          proportions degrades to a tint over real panelling rather than to a
          stretched mess. --- */
-  --pub-wall-photo: none;
-  --pub-wall-scrim: none;
-  --pub-clutter: 1;
+  /* The photograph is in. A generated wall of an East London pub - panelling,
+     forty years of framed nothing, two pendants lit from above and slightly
+     left, which is the same lamp position every shadow in this file is built
+     from. 2560px wide, 191kB of WebP.
+
+     NOTE THE RELATIVE URL. CSS resolves url() against the STYLESHEET, and this
+     stylesheet is always served at <base>/pub.css - so `pub/wall.webp` lands on
+     <base>/pub/wall.webp, which is where Astro copies public/pub/wall.webp for
+     whichever base is building. An absolute `/pub/wall.webp` would be right by
+     accident today and wrong the moment the edition moves. */
+  --pub-wall-photo: url('pub/wall.webp');
+  /* The photograph was taken in a lit room and this wall is not one. The wash
+     takes it back down to the edition's own ground, and gives the gilt on top of
+     it something dark to sit on. Slightly heavier at the bottom, where the
+     content sits longest. */
+  --pub-wall-scrim: linear-gradient(rgba(12, 8, 3, 0.6), rgba(12, 8, 3, 0.74));
+  /* The drawn wall is down to a trace. It was standing in for the photograph;
+     with the photograph in, its frames would be a second set at a second angle.
+     What is left is a faint grain and the pendants' glow at the ceiling, which
+     the photo's own cropped ceiling does not reach. */
+  --pub-clutter: 0;
+  /* Zero, not a trace. At 0.12 the drawn frames were still legible as outlines
+     floating over the photographed ones - which is the exact fault this token
+     exists to prevent, only quieter. The rule above stays, so deleting the
+     photograph brings the drawn wall back in one edit. */
 
   /* --- THE LAMPS. Two pendants, high and wide apart, plus the bulb skeuo.css
          already hung. Everything with a third dimension in this file derives its
