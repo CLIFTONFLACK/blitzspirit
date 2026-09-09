@@ -477,37 +477,17 @@ html[data-skin='skeuo'] .hero-copy::after { right: 12%; }
 
 html[data-skin='skeuo'] .hero-kicker { color: var(--sk-brass-mid); }
 
-/* Blast tape across the artwork. The pub half and the brutalist half meet here:
-   gummed paper crossed over the glass, which is what you did to a window in 1940
-   and what somebody in this room has evidently done again. Absolutely positioned
-   so it does not become a flex item inside .hero-art. */
-html[data-skin='skeuo'] .hero-art { position: relative; }
-html[data-skin='skeuo'] .hero-art::before,
-html[data-skin='skeuo'] .hero-art::after {
-  content: '';
-  position: absolute;
-  left: -12%;
-  right: -12%;
-  top: calc(50% - 17px);
-  height: 34px;
-  pointer-events: none;
-  /* Gummed paper, not a black bar: it has to read lighter than the wall behind it
-     or the tape looks like a hole in the picture. */
-  background: linear-gradient(
-    180deg,
-    rgba(198, 182, 142, 0.1) 0%,
-    rgba(222, 208, 168, 0.42) 12%,
-    rgba(210, 195, 154, 0.36) 46%,
-    rgba(186, 170, 130, 0.3) 84%,
-    rgba(150, 136, 100, 0.12) 100%
-  );
-  box-shadow:
-    inset 0 1px 0 rgba(255, 248, 224, 0.28),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.25),
-    0 3px 10px rgba(0, 0, 0, 0.45);
-  transform: rotate(24deg);
-}
-html[data-skin='skeuo'] .hero-art::after { transform: rotate(-24deg); }
+/* NO BLAST TAPE. An earlier version of this file crossed two strips of gummed
+   paper over the artwork at plus and minus 24 degrees - the thing you did to a
+   window in 1940. It did not survive contact with the artwork: the hero mark is a
+   skull over two crossed umbrellas, so it already contains a large X, and a second
+   X laid over the first at a different angle read as a defect in the image rather
+   than as tape on glass. The rules are gone rather than commented out; the pub
+   edition inherits this file, so removing them here clears both editions at once.
+
+   The `position: relative` that carried them goes with them - nothing else in this
+   skin positions anything against .hero-art. The pub edition sets its own, for the
+   z-index that lifts the art off the mirror plate. */
 
 /* The artwork is a gold-blocked print on the board rather than the inverted
    screen-blend the black shop uses — on oak that read as a grey stain. */
@@ -973,6 +953,15 @@ html[data-skin='skeuo'] .dossier em {
 }
 
 /* "WHAT IS X" — the little enamel notice riveted next to the handle. */
+/* "THE FREQUENCY STORY" under a heading that already says THE FREQUENCY is the
+   product name twice in four inches. The name is a <span> in ApparelArchive.astro
+   so a skin can drop it, which is how every other difference between the editions
+   is expressed here - one source, one set of markup, the stylesheet decides. The
+   pub edition inherits this file, so both rooms lose the prefix and the main shop
+   keeps it. The link still reads "STORY" to a screen reader, and its href already
+   carries the product. */
+html[data-skin='skeuo'] .what-link-name { display: none; }
+
 html[data-skin='skeuo'] .dossier .what-link {
   background: linear-gradient(180deg, #2b1c0c, #171006);
   color: var(--sk-brass-lit);
@@ -1206,6 +1195,33 @@ html[data-skin='skeuo'] .promo-cta {
 }
 html[data-skin='skeuo'] .promo-sub { color: var(--sk-ink); }
 html[data-skin='skeuo'] .promo-done { color: var(--sk-brass-lit); }
+
+/* THE DISPATCH HEADINGS, LIGHTER. These bands are the one place in the edition
+   where gold leaf sits on a photograph rather than on oak, and the photograph is
+   darkened twice before the type goes on it: brightness(0.62) on .promo::before,
+   then a radial vignette on .promo::after that reaches 60% black at the edges. The
+   standard .chunk leaf runs down to #b8912f at its 56% stop, and against that
+   ground the middle of every letter went to tarnish - legible, but muddy, and
+   heavier than the copy deserves.
+
+   Same leaf, pitched up: seven stops in the same order, none darker than #e2c274,
+   which is the stop the standard gradient uses at 32%. It still reads as metal
+   rather than as flat cream, because the gradient still turns over; it just turns
+   over higher up. The tag and the lead line move to --sk-brass-lit with it, so the
+   band keeps one voice instead of a bright heading over dim furniture. */
+html[data-skin='skeuo'] .promo-title {
+  background: linear-gradient(
+    180deg,
+    #fffdf2 0%, #fff4d2 18%, #f7e3ae 38%, #e2c274 56%,
+    #f2dfa8 72%, #fff6d8 88%, #fffdf2 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+html[data-skin='skeuo'] .promo-tag,
+html[data-skin='skeuo'] .promo-cta {
+  color: var(--sk-brass-lit);
+}
 
 /* ============================================================
    THE TELLY IN THE CORNER — the product video well. A dusty CRT

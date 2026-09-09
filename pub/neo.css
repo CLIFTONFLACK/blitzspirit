@@ -342,11 +342,21 @@ html[data-skin='neo'] .plate-cnr {
    surface, not on it; that is the whole grammar of the style and it
    also stops the page becoming a field of identical raised boxes.
    ============================================================ */
+/* The dossier is the one LIGHT panel on the edition: read-only copy is
+   printed matter laid on the chassis, not cut into it. See the LIGHT
+   DOSSIER section below for the token remap that flips everything inside
+   it; this rule only draws the card itself.
+
+   Its own extrusion is written out in full rather than taken from
+   --neo-raise, because the remap below redeclares --neo-hi / --neo-lo on
+   this same element for the benefit of its children. The card sits on the
+   dark FLOOR, so its shadow has to keep the floor's lamp values; the
+   paper lamp would ring it in white. */
 html[data-skin='neo'] .dossier {
   border: none;
-  background: var(--neo-sunk);
+  background: linear-gradient(145deg, #f1f1f3, #e4e4e9);
   border-radius: var(--neo-r) !important;
-  box-shadow: var(--neo-press);
+  box-shadow: -7px -7px 16px rgba(255, 255, 255, 0.05), 10px 10px 26px rgba(0, 0, 0, 0.75);
 }
 
 html[data-skin='neo'] .field-manual {
@@ -366,10 +376,12 @@ html[data-skin='neo'] .fm-row:last-child {
   border-bottom: none;
 }
 
-/* The index chip stays a hard white stamp — brutalist, unsoftened. */
+/* The index chip stays a hard white stamp — brutalist, unsoftened. Its
+   drop is lighter than the rest of the file's because it now lands on
+   paper, where a 0.6 black block reads as dirt rather than as depth. */
 html[data-skin='neo'] .led-index {
   border-radius: 0 !important;
-  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.6);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.28);
 }
 
 /* ============================================================
@@ -475,6 +487,83 @@ html[data-skin='neo'] .size-pill[disabled],
 html[data-skin='neo'] .size-pill[aria-disabled='true'] {
   box-shadow: none;
   background: transparent;
+}
+
+/* ============================================================
+   LIGHT DOSSIER — the ink, and the lamp that falls on paper.
+
+   Done by redeclaring the tokens ON .dossier rather than by rewriting the
+   rules inside it. theme.css reads --bone / --cream / --line for every
+   word, rule and control in that panel, and a custom property resolves
+   where it is USED, so one remap flips the whole subtree. --neo-hi /
+   --neo-lo go with it, which makes every extrusion INSIDE the card (size
+   keys, the add button) recompute for a light surface instead of painting
+   a dark-ground shadow onto paper.
+
+   What the remap cannot reach is the handful of hard-coded #fff colours
+   further down this file and in theme.css. Each is answered below, and
+   each of those selectors has to out-specify an Astro-scoped rule
+   (.item--dark .dossier strong[data-astro-cid-…], 0-3-1), which the
+   html[data-skin] prefix does at 0-3-2.
+   ============================================================ */
+html[data-skin='neo'] .dossier {
+  /* Paper, and the lamp on it. Same top-left source as the rest of the
+     file; only the materials changed, so the highlight is now near-white
+     and the shadow is a soft grey rather than near-black. */
+  --neo-surface: #e9e9ec;
+  --neo-surface-hi: #f4f4f6;
+  --neo-surface-lo: #dedee3;
+  --neo-sunk: #dcdce1;
+  --neo-hi: rgba(255, 255, 255, 0.95);
+  --neo-hi-soft: rgba(255, 255, 255, 0.7);
+  --neo-lo: rgba(0, 0, 0, 0.18);
+  --neo-lo-soft: rgba(0, 0, 0, 0.12);
+
+  /* Ink. bone and cream carried the copy when the panel was dark; they
+     carry it now, inverted. #1b1d21 on #e9e9ec is about 14.5:1, so the
+     contrast rule at the top of this file still holds: surfaces are the
+     low-contrast part, words never are. */
+  --bone: #1b1d21;
+  --bone-dim: #52565c;
+  --bone-mute: #5b5f66; /* darker than a straight inversion: it inks the VAT
+                           note at 11px, where 4.5:1 is the bar, not 3:1 */
+  --cream: #14161a;
+  --dossier-ink: #1b1d21;
+  --ink: #f2f2f4; /* the inverse: type ON a bone-filled control */
+  --dossier-strong: #0a0a0a; /* ApparelArchive's scoped bold, both row shades */
+  --line: #c7c7ce;
+  --line-bri: #b2b2bb;
+
+  color: var(--bone);
+}
+
+/* theme.css paints .hit and <strong> a hard #fff. ApparelArchive's own
+   scoped bold is handled by --dossier-strong above instead: its selectors
+   carry a data-astro-cid attribute on every element, which no stylesheet
+   rule can out-specify sanely. */
+html[data-skin='neo'] .dossier .hit,
+html[data-skin='neo'] .dossier strong {
+  color: #0a0a0a;
+}
+
+/* .tag is a hard #fff in theme.css. Inside the panel only the group labels
+   still take that colour raw — the prices go through --dossier-ink and the
+   index chip paints itself red — so they are named rather than blanket-set,
+   which would repaint the chip. */
+html[data-skin='neo'] .dossier .cw-label,
+html[data-skin='neo'] .dossier .sizes-label {
+  color: var(--bone-dim);
+}
+
+/* The controls above go white on hover and when chosen, which was right on
+   a dark tray and is invisible on a light one. Depth and the red ring still
+   carry the state; only the ink flips. */
+html[data-skin='neo'] .dossier .directive:hover,
+html[data-skin='neo'] .dossier .cw-opt:hover,
+html[data-skin='neo'] .dossier .size-pill:hover,
+html[data-skin='neo'] .dossier .cw-opt[aria-pressed='true'],
+html[data-skin='neo'] .dossier .size-pill[aria-pressed='true'] {
+  color: #0a0a0a;
 }
 
 /* ============================================================

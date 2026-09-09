@@ -63,8 +63,26 @@ html[data-room='pub'] {
   --pub-stile-hi: rgba(255, 226, 168, 0.13); /* a moulding catching the lamp */
   --pub-stile-lo: rgba(0, 0, 0, 0.72);
 
-  /* Set this to a url() to put a photograph of a real wall over the panelling. */
+  /* --- THE WALL PHOTOGRAPH. Three tokens, always set together, because a
+         photograph of a real pub wall does two things at once: it puts a wall
+         behind the shop, and it makes the drawn clutter redundant. Turning the
+         photo on without turning the drawing down gives you two sets of picture
+         frames at two angles, which is worse than either alone.
+
+         --pub-wall-photo   the file, or `none`
+         --pub-wall-scrim   a wash over it, because a photograph taken in a lit
+                            room is brighter than this edition's wall and the
+                            gilt on top of it needs a dark ground
+         --pub-clutter      how much of the DRAWN wall survives: 1 when there is
+                            no photograph, a trace when there is one, so the
+                            pendants and the round sign still catch the eye at
+                            the ceiling where the photo's own ceiling is cropped
+         The panelling stays underneath all of it, so a photo with the wrong
+         proportions degrades to a tint over real panelling rather than to a
+         stretched mess. --- */
   --pub-wall-photo: none;
+  --pub-wall-scrim: none;
+  --pub-clutter: 1;
 
   /* --- THE LAMPS. Two pendants, high and wide apart, plus the bulb skeuo.css
          already hung. Everything with a third dimension in this file derives its
@@ -169,6 +187,9 @@ html[data-room='pub'] {
    ============================================================ */
 html[data-room='pub'] body {
   background:
+    /* 0. the wash over the photograph. `none` when there is no photograph, so
+          this layer costs nothing in the drawn wall */
+    var(--pub-wall-scrim),
     /* 1. the photograph, if one has been dropped in - otherwise `none` and the
           panelling below shows through untouched */
     var(--pub-wall-photo) center top / cover no-repeat,
@@ -215,7 +236,7 @@ html[data-room='pub'] body {
     /* 5. the oak itself */
     var(--sk-woodgrain),
     linear-gradient(180deg, var(--pub-wall-lit) 0%, var(--pub-wall) 420px, var(--pub-wall) 100%);
-  background-attachment: fixed, fixed, fixed, fixed, scroll, scroll;
+  background-attachment: fixed, fixed, fixed, fixed, fixed, scroll, scroll;
   color: var(--sk-ink);
 }
 
@@ -246,9 +267,11 @@ html[data-room='pub']::before {
   background-position: center top, 0 -40px, 210px 120px, 0 0;
   background-repeat: no-repeat, repeat, repeat, repeat;
   background-size: cover, 680px 540px, 440px 390px, auto;
-  /* Full strength: this layer is the room, and at 0.9 over a near-black wall the
-     frames behind the shop were legible only if you already knew they were there. */
-  opacity: 1;
+  /* Full strength when this layer IS the room: at 0.9 over a near-black wall the
+     frames behind the shop were legible only if you already knew they were there.
+     When a photograph is in, --pub-clutter drops this to a trace - see the token
+     block at the top of the file. */
+  opacity: var(--pub-clutter, 1);
 }
 
 /* main is lifted one layer so every section in it sits in front of the clutter
