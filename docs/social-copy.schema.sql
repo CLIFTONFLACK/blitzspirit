@@ -1,5 +1,11 @@
 -- social_copy - the store behind /social and api/social.js.
 --
+-- It lives in docs/ and not beside api/social.js, which is where it was first put
+-- and where it reads better: Vercel builds everything in api/ as a serverless
+-- function, has no runtime for .sql, and fails the whole deployment over it. Every
+-- deployment from 3c61f4f (2026-09-08 19:11) to cb87b6b failed for that reason and
+-- the live site served yesterday's build throughout.
+--
 -- Run once, in the Supabase SQL editor for the project api/social.js names
 -- (ojrzxknkovkiafzejegy). Until it exists the page still renders every line from
 -- standalone/src/data/pages/social.json; only saving is unavailable, and
