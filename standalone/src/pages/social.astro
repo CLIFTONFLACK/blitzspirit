@@ -153,8 +153,12 @@ const filters = [
                 <span class="note">{group.note}</span>
               </div>
               <div class="lines">
-                {group.sets.map((set) => (
+                {group.sets.map((set, i) => (
                   <div class={'line' + (set.parts.length > 1 ? ' set' : '') + (set.parts[0].entry.variants[0].reg === 'locked' ? ' locked' : '')}>
+                    <div class="sethead">
+                      <span class="num">{String(i + 1).padStart(2, '0')}</span>
+                      <span class="setref">{set.ref}</span>
+                    </div>
                     {set.parts.map((part) => (
                       <div class="part">
                         <div class="partmeta">
@@ -368,86 +372,104 @@ const filters = [
       .status[data-tone='bad'] { color: var(--signal); }
 
       /* ---- entries ---- */
-      .lines { display: flex; flex-direction: column; gap: 8px; }
+      .lines { display: flex; flex-direction: column; gap: var(--s4); }
 
-      /* A set is one postable thing: hook, caption, ask. The parts stack inside a
-         single frame so the eye reads them as one item, with a hairline between. */
-      .line.set { display: block; padding: 0; }
-      .line.set .part { display: grid; grid-template-columns: 86px 1fr; gap: 14px; padding: 12px 14px 12px 16px; }
-      .line.set .part + .part { border-top: 1px solid var(--line); }
-      .line.set .part:first-child { background: rgba(255, 255, 255, 0.02); }
+      /* One set is one postable thing: hook, caption, ask. The page is dark; the
+         parts are printed cards - white, dark text - stacked with air between them
+         so each reads as its own card, under one number for the set. */
+      .line {
+        display: flex; flex-direction: column; gap: 10px;
+        background: transparent; border: 0; padding: 0;
+      }
+      .sethead {
+        display: flex; align-items: baseline; gap: 12px;
+        padding: 0 2px;
+      }
+      .num {
+        font-family: var(--display-font); font-size: 26px; line-height: 1;
+        color: var(--khaki); font-variant-numeric: tabular-nums;
+      }
+      .setref { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #fff; }
 
-      .partmeta { display: flex; flex-direction: column; gap: 4px; padding-top: 6px; }
+      .part {
+        --card-ink: #0D0C0A;
+        --card-mute: #5C5548;
+        --card-red: #B01E14;
+        --card-gold: #7A6230;
+        --card-hair: rgba(13, 12, 10, 0.14);
+        background: #fff; color: var(--card-ink);
+        border-left: 4px solid var(--card-gold);
+        padding: 14px 18px 16px;
+        transition: box-shadow .18s;
+      }
+      .part:hover { box-shadow: 0 0 0 1px var(--khaki); }
+      .line.set .sethead + .part { border-left-color: var(--card-red); }
+      .line.locked .sethead + .part { border-left-color: var(--khaki); }
+
+      .partmeta { display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px; }
       .role {
         font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
-        color: var(--signal); font-weight: 600;
+        color: var(--card-red); font-weight: 600;
       }
-      .line.set .part:not(:first-child) .role { color: var(--khaki); }
-      .partmeta .ref { font-size: 12px; letter-spacing: 0.1em; color: #fff; font-variant-numeric: tabular-nums; }
+      .line.set .part ~ .part .role { color: var(--card-gold); }
+      .partmeta .ref { font-size: 12px; letter-spacing: 0.1em; color: var(--card-mute); font-variant-numeric: tabular-nums; }
 
-      .line {
-        display: grid; grid-template-columns: 86px 1fr; gap: 14px;
-        background: var(--panel); border: 1px solid var(--line);
-        padding: 12px 14px 12px 16px;
-        transition: border-color .18s, background-color .18s;
+      .vars { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+      .v {
+        display: grid; grid-template-columns: 1fr auto; gap: 4px 14px; align-items: start;
+        padding: 8px 0;
       }
-      .line:hover { border-color: var(--line-bri); background: var(--panel-2); }
-      .line.locked { border-left: 3px solid var(--khaki); }
-      .line:not(.set) { grid-template-columns: 86px 1fr; }
-      .line:not(.set) > .part { display: contents; }
+      .v + .v { border-top: 1px dashed var(--card-hair); }
+      .v .body { grid-column: 1; }
+      .v .copy { grid-column: 2; grid-row: 1 / 3; align-self: start; }
 
-      .vars { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-      .v { display: grid; grid-template-columns: 66px 1fr auto; gap: 12px; align-items: start; padding: 6px 0; }
-      .v + .v { border-top: 1px dashed rgba(184, 155, 94, 0.16); }
-
-      .vlabel { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; padding-top: 4px; white-space: nowrap; }
-      .v[data-reg='house'] .vlabel { color: var(--signal); }
-      .v[data-reg='eased'] .vlabel { color: #fff; }
-      .v[data-reg='locked'] .vlabel { color: var(--khaki); }
+      .vlabel { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; white-space: nowrap; }
+      .v[data-reg='house'] .vlabel { color: var(--card-red); }
+      .v[data-reg='eased'] .vlabel { color: var(--card-mute); }
+      .v[data-reg='locked'] .vlabel { color: var(--card-gold); }
 
       .body { min-width: 0; }
       .txt {
         margin: 0; font-size: 18px; line-height: 1.45; white-space: pre-line;
-        max-width: 66ch; letter-spacing: 0.01em;
+        max-width: 66ch; letter-spacing: 0.01em; color: var(--card-ink);
       }
-      .v[data-reg='locked'] .txt { color: #fff; }
 
       .dir, .editflag {
         display: block; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase;
-        color: #fff; margin-top: 7px;
+        color: var(--card-mute); margin-top: 7px;
       }
-      .editflag { color: var(--khaki); }
+      .editflag { color: var(--card-gold); }
       /* A class selector outranks the browser's own [hidden] rule, so display:block
          above would keep the flag on every line whether it has been edited or not. */
       [hidden] { display: none !important; }
       .revert {
         font-family: var(--page-font); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase;
-        background: none; border: 0; border-bottom: 1px solid var(--hair);
-        color: var(--khaki); padding: 0; cursor: pointer;
+        background: none; border: 0; border-bottom: 1px solid var(--card-gold);
+        color: var(--card-gold); padding: 0; cursor: pointer;
       }
-      .revert:hover { color: var(--bone); }
+      .revert:hover { color: var(--card-ink); }
 
       .copy {
         font-family: var(--page-font); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;
-        color: #fff; background: transparent; border: 1px solid var(--line);
+        color: var(--card-ink); background: transparent; border: 1px solid var(--card-ink);
         padding: 0 10px; height: 30px; min-width: 64px; cursor: pointer;
-        transition: color .15s, border-color .15s;
+        transition: color .15s, background-color .15s, border-color .15s;
       }
-      .copy:hover { color: var(--bone); border-color: var(--line-bri); }
-      .copy.done { color: var(--signal); border-color: var(--signal); }
+      .copy:hover { background: var(--card-ink); color: #fff; }
+      .copy.done { color: #fff; background: var(--card-red); border-color: var(--card-red); }
 
       .tag {
         display: inline-block; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
-        color: #fff; border: 1px solid var(--line); padding: 2px 6px; margin-top: 7px;
+        color: var(--card-mute); border: 1px solid var(--card-hair); padding: 2px 6px; margin-top: 7px;
       }
-      .tag.warn { color: var(--signal); border-color: rgba(255, 0, 0, 0.45); }
+      .tag.warn { color: var(--card-red); border-color: rgba(176, 30, 20, 0.5); }
 
       /* editing state */
       body[data-edit='on'] .txt {
-        outline: 1px dashed var(--hair); outline-offset: 4px; cursor: text;
+        outline: 1px dashed var(--card-gold); outline-offset: 4px; cursor: text;
       }
-      body[data-edit='on'] .txt:focus { outline: 1px solid var(--khaki); background: #000; }
-      .txt[data-edited='1'] { border-left: 2px solid var(--khaki); padding-left: 10px; margin-left: -12px; }
+      body[data-edit='on'] .txt:focus { outline: 1px solid var(--card-gold); background: #FFF7E3; }
+      .txt[data-edited='1'] { border-left: 2px solid var(--card-gold); padding-left: 10px; margin-left: -12px; }
 
       /* ---- reference ---- */
       .tablewrap { overflow-x: auto; border: 1px solid var(--line); margin-top: var(--s3); }
@@ -485,12 +507,9 @@ const filters = [
       }
 
       @media (max-width: 700px) {
-        .line { grid-template-columns: 1fr; gap: 8px; }
-        .line.set .part { grid-template-columns: 1fr; gap: 8px; }
-        .partmeta { flex-direction: row; align-items: baseline; gap: 10px; padding-top: 0; }
-        .v { grid-template-columns: 1fr; gap: 6px; }
-        .vlabel { padding-top: 0; }
-        .copy { justify-self: start; }
+        .part { padding: 12px 14px 14px; }
+        .v { grid-template-columns: 1fr; }
+        .v .copy { grid-column: 1; grid-row: auto; justify-self: start; }
         .editbar { margin-left: 0; }
       }
 
