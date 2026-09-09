@@ -202,7 +202,7 @@ const rows = blocks.map((block, i) => {
                     href={href(`/products/${row.product.handle}`)}
                     data-line-id={editBase && `${editBase}.settings.what_label`}
                   >
-                    {row.titleUp} {whatLabel}
+                    <span><span class="what-link-name">{row.titleUp} </span>{whatLabel}</span>
                   </a>
                 )}
                 <button

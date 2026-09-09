@@ -180,7 +180,7 @@ const parse = (text: string) =>
               class="what-link snap"
               href={href(`/products/${product.handle}`)}
               data-line-id={editBase && `${editBase}.settings.what_label`}
-            >{titleUp} {whatLabel}</a>
+            ><span><span class="what-link-name">{titleUp} </span>{whatLabel}</span></a>
           )}
           <button
             type="button"
