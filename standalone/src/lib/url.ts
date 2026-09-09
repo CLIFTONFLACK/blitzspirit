@@ -17,9 +17,16 @@ export function href(path: string): string {
   if (/^([a-z]+:)?\/\//i.test(path)) return path; // http(s):// or protocol-relative
   if (/^(mailto:|tel:|#)/i.test(path)) return path;
   if (!path.startsWith('/')) return path; // already relative
-  if (BASE !== '/' && path.startsWith(BASE)) return path; // don't double-prefix
 
-  return BASE.replace(/\/$/, '') + path;
+  // Don't double-prefix - but only when the path is genuinely INSIDE the base.
+  // A plain startsWith(BASE) test also matches a sibling that merely begins with
+  // the same letters, and it silently emitted /pub.css unprefixed under
+  // base '/pub', which is the "page renders as unstyled Times New Roman" bug
+  // tools/check-build.mjs exists to catch. It caught it.
+  const root = BASE.replace(/\/$/, '');
+  if (root && (path === root || path.startsWith(root + '/'))) return path;
+
+  return root + path;
 }
 
 /** The site root, for "back to base" style links. */

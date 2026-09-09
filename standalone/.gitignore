@@ -5,3 +5,6 @@ dist/
 .env
 .env.local
 .DS_Store
+dist-neo/
+dist-skeuo/
+dist-pub/

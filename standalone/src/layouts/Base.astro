@@ -37,17 +37,69 @@ interface Props {
 
 const { title, description, image, ogType, product, collection } = Astro.props;
 
+// Each skinned EDITION is this same source built a second time under its own base
+// (astro.neo.config.mjs, astro.skeuo.config.mjs), so the base IS the edition's
+// identity - no environment variable, no build flag, nothing to keep in sync. A
+// skin is a public/ stylesheet rather than an import so the main shop, built from
+// the same layout, never carries a byte of one.
+//
+// Adding an edition is a row here plus a config, a merge script and a stylesheet.
+interface Edition {
+  /** Value of <html data-skin>, which is what a skin stylesheet hangs off. */
+  skin: string;
+  /** Value of <html data-room>, for an edition that DERIVES from a skin rather
+   *  than replacing it: /pub is the skeuomorphic skin in a different room, so it
+   *  loads skeuo.css and then pub.css, which re-dresses it. */
+  room?: string;
+  /** Stylesheets, in cascade order - the last one wins a tie. Paths are within
+   *  the edition's base, so href() carries it. */
+  css: string[];
+  themeColour: string;
+  label: string;
+}
+const EDITIONS: Record<string, Edition> = {
+  '/neomorphism': {
+    skin: 'neo',
+    css: ['/neo.css'],
+    themeColour: '#15171B',
+    label: 'NEOMORPHISM EDITION',
+  },
+  '/skeuomorphism': {
+    skin: 'skeuo',
+    css: ['/skeuo.css'],
+    themeColour: '#1F1409',
+    label: 'SKEUOMORPHISM EDITION',
+  },
+  '/pub': {
+    skin: 'skeuo',
+    room: 'pub',
+    css: ['/skeuo.css', '/pub.css'],
+    themeColour: '#150E07',
+    label: 'THE SNUG',
+  },
+};
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const edition: Edition | undefined = EDITIONS[base];
+
+
 // theme.liquid: append the shop name unless the title already carries it.
 const fullTitle = title.includes(settings.shop.name)
   ? title
   : `${title} – ${settings.shop.name}`;
 ---
 <!doctype html>
-<html class="no-js" lang="en-GB">
+<html class="no-js" lang="en-GB" data-skin={edition?.skin} data-room={edition?.room}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#0A0A0A" />
+    <meta name="theme-color" content={edition?.themeColour ?? '#0A0A0A'} />
+
+    {/* A skinned edition is the same copy at a second address. Left indexable it
+        would compete with the shop for its own terms, so it is kept out of the index
+        (the sitemap already excludes it - the edition configs ship none). */}
+    {edition && <meta name="robots" content="noindex, follow" />}
+    {edition?.css.map((sheet) => <link rel="stylesheet" href={href(sheet)} />)}
 
     <title>{fullTitle}</title>
 
@@ -81,6 +133,14 @@ const fullTitle = title.includes(settings.shop.name)
     </main>
 
     <Outro />
+
+    {/* Every edition is real and reachable; the only route back to the shop would
+        otherwise be the address bar. */}
+    {edition && (
+      <a class="edition-mark" href="/" data-cross-edition title={`Leave the ${edition.skin} edition`}>
+        {edition.label} // BACK TO THE SHOP
+      </a>
+    )}
 
     <CartDrawer />
     <SignupModal />

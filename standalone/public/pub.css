@@ -1,0 +1,1054 @@
+/* ============================================================
+   pub.css — THE SNUG. The pub edition's room, at /pub.
+
+   THIS FILE IS A DELTA, NOT A SKIN. It is loaded AFTER skeuo.css, on pages that
+   carry both `data-skin="skeuo"` and `data-room="pub"` (Base.astro's EDITIONS
+   table). skeuo.css supplies the MATERIALS - oak, brass, ceramic, oxblood hide,
+   chalk slate, the one warm bulb, and every token below with an --sk- prefix.
+   This file supplies the ROOM: a panelled wall, and the hardware that hangs the
+   shop on it. Nothing is duplicated between the two, so a fix to the materials
+   lands on both editions at once.
+
+   Every selector here is prefixed html[data-room='pub'], which scores the same as
+   skeuo.css's html[data-skin='skeuo'] - and because this sheet is second in the
+   <head>, it takes every tie. That is the whole override mechanism; there is no
+   specificity arms race in this file.
+
+   THE IDEA. A London back-street pub, panelled to the ceiling in dark oak, with
+   forty years of framed nothing screwed to it: prints, photographs, a chalkboard,
+   enamel advertising signs, brass plaques, a round house sign, beer mats nailed up
+   by the door, and an etched mirror behind the bar. The shop's own sections ARE
+   those objects. The hero is the mirror. A product row is a framed photograph with
+   its brass plate. The technical spec is chalked on a slate. The values are four
+   enamel signs. The footer is the roll of honour over the fireplace.
+
+   THE LIGHT, AND WHY IT MATTERS MORE HERE. skeuo.css established one warm bulb
+   above and slightly left. In a room, that single lamp is what makes a hung object
+   read as hung: a frame catches light on its top and left mouldings, throws a
+   shadow DOWN AND RIGHT onto the wall behind it, and the glass over it picks up one
+   diagonal streak from the same source. Get any of those three facing the wrong way
+   and the whole wall flattens into wallpaper. Every shadow, moulding and sheen in
+   this file is built from --pub-lamp-* so they cannot disagree.
+
+   PHOTOREALISM WITHOUT A PHOTOGRAPH. There is no photograph of a pub wall in this
+   repo and the image generator on this account has no credits, so the wall is built:
+   raised-and-fielded panelling from stacked gradients, three scales of SVG grain,
+   a varnish sheen, lamp pools, and a low-contrast SVG layer of frames, pendants and
+   a round house sign standing in for the clutter behind the content. It is a good
+   wall, and it is not a photograph.
+
+   To make it one, drop a file in public/pub/ and set ONE token:
+
+       html[data-room='pub'] { --pub-wall-photo: url('/pub/wall.webp'); }
+
+   The panelling stays underneath as the base layer, so a photo with the wrong
+   proportions degrades to a tint over real panelling rather than to a stretched
+   mess. Nothing else in this file needs to change. Note the path must carry the
+   edition base (/pub/pub/wall.webp is wrong; /pub/wall.webp is the file at
+   public/pub/wall.webp seen from inside the edition).
+
+   CONTRAST. Unchanged from skeuo.css and not renegotiated here: words sit on flat
+   fields - mount board, chalk slate, brass plate, newsprint - and never directly on
+   grain or panelling. Where this file introduces a new pale material (mount board,
+   newsprint) it declares the ink for it in the same rule.
+   ============================================================ */
+
+html[data-room='pub'] {
+  /* --- THE WALL. Darker than skeuo's oak: this is varnished panelling in a room
+         lit by two lamps, not a lit surface. --- */
+  --pub-wall: #150e07;
+  --pub-wall-lit: #241809;
+  --pub-panel-field: #1b1209; /* the fielded centre of a panel */
+  --pub-stile: #2a1c0c; /* the rails and stiles between panels */
+  --pub-stile-hi: rgba(255, 226, 168, 0.13); /* a moulding catching the lamp */
+  --pub-stile-lo: rgba(0, 0, 0, 0.72);
+
+  /* Set this to a url() to put a photograph of a real wall over the panelling. */
+  --pub-wall-photo: none;
+
+  /* --- THE LAMPS. Two pendants, high and wide apart, plus the bulb skeuo.css
+         already hung. Everything with a third dimension in this file derives its
+         highlight and its shadow from these two lines and nothing else. --- */
+  --pub-lamp-hi: rgba(255, 232, 176, 0.2);
+  --pub-lamp-lo: rgba(0, 0, 0, 0.8);
+
+  /* An object hung on the wall: the lamp is above-left, so the shadow falls
+     down-right, and it is soft because the lamp is a frosted bulb and not a spot. */
+  --pub-hang: 10px 16px 30px rgba(0, 0, 0, 0.66), 2px 4px 8px rgba(0, 0, 0, 0.5);
+  --pub-hang-lg: 18px 30px 60px rgba(0, 0, 0, 0.72), 4px 8px 14px rgba(0, 0, 0, 0.55);
+
+  /* --- GILT MOULDING. A carved frame is a stack of steps, each with its own lit
+         top edge and shaded underside. Twelve stops because a gilt frame is turned
+         gesso over wood and a three-stop gradient reads as gold paint. --- */
+  --pub-gilt: linear-gradient(
+    160deg,
+    #4a3410 0%, #8a6a22 7%, #c9a24a 15%, #f2dfa8 22%, #fff7dd 26%,
+    #e2c274 32%, #b8912f 44%, #916e22 58%, #6f5217 72%,
+    #513a10 84%, #38270a 93%, #241a06 100%
+  );
+  --pub-gilt-dark: linear-gradient(
+    160deg,
+    #2e2109 0%, #5c4413 12%, #8f6d24 26%, #b48e34 34%,
+    #8a6a20 48%, #654a14 66%, #45320d 84%, #2a1e07 100%
+  );
+  /* The carved profile: two lit steps, two shaded, then the wall shadow. */
+  --pub-moulding: inset 0 2px 0 rgba(255, 247, 221, 0.5),
+    inset 2px 0 0 rgba(255, 247, 221, 0.28),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.6),
+    inset -2px 0 0 rgba(0, 0, 0, 0.45),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.5);
+
+  /* --- MOUNT BOARD. The cream card between a print and its frame; bevel-cut, so
+         its window has a pale cut edge on the light side. --- */
+  --pub-mount: #e4dcc4;
+  --pub-mount-lo: #cdc3a6;
+  --pub-mount-ink: #241c0c;
+  --pub-mount-bevel: inset 0 2px 0 #fffdf3, inset 0 -1px 0 rgba(0, 0, 0, 0.18),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.28);
+
+  /* --- GLASS. One diagonal streak from the lamp, and a faint green cast, because
+         old glass is green at the edges. --- */
+  --pub-glass: linear-gradient(
+      118deg,
+      transparent 26%,
+      rgba(255, 244, 214, 0.1) 37%,
+      rgba(255, 248, 228, 0.19) 41%,
+      rgba(255, 244, 214, 0.06) 46%,
+      transparent 58%
+    ),
+    linear-gradient(180deg, rgba(190, 214, 196, 0.05), rgba(120, 150, 130, 0.03));
+
+  /* --- MIRROR. Behind the bar: bevelled plate glass, silvered, holding a dim
+         reflection of the room's own lamps. --- */
+  --pub-mirror: radial-gradient(
+      120% 90% at 22% 8%,
+      rgba(255, 226, 168, 0.16),
+      rgba(190, 178, 150, 0.05) 40%,
+      transparent 70%
+    ),
+    linear-gradient(
+      168deg,
+      #2a2b26 0%, #22241f 14%, #1c1e1a 32%, #191b17 52%,
+      #161814 70%, #121410 86%, #0e100d 100%
+    );
+
+  /* --- NEWSPRINT. A cutting, framed forty years ago and gone the colour of tea. */
+  --pub-newsprint: #d9cba6;
+  --pub-newsprint-ink: #2a2214;
+
+  /* --- ENAMEL SIGN. Vitreous advertising enamel: cream ground, chipped at one
+         corner to the steel underneath. --- */
+  --pub-enamel-face: linear-gradient(
+    172deg,
+    #f4ecd6 0%, #ece2c8 18%, #e3d8ba 42%, #d9cdab 66%, #cdc09b 88%, #bfb18c 100%
+  );
+
+  /* --- HARDWARE. Brass picture hooks, wire, and the odd nail. --- */
+  --pub-brass-nail: radial-gradient(
+    circle at 34% 28%,
+    #fff7dd 0%, #e2c274 26%, #a8802a 58%, #5c4413 82%, #2e2109 100%
+  );
+
+  /* How far an object stands off its neighbours. A wall needs gaps or it is a
+     collage, and the gap is where the panelling shows. */
+  --pub-gap: clamp(20px, 3.4vw, 56px);
+  --pub-frame: clamp(10px, 1.2vw, 18px); /* moulding width */
+
+  /* This wall is a shade lighter than the skeuomorphic edition's oak, which is
+     enough to drop skeuo.css's muted ink to 4.48:1 against it - under AA by two
+     hundredths, and invisible to anything but a measurement. Both names, because
+     theme.css's components reach for --bone-mute and this file's for --sk-ink-mute,
+     and they were the same colour until this line. */
+  --sk-ink-mute: #94815f;
+  --bone-mute: #94815f;
+}
+
+/* ============================================================
+   THE WALL — panelling, grain, varnish, lamps, and the clutter
+   behind the content.
+   ============================================================ */
+html[data-room='pub'] body {
+  background:
+    /* 1. the photograph, if one has been dropped in - otherwise `none` and the
+          panelling below shows through untouched */
+    var(--pub-wall-photo) center top / cover no-repeat,
+    /* 2. panel mouldings: the lit inner edge of each fielded panel */
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 26px,
+      var(--pub-stile-hi) 26px,
+      var(--pub-stile-hi) 27px,
+      transparent 27px,
+      transparent 205px,
+      var(--pub-stile-lo) 205px,
+      var(--pub-stile-lo) 206px,
+      transparent 206px,
+      transparent 232px
+    ),
+    /* 3. the stiles themselves: vertical rails every 232px */
+    repeating-linear-gradient(
+      90deg,
+      var(--pub-stile) 0px,
+      var(--pub-stile) 18px,
+      rgba(255, 226, 168, 0.05) 18px,
+      rgba(255, 226, 168, 0.05) 20px,
+      var(--pub-panel-field) 22px,
+      var(--pub-panel-field) 210px,
+      rgba(0, 0, 0, 0.5) 212px,
+      var(--pub-stile) 214px,
+      var(--pub-stile) 232px
+    ),
+    /* 4. the horizontal rails: the panel courses, every 340px */
+    repeating-linear-gradient(
+      180deg,
+      rgba(255, 226, 168, 0.06) 0px,
+      rgba(255, 226, 168, 0.06) 2px,
+      rgba(0, 0, 0, 0.42) 2px,
+      rgba(0, 0, 0, 0.42) 5px,
+      transparent 14px,
+      transparent 322px,
+      rgba(0, 0, 0, 0.5) 330px,
+      rgba(0, 0, 0, 0.55) 338px,
+      rgba(255, 226, 168, 0.055) 340px
+    ),
+    /* 5. the oak itself */
+    var(--sk-woodgrain),
+    linear-gradient(180deg, var(--pub-wall-lit) 0%, var(--pub-wall) 420px, var(--pub-wall) 100%);
+  background-attachment: fixed, fixed, fixed, fixed, scroll, scroll;
+  color: var(--sk-ink);
+}
+
+/* THE CLUTTER, i.e. the forty years of framed nothing. It hangs BEHIND the shop's
+   own objects - html::before sits above body's background and below the positioned
+   content - so it fills every gap between them rather than washing over the page.
+   An earlier version of this rule was on body::before at z-index 1, which is the
+   layer skeuo.css uses for grain, and it therefore lay OVER the pictures.
+   Three tiles, because clutter that repeats on a 680px pitch is read as a tile
+   within two repeats: the frames and the props are on different pitches and
+   different offsets, and the pendants do not repeat at all, because a ceiling
+   happens once. Decoration only: pointer-events:none, and a background rather than
+   markup, so assistive tech never sees it. */
+html[data-room='pub']::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    /* the pendants and the round house sign, at the ceiling and nowhere else */
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='420'><defs><radialGradient id='b' cx='0.5' cy='0.45' r='0.5'><stop offset='0' stop-color='%23ffe6ae' stop-opacity='0.9'/><stop offset='0.3' stop-color='%23ffcf7a' stop-opacity='0.4'/><stop offset='1' stop-color='%23ffcf7a' stop-opacity='0'/></radialGradient></defs><g stroke='%23c9a24a' stroke-opacity='0.5' stroke-width='3' fill='none'><path d='M300 0 L300 66'/><path d='M860 0 L860 50'/><path d='M1240 0 L1240 78'/></g><g fill='%23b8912f' fill-opacity='0.55'><path d='M282 60 h36 l9 20 h-54 z'/><path d='M842 44 h36 l9 20 h-54 z'/><path d='M1222 72 h36 l9 20 h-54 z'/></g><g fill='url(%23b)'><circle cx='300' cy='96' r='62'/><circle cx='860' cy='80' r='54'/><circle cx='1240' cy='108' r='58'/></g><g fill='none' stroke='%23c9a24a' stroke-opacity='0.42'><circle cx='690' cy='150' r='56' stroke-width='10'/><circle cx='690' cy='150' r='40' stroke-width='3'/></g></svg>"),
+    /* the framed nothing: two tiles at different sizes and offsets, because one
+       tile of picture frames announces itself as a tile within two repeats */
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='680' height='540'><g stroke='%23a8802a' stroke-opacity='0.42' fill='%23120c06' fill-opacity='0.5'><rect x='42' y='58' width='128' height='96' stroke-width='7'/><rect x='196' y='30' width='92' height='128' stroke-width='6'/><rect x='330' y='72' width='150' height='104' stroke-width='8'/><rect x='512' y='44' width='96' height='84' stroke-width='6'/><rect x='86' y='236' width='104' height='140' stroke-width='7'/><rect x='232' y='268' width='140' height='92' stroke-width='6'/><rect x='420' y='240' width='84' height='118' stroke-width='6'/><rect x='540' y='286' width='112' height='80' stroke-width='7'/><rect x='120' y='430' width='136' height='86' stroke-width='6'/><rect x='318' y='412' width='96' height='108' stroke-width='7'/><rect x='470' y='438' width='128' height='78' stroke-width='6'/></g></svg>"),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='440' height='390'><g stroke='%23c9a24a' stroke-opacity='0.34' fill='none'><circle cx='72' cy='74' r='26' stroke-width='5'/><path d='M52 74 h40 M72 54 v40' stroke-width='3'/><circle cx='300' cy='140' r='34' stroke-width='5'/><circle cx='300' cy='140' r='18' stroke-width='3'/><circle cx='300' cy='140' r='5' stroke-width='4'/><rect x='120' y='250' width='96' height='64' stroke-width='6' fill='%23120c06' fill-opacity='0.45'/><circle cx='372' cy='300' r='24' stroke-width='5'/><path d='M352 300 h40 M372 280 v40' stroke-width='3'/></g></svg>"),
+    var(--sk-grain);
+  background-position: center top, 0 -40px, 210px 120px, 0 0;
+  background-repeat: no-repeat, repeat, repeat, repeat;
+  background-size: cover, 680px 540px, 440px 390px, auto;
+  opacity: 0.9;
+}
+
+/* main is lifted one layer so every section in it sits in front of the clutter
+   whether or not that section is positioned. Note what this rule does NOT touch:
+   .masthead is position:fixed at z-index 50 and giving it a z-index here is how an
+   earlier draft of the skeuomorphic edition put the hero on top of the navigation. */
+html[data-room='pub'] main {
+  position: relative;
+  z-index: 1;
+}
+
+/* The grain wash goes back to being a wash, as in the other editions. */
+html[data-room='pub'] body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background-image: var(--sk-grain);
+  opacity: 0.2;
+  mix-blend-mode: soft-light;
+}
+
+/* The two pendants' light on the wall, plus the corners going dark. This replaces
+   skeuo.css's single-bulb wash: same lamp colour, three sources instead of one,
+   because the room is wider than a bar. */
+html[data-room='pub'] body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    radial-gradient(46% 34% at 19% 5%, rgba(255, 214, 140, 0.2), transparent 72%),
+    radial-gradient(40% 30% at 54% 2%, rgba(255, 206, 128, 0.13), transparent 74%),
+    radial-gradient(46% 34% at 78% 7%, rgba(255, 214, 140, 0.17), transparent 72%),
+    radial-gradient(150% 110% at 50% 46%, transparent 34%, rgba(0, 0, 0, 0.62) 100%);
+}
+
+/* ============================================================
+   HUNG ON THE WALL — the shared behaviour. Anything in this list
+   stops being a full-bleed band and becomes an object with air
+   around it, a shadow on the wall behind it, and a hand's-width
+   of tilt. The gaps are where the panelling shows; without them
+   this is a collage, not a wall.
+   ============================================================ */
+html[data-room='pub'] .hero,
+html[data-room='pub'] .featured,
+html[data-room='pub'] .item,
+html[data-room='pub'] .about-block,
+html[data-room='pub'] .about-hero,
+html[data-room='pub'] .coll-header,
+html[data-room='pub'] .values-grid,
+html[data-room='pub'] .newsletter,
+html[data-room='pub'] .promo,
+html[data-room='pub'] .cross-sell,
+html[data-room='pub'] .pdp-promo,
+html[data-room='pub'] .pdp-video,
+html[data-room='pub'] .pdp-editorial,
+html[data-room='pub'] .equipment,
+html[data-room='pub'] .field-manual,
+html[data-room='pub'] .outro {
+  position: relative;
+  margin: var(--pub-gap) auto;
+  max-width: min(1240px, 92vw);
+  border: none !important;
+  border-radius: 4px !important;
+  box-shadow: var(--pub-moulding), var(--pub-hang);
+  background: var(--pub-gilt-dark);
+  padding: var(--pub-frame);
+  isolation: isolate;
+}
+
+/* The picture wire and its hook. Two wires to one brass hook above the frame, which
+   is how a heavy frame is actually hung, and the reason the tilt below reads as
+   accident rather than as a CSS transform. */
+html[data-room='pub'] .hero::before,
+html[data-room='pub'] .featured::before,
+html[data-room='pub'] .item::before,
+html[data-room='pub'] .about-block::before,
+html[data-room='pub'] .values-grid::before,
+html[data-room='pub'] .newsletter::before,
+html[data-room='pub'] .cross-sell::before,
+html[data-room='pub'] .field-manual::before,
+html[data-room='pub'] .outro::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -26px;
+  width: 168px;
+  height: 30px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background:
+    var(--pub-brass-nail) center top / 13px 13px no-repeat,
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='168' height='30'><path d='M84 8 L6 29 M84 8 L162 29' stroke='%232a1c0c' stroke-width='2.5' fill='none'/><path d='M84 8 L6 29 M84 8 L162 29' stroke='%23c9a24a' stroke-opacity='0.55' stroke-width='1' fill='none'/></svg>")
+      center top no-repeat;
+}
+
+/* The tilt. Fractions of a degree: enough that the eye reads "hung by hand", small
+   enough that it never opens a horizontal scrollbar. Alternated down the page. */
+html[data-room='pub'] .item:nth-of-type(odd) { transform: rotate(-0.32deg); }
+html[data-room='pub'] .item:nth-of-type(even) { transform: rotate(0.28deg); }
+html[data-room='pub'] .featured { transform: rotate(0.22deg); }
+html[data-room='pub'] .about-block { transform: rotate(-0.2deg); }
+html[data-room='pub'] .field-manual { transform: rotate(0.4deg); }
+html[data-room='pub'] .cross-sell { transform: rotate(-0.16deg); }
+
+/* Inside a frame, the shop's own panels become the mounted picture: the seams that
+   made them a continuous surface in the other editions have to go, or the frame has
+   nothing in it. */
+html[data-room='pub'] .featured,
+html[data-room='pub'] .item,
+html[data-room='pub'] .about-block {
+  overflow: hidden;
+}
+html[data-room='pub'] .featured-visual,
+html[data-room='pub'] .item-visual,
+html[data-room='pub'] .about-visual {
+  border-right: none !important;
+  border-bottom: none !important;
+}
+
+/* ============================================================
+   THE MIRROR — the hero. Bevelled plate glass in a heavy gilt
+   frame, with the gold-leaf lettering etched into it. The one
+   object in the room you can see the room in.
+   ============================================================ */
+html[data-room='pub'] .hero {
+  background: var(--pub-gilt);
+  padding: clamp(16px, 2vw, 28px);
+  box-shadow: var(--pub-moulding), var(--pub-hang-lg);
+  min-height: min(88vh, 760px);
+  align-items: center;
+}
+
+/* The glass, inside the moulding. ::before is the wire on the other frames; the
+   mirror is screwed to the wall through its frame, so here it is the plate. */
+html[data-room='pub'] .hero::before {
+  content: '';
+  position: absolute;
+  inset: clamp(16px, 2vw, 28px);
+  z-index: 0;
+  background: var(--pub-mirror);
+  /* The bevel: a wide chamfer round the plate, lit along the top and left. */
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.7),
+    inset 0 3px 0 rgba(255, 245, 214, 0.22),
+    inset 3px 0 0 rgba(255, 245, 214, 0.12),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.5),
+    inset 0 0 0 18px rgba(255, 255, 255, 0.028),
+    inset 0 0 0 19px rgba(0, 0, 0, 0.3);
+  width: auto;
+  height: auto;
+  transform: none;
+}
+
+/* The lamp's reflection travelling across the plate. */
+html[data-room='pub'] .hero::after {
+  content: '';
+  position: absolute;
+  inset: clamp(16px, 2vw, 28px);
+  z-index: 0;
+  pointer-events: none;
+  background: var(--pub-glass);
+}
+
+html[data-room='pub'] .hero-copy,
+html[data-room='pub'] .hero-art {
+  position: relative;
+  z-index: 1;
+}
+
+/* On the mirror the copy needs no board of its own: the lettering is etched into
+   the silvering, so the panel that carried it in the skeuomorphic edition goes. */
+html[data-room='pub'] .hero-copy {
+  background: none;
+  border: none;
+  box-shadow: none;
+  border-radius: 0 !important;
+}
+html[data-room='pub'] .hero-copy::before,
+html[data-room='pub'] .hero-copy::after {
+  display: none;
+}
+
+/* Etched, not printed: the leaf keeps its gradient but gains the frosted shadow
+   that acid-etched glass throws back into the silvering. */
+html[data-room='pub'] .hero h1 {
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.85))
+    drop-shadow(0 -1px 0 rgba(255, 247, 221, 0.16))
+    drop-shadow(0 10px 22px rgba(0, 0, 0, 0.6));
+}
+
+/* The skull becomes a frosted motif in the corner of the plate, the way a house
+   emblem is etched into a pub mirror. */
+html[data-room='pub'] .hero-art img {
+  filter: invert(1) sepia(0.5) saturate(1.3) hue-rotate(-14deg) brightness(1.12)
+    drop-shadow(0 2px 0 rgba(0, 0, 0, 0.6));
+  opacity: 0.5;
+  mix-blend-mode: soft-light;
+}
+
+/* ============================================================
+   FRAMED PICTURES — a product plate is a print, so it gets the
+   mount board and the glass that a print on a pub wall has.
+   ============================================================ */
+html[data-room='pub'] .plate,
+html[data-room='pub'] .cs-plate,
+html[data-room='pub'] .coll-plate,
+html[data-room='pub'] .cap-modal-visual {
+  border: none !important;
+  border-radius: 2px !important;
+  padding: clamp(10px, 1.6vw, 22px) !important;
+  background: var(--pub-mount) !important;
+  box-shadow: var(--pub-mount-bevel), var(--pub-hang);
+}
+
+/* The window in the mount is bevel-cut, so its cut edge is a pale line on the light
+   side and a dark one opposite; then the glass over the whole thing. */
+html[data-room='pub'] .plate::after,
+html[data-room='pub'] .cs-plate::after,
+html[data-room='pub'] .coll-plate::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--pub-glass);
+  box-shadow: inset 0 0 22px rgba(0, 0, 0, 0.12);
+}
+html[data-room='pub'] .plate,
+html[data-room='pub'] .cs-plate,
+html[data-room='pub'] .coll-plate {
+  position: relative;
+}
+html[data-room='pub'] .plate img,
+html[data-room='pub'] .cs-plate img,
+html[data-room='pub'] .coll-plate img {
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.35), 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 2px 5px rgba(0, 0, 0, 0.22);
+}
+html[data-room='pub'] .plate-cnr {
+  color: #5c5344;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* The photographs the shop already owns - the telephonists, the milkman - are the
+   period prints on this wall, so they get a frame of their own rather than sitting
+   flush in a band. */
+html[data-room='pub'] .about-visual img,
+html[data-room='pub'] .condiment-visual img {
+  padding: clamp(8px, 1.2vw, 16px);
+  background: var(--pub-mount);
+  box-shadow: var(--pub-mount-bevel), var(--pub-hang);
+  border-radius: 2px !important;
+}
+
+/* The thumb rail: contact prints pinned up beside the big one. */
+html[data-room='pub'] .pdp-thumb {
+  background: var(--pub-mount) !important;
+  border: none !important;
+  padding: 3px !important;
+  box-shadow: var(--pub-mount-bevel), 4px 6px 12px rgba(0, 0, 0, 0.5);
+}
+html[data-room='pub'] .pdp-thumb[aria-pressed='true'] {
+  transform: none;
+  box-shadow: var(--pub-mount-bevel), 0 0 0 2px var(--sk-brass-lit),
+    4px 6px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================================
+   THE CHALKBOARD — the technical spec and the FAQ are what is
+   chalked up by the door: what is on, and what it costs.
+   ============================================================ */
+html[data-room='pub'] .field-manual {
+  background: var(--pub-gilt-dark);
+  padding: clamp(10px, 1.4vw, 16px);
+}
+html[data-room='pub'] .fm-head,
+html[data-room='pub'] .fm-row {
+  border-bottom-color: rgba(230, 225, 207, 0.14);
+}
+html[data-room='pub'] .field-manual > * {
+  position: relative;
+  z-index: 1;
+}
+html[data-room='pub'] .field-manual::after {
+  content: '';
+  position: absolute;
+  inset: clamp(10px, 1.4vw, 16px);
+  z-index: 0;
+  /* Slate, wiped rather than washed: the ghosts of what was written last week. */
+  background:
+    radial-gradient(70% 40% at 18% 22%, rgba(230, 225, 207, 0.05), transparent 70%),
+    radial-gradient(60% 36% at 76% 68%, rgba(230, 225, 207, 0.04), transparent 72%),
+    var(--sk-grain-fine),
+    linear-gradient(172deg, #242725 0%, #1d1f1e 46%, #171918 100%);
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.7);
+}
+
+/* ============================================================
+   ENAMEL SIGNS — the values grid. Four vitreous advertising
+   plates, screwed straight to the panelling in a row.
+   ============================================================ */
+html[data-room='pub'] .values-grid {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  gap: var(--pub-gap);
+  border-radius: 0 !important;
+}
+html[data-room='pub'] .values-grid::before { display: none; }
+
+html[data-room='pub'] .value-cell {
+  position: relative;
+  background: var(--sk-grain-fine), var(--pub-enamel-face) !important;
+  border: none !important;
+  border-radius: 3px !important;
+  padding: clamp(20px, 2.4vw, 34px) clamp(16px, 2vw, 26px);
+  box-shadow:
+    inset 0 2px 0 #fffdf3,
+    inset 0 0 0 3px rgba(0, 0, 0, 0.1),
+    inset 0 0 0 4px rgba(255, 255, 255, 0.5),
+    inset 0 -3px 8px rgba(0, 0, 0, 0.16),
+    var(--pub-hang);
+  transform: rotate(var(--pub-tilt, 0deg));
+}
+html[data-room='pub'] .value-cell:nth-child(odd) { --pub-tilt: -0.5deg; }
+html[data-room='pub'] .value-cell:nth-child(even) { --pub-tilt: 0.45deg; }
+
+/* Two screws top and bottom, and one chip at the corner down to the steel: an
+   enamel sign that has been on a wall since 1953 has both. */
+html[data-room='pub'] .value-cell::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 9px;
+  width: 9px;
+  height: 9px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: var(--pub-brass-nail);
+  box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+html[data-room='pub'] .value-cell::after {
+  content: '';
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  width: 22px;
+  height: 16px;
+  background: radial-gradient(circle at 100% 100%, #5d5750 0 8px, #7d766c 8px 11px, transparent 12px);
+  opacity: 0.75;
+}
+
+/* ============================================================
+   NEWSPRINT UNDER GLASS — the about copy is a framed cutting.
+   ============================================================ */
+html[data-room='pub'] .about-copy {
+  position: relative;
+  background: var(--sk-grain-fine), linear-gradient(174deg, #e2d5b2 0%, var(--pub-newsprint) 42%, #cbbc95 100%) !important;
+  color: var(--pub-newsprint-ink);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.4), inset 0 -6px 16px rgba(0, 0, 0, 0.16);
+  /* Newsprint yellows from the edges in, under glass. */
+  --bone: #2a2214;
+  --bone-dim: #4a4028;
+  --bone-mute: #63583c;
+  --cream: #1a150a;
+  --signal: #8d1111;
+  --brand-red: #8d1111;
+}
+html[data-room='pub'] .about-copy::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 50% 50%, transparent 52%, rgba(122, 96, 44, 0.22) 100%),
+    var(--pub-glass);
+}
+html[data-room='pub'] .about-copy > * { position: relative; z-index: 1; }
+
+/* ============================================================
+   BRASS PLATES — the ledgers. In the other editions these were
+   an oxblood bench; on a wall they are the engraved plate under
+   the picture, which is where a pub puts its words.
+   ============================================================ */
+html[data-room='pub'] .featured-ledger,
+html[data-room='pub'] .item-ledger,
+html[data-room='pub'] .item--dark .item-ledger,
+html[data-room='pub'] .pdp-ledger,
+html[data-room='pub'] .coll-info,
+html[data-room='pub'] .outro-inner {
+  background:
+    var(--sk-grain-fine),
+    linear-gradient(172deg, #ecd699 0%, #ddc37c 22%, #cfae5e 50%, #bd9a45 78%, #a8842f 100%) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 250, 232, 0.75),
+    inset 0 -3px 8px rgba(0, 0, 0, 0.22);
+  /* Engraved into brass, so every word here is near-black - and the plate is
+     POLISHED brass rather than the dark cast brass skeuo.css uses for a plaque.
+     That is not decoration: at a mid-tone of #9a7527 the plate's luminance is about
+     0.19, so even pure black tops out at 4.8:1 and 11px engraving cannot clear AA
+     with any margin at all. At #cfae5e it is nearer 9:1 and the small print has
+     room to breathe. The contrast sweep is what turned this up. */
+  --bone: #241a08;
+  --bone-dim: #3a2a0a;
+  --bone-mute: #4e3a10;
+  --sk-ink: #241a08;
+  --sk-ink-dim: #3a2a0a;
+  --sk-ink-mute: #4e3a10;
+  /* skeuo.css chalks prices onto slate. There is no slate on this plate. */
+  --sk-chalk: #241a08;
+  --cream: #17100a;
+  --signal: #7d0f0f;
+  --brand-red: #7d0f0f;
+}
+html[data-room='pub'] .pdp-ledger .the,
+html[data-room='pub'] .item-ledger .the,
+html[data-room='pub'] .featured-ledger .the,
+html[data-room='pub'] .coll-info .the {
+  color: #7d0f0f;
+}
+html[data-room='pub'] .led-name,
+html[data-room='pub'] .featured-name,
+html[data-room='pub'] .coll-name {
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  color: #1a1207;
+  filter: none;
+  text-shadow: 0 1px 0 rgba(255, 247, 221, 0.4);
+}
+
+/* The dossier is already a brass plaque in the skeuomorphic edition; on a brass
+   ledger it would be brass on brass, so here it is the typed card pinned to the
+   plate - the one place on this wall with a page of prose on it. */
+html[data-room='pub'] .dossier {
+  background: var(--sk-grain-fine), linear-gradient(174deg, #efe7d0 0%, #e4dcc4 40%, #d3c9ac 100%) !important;
+  box-shadow:
+    inset 0 2px 0 #fffdf3,
+    inset 0 0 0 1px rgba(0, 0, 0, 0.25),
+    6px 8px 16px rgba(0, 0, 0, 0.4) !important;
+  --bone: #241c0c;
+  --sk-ink: #241c0c;
+}
+html[data-room='pub'] .dossier p,
+html[data-room='pub'] .dossier .metafield-rich_text_field p,
+html[data-room='pub'] .dossier .metafield-rich_text_field li,
+html[data-room='pub'] .dossier .dossier-desc p,
+html[data-room='pub'] .dossier .dossier-desc li,
+html[data-room='pub'] .dossier .price__current,
+html[data-room='pub'] .dossier .featured-price,
+html[data-room='pub'] .dossier .price__vat,
+html[data-room='pub'] .dossier .price__compare {
+  color: var(--pub-mount-ink);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+html[data-room='pub'] .dossier .hit,
+html[data-room='pub'] .dossier strong,
+html[data-room='pub'] .dossier em {
+  color: #0f0a02 !important;
+}
+html[data-room='pub'] .dossier .cw-label,
+html[data-room='pub'] .dossier .sizes-label { color: #4a3a1c; }
+
+/* The card re-declares --sk-ink dark so its prose reads, and that token is also
+   what skeuo.css paints the size and colourway pills with - on their dark bakelite
+   faces, which put dark ink on a dark face at 1.1:1. The brass ledger re-inks the
+   same token, so the pills there broke the same way.
+   Every pill in this room is therefore a small brass tab: one rule, no dependency
+   on which surface it happens to be sitting on. Both breakages were found by the
+   contrast sweep and neither was visible in a screenshot. */
+html[data-room='pub'] .size-pill,
+html[data-room='pub'] .cw-opt {
+  background: linear-gradient(
+    180deg,
+    #f2dfa8 0%, #e2c274 22%, #cfa74c 52%, #b8912f 78%, #9a7527 100%
+  ) !important;
+  color: #241a08 !important;
+  border-color: #6f5217 !important;
+  text-shadow: 0 1px 0 rgba(255, 247, 221, 0.5);
+  box-shadow: inset 0 1px 0 rgba(255, 247, 221, 0.6), 0 2px 0 #6f5217,
+    0 4px 8px rgba(0, 0, 0, 0.35);
+}
+html[data-room='pub'] .size-pill[aria-pressed='true'],
+html[data-room='pub'] .cw-opt[aria-pressed='true'] {
+  background: linear-gradient(180deg, #6f5217 0%, #4a3410 60%, #33230a 100%) !important;
+  color: #f2dfa8 !important;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.7);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(242, 223, 168, 0.35);
+}
+html[data-room='pub'] .size-pill[disabled],
+html[data-room='pub'] .size-pill[aria-disabled='true'],
+html[data-room='pub'] .cw-opt[disabled],
+html[data-room='pub'] .cw-opt[aria-disabled='true'] {
+  /* Unplated: the tab was never polished, or the lettering has worn off it. A
+     sold-out size is still load-bearing text - it is the thing telling you it is
+     sold out - so it is struck through rather than faded out. */
+  background: linear-gradient(180deg, #cfc6ac 0%, #b6ac91 100%) !important;
+  color: #453e33 !important;
+  opacity: 1;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+html[data-room='pub'] .dossier::before,
+html[data-room='pub'] .dossier::after {
+  /* Pinned, not screwed: a card gets a drawing pin. */
+  background: radial-gradient(circle at 36% 30%, #fff7dd, #c22 55%, #6d0d0d);
+  width: 9px;
+  height: 9px;
+  top: 6px;
+}
+
+/* ============================================================
+   BEER MATS — the collection cards, nailed up in rows the way
+   a pub pins up the mats it has collected.
+   ============================================================ */
+html[data-room='pub'] .coll-grid { gap: var(--pub-gap); }
+html[data-room='pub'] .coll-card {
+  position: relative;
+  background: var(--pub-gilt-dark) !important;
+  border: none !important;
+  border-radius: 3px !important;
+  padding: clamp(8px, 1vw, 13px);
+  box-shadow: var(--pub-moulding), var(--pub-hang);
+  transform: rotate(var(--pub-tilt, 0deg));
+  overflow: visible;
+}
+html[data-room='pub'] .coll-card:nth-child(3n + 1) { --pub-tilt: -0.6deg; }
+html[data-room='pub'] .coll-card:nth-child(3n + 2) { --pub-tilt: 0.5deg; }
+html[data-room='pub'] .coll-card:nth-child(3n) { --pub-tilt: -0.25deg; }
+html[data-room='pub'] .coll-card:hover {
+  transform: rotate(0deg) translateY(-4px);
+  box-shadow: var(--pub-moulding), var(--pub-hang-lg);
+}
+html[data-room='pub'] .coll-card::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -7px;
+  width: 11px;
+  height: 11px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: var(--pub-brass-nail);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.55);
+}
+html[data-room='pub'] .coll-card-ref {
+  background: linear-gradient(180deg, #2c1d0d, #1a1006);
+  border-bottom: none;
+}
+html[data-room='pub'] .cs-grid {
+  background: transparent;
+  border: none;
+  gap: var(--pub-gap);
+}
+html[data-room='pub'] .cs-item {
+  background: var(--pub-gilt-dark) !important;
+  border-radius: 3px !important;
+  padding: clamp(8px, 1vw, 13px);
+  box-shadow: var(--pub-moulding), var(--pub-hang);
+}
+html[data-room='pub'] .cs-name,
+html[data-room='pub'] .cs-price,
+html[data-room='pub'] .cs-ref { color: var(--sk-ink); }
+
+/* ============================================================
+   THE ROLL OF HONOUR — the footer, over the fireplace: one
+   heavy brass plate, engraved, and nothing else on that stretch
+   of wall.
+   ============================================================ */
+html[data-room='pub'] .outro {
+  background: var(--pub-gilt);
+  padding: clamp(14px, 1.8vw, 24px);
+  box-shadow: var(--pub-moulding), var(--pub-hang-lg);
+  border-top: none !important;
+  margin-bottom: calc(var(--pub-gap) * 1.6);
+}
+html[data-room='pub'] .outro-inner {
+  position: relative;
+  z-index: 1;
+  padding: clamp(28px, 4vw, 64px) clamp(20px, 3vw, 48px);
+}
+html[data-room='pub'] .rc-name {
+  background: linear-gradient(180deg, #3a2b0b 0%, #241a06 55%, #3a2b0b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 1px 0 rgba(255, 247, 221, 0.45));
+}
+html[data-room='pub'] .rc-meta {
+  color: #6d0d0d;
+  text-shadow: 0 1px 0 rgba(255, 247, 221, 0.4);
+}
+html[data-room='pub'] .outro-nav a:hover { color: #17100a; }
+html[data-room='pub'] .outro-inner .line { color: #2e2109; }
+html[data-room='pub'] .outro-inner .copyright { color: #46330e; }
+/* .outro-foot and the copyright sit OUTSIDE the plate, on the moulding, so they
+   keep the room's warm ink rather than the plate's engraving. */
+html[data-room='pub'] .outro > .outro-foot .line { color: var(--sk-ink); }
+html[data-room='pub'] .outro > .outro-foot .copyright { color: #cbb68c; }
+
+/* ============================================================
+   THE BAR — the masthead keeps its brass rail from skeuo.css,
+   but in a room it is a shelf, so it gets a shelf's underside
+   shadow falling onto the wall.
+   ============================================================ */
+html[data-room='pub'] .masthead {
+  box-shadow:
+    inset 0 1px 0 var(--pub-lamp-hi),
+    0 3px 0 var(--sk-brass-dark),
+    0 4px 0 var(--sk-brass),
+    0 7px 0 #2a1c07,
+    0 18px 34px rgba(0, 0, 0, 0.8);
+}
+
+/* The announcement bar stays the concrete lintel it became in the skeuomorphic
+   edition. The pub is inside a building, and that is the building. It gains the
+   strap of horse brasses a low beam collects. */
+html[data-room='pub'] .announcement-bar,
+html[data-room='pub'] [class*='announcement'] {
+  position: relative;
+}
+html[data-room='pub'] .announcement-bar::after,
+html[data-room='pub'] [class*='announcement']::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -9px;
+  height: 9px;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 12px 3px, #c9a24a 0 4px, #6f5217 4px 5.5px, transparent 6px)
+      0 0 / 46px 9px repeat-x,
+    linear-gradient(180deg, #2a1c0c, #150e07) 0 0 / 100% 3px repeat-x;
+  opacity: 0.85;
+}
+
+/* ============================================================
+   THE POSTERS — the promo band and the newsletter are handbills
+   pasted up behind glass, and the collection header is the
+   house sign.
+   ============================================================ */
+html[data-room='pub'] .promo {
+  background: var(--pub-gilt-dark);
+  padding: clamp(12px, 1.4vw, 20px);
+  overflow: hidden;
+}
+html[data-room='pub'] .promo::before {
+  inset: clamp(12px, 1.4vw, 20px);
+  filter: sepia(0.5) saturate(0.8) contrast(1.02) brightness(0.58);
+}
+html[data-room='pub'] .promo::after {
+  inset: clamp(12px, 1.4vw, 20px);
+  background:
+    var(--pub-glass),
+    radial-gradient(130% 95% at 50% 50%, transparent 42%, rgba(0, 0, 0, 0.62) 100%);
+}
+html[data-room='pub'] .promo-inner { position: relative; z-index: 1; }
+
+html[data-room='pub'] .newsletter,
+html[data-room='pub'] .pdp-promo {
+  background: var(--pub-gilt-dark);
+}
+html[data-room='pub'] .nws-inner,
+html[data-room='pub'] .pdp-promo-inner {
+  position: relative;
+  z-index: 1;
+  max-width: none;
+  padding: clamp(24px, 4vw, 56px);
+  background:
+    var(--sk-grain-fine),
+    linear-gradient(174deg, #e2d5b2 0%, var(--pub-newsprint) 46%, #c8b891 100%);
+  box-shadow: var(--pub-mount-bevel);
+  --bone: #2a2214;
+  --bone-dim: #4a4028;
+  --bone-mute: #63583c;
+  --cream: #1a150a;
+}
+html[data-room='pub'] .nws-inner h2,
+html[data-room='pub'] .pdp-promo-head {
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  color: #1a150a;
+  filter: none;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+html[data-room='pub'] .nws-inner p,
+html[data-room='pub'] .pdp-promo-sub { color: #2a2214; }
+
+/* A handbill's own reply field is an ink-stamped box, not a lit slot. */
+html[data-room='pub'] .nws-row,
+html[data-room='pub'] .pdp-promo-row {
+  background: linear-gradient(180deg, #f2ead2, #ded3b3) !important;
+  border: 1px solid #8a7a52 !important;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.22) !important;
+}
+html[data-room='pub'] .nws-input,
+html[data-room='pub'] .pdp-promo-input { color: #241c0c; }
+html[data-room='pub'] .nws-input::placeholder,
+html[data-room='pub'] .pdp-promo-input::placeholder { color: #6b5f42; }
+
+/* The collection header and the page heroes are the round house sign: a turned oak
+   board with the name burnt into it. */
+html[data-room='pub'] .coll-header,
+html[data-room='pub'] .about-hero {
+  background: var(--pub-gilt-dark);
+  padding: clamp(12px, 1.6vw, 22px);
+}
+html[data-room='pub'] .coll-header-inner,
+html[data-room='pub'] .about-hero > * {
+  position: relative;
+  z-index: 1;
+}
+html[data-room='pub'] .coll-header::after,
+html[data-room='pub'] .about-hero::after {
+  content: '';
+  position: absolute;
+  inset: clamp(12px, 1.6vw, 22px);
+  z-index: 0;
+  background:
+    radial-gradient(80% 60% at 26% 12%, rgba(255, 226, 168, 0.1), transparent 68%),
+    var(--sk-grain),
+    linear-gradient(172deg, #33220f 0%, #241608 44%, #150d06 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 226, 168, 0.1), inset 0 0 40px rgba(0, 0, 0, 0.6);
+}
+
+/* The filter bar sits under the masthead and is part of the bar, not the wall. */
+/* The count sits on the filter's own gilt moulding, which is darker than the wall,
+   and the room's muted ink lands at 4.4:1 on it. */
+html[data-room='pub'] .coll-count { color: #b8a37b; }
+
+html[data-room='pub'] .coll-filter {
+  max-width: min(1240px, 92vw);
+  margin: var(--pub-gap) auto calc(var(--pub-gap) * -0.4);
+  border-radius: 3px !important;
+  box-shadow: var(--pub-moulding), var(--pub-hang);
+}
+
+/* ============================================================
+   THE TELLY AND THE EDITORIAL — the video well stays the CRT in
+   its cabinet, and the editorial slabs stay concrete: the pub is
+   inside the building, and these are the parts of the building
+   that come through the panelling.
+   ============================================================ */
+html[data-room='pub'] .pdp-video,
+html[data-room='pub'] .pdp-editorial,
+html[data-room='pub'] .equipment {
+  background: var(--pub-gilt-dark);
+  padding: clamp(10px, 1.2vw, 16px);
+}
+html[data-room='pub'] .editorial-grid { border-left: none; }
+html[data-room='pub'] .editorial-block { border-right: none !important; }
+html[data-room='pub'] .video-frame { box-shadow: inset 0 0 90px rgba(0, 0, 0, 0.85), inset 0 0 0 10px #1c1207; }
+
+/* ============================================================
+   SMALL SCREENS — a phone is not a wall. The frames narrow, the
+   gaps close up, every tilt goes (a rotated full-width block on
+   a 375px viewport is a horizontal scrollbar), and the fixed
+   wall becomes a scrolling one, because background-attachment:
+   fixed on a phone is either janky or ignored outright.
+   ============================================================ */
+@media (max-width: 860px) {
+  html[data-room='pub'] {
+    --pub-gap: 12px;
+    --pub-frame: 8px;
+  }
+  html[data-room='pub'] body {
+    background-attachment: scroll, scroll, scroll, scroll, scroll, scroll;
+  }
+  html[data-room='pub'] body::before {
+    background-size: 200% auto, auto;
+  }
+  html[data-room='pub'] .item,
+  html[data-room='pub'] .featured,
+  html[data-room='pub'] .about-block,
+  html[data-room='pub'] .field-manual,
+  html[data-room='pub'] .cross-sell,
+  html[data-room='pub'] .coll-card,
+  html[data-room='pub'] .value-cell {
+    transform: none !important;
+  }
+  html[data-room='pub'] .hero { min-height: 0; }
+  /* The wire and hook cost 26px of vertical space each; at this width the objects
+     are close enough together that the hardware reads as clutter. */
+  html[data-room='pub'] .hero::before,
+  html[data-room='pub'] .featured::before,
+  html[data-room='pub'] .item::before,
+  html[data-room='pub'] .about-block::before,
+  html[data-room='pub'] .newsletter::before,
+  html[data-room='pub'] .cross-sell::before,
+  html[data-room='pub'] .field-manual::before,
+  html[data-room='pub'] .outro::before {
+    display: none;
+  }
+  /* except the mirror's plate, which is not hardware */
+  html[data-room='pub'] .hero::before {
+    display: block;
+    inset: clamp(16px, 2vw, 28px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-room='pub'] .coll-card:hover { transform: rotate(var(--pub-tilt, 0deg)); }
+}

@@ -15,6 +15,21 @@
 import { products } from '~/lib/catalogue';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+// A skinned edition is this same source built under its own base (see
+// astro.neo.config.mjs, astro.skeuo.config.mjs), which gives each one this editor
+// for free: the page list and the preview frame below are already built from the
+// base, so an edition's editor drives that edition's pages. Every editor saves
+// through the same /api/edit into the same JSON, so a copy fix lands on ALL of them
+// - there is one copy of the copy.
+interface Edition { skin: string; room?: string; label: string }
+const EDITIONS: Record<string, Edition> = {
+  '/neomorphism': { skin: 'neo', label: 'NEOMORPHISM EDITION' },
+  '/skeuomorphism': { skin: 'skeuo', label: 'SKEUOMORPHISM EDITION' },
+  // The pub edition derives from the skeuomorphic skin, so its editor wears the
+  // same chrome; only the label says which site the frame is showing.
+  '/pub': { skin: 'skeuo', room: 'pub', label: 'THE SNUG' },
+};
+const edition: Edition | undefined = EDITIONS[base];
 
 const pages = [
   { label: 'Home', path: '/' },
@@ -34,7 +49,7 @@ const pages = [
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex, nofollow" />
-    <title>Copy editor — BLITZSPIRIT</title>
+    <title>{edition ? `Copy editor (${edition.room ?? edition.skin}) — BLITZSPIRIT` : 'Copy editor — BLITZSPIRIT'}</title>
     <link rel="icon" type="image/png" href={`${base}/assets/blitzspirit-stamp.png`} />
     <style define:vars={{ fontUrl: `url('${base}/assets/fonts/chunkfive.woff2')` }}>
       @font-face {
@@ -44,11 +59,11 @@ const pages = [
       }
     </style>
   </head>
-  <body>
+  <body data-skin={edition?.skin} data-room={edition?.room}>
     <header class="bar">
       <div class="brand">
         <span class="chunk">EDIT</span>
-        <span class="tag muted">COPY // COMMITS TO THE REPO</span>
+        <span class="tag muted">{edition ? `${edition.label} // COMMITS TO THE REPO` : 'COPY // COMMITS TO THE REPO'}</span>
       </div>
 
       <label class="picker">
@@ -172,6 +187,107 @@ const pages = [
         .picker { margin-left: 0; width: 100%; }
         select { width: 100%; }
         .actions { width: 100%; justify-content: space-between; }
+      }
+
+      /* The neomorphic edition's editor wears the edition's skin, so it is obvious
+         at a glance which of the two you are about to commit from. Only the chrome
+         changes: the frame renders whichever site the base points at, and the save
+         path is identical either way. */
+      body[data-skin='neo'] {
+        --ink: #15171b;
+        --panel: #1a1d22;
+        --panel-2: #1f2229;
+        --line: rgba(255, 255, 255, 0.05);
+        --line-bri: rgba(255, 255, 255, 0.1);
+        --neo-hi: rgba(255, 255, 255, 0.055);
+        --neo-lo: rgba(0, 0, 0, 0.78);
+      }
+      body[data-skin='neo'] .bar {
+        border-bottom: none;
+        background: linear-gradient(145deg, #1f2229, #141619);
+        box-shadow: 0 10px 26px rgba(0, 0, 0, 0.6);
+      }
+      body[data-skin='neo'] select,
+      body[data-skin='neo'] .btn {
+        border: none;
+        border-radius: 10px;
+        background: linear-gradient(145deg, #1f2229, #141619);
+        box-shadow: -3px -3px 7px var(--neo-hi), 4px 4px 10px var(--neo-lo);
+        transition: box-shadow 200ms ease, color 200ms ease;
+      }
+      body[data-skin='neo'] .btn:hover:not(:disabled) { color: #fff; }
+      body[data-skin='neo'] .btn:disabled {
+        box-shadow: inset 4px 4px 9px var(--neo-lo), inset -3px -3px 7px var(--neo-hi);
+      }
+      body[data-skin='neo'] .btn--go {
+        background: var(--signal);
+        color: #fff;
+        box-shadow: 0 0 24px rgba(255, 0, 0, 0.32);
+      }
+      body[data-skin='neo'] .btn--go:hover:not(:disabled) {
+        background: #fff;
+        color: var(--ink);
+        box-shadow: 0 0 26px rgba(255, 255, 255, 0.28);
+      }
+      body[data-skin='neo'] .hint,
+      body[data-skin='neo'] .status { border-bottom: none; }
+      body[data-skin='neo'] .frame-wrap { background: var(--ink); }
+      @media (prefers-reduced-motion: reduce) {
+        body[data-skin='neo'] .btn,
+        body[data-skin='neo'] select { transition: none; }
+      }
+
+      /* The skeuomorphic edition's editor is the bar's own ledger: oak, brass and
+         one enamel button. Same rule as above - only the chrome changes. */
+      body[data-skin='skeuo'] {
+        --ink: #150d06;
+        --panel: #1f1409;
+        --panel-2: #2c1d0d;
+        --line: #3f2c0c;
+        --line-bri: #6a4d15;
+        --bone: #f2e8d2;
+        --bone-dim: #bfab86;
+      }
+      body[data-skin='skeuo'] .bar {
+        background: linear-gradient(180deg, #2c1d0d 0%, #1f1409 55%, #150d06 100%);
+        border-bottom: none;
+        box-shadow: 0 3px 0 #3f2c0c, 0 4px 0 #9a7527, 0 12px 24px rgba(0, 0, 0, 0.7);
+      }
+      body[data-skin='skeuo'] select,
+      body[data-skin='skeuo'] .btn {
+        border: 1px solid #3f2c0c;
+        border-radius: 5px;
+        background: linear-gradient(180deg, #3b2d1b 0%, #241a0e 100%);
+        box-shadow: inset 0 1px 0 rgba(255, 231, 178, 0.16), 0 2px 0 #150e07,
+          0 5px 10px rgba(0, 0, 0, 0.5);
+        transition: transform 140ms cubic-bezier(0.3, 0, 0.2, 1), box-shadow 140ms ease,
+          color 220ms ease;
+      }
+      body[data-skin='skeuo'] .btn:hover:not(:disabled) { color: #fff6d8; border-color: #9a7527; }
+      body[data-skin='skeuo'] .btn:active:not(:disabled) {
+        transform: translateY(2px);
+        box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.7);
+      }
+      body[data-skin='skeuo'] .btn:disabled { box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.7); }
+      body[data-skin='skeuo'] .btn--go {
+        background: linear-gradient(180deg, #c81f1f 0%, #9e1414 52%, #5d0a0a 100%);
+        border-color: #5d0a0a;
+        color: #fff3e2;
+        box-shadow: inset 0 1px 0 rgba(255, 220, 210, 0.5), 0 3px 0 #4a0808,
+          0 8px 18px rgba(0, 0, 0, 0.6);
+      }
+      body[data-skin='skeuo'] .btn--go:hover:not(:disabled) {
+        background: linear-gradient(180deg, #d92727 0%, #ab1616 52%, #660b0b 100%);
+        border-color: #660b0b;
+        color: #fff;
+      }
+      body[data-skin='skeuo'] .hint { border-bottom-color: #3f2c0c; }
+      body[data-skin='skeuo'] .status { border-bottom-color: #3f2c0c; }
+      body[data-skin='skeuo'] .frame-wrap,
+      body[data-skin='skeuo'] iframe { background: var(--ink); }
+      @media (prefers-reduced-motion: reduce) {
+        body[data-skin='skeuo'] .btn,
+        body[data-skin='skeuo'] select { transition: none; }
       }
     </style>
   </body>

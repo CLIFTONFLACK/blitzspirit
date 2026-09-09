@@ -35,7 +35,12 @@ for (const file of readdirSync(join(dataDir, 'pages'))) {
 }
 
 /* /social is another tool with its own id scheme and its own endpoint. Its ids are
-   not addresses into this data and are none of this check's business. */
+   not addresses into this data and are none of this check's business.
+
+   Matched anywhere in the path, not just at the start: the site is built twice, and
+   the neomorphic edition (astro.neo.config.mjs) carries the same pages under
+   /neomorphism, so its copy of this tool is at /neomorphism/social/. A prefix test
+   would exempt one and fail on the other, for the same 400-odd ids. */
 const NOT_OURS = ['/social/'];
 
 function htmlFiles(dir) {
@@ -52,7 +57,7 @@ const seen = new Map(); // address -> Set of pages it appears on
 for (const file of htmlFiles(dist)) {
   const page = file.slice(dist.length).replace(/\\/g, '/');
   const doc = readFileSync(file, 'utf8');
-  if (NOT_OURS.some((prefix) => page.startsWith(prefix))) continue;
+  if (NOT_OURS.some((segment) => page.includes(segment))) continue;
   for (const match of doc.matchAll(/data-line-id="([^"]+)"/g)) {
     const id = match[1];
     if (!seen.has(id)) seen.set(id, new Set());

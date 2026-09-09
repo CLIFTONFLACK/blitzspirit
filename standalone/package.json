@@ -9,8 +9,8 @@
     "validate": "node tools/validate-catalogue.mjs",
     "check": "astro check --minimumSeverity error",
     "prebuild": "npm run validate && npm run check",
-    "build": "astro build",
-    "postbuild": "node tools/check-build.mjs",
+    "build": "astro build && astro build --config astro.neo.config.mjs && node tools/neo-merge.mjs && astro build --config astro.skeuo.config.mjs && node tools/skeuo-merge.mjs && astro build --config astro.pub.config.mjs && node tools/pub-merge.mjs",
+    "postbuild": "node tools/check-build.mjs && node tools/check-build.mjs dist/neomorphism /neomorphism && node tools/check-build.mjs dist/skeuomorphism /skeuomorphism && node tools/check-build.mjs dist/pub /pub",
     "preview": "astro preview",
     "astro": "astro"
   },
