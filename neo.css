@@ -1,0 +1,866 @@
+/* ============================================================
+   neo.css — the NEOMORPHISM edition's skin.
+
+   Loaded by Base.astro (and edit.astro) only when the deployment base is
+   /neomorphism, and scoped to html[data-skin="neo"] throughout, so it is inert
+   anywhere else. It sits in public/ rather than src/styles/ deliberately: the two
+   editions are the same build run twice, and a public file is linked by URL, which
+   means the main shop never carries a byte of it.
+
+   THE IDEA. Neumorphism alone is a wellness app: soft, pastel, weightless, and it
+   would say nothing true about this brand. So the chassis is neumorphic and
+   everything stamped on it stays brutalist. Panels are extruded concrete with a
+   14-20px radius; type, tags, rules and every red signal keep their hard 0px
+   corners and sit ON the soft surface. Grain and a scanline wash keep it from
+   reading as plastic. The result is a bunker control panel, not a meditation timer.
+
+   THE LIGHT. One source, top-left, fixed. A raised thing carries a pale highlight
+   on its top-left edge and a deep shadow bottom-right; a recessed thing carries the
+   same pair inverted, inside. Every shadow in this file comes from the four tokens
+   below, so the whole surface obeys one lamp. Break that and the depth stops
+   reading as depth.
+
+   WHY THE GREYS GOT LIGHTER. Dark neumorphism has one hard constraint: a highlight
+   cannot be drawn on #0A0A0A, because there is nowhere above it left to go. So the
+   floor is #191C21 and the containers on it are #262A31 - a light grey, lighter than
+   the ground, which is what gives every raised panel a top-left edge to catch the
+   lamp. #0A0A0A survives as the deepest well (the plate alcoves) rather than as the
+   page.
+
+   CONTRAST. Neumorphism's usual accessibility failure is low-contrast text on a
+   mid-grey. It is avoided here by leaving the type alone: bone #ECECEC on #262A31 is
+   about 11.8:1. Only the SURFACES are low-contrast; the words never are. Focus rings
+   stay the hard red outline from theme.css, because a neumorphic control has no
+   border to thicken.
+
+   OVERRIDING THE RESET. theme.css opens with `*{border-radius:0 !important}` — the
+   brutalist reset. Softening anything therefore needs !important back. Every
+   !important in this file is there for that reason and no other.
+   ============================================================ */
+
+html[data-skin='neo'] {
+  /* Ground and surfaces, darkest to lightest.
+
+     The containers are a LIGHT grey and the ground they sit on stays dark. That
+     gap is what makes this read as neumorphism rather than as a dark theme with
+     rounded corners: a raised panel has to be lighter than the floor before its
+     top-left highlight has anywhere to come from. It also leaves the type
+     comfortable - bone #ECECEC on #262a31 is about 11.8:1, so the surfaces are
+     the low-contrast part and the words never are. */
+  --neo-void: #0b0c0e; /* the deepest well: behind everything, inside alcoves */
+  --neo-bg: #191c21; /* the floor the containers sit on */
+  --neo-surface: #262a31; /* a raised panel: the light grey container */
+  --neo-surface-hi: #2e333b; /* its lit face (gradient top) */
+  --neo-surface-lo: #21252b; /* its shaded face (gradient bottom) */
+  --neo-sunk: #1c1f24; /* a recessed field: inputs, wells, tracks */
+
+  /* The lamp: top-left highlight, bottom-right shadow. Nothing else casts light.
+     The highlight is stronger than it would be on a near-black ground - on a
+     light grey container there is enough surface luminance to carry it. */
+  --neo-hi: rgba(255, 255, 255, 0.075);
+  --neo-hi-soft: rgba(255, 255, 255, 0.045);
+  --neo-lo: rgba(0, 0, 0, 0.8);
+  --neo-lo-soft: rgba(0, 0, 0, 0.6);
+
+  /* The five extrusions. Everything soft in this file uses one of these. */
+  --neo-raise: -7px -7px 16px var(--neo-hi), 9px 9px 22px var(--neo-lo);
+  --neo-raise-sm: -3px -3px 7px var(--neo-hi-soft), 4px 4px 10px var(--neo-lo-soft);
+  --neo-raise-lg: -12px -12px 30px var(--neo-hi), 16px 16px 40px var(--neo-lo);
+  --neo-press: inset 5px 5px 12px var(--neo-lo), inset -4px -4px 10px var(--neo-hi);
+  --neo-well: inset 9px 9px 24px rgba(0, 0, 0, 0.85), inset -6px -6px 16px var(--neo-hi-soft);
+
+  /* Radii. The chassis is soft; nothing that carries a word is. */
+  --neo-r: 16px;
+  --neo-r-sm: 10px;
+  --neo-r-lg: 26px;
+
+  /* The signal stays #FF0000 and stays hard-edged, but it may glow: a red lamp
+     under a panel is the one light in this file that is not the top-left lamp,
+     and it is reserved for the primary action. */
+  --neo-glow: 0 0 26px rgba(255, 0, 0, 0.3), 0 0 3px rgba(255, 0, 0, 0.5);
+
+  /* theme.css tokens, re-pointed. Everything that reads var(--panel) etc. moves
+     onto the neomorphic ground without knowing it did. */
+  --ink: #191c21;
+  --panel: #262a31;
+  --panel-2: #2e333b;
+  --line: rgba(255, 255, 255, 0.06);
+  --line-bri: rgba(255, 255, 255, 0.12);
+
+  /* The two muted greys have to move with the ground. theme.css picked #5A5A5A
+     against near-black; on a #191C21 floor that same grey drops to 2.5:1, which
+     fails AA on the 10-11px labels that use it (the hero kicker, the copyright,
+     the asset refs). These are the lightest values that clear 4.5:1 on the
+     LIGHTEST surface they land on - the #262A31 container, not the floor - so
+     they are safe wherever the label is placed. Measured, not guessed. */
+  --bone-mute: #949494;
+  --bone-dim: #a5a5a5;
+
+  /* The deep brand red used for "THE" inside headlines. #C23030 sits at 2.6:1 on
+     the light grey container - under the 3:1 that large text needs - so it is
+     lifted just enough to clear it (3.15:1) without leaving the hue. The signal
+     red #FF0000 is untouched: it is never body copy. */
+  --brand-red: #d14040;
+
+  background: var(--neo-bg);
+}
+
+/* ============================================================
+   GROUND — grain and scanlines. Without these the surfaces read as
+   moulded plastic; with them they read as poured concrete under a
+   failing strip light.
+   ============================================================ */
+html[data-skin='neo'] body {
+  background: var(--neo-bg);
+  position: relative;
+}
+
+html[data-skin='neo'] body::before {
+  /* Grain. An inline SVG turbulence rather than an image request: it is a few
+     hundred bytes and it cannot 404. */
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+html[data-skin='neo'] body::after {
+  /* Scanline wash. 3px pitch, barely there — it should be felt, not counted. */
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.4;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.16) 0 1px,
+    transparent 1px 3px
+  );
+}
+
+/* ============================================================
+   TYPE — the brutalist half. Headlines gain a hard, unblurred red
+   offset: a print misregistration, not a glow. Tags stay stencils.
+   ============================================================ */
+html[data-skin='neo'] .chunk {
+  text-shadow: 3px 3px 0 rgba(255, 0, 0, 0.16);
+}
+
+html[data-skin='neo'] .tag {
+  border-radius: 0 !important; /* stencils stay square, on purpose */
+}
+
+html[data-skin='neo'] ::selection {
+  background: var(--signal);
+  color: #fff;
+}
+
+/* The focus ring survives the skin unchanged. A neumorphic control has no border
+   to thicken and no outline of its own, so this is the only thing a keyboard user
+   has. It is deliberately the hardest edge on the page. */
+html[data-skin='neo'] :focus-visible {
+  outline: 2px solid var(--signal) !important;
+  outline-offset: 3px !important;
+  border-radius: 0 !important;
+}
+
+/* ============================================================
+   MASTHEAD — a floating extruded capsule. The one structural change
+   the skin makes: it lifts off the top edge, which is the fastest way
+   to say "this is the other edition" before a word is read.
+   ============================================================ */
+html[data-skin='neo'] .masthead {
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  padding: 12px 22px;
+  background: linear-gradient(145deg, var(--neo-surface-hi), var(--neo-surface-lo));
+  backdrop-filter: none;
+  border: none;
+  border-radius: var(--neo-r) !important;
+  box-shadow: var(--neo-raise);
+}
+
+/* The announcement bar is a fixed 28px strip at the very top and it stays hard: a
+   red brutalist ticker is exactly the counterpoint the soft capsule needs, so it is
+   not softened, only cleared. This selector has to out-specify theme.css's own
+   `body:has(.announcement-bar) .masthead` rule, which is why body is named. */
+html[data-skin='neo'] body:has(.announcement-bar) .masthead {
+  top: 40px;
+}
+
+html[data-skin='neo'] .announcement-bar {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+}
+
+html[data-skin='neo'] .masthead .tag {
+  transition: color 200ms ease, text-shadow 200ms ease;
+}
+
+html[data-skin='neo'] .masthead a:hover,
+html[data-skin='neo'] .masthead button:hover {
+  color: #fff;
+  text-shadow: 0 0 12px rgba(255, 0, 0, 0.55);
+}
+
+html[data-skin='neo'] .masthead .bag {
+  padding: 6px 14px;
+  border-radius: 999px !important;
+  box-shadow: var(--neo-raise-sm);
+}
+
+html[data-skin='neo'] .masthead .bag:hover {
+  box-shadow: var(--neo-press);
+}
+
+/* The collection filter bar sticks under the masthead; the capsule is 12px lower
+   and a little taller than the flat bar it replaced. */
+/* The filter bar sticks under the masthead. The capsule sits lower and taller than
+   the flat bar it replaced (40px top, ~68px tall with the bar above it), so the
+   offset is measured from that rather than inherited. */
+html[data-skin='neo'] .coll-filter {
+  top: 112px;
+  background: var(--neo-bg);
+  border: none;
+  box-shadow: 0 10px 24px var(--neo-lo-soft);
+}
+
+html[data-skin='neo'] .coll-tab {
+  border: none;
+  background: linear-gradient(145deg, var(--neo-surface-hi), var(--neo-surface-lo));
+  margin: 10px 0 10px 10px;
+  padding: 12px 24px;
+  border-radius: var(--neo-r-sm) !important;
+  box-shadow: var(--neo-raise-sm);
+  transition: box-shadow 200ms ease, color 200ms ease;
+}
+
+html[data-skin='neo'] .coll-tab:hover {
+  color: #fff;
+  background: linear-gradient(145deg, var(--neo-surface-hi), var(--neo-surface-lo));
+}
+
+html[data-skin='neo'] .coll-count {
+  border-left: none;
+}
+
+html[data-skin='neo'] .coll-tab.active {
+  box-shadow: var(--neo-press);
+  color: var(--signal);
+}
+
+/* ============================================================
+   PANELS — every large surface becomes an extruded slab. The seams
+   theme.css drew with 1px borders are replaced by shadow: in a
+   neumorphic system a border is what you use when the light is wrong.
+   ============================================================ */
+html[data-skin='neo'] .featured,
+html[data-skin='neo'] .item,
+html[data-skin='neo'] .about-block,
+html[data-skin='neo'] .values-grid,
+html[data-skin='neo'] .hero,
+html[data-skin='neo'] .promo,
+html[data-skin='neo'] .newsletter,
+html[data-skin='neo'] .coll-header,
+html[data-skin='neo'] .about-hero,
+html[data-skin='neo'] .equipment {
+  border: none;
+  border-bottom: none;
+}
+
+html[data-skin='neo'] .featured,
+html[data-skin='neo'] .item,
+html[data-skin='neo'] .about-block {
+  margin: 26px clamp(12px, 3vw, 34px);
+  overflow: hidden;
+  border-radius: var(--neo-r-lg) !important;
+  background: linear-gradient(145deg, var(--neo-surface-hi), var(--neo-surface-lo));
+  box-shadow: var(--neo-raise-lg);
+}
+
+html[data-skin='neo'] .featured-visual,
+html[data-skin='neo'] .item-visual,
+html[data-skin='neo'] .about-visual {
+  background: transparent;
+  border-right: none;
+}
+
+html[data-skin='neo'] .featured-ledger,
+html[data-skin='neo'] .item-ledger,
+html[data-skin='neo'] .item--dark .item-ledger,
+html[data-skin='neo'] .about-copy {
+  background: transparent;
+}
+
+/* The values grid: four separate keys rather than four cells of one table. */
+html[data-skin='neo'] .values-grid {
+  gap: 20px;
+  padding: 26px clamp(12px, 3vw, 34px);
+  background: transparent;
+}
+
+html[data-skin='neo'] .value-cell {
+  border-right: none;
+  border-radius: var(--neo-r) !important;
+  background: linear-gradient(145deg, var(--neo-surface-hi), var(--neo-surface-lo));
+  box-shadow: var(--neo-raise);
+}
+
+/* ============================================================
+   THE PLATE — the white catalogue well. It stays the brightest thing
+   on the page (it is the product) but it is now lit from inside a
+   recess rather than pinned to the wall with a black hairline.
+   ============================================================ */
+html[data-skin='neo'] .plate {
+  border: none;
+  border-radius: var(--neo-r) !important;
+  box-shadow:
+    var(--neo-well),
+    0 30px 60px rgba(0, 0, 0, 0.55);
+}
+
+html[data-skin='neo'] .item .plate,
+html[data-skin='neo'] .item--dark .plate {
+  border: none;
+  box-shadow:
+    var(--neo-well),
+    0 30px 60px rgba(0, 0, 0, 0.55);
+}
+
+/* The plate stays a light catalogue well, so its corner ref is the one place on
+   the edition where the type has to get DARKER: #656059 on #EAE8E2 is 4.6:1. */
+html[data-skin='neo'] .plate-cnr {
+  color: #656059;
+}
+
+/* ============================================================
+   DOSSIER + FIELD MANUAL — recessed. Read-only copy sits in the
+   surface, not on it; that is the whole grammar of the style and it
+   also stops the page becoming a field of identical raised boxes.
+   ============================================================ */
+html[data-skin='neo'] .dossier {
+  border: none;
+  background: var(--neo-sunk);
+  border-radius: var(--neo-r) !important;
+  box-shadow: var(--neo-press);
+}
+
+html[data-skin='neo'] .field-manual {
+  border: none;
+  background: var(--neo-sunk);
+  border-radius: var(--neo-r) !important;
+  box-shadow: var(--neo-press);
+  overflow: hidden;
+}
+
+html[data-skin='neo'] .fm-head,
+html[data-skin='neo'] .fm-row {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.045);
+}
+
+html[data-skin='neo'] .fm-row:last-child {
+  border-bottom: none;
+}
+
+/* The index chip stays a hard white stamp — brutalist, unsoftened. */
+html[data-skin='neo'] .led-index {
+  border-radius: 0 !important;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.6);
+}
+
+/* ============================================================
+   CONTROLS — the part of neumorphism that has to earn itself.
+   Raised at rest, PRESSED when chosen: the state is depth, not just
+   colour, so it survives a colourblind reading. Colour is kept as
+   well, because depth alone would not.
+   ============================================================ */
+html[data-skin='neo'] .directive,
+html[data-skin='neo'] .dossier .directive {
+  border: none;
+  background: linear-gradient(145deg, var(--neo-surface-hi), var(--neo-surface-lo));
+  border-radius: var(--neo-r-sm) !important;
+  box-shadow: var(--neo-raise-sm);
+  transition: box-shadow 200ms ease, color 200ms ease;
+}
+
+html[data-skin='neo'] .directive:hover,
+html[data-skin='neo'] .dossier .directive:hover {
+  background: linear-gradient(145deg, var(--neo-surface-hi), var(--neo-surface-lo));
+  color: #fff;
+  border: none;
+  box-shadow: var(--neo-raise), var(--neo-glow);
+}
+
+html[data-skin='neo'] .directive:active {
+  box-shadow: var(--neo-press);
+}
+
+html[data-skin='neo'] .directive[disabled],
+html[data-skin='neo'] .directive[aria-disabled='true'] {
+  box-shadow: var(--neo-press);
+  color: var(--bone-mute);
+  border: none;
+}
+
+/* The "what is this" link keeps its red hairline: it is a signal, and signals do
+   not get softened. Square corners, square shadow. */
+html[data-skin='neo'] .dossier .what-link {
+  border-radius: 0 !important;
+  background: var(--neo-void); /* same reason as the eyebrow: red needs a dark ground */
+  box-shadow: 4px 4px 0 rgba(255, 0, 0, 0.18);
+}
+
+html[data-skin='neo'] .dossier .what-link:hover {
+  box-shadow: 4px 4px 0 rgba(255, 255, 255, 0.25);
+}
+
+/* Colourway + size groups: recessed trays holding raised keys. */
+html[data-skin='neo'] .cw,
+html[data-skin='neo'] .cw-size-wrap,
+html[data-skin='neo'] .dossier .cw-size-wrap {
+  border: none !important;
+  background: var(--neo-sunk);
+  border-radius: var(--neo-r-sm) !important;
+  box-shadow: var(--neo-press);
+}
+
+html[data-skin='neo'] .cw-size-wrap .cw {
+  background: transparent;
+  box-shadow: none;
+  border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+html[data-skin='neo'] .cw-opt,
+html[data-skin='neo'] .size-pill,
+html[data-skin='neo'] .dossier .size-pill {
+  border: none;
+  background: linear-gradient(145deg, var(--neo-surface-hi), var(--neo-surface-lo));
+  border-radius: var(--neo-r-sm) !important;
+  box-shadow: var(--neo-raise-sm);
+  transition: box-shadow 200ms ease, color 200ms ease;
+}
+
+html[data-skin='neo'] .cw-opt:hover,
+html[data-skin='neo'] .size-pill:hover,
+html[data-skin='neo'] .dossier .size-pill:hover {
+  border: none;
+  color: #fff;
+}
+
+/* The chosen key is PRESSED, ringed and white - three signals, not one. Red text
+   on the recessed tray was the obvious neumorphic reading and it measured 4.1:1 at
+   12px, below AA; white measures about 15:1 and the hard red ring carries the
+   colour instead, where a ring can afford to. Depth still does the work for anyone
+   who cannot see the red at all. */
+html[data-skin='neo'] .cw-opt[aria-pressed='true'],
+html[data-skin='neo'] .size-pill[aria-pressed='true'],
+html[data-skin='neo'] .dossier .size-pill[aria-pressed='true'] {
+  background: var(--neo-sunk);
+  color: #fff;
+  border: none;
+  box-shadow: var(--neo-press), inset 0 0 0 2px var(--signal);
+}
+
+html[data-skin='neo'] .cw-opt .dot {
+  border: none;
+  border-radius: 999px !important;
+  box-shadow: var(--neo-raise-sm);
+}
+
+html[data-skin='neo'] .size-pill[disabled],
+html[data-skin='neo'] .size-pill[aria-disabled='true'] {
+  box-shadow: none;
+  background: transparent;
+}
+
+/* ============================================================
+   INPUTS — always recessed. A field you type into is a hole in the
+   surface; a thing you press is a lump on it. Never both.
+   ============================================================ */
+html[data-skin='neo'] .promo-row,
+html[data-skin='neo'] .nws-row {
+  border: none;
+  background: var(--neo-sunk);
+  border-radius: var(--neo-r-sm) !important;
+  box-shadow: var(--neo-press);
+  overflow: hidden;
+}
+
+html[data-skin='neo'] .promo-input,
+html[data-skin='neo'] .nws-input {
+  background: transparent;
+}
+
+html[data-skin='neo'] .promo-row:focus-within,
+html[data-skin='neo'] .nws-row:focus-within {
+  box-shadow: var(--neo-press), 0 0 0 2px var(--signal);
+}
+
+/* The submit is the one true red key: raised, glowing, hard-cornered on its inner
+   label. It is the only element allowed both the lamp and the signal glow. */
+html[data-skin='neo'] .promo-submit,
+html[data-skin='neo'] .nws-submit {
+  border: none;
+  border-left: none;
+  background: var(--signal);
+  box-shadow: var(--neo-glow);
+  transition: box-shadow 200ms ease, background 200ms ease, color 200ms ease;
+}
+
+html[data-skin='neo'] .promo-submit:hover,
+html[data-skin='neo'] .nws-submit:hover {
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+}
+
+/* ============================================================
+   HERO — the ground the whole edition is judged on. The artwork gets
+   a real light source; the CTA is the page's one red key.
+   ============================================================ */
+html[data-skin='neo'] .hero {
+  background: radial-gradient(120% 90% at 22% 8%, #1c1f25 0%, var(--neo-bg) 62%);
+}
+
+html[data-skin='neo'] .hero-art img {
+  filter: invert(1) brightness(0.66) sepia(0.28) drop-shadow(14px 18px 26px rgba(0, 0, 0, 0.8));
+}
+
+html[data-skin='neo'] .hero-cta {
+  border-radius: var(--neo-r-sm) !important;
+  box-shadow: var(--neo-raise-sm), var(--neo-glow);
+  transition: box-shadow 200ms ease, background 200ms ease, color 200ms ease;
+}
+
+html[data-skin='neo'] .hero-cta:hover,
+html[data-skin='neo'] .hero-cta:focus-visible {
+  box-shadow: var(--neo-press);
+}
+
+/* The eyebrow keeps its red box: hard corners, hard edge, no lamp. It also gets the
+   void as its ground - #FF0000 on the light grey container is 4.1:1 and fails AA at
+   11px, while the same red on #0B0C0E is 4.8:1 and passes. A red stencil sunk into a
+   dark recess is the right reading here anyway. */
+html[data-skin='neo'] .featured-eyebrow {
+  border-radius: 0 !important;
+  background: var(--neo-void);
+  box-shadow: 4px 4px 0 rgba(255, 0, 0, 0.2);
+}
+
+/* ============================================================
+   PROMO BAND — the image band. Its own recessed frame so the
+   photograph reads as something set into the wall.
+   ============================================================ */
+html[data-skin='neo'] .promo {
+  margin: 26px clamp(12px, 3vw, 34px);
+  border-radius: var(--neo-r-lg) !important;
+  box-shadow: var(--neo-raise-lg);
+}
+
+html[data-skin='neo'] .promo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: var(--neo-r-lg);
+  box-shadow: var(--neo-well);
+}
+
+/* ============================================================
+   COLLECTION GRID + CARDS — each card is one extruded key. The
+   plate keeps its light face; everything under it is the card's own
+   surface, so the seams theme.css drew with 1px lines come out.
+   ============================================================ */
+html[data-skin='neo'] .coll-header,
+html[data-skin='neo'] .about-hero {
+  background: radial-gradient(110% 120% at 20% 0%, #1c1f25 0%, var(--neo-bg) 70%);
+}
+
+html[data-skin='neo'] .coll-card,
+html[data-skin='neo'] .cs-item {
+  border: none;
+  /* Without this the radius is drawn and then painted over by the plate and the
+     info block, which is how a rounded card ends up with square corners. */
+  overflow: hidden;
+  background: linear-gradient(145deg, var(--neo-surface-hi), var(--neo-surface-lo));
+  border-radius: var(--neo-r) !important;
+  box-shadow: var(--neo-raise);
+  transition: box-shadow 220ms ease;
+}
+
+html[data-skin='neo'] .coll-card:hover,
+html[data-skin='neo'] .cs-item:hover {
+  box-shadow: var(--neo-raise-lg);
+}
+
+html[data-skin='neo'] .coll-card-ref,
+html[data-skin='neo'] .coll-info,
+html[data-skin='neo'] .cs-foot {
+  background: transparent;
+  border-top: none;
+  border-bottom: none;
+}
+
+html[data-skin='neo'] .coll-card-ref {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+html[data-skin='neo'] .coll-cta {
+  border: none;
+  color: var(--bone);
+  background: linear-gradient(145deg, var(--neo-surface-hi), var(--neo-surface-lo));
+  border-radius: var(--neo-r-sm) !important;
+  box-shadow: var(--neo-raise-sm);
+  transition: box-shadow 200ms ease, color 200ms ease;
+}
+
+html[data-skin='neo'] .coll-cta:hover {
+  background: linear-gradient(145deg, var(--neo-surface-hi), var(--neo-surface-lo));
+  border: none;
+  color: #fff;
+  box-shadow: var(--neo-raise), var(--neo-glow);
+}
+
+html[data-skin='neo'] .coll-dot,
+html[data-skin='neo'] .coll-dots .dot {
+  border: none;
+  border-radius: 999px !important;
+  box-shadow: var(--neo-raise-sm);
+}
+
+/* The badge and the issue stamp stay hard: they are labels struck onto the card,
+   and a rounded sticker would read as decoration rather than as a mark. */
+html[data-skin='neo'] .coll-badge,
+html[data-skin='neo'] .coll-issue,
+html[data-skin='neo'] .cs-ref {
+  border-radius: 0 !important;
+  border-left: none;
+  border-bottom: none;
+}
+
+html[data-skin='neo'] .cross-sell {
+  border-top: none;
+  border-bottom: none;
+}
+
+/* ============================================================
+   PDP — the gallery is a recess, the thumbs are keys, the ledger is
+   the surface they sit on.
+   ============================================================ */
+html[data-skin='neo'] .pdp-gallery-main {
+  border: none;
+  border-radius: var(--neo-r-lg) !important;
+  overflow: hidden;
+}
+
+html[data-skin='neo'] .pdp-thumb {
+  border: none;
+  border-radius: var(--neo-r-sm) !important;
+  overflow: hidden;
+  box-shadow: var(--neo-raise-sm);
+  transition: box-shadow 200ms ease;
+}
+
+html[data-skin='neo'] .pdp-thumb[aria-pressed='true'] {
+  border: none;
+  box-shadow: var(--neo-press), 0 0 0 2px var(--signal);
+}
+
+html[data-skin='neo'] .pdp-ledger,
+html[data-skin='neo'] .pdp-editorial,
+html[data-skin='neo'] .pdp-promo {
+  border: none;
+}
+
+html[data-skin='neo'] .editorial-block {
+  border: none;
+  padding: var(--s3);
+  background: var(--neo-sunk);
+  border-radius: var(--neo-r) !important;
+  box-shadow: var(--neo-press);
+}
+
+html[data-skin='neo'] .video-frame {
+  border: none;
+  border-radius: var(--neo-r) !important;
+  overflow: hidden;
+  box-shadow: var(--neo-raise);
+}
+
+html[data-skin='neo'] .sep-line {
+  border: none;
+  height: 2px;
+  background: transparent;
+  box-shadow: inset 0 1px 2px var(--neo-lo), inset 0 -1px 1px var(--neo-hi);
+}
+
+/* ============================================================
+   DRAWER + MODAL — floating slabs, lifted well clear of the ground.
+   ============================================================ */
+html[data-skin='neo'] .cart-drawer,
+html[data-skin='neo'] .cap-modal {
+  border: none;
+  background: linear-gradient(145deg, var(--neo-surface-hi), var(--neo-surface-lo));
+  border-radius: var(--neo-r-lg) !important;
+  box-shadow: var(--neo-raise-lg);
+}
+
+html[data-skin='neo'] .cart-head,
+html[data-skin='neo'] .cart-foot,
+html[data-skin='neo'] .cart-row {
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+html[data-skin='neo'] .cart-checkout {
+  border: none;
+  background: var(--signal);
+  color: #fff;
+  border-radius: var(--neo-r-sm) !important;
+  box-shadow: var(--neo-glow);
+  transition: box-shadow 200ms ease, background 200ms ease, color 200ms ease;
+}
+
+html[data-skin='neo'] .cart-checkout:hover {
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+}
+
+html[data-skin='neo'] .cart-overlay {
+  background: rgba(8, 9, 11, 0.82);
+}
+
+html[data-skin='neo'] .cap-modal-ref {
+  background: transparent;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+html[data-skin='neo'] .cap-modal-visual {
+  border-right: none;
+}
+
+html[data-skin='neo'] .cap-modal-overlay {
+  background: rgba(8, 9, 11, 0.82);
+  backdrop-filter: blur(3px);
+}
+
+/* ============================================================
+   FOOTER — the monument sinks into the floor.
+   ============================================================ */
+html[data-skin='neo'] .outro {
+  border-top: none;
+  margin: 26px clamp(12px, 3vw, 34px) clamp(12px, 3vw, 34px);
+  background: var(--neo-sunk);
+  border-radius: var(--neo-r-lg) !important;
+  box-shadow: var(--neo-press);
+}
+
+html[data-skin='neo'] .outro-nav a {
+  transition: color 200ms ease, text-shadow 200ms ease;
+}
+
+html[data-skin='neo'] .outro-nav a:hover {
+  text-shadow: 0 0 12px rgba(255, 0, 0, 0.6);
+}
+
+/* ============================================================
+   THE EDITION MARK — a small stamped plate, bottom right, saying
+   which edition you are on and linking to the other one. Both
+   editions are real and reachable; without this the visitor has no
+   way back except the address bar.
+   ============================================================ */
+html[data-skin='neo'] .edition-mark {
+  position: fixed;
+  /* Bottom LEFT, not right: the product page's ADD TO BAG button lives in the
+     right-hand ledger column and runs to the foot of the viewport, and a fixed
+     mark on that side sits on top of the one control that matters. */
+  left: 14px;
+  bottom: 14px;
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+  background: linear-gradient(145deg, var(--neo-surface-hi), var(--neo-surface-lo));
+  border-radius: var(--neo-r-sm) !important;
+  box-shadow: var(--neo-raise-sm);
+  transition: box-shadow 200ms ease, color 200ms ease;
+}
+
+html[data-skin='neo'] .edition-mark:hover {
+  color: #fff;
+  box-shadow: var(--neo-press);
+}
+
+html[data-skin='neo'] .edition-mark::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  background: var(--signal);
+  box-shadow: var(--neo-glow);
+}
+
+/* ============================================================
+   MOTION — every transition in this file is 200-220ms and touches
+   only box-shadow, colour and opacity, so nothing here composites on
+   the main thread. Honour the OS switch and none of it runs.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  html[data-skin='neo'] *,
+  html[data-skin='neo'] *::before,
+  html[data-skin='neo'] *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ============================================================
+   SMALL SCREENS — the shadow spreads that read as depth at 1440px
+   read as blur at 375px, and the slab margins eat a phone's width.
+   ============================================================ */
+@media (max-width: 720px) {
+  html[data-skin='neo'] {
+    --neo-raise: -4px -4px 10px var(--neo-hi), 6px 6px 14px var(--neo-lo);
+    --neo-raise-lg: -6px -6px 16px var(--neo-hi), 9px 9px 24px var(--neo-lo);
+    --neo-r-lg: 18px;
+  }
+
+  html[data-skin='neo'] .featured,
+  html[data-skin='neo'] .item,
+  html[data-skin='neo'] .about-block,
+  html[data-skin='neo'] .promo,
+  html[data-skin='neo'] .outro {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  html[data-skin='neo'] .masthead {
+    padding: 10px 14px;
+  }
+
+  html[data-skin='neo'] .coll-filter {
+    top: 104px;
+  }
+
+  html[data-skin='neo'] .values-grid {
+    padding: 20px 10px;
+  }
+
+  /* The mark would sit over the add-to-bag button on a phone. */
+  html[data-skin='neo'] .edition-mark {
+    left: 10px;
+    bottom: 10px;
+    padding: 8px 10px;
+    font-size: 9px;
+  }
+}
