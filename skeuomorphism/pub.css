@@ -190,8 +190,11 @@ html[data-room='pub'] {
   );
 
   /* How far an object stands off its neighbours. A wall needs gaps or it is a
-     collage, and the gap is where the panelling shows. */
-  --pub-gap: clamp(20px, 3.4vw, 56px);
+     collage, and the gap is where the wall shows. Widened once the panelling
+     became a photograph: the drawn wall was a texture and could be mostly
+     covered, but a photographed wall is the room, and a room needs to be seen
+     between the things hung on it. */
+  --pub-gap: clamp(30px, 5.2vw, 96px);
   --pub-frame: clamp(10px, 1.2vw, 18px); /* moulding width */
 
   /* This wall is a shade lighter than the skeuomorphic edition's oak, which is
@@ -360,7 +363,13 @@ html[data-room='pub'] .field-manual,
 html[data-room='pub'] .outro {
   position: relative;
   margin: var(--pub-gap) auto;
-  max-width: min(1240px, 92vw);
+  /* Narrower than the other editions on purpose. 92vw left a 4% margin either
+     side, which reads as a framing error rather than as a wall; at 82vw the
+     panelling, the pendants and half a dozen of the photograph's own frames are
+     visible down both sides of every object. The 1080px cap keeps the archive
+     row's two columns above the 860px breakpoint where it stacks, so nothing
+     reflows - the objects just stop touching the edges. */
+  max-width: min(1080px, 82vw);
   border: none !important;
   border-radius: 4px !important;
   box-shadow: var(--pub-moulding), var(--pub-hang);
