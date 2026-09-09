@@ -227,12 +227,13 @@ const archiveLine = [
           >[ {currentVariant.available ? strings.products.in_stock : strings.products.sold_out} ]</span>
         </div>
 
-        {(product.strapline || product.dossier.length > 0 || hookLine) && (
+        {(product.strapline || product.dossier.length > 0 || product.spec || hookLine) && (
           <div class="pdp-dossier">
             <Dossier
               title={product.title}
               strapline={product.strapline}
               paragraphs={product.dossier}
+              spec={product.spec}
               hideStrap={true}
               handle={product.handle}
             />
@@ -349,6 +350,10 @@ const archiveLine = [
     color: var(--bone);
   }
   .pdp-dossier .dossier p + p { margin-top: var(--s2); }
+  /* The spec line is a sibling of .dossier-desc, not a paragraph inside it, so
+     the `p + p` rhythm above does not reach it and it sat flush against the last
+     line of the story. Same gap, stated for the one adjacency that rule misses. */
+  .pdp-dossier .dossier .dossier-desc + .dossier-spec { margin-top: var(--s2); }
   .pdp-hook {
     font-family: var(--mono); font-weight: 700; text-transform: uppercase;
     font-size: 15px; letter-spacing: 0.08em; color: var(--signal); margin: var(--s1) 0 0;

@@ -55,6 +55,11 @@ export interface Product {
   limited: boolean;
   strapline: string;
   dossier: string[];
+  /** Materials and care, e.g. "220gsm heavyweight cotton. Screen printed in
+   *  Britain." Kept OUT of `dossier` so the home page's cards and featured block
+   *  carry the story and the product page carries the spec — the cards were
+   *  repeating four lines of wash instructions above the buy button. */
+  spec?: string;
   fieldManual: { label: string; value: string }[];
   editorial: { heading: string; body: string }[];
   options: ProductOption[];

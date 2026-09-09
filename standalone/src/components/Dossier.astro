@@ -10,12 +10,15 @@ interface Props {
   title: string;
   strapline?: string;
   paragraphs: string[];
+  /** Materials and care. Rendered here and nowhere else: this component is the
+   *  product page's panel, which is where someone reads a wash temperature. */
+  spec?: string;
   hideStrap?: boolean;
   /** Product handle. Present only when these fields come from a catalogue product,
    *  which is what lets the inline editor address them. */
   handle?: string;
 }
-const { title, strapline, paragraphs, hideStrap = false, handle } = Astro.props;
+const { title, strapline, paragraphs, spec, hideStrap = false, handle } = Astro.props;
 
 // Split on **...** keeping the delimiters, so runs alternate plain and bold.
 const parse = (text: string) =>
@@ -30,7 +33,7 @@ const parse = (text: string) =>
 
 const hasBody = paragraphs.length > 0;
 ---
-{(strapline || hasBody) && (
+{(strapline || hasBody || spec) && (
   <div class="dossier">
     {strapline && !hideStrap && (
       <p data-line-id={handle && `catalogue:${handle}.strapline`}>
@@ -44,6 +47,11 @@ const hasBody = paragraphs.length > 0;
           <p data-line-id={handle && `catalogue:${handle}.dossier.${i}`}>{parse(paragraph).map((run) => (run.bold ? <strong>{run.text}</strong> : run.text))}</p>
         ))}
       </div>
+    )}
+    {spec && (
+      <p class="dossier-spec" data-line-id={handle && `catalogue:${handle}.spec`}>
+        <strong>{spec}</strong>
+      </p>
     )}
   </div>
 )}
