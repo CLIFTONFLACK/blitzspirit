@@ -156,10 +156,7 @@ const rows = blocks.map((block, i) => {
             <div class="item-price tag"><Price product={row.product} /></div>
 
             {row.product.strapline && (
-              <p>
-                <span class="hit">// {row.titleUp}</span>
-                {' — '}{row.product.strapline}
-              </p>
+              <p>{row.product.strapline}</p>
             )}
 
             {row.dossierOverride ? (
@@ -240,11 +237,16 @@ const rows = blocks.map((block, i) => {
   .item--dark .dossier .item-price {
     color: var(--bone);
   }
+  /* Both bold colours go through --dossier-strong so a skin can flip them
+     without having to out-specify these scoped selectors, which carry the
+     data-astro-cid attribute on every element and so sit far above anything
+     a stylesheet can reasonably write. The fallbacks are the theme's own
+     values, so the base build is unchanged. */
   .item .dossier strong {
     font-weight: 400;
-    color: #0a0a0a;
+    color: var(--dossier-strong, #0a0a0a);
   }
   .item--dark .dossier strong {
-    color: #fff;
+    color: var(--dossier-strong, #fff);
   }
 </style>

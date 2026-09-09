@@ -138,10 +138,7 @@ const parse = (text: string) =>
       ) : (
         <>
           {product.strapline && (
-            <p>
-              <span class="hit">// {titleUp}</span>
-              {' — '}{product.strapline}
-            </p>
+            <p>{product.strapline}</p>
           )}
           {product.dossier.length > 0 && (
             <div class="dossier-desc">
