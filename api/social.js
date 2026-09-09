@@ -16,7 +16,12 @@
 
 var seed = require('../standalone/src/data/pages/social.json');
 
-var SUPABASE_URL = 'https://ojrzxknkovkiafzejegy.supabase.co';
+// This function talks to its OWN Supabase project, not the one admin.js and
+// feedback.js use. Hence its own variable names: SUPABASE_SERVICE_KEY belongs to the
+// older project, and sending that key to this project's URL would authenticate
+// nothing while looking configured. Both are set on the Vercel project; the schema
+// is in docs/social-copy.schema.sql.
+var SUPABASE_URL = process.env.SOCIAL_SUPABASE_URL;
 var TABLE = 'social_copy';
 
 var MAX_EDITS = 60;
@@ -38,8 +43,11 @@ var SEED = (function () {
 })();
 
 module.exports = async function handler(req, res) {
-  var key = process.env.SUPABASE_SERVICE_KEY;
-  if (!key) return res.status(500).json({ error: 'SUPABASE_SERVICE_KEY not set' });
+  // No fallback to the other project on purpose: a missing variable should be a
+  // loud, obvious misconfiguration, not a silent read of the wrong database.
+  var key = process.env.SOCIAL_SUPABASE_KEY;
+  if (!SUPABASE_URL) return res.status(500).json({ error: 'SOCIAL_SUPABASE_URL not set' });
+  if (!key) return res.status(500).json({ error: 'SOCIAL_SUPABASE_KEY not set' });
 
   var headers = {
     apikey: key,

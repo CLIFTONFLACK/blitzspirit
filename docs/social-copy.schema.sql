@@ -6,8 +6,14 @@
 -- deployment from 3c61f4f (2026-09-08 19:11) to cb87b6b failed for that reason and
 -- the live site served yesterday's build throughout.
 --
--- Run once, in the Supabase SQL editor for the project api/social.js names
--- (ojrzxknkovkiafzejegy). Until it exists the page still renders every line from
+-- Run once, in the SQL editor of the Supabase project named 'blitzspirit', in the
+-- cliftonflack@gmail.com org. That is a DIFFERENT project from the one admin.js and
+-- feedback.js use, which is why this function reads SOCIAL_SUPABASE_URL and
+-- SOCIAL_SUPABASE_KEY rather than the shared SUPABASE_* variables: sending the older
+-- project's key to this project's URL would authenticate nothing while looking
+-- perfectly configured.
+--
+-- Until the table exists the page still renders every line from
 -- standalone/src/data/pages/social.json; only saving is unavailable, and
 -- GET /api/social answers 500.
 --
@@ -18,16 +24,19 @@
 
 create table if not exists public.social_copy (
   -- '<entry ref>:<register>', e.g. 'H-A-01:house'. api/social.js refuses any id that
-  -- is not already in the committed JSON, so ids here are always resolvable.
-  id text primary key,
-  text text not null,
+  -- is not already in the committed JSON, so ids here are always resolvable. The
+  -- constraints below repeat the function's limits at the table, so the data stays
+  -- sane even if something other than the function ever writes here.
+  id text primary key check (char_length(id) between 3 and 100 and id like '%:%'),
+  text text not null check (char_length(text) between 1 and 1000),
   updated_at timestamptz not null default now()
 );
 
 -- No policies are defined, deliberately. RLS with no policy denies anon and
 -- authenticated outright; the service role bypasses it, and the only thing holding
--- the service key is api/social.js. The page is open to edit, but every write still
--- goes through that function's validation - known id, 1000 character cap, no markup.
+-- the service key is api/social.js, through SOCIAL_SUPABASE_KEY on Vercel. The page
+-- is open to edit, but every write still goes through that function's validation -
+-- known id, 1000 character cap, no markup.
 alter table public.social_copy enable row level security;
 
 -- Check it landed:
