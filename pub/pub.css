@@ -237,16 +237,18 @@ html[data-room='pub']::before {
   pointer-events: none;
   background-image:
     /* the pendants and the round house sign, at the ceiling and nowhere else */
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='420'><defs><radialGradient id='b' cx='0.5' cy='0.45' r='0.5'><stop offset='0' stop-color='%23ffe6ae' stop-opacity='0.9'/><stop offset='0.3' stop-color='%23ffcf7a' stop-opacity='0.4'/><stop offset='1' stop-color='%23ffcf7a' stop-opacity='0'/></radialGradient></defs><g stroke='%23c9a24a' stroke-opacity='0.5' stroke-width='3' fill='none'><path d='M300 0 L300 66'/><path d='M860 0 L860 50'/><path d='M1240 0 L1240 78'/></g><g fill='%23b8912f' fill-opacity='0.55'><path d='M282 60 h36 l9 20 h-54 z'/><path d='M842 44 h36 l9 20 h-54 z'/><path d='M1222 72 h36 l9 20 h-54 z'/></g><g fill='url(%23b)'><circle cx='300' cy='96' r='62'/><circle cx='860' cy='80' r='54'/><circle cx='1240' cy='108' r='58'/></g><g fill='none' stroke='%23c9a24a' stroke-opacity='0.42'><circle cx='690' cy='150' r='56' stroke-width='10'/><circle cx='690' cy='150' r='40' stroke-width='3'/></g></svg>"),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='420'><defs><radialGradient id='b' cx='0.5' cy='0.45' r='0.5'><stop offset='0' stop-color='%23ffe6ae' stop-opacity='0.9'/><stop offset='0.3' stop-color='%23ffcf7a' stop-opacity='0.4'/><stop offset='1' stop-color='%23ffcf7a' stop-opacity='0'/></radialGradient></defs><g stroke='%23d8b563' stroke-opacity='0.78' stroke-width='3' fill='none'><path d='M300 0 L300 66'/><path d='M860 0 L860 50'/><path d='M1240 0 L1240 78'/></g><g fill='%23c9a24a' fill-opacity='0.8'><path d='M282 60 h36 l9 20 h-54 z'/><path d='M842 44 h36 l9 20 h-54 z'/><path d='M1222 72 h36 l9 20 h-54 z'/></g><g fill='url(%23b)'><circle cx='300' cy='96' r='62'/><circle cx='860' cy='80' r='54'/><circle cx='1240' cy='108' r='58'/></g><g fill='none' stroke='%23d8b563' stroke-opacity='0.68'><circle cx='690' cy='150' r='56' stroke-width='10'/><circle cx='690' cy='150' r='40' stroke-width='3'/></g></svg>"),
     /* the framed nothing: two tiles at different sizes and offsets, because one
        tile of picture frames announces itself as a tile within two repeats */
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='680' height='540'><g stroke='%23a8802a' stroke-opacity='0.42' fill='%23120c06' fill-opacity='0.5'><rect x='42' y='58' width='128' height='96' stroke-width='7'/><rect x='196' y='30' width='92' height='128' stroke-width='6'/><rect x='330' y='72' width='150' height='104' stroke-width='8'/><rect x='512' y='44' width='96' height='84' stroke-width='6'/><rect x='86' y='236' width='104' height='140' stroke-width='7'/><rect x='232' y='268' width='140' height='92' stroke-width='6'/><rect x='420' y='240' width='84' height='118' stroke-width='6'/><rect x='540' y='286' width='112' height='80' stroke-width='7'/><rect x='120' y='430' width='136' height='86' stroke-width='6'/><rect x='318' y='412' width='96' height='108' stroke-width='7'/><rect x='470' y='438' width='128' height='78' stroke-width='6'/></g></svg>"),
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='440' height='390'><g stroke='%23c9a24a' stroke-opacity='0.34' fill='none'><circle cx='72' cy='74' r='26' stroke-width='5'/><path d='M52 74 h40 M72 54 v40' stroke-width='3'/><circle cx='300' cy='140' r='34' stroke-width='5'/><circle cx='300' cy='140' r='18' stroke-width='3'/><circle cx='300' cy='140' r='5' stroke-width='4'/><rect x='120' y='250' width='96' height='64' stroke-width='6' fill='%23120c06' fill-opacity='0.45'/><circle cx='372' cy='300' r='24' stroke-width='5'/><path d='M352 300 h40 M372 280 v40' stroke-width='3'/></g></svg>"),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='680' height='540'><g fill='%23b3a37c' fill-opacity='0.26' stroke='none'><rect x='55' y='71' width='102' height='70'/><rect x='209' y='43' width='66' height='102'/><rect x='343' y='85' width='124' height='78'/><rect x='525' y='57' width='70' height='58'/><rect x='99' y='249' width='78' height='114'/><rect x='245' y='281' width='114' height='66'/><rect x='433' y='253' width='58' height='92'/><rect x='553' y='299' width='86' height='54'/><rect x='133' y='443' width='110' height='60'/><rect x='331' y='425' width='70' height='82'/><rect x='483' y='451' width='102' height='52'/></g><g stroke='%23cfa851' stroke-opacity='0.74' fill='%231e1509' fill-opacity='0.66'><rect x='42' y='58' width='128' height='96' stroke-width='7'/><rect x='196' y='30' width='92' height='128' stroke-width='6'/><rect x='330' y='72' width='150' height='104' stroke-width='8'/><rect x='512' y='44' width='96' height='84' stroke-width='6'/><rect x='86' y='236' width='104' height='140' stroke-width='7'/><rect x='232' y='268' width='140' height='92' stroke-width='6'/><rect x='420' y='240' width='84' height='118' stroke-width='6'/><rect x='540' y='286' width='112' height='80' stroke-width='7'/><rect x='120' y='430' width='136' height='86' stroke-width='6'/><rect x='318' y='412' width='96' height='108' stroke-width='7'/><rect x='470' y='438' width='128' height='78' stroke-width='6'/></g></svg>"),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='440' height='390'><g stroke='%23d0aa55' stroke-opacity='0.62' fill='none'><circle cx='72' cy='74' r='26' stroke-width='5'/><path d='M52 74 h40 M72 54 v40' stroke-width='3'/><circle cx='300' cy='140' r='34' stroke-width='5'/><circle cx='300' cy='140' r='18' stroke-width='3'/><circle cx='300' cy='140' r='5' stroke-width='4'/><rect x='120' y='250' width='96' height='64' stroke-width='6' fill='%231d1409' fill-opacity='0.7'/><circle cx='372' cy='300' r='24' stroke-width='5'/><path d='M352 300 h40 M372 280 v40' stroke-width='3'/></g></svg>"),
     var(--sk-grain);
   background-position: center top, 0 -40px, 210px 120px, 0 0;
   background-repeat: no-repeat, repeat, repeat, repeat;
   background-size: cover, 680px 540px, 440px 390px, auto;
-  opacity: 0.9;
+  /* Full strength: this layer is the room, and at 0.9 over a near-black wall the
+     frames behind the shop were legible only if you already knew they were there. */
+  opacity: 1;
 }
 
 /* main is lifted one layer so every section in it sits in front of the clutter
@@ -280,10 +282,12 @@ html[data-room='pub'] body::after {
   z-index: 3;
   pointer-events: none;
   background:
-    radial-gradient(46% 34% at 19% 5%, rgba(255, 214, 140, 0.2), transparent 72%),
-    radial-gradient(40% 30% at 54% 2%, rgba(255, 206, 128, 0.13), transparent 74%),
-    radial-gradient(46% 34% at 78% 7%, rgba(255, 214, 140, 0.17), transparent 72%),
-    radial-gradient(150% 110% at 50% 46%, transparent 34%, rgba(0, 0, 0, 0.62) 100%);
+    radial-gradient(46% 34% at 19% 5%, rgba(255, 214, 140, 0.24), transparent 72%),
+    radial-gradient(40% 30% at 54% 2%, rgba(255, 206, 128, 0.16), transparent 74%),
+    radial-gradient(46% 34% at 78% 7%, rgba(255, 214, 140, 0.21), transparent 72%),
+    /* Lighter than it was: the corners still fall away, but they no longer take the
+       framed clutter down with them. */
+    radial-gradient(150% 110% at 50% 46%, transparent 40%, rgba(0, 0, 0, 0.42) 100%);
 }
 
 /* ============================================================
@@ -441,28 +445,104 @@ html[data-room='pub'] .hero h1 {
     drop-shadow(0 10px 22px rgba(0, 0, 0, 0.6));
 }
 
+/* No blast tape on the mirror. skeuo.css crosses two strips of gummed paper over
+   the hero artwork; inherited here it landed on plate glass, where there is no
+   window to tape and nothing to read it as - so it was simply a large pale X across
+   the emblem. The rest of the skin's tape idiom stays where it belongs. */
+html[data-room='pub'] .hero-art::before,
+html[data-room='pub'] .hero-art::after {
+  content: none;
+}
+
 /* The skull becomes a frosted motif in the corner of the plate, the way a house
-   emblem is etched into a pub mirror. */
+   emblem is etched into a pub mirror.
+
+   No invert(). The artwork is light-on-transparent, so inverting it filled the
+   umbrella shafts with the light and left the skull dark - which is why the emblem
+   read as one big pale X laid over the mirror instead of a badge etched into it.
+   Etching is light ON dark, so the artwork is used the way up it was drawn and
+   screen puts it into the silvering. */
 html[data-room='pub'] .hero-art img {
-  filter: invert(1) sepia(0.5) saturate(1.3) hue-rotate(-14deg) brightness(1.12)
-    drop-shadow(0 2px 0 rgba(0, 0, 0, 0.6));
-  opacity: 0.5;
-  mix-blend-mode: soft-light;
+  filter: grayscale(1) sepia(0.4) saturate(0.9) brightness(1.06) contrast(1.35);
+  opacity: 0.62;
+  mix-blend-mode: screen;
 }
 
 /* ============================================================
    FRAMED PICTURES — a product plate is a print, so it gets the
    mount board and the glass that a print on a pub wall has.
    ============================================================ */
+/* The moulding itself. A picture frame is not a border, it is a turned length of
+   wood with a profile: an outer lip, a hollow, a fillet, then the sight edge that
+   the glass sits behind. Each of those is one inset ring, drawn outermost-first,
+   and each gets a lit top-left and a shaded bottom-right from the same two lamps
+   as everything else in this file. */
+html[data-room='pub'] {
+  --pub-carve:
+    /* the four faces, lit from above-left */
+    inset 0 3px 0 rgba(255, 247, 221, 0.5),
+    inset 3px 0 0 rgba(255, 247, 221, 0.26),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.62),
+    inset -3px 0 0 rgba(0, 0, 0, 0.5),
+    /* the profile, outer lip inward */
+    inset 0 0 0 1px rgba(0, 0, 0, 0.8),
+    inset 0 0 0 4px rgba(255, 243, 205, 0.16),
+    inset 0 0 0 7px rgba(0, 0, 0, 0.34),
+    inset 0 0 0 9px rgba(255, 235, 180, 0.2),
+    inset 0 0 0 13px rgba(0, 0, 0, 0.42);
+}
+
 html[data-room='pub'] .plate,
 html[data-room='pub'] .cs-plate,
 html[data-room='pub'] .coll-plate,
 html[data-room='pub'] .cap-modal-visual {
   border: none !important;
   border-radius: 2px !important;
-  padding: clamp(10px, 1.6vw, 22px) !important;
-  background: var(--pub-mount) !important;
-  box-shadow: var(--pub-mount-bevel), var(--pub-hang);
+  /* frame + mount, so the moulding has somewhere to be that is not the picture */
+  padding: calc(var(--pub-frame) + clamp(10px, 1.6vw, 22px)) !important;
+  background: var(--pub-gilt) !important;
+  box-shadow: var(--pub-carve), var(--pub-hang);
+}
+
+/* The mount board, inside the rabbet. Its own bevel-cut window is the pale line on
+   the lit side; the dark ring outside it is the shadow the moulding throws onto the
+   card, which is the detail that stops a frame reading as a printed rectangle. */
+html[data-room='pub'] .plate::before,
+html[data-room='pub'] .cs-plate::before,
+html[data-room='pub'] .coll-plate::before,
+html[data-room='pub'] .cap-modal-visual::before {
+  content: '';
+  position: absolute;
+  inset: var(--pub-frame);
+  z-index: 0;
+  background: var(--pub-mount);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.7),
+    0 0 0 2px rgba(255, 247, 221, 0.24),
+    inset 0 2px 0 #fffdf3,
+    inset 0 -1px 0 rgba(0, 0, 0, 0.18),
+    inset 0 6px 14px rgba(0, 0, 0, 0.18);
+}
+/* Everything the frame actually holds sits on top of the mount. Only the z-index is
+   blanket: .plate-cnr is position:absolute and setting position:relative on it tears
+   it off its corner and drops it onto the moulding. */
+html[data-room='pub'] .plate > *,
+html[data-room='pub'] .cs-plate > *,
+html[data-room='pub'] .coll-plate > *,
+html[data-room='pub'] .cap-modal-visual > * {
+  z-index: 1;
+}
+html[data-room='pub'] .plate > img,
+html[data-room='pub'] .plate > .plate__placeholder,
+html[data-room='pub'] .cs-plate > img,
+html[data-room='pub'] .coll-plate > img,
+html[data-room='pub'] .cap-modal-visual > img {
+  position: relative;
+}
+/* The reference number belongs on the mount, inside the frame, not on the gilt. */
+html[data-room='pub'] .plate-cnr {
+  bottom: calc(var(--pub-frame) + 8px);
+  right: calc(var(--pub-frame) + 10px);
 }
 
 /* The window in the mount is bevel-cut, so its cut edge is a pale line on the light
@@ -479,7 +559,8 @@ html[data-room='pub'] .coll-plate::after {
 }
 html[data-room='pub'] .plate,
 html[data-room='pub'] .cs-plate,
-html[data-room='pub'] .coll-plate {
+html[data-room='pub'] .coll-plate,
+html[data-room='pub'] .cap-modal-visual {
   position: relative;
 }
 html[data-room='pub'] .plate img,
@@ -498,9 +579,9 @@ html[data-room='pub'] .plate-cnr {
    flush in a band. */
 html[data-room='pub'] .about-visual img,
 html[data-room='pub'] .condiment-visual img {
-  padding: clamp(8px, 1.2vw, 16px);
-  background: var(--pub-mount);
-  box-shadow: var(--pub-mount-bevel), var(--pub-hang);
+  padding: clamp(14px, 2vw, 26px);
+  background: var(--pub-gilt);
+  box-shadow: var(--pub-carve), var(--pub-hang);
   border-radius: 2px !important;
 }
 
@@ -906,6 +987,23 @@ html[data-room='pub'] .promo::after {
     radial-gradient(130% 95% at 50% 50%, transparent 42%, rgba(0, 0, 0, 0.62) 100%);
 }
 html[data-room='pub'] .promo-inner { position: relative; z-index: 1; }
+
+/* The headline. Gilt leaf reads on oak and goes muddy over a photograph - the deep
+   half of the gradient lands at 2.2:1 on the lit part of the milkman - so on this
+   band the lettering is painted, not leafed, and the shadow does the separating. */
+html[data-room='pub'] .promo-title {
+  background: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  -webkit-text-fill-color: currentColor;
+  color: #faf3e0;
+  filter: none;
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.92),
+    0 2px 10px rgba(0, 0, 0, 0.85),
+    0 0 30px rgba(0, 0, 0, 0.6);
+}
+html[data-room='pub'] .promo-tag { color: #e9d3a1; }
 
 html[data-room='pub'] .newsletter,
 html[data-room='pub'] .pdp-promo {
