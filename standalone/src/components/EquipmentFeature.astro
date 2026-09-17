@@ -95,8 +95,8 @@ const pillOptions = product.options
         </div>
       </div>
 
-      <div class="condiment-info">
-        {issueTag && <div class="condiment-issue eyebrow" data-line-id={editBase && `${editBase}.settings.issue_tag`}>[ {issueTag} ]</div>}
+      <div class="equipment-info">
+        {issueTag && <div class="equipment-issue eyebrow" data-line-id={editBase && `${editBase}.settings.issue_tag`}>[ {issueTag} ]</div>}
 
         <h2 class="chunk equipment-name">
           {startsWithThe ? (
@@ -159,7 +159,7 @@ const pillOptions = product.options
     border: none;
     padding: 0;
   }
-  .condiment-issue {
+  .equipment-issue {
     margin-bottom: var(--s2);
   }
 </style>
