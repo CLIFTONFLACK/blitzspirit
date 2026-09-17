@@ -49,15 +49,15 @@ check('reads a block setting by block id', () => {
 });
 
 check('reads a product field by handle', () => {
-  const value = content.readValue(catalogue(), 'catalogue:the-cap.strapline');
+  const value = content.readValue(catalogue(), 'catalogue:the-establishment.strapline');
   assert(value.ok, value.error);
-  assert(value.value === 'stiff upper brim.', `got ${JSON.stringify(value.value)}`);
+  assert(value.value === 'colour print. The old guard in full regalia.', `got ${JSON.stringify(value.value)}`);
 });
 
 check('reads a dossier paragraph by index', () => {
-  const value = content.readValue(catalogue(), 'catalogue:the-cap.dossier.1');
+  const value = content.readValue(catalogue(), 'catalogue:the-establishment.dossier.1');
   assert(value.ok, value.error);
-  assert(value.value.startsWith('Equipment division.'), `got ${JSON.stringify(value.value.slice(0, 30))}`);
+  assert(value.value.startsWith('Colour print on OXY_BLACK.'), `got ${JSON.stringify(value.value.slice(0, 30))}`);
 });
 
 check('reads a settings field', () => {
@@ -80,14 +80,14 @@ check('applies an edit and reports what changed', () => {
 
 check('applies an edit to a dossier paragraph', () => {
   const doc = catalogue();
-  const result = content.applyEdit(doc, 'catalogue:the-cap.dossier.1', 'Changed.');
+  const result = content.applyEdit(doc, 'catalogue:the-establishment.dossier.1', 'Changed.');
   assert(result.ok, result.error);
-  assert(doc.products.find((p) => p.handle === 'the-cap').dossier[1] === 'Changed.', 'not written');
+  assert(doc.products.find((p) => p.handle === 'the-establishment').dossier[1] === 'Changed.', 'not written');
 });
 
 check('groups edits by the file they land in', () => {
   const grouped = content.groupByFile([
-    { address: 'catalogue:the-cap.strapline', value: 'a' },
+    { address: 'catalogue:the-establishment.strapline', value: 'a' },
     { address: 'settings:outro.strapline', value: 'b' },
     { address: 'catalogue:the-clerk.strapline', value: 'c' },
   ]);
@@ -124,9 +124,9 @@ check('refuses constructor in the pointer', () =>
 check('refuses a field that does not exist', () =>
   refuses(settings(), 'settings:outro.nonexistent', 'x', 'not editable text'));
 check('refuses a non-string target (would clobber structure)', () =>
-  refuses(catalogue(), 'catalogue:the-cap.variants', 'x', 'not editable text'));
+  refuses(catalogue(), 'catalogue:the-establishment.variants', 'x', 'not editable text'));
 check('refuses a number target', () =>
-  refuses(catalogue(), 'catalogue:the-cap.price', '1', 'not editable text'));
+  refuses(catalogue(), 'catalogue:the-establishment.price', '1', 'not editable text'));
 check('refuses a non-string new value', () =>
   refuses(settings(), 'settings:outro.strapline', 12345, 'must be a string'));
 check('refuses an absurdly long value', () =>
