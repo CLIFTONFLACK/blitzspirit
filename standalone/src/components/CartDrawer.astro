@@ -31,7 +31,7 @@ import { href } from '~/lib/url';
   inert
 >
   <div class="cart-head">
-    <span class="tag">[ {strings.cart.title} ]</span>
+    <span class="eyebrow">[ {strings.cart.title} ]</span>
     <button type="button" class="cart-close snap" data-cart-close aria-label={strings.accessibility.close_cart}>[ {strings.general.close} ]</button>
   </div>
 
@@ -67,6 +67,16 @@ import { href } from '~/lib/url';
   /* Scroll lock while the ledger is open (toggled by cart.js). */
   body.cart-open { overflow: hidden; }
 
+  /* The drawer chrome itself stays a literal dark panel regardless of the
+     site theme (theme.css §4) — the /cart page reuses this same markup
+     (.eyebrow, .cart-sum, .fsb-msg--ok) on the ordinary light page, so these
+     light-on-dark overrides are scoped to .cart-drawer specifically. */
+  .cart-drawer .eyebrow,
+  .cart-drawer .cart-sum,
+  .cart-drawer .fsb-msg--ok {
+    color: #fff;
+  }
+
   /* Line items extend theme.css §4 .cart-row with a plate thumb column.
      Global: cart.js injects these rows at runtime, so scoped styles would
      never match them. */
@@ -87,7 +97,7 @@ import { href } from '~/lib/url';
   }
   .ci-plate img { width: 100%; height: 100%; object-fit: contain; }
   .ci-body { min-width: 0; }
-  .ci-name a:hover { color: var(--signal); }
+  .ci-name a:hover { color: var(--accent); }
   .ci-controls {
     display: flex;
     align-items: center;
@@ -106,7 +116,7 @@ import { href } from '~/lib/url';
     font-size: 13px;
     line-height: 1;
   }
-  .ci-qty-btn:hover { color: #fff; }
+  .ci-qty-btn:hover { color: var(--ink); }
   .ci-qty-val {
     min-width: 26px;
     padding: 0 4px;
@@ -121,8 +131,8 @@ import { href } from '~/lib/url';
 
   /* Inline error region (checkout failure, sold out). */
   .cart-error {
-    border: 1px solid var(--signal);
-    color: var(--signal);
+    border: 1px solid var(--accent);
+    color: var(--accent);
     font-size: 10px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -135,7 +145,7 @@ import { href } from '~/lib/url';
     display: block;
     text-align: center;
     margin-top: 10px;
-    font-family: var(--mono);
+    font-family: var(--sans);
     font-size: 10px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -147,7 +157,7 @@ import { href } from '~/lib/url';
   .fsb { margin-bottom: var(--s3); }
   .fsb-msg {
     display: block;
-    font-family: var(--mono);
+    font-family: var(--sans);
     font-size: 10px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -159,7 +169,7 @@ import { href } from '~/lib/url';
   .fsb-fill {
     height: 100%;
     width: var(--fsb-pct, 0%);
-    background: var(--signal);
+    background: var(--accent);
     transition: width 150ms ease;
   }
   @media (prefers-reduced-motion: reduce) {

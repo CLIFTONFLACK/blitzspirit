@@ -42,7 +42,7 @@ const isCurrent = (url: string) => url === path || (url !== '/' && path.startsWi
         <div class="nav-item">
           <a
             href={href(link.url)}
-            class="tag"
+            class="eyebrow"
             aria-current={isCurrent(link.url) ? 'page' : undefined}
             aria-haspopup="true"
             aria-expanded="false">[ {link.title} ]</a>
@@ -50,7 +50,7 @@ const isCurrent = (url: string) => url === path || (url !== '/' && path.startsWi
             {link.children.map((child) => (
               <a
                 href={href(child.url)}
-                class="tag nav-dropdown-link"
+                class="eyebrow nav-dropdown-link"
                 aria-current={isCurrent(child.url) ? 'page' : undefined}>{child.title}</a>
             ))}
           </div>
@@ -58,12 +58,12 @@ const isCurrent = (url: string) => url === path || (url !== '/' && path.startsWi
       ) : (
         <a
           href={href(link.url)}
-          class="tag"
+          class="eyebrow"
           aria-current={link.url === path ? 'page' : undefined}>[ {link.title} ]</a>
       )
     )}
     {settings.masthead.longTag && (
-      <span class="tag mh-long" data-line-id="settings:masthead.longTag">{settings.masthead.longTag}</span>
+      <span class="eyebrow mh-long" data-line-id="settings:masthead.longTag">{settings.masthead.longTag}</span>
     )}
   </nav>
 
@@ -71,7 +71,7 @@ const isCurrent = (url: string) => url === path || (url !== '/' && path.startsWi
     {socialLinks.map((s) => (
       <a
         href={s.url}
-        class="tag mh-social"
+        class="eyebrow mh-social"
         aria-label={s.label}
         target="_blank"
         rel="noopener noreferrer">
@@ -80,7 +80,7 @@ const isCurrent = (url: string) => url === path || (url !== '/' && path.startsWi
     ))}
     <a
       href={href("/cart")}
-      class="tag bag"
+      class="eyebrow bag"
       data-cart-toggle
       aria-controls="CartDrawer"
       aria-expanded="false">[ BAG (<b data-cart-count>0</b>) ]</a>

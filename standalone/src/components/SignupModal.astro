@@ -39,11 +39,11 @@ const content = {
         <Icon name="close" />
       </button>
 
-      <p class="led-index tag signup-eyebrow">[ {content.eyebrow} ]</p>
+      <p class="product-ref eyebrow signup-eyebrow">[ {content.eyebrow} ]</p>
 
       <h2 class="chunk signup-head" id="SignupModalHeading">{content.heading}</h2>
 
-      <p class="signup-sub tag">{content.subheading}</p>
+      <p class="signup-sub eyebrow">{content.subheading}</p>
 
       <p class="signup-body">{content.body}</p>
 
@@ -53,7 +53,7 @@ const content = {
         {content.dismissLabel}
       </button>
 
-      <button type="button" class="directive snap signup-carry" data-modal-close>
+      <button type="button" class="btn snap signup-carry" data-modal-close>
         {content.carryOnLabel}
       </button>
     </div>
@@ -68,7 +68,7 @@ const content = {
     width: min(520px, calc(100% - 32px));
     color: var(--bone);
   }
-  dialog.signup-modal::backdrop { background: rgba(10, 10, 10, 0.88); }
+  dialog.signup-modal::backdrop { background: rgba(255, 255, 255, 0.88); }
   .signup-inner {
     position: relative;
     padding: var(--s5) var(--s4) var(--s4);
@@ -77,7 +77,7 @@ const content = {
     gap: var(--s2);
     text-align: left;
   }
-  .frame-tick { position: absolute; width: 14px; height: 14px; border: 2px solid var(--signal); }
+  .frame-tick { position: absolute; width: 14px; height: 14px; border: 2px solid var(--accent); }
   .frame-tick--tl { top: 10px; left: 10px; border-right: none; border-bottom: none; }
   .frame-tick--br { bottom: 10px; right: 10px; border-left: none; border-top: none; }
   .signup-close {
@@ -88,10 +88,10 @@ const content = {
     color: var(--bone);
     line-height: 0;
   }
-  .signup-close:hover { color: var(--signal); }
+  .signup-close:hover { color: var(--accent); }
   .signup-eyebrow { display: inline-block; margin-bottom: 0; align-self: flex-start; }
-  .signup-head { color: #fff; font-size: clamp(1.8rem, 5vw, 2.6rem); }
-  .signup-sub { color: var(--signal); }
+  .signup-head { color: var(--ink); font-size: clamp(1.8rem, 5vw, 2.6rem); }
+  .signup-sub { color: var(--accent); }
   .signup-body {
     color: var(--bone-dim);
     font-size: 12px;
@@ -103,14 +103,14 @@ const content = {
     align-self: center;
     margin-top: var(--s1);
     color: var(--bone-mute);
-    font-family: var(--mono);
+    font-family: var(--sans);
     font-size: 11px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     text-decoration: underline;
     text-underline-offset: 3px;
   }
-  .signup-dismiss:hover { color: var(--signal); }
+  .signup-dismiss:hover { color: var(--accent); }
   .signup-carry { display: none; }
   /* The success block is hidden until newsletter.js reveals it, so :has() has
      to test for it being present AND shown - [hidden] is the off state now,

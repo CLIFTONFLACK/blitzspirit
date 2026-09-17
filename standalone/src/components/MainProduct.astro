@@ -126,15 +126,15 @@ const archiveLine = [
 <section class="pdp-wrap" data-product-wrap>
   {showBreadcrumb && (
     <nav class="pdp-breadcrumb" aria-label="Breadcrumb">
-      <a href={href("/")} class="tag">[ {settings.shop.name.toUpperCase()} ]</a>
-      <span class="tag sep" aria-hidden="true">//</span>
+      <a href={href("/")} class="eyebrow">[ {settings.shop.name.toUpperCase()} ]</a>
+      <span class="eyebrow sep" aria-hidden="true">//</span>
       {collection && (
         <>
-          <a href={href(`/collections/${collection.handle}`)} class="tag">[ {collection.title.toUpperCase()} ]</a>
-          <span class="tag sep" aria-hidden="true">//</span>
+          <a href={href(`/collections/${collection.handle}`)} class="eyebrow">[ {collection.title.toUpperCase()} ]</a>
+          <span class="eyebrow sep" aria-hidden="true">//</span>
         </>
       )}
-      <span class="tag crumb-current" aria-current="page">[ {titleUp} ]</span>
+      <span class="eyebrow crumb-current" aria-current="page">[ {titleUp} ]</span>
     </nav>
   )}
 
@@ -188,13 +188,13 @@ const archiveLine = [
     <div class="pdp-ledger">
       <product-form data-url-update>
         <div class="pdp-issue">
-          <div class="pdp-kicker tag tag-mute">
+          <div class="pdp-kicker eyebrow eyebrow-muted">
             {issueVal.toUpperCase()}
             {entryNum ? ` · ENTRY ${entryNum}` : indexRef ? ` · ${indexRef.toUpperCase()}` : ''}
           </div>
         </div>
 
-        <h1 class="led-name chunk pdp-name" data-line-id={`catalogue:${product.handle}.title`}>
+        <h1 class="product-title chunk pdp-name" data-line-id={`catalogue:${product.handle}.title`}>
           {startsWithThe ? (
             <><span class="the">THE</span> {titleUp.replace(/^THE /, '')}</>
           ) : (
@@ -203,7 +203,7 @@ const archiveLine = [
         </h1>
 
         <div class="pdp-price-row">
-          <span class="pdp-price tag" data-price>
+          <span class="pdp-price eyebrow" data-price>
             {product.variants.map((variant) => (
               <span
                 class={product.compareAtPrice && product.compareAtPrice > variant.price ? 'price price--sale' : 'price'}
@@ -219,7 +219,7 @@ const archiveLine = [
             ))}
           </span>
           <span
-            class="pdp-stock tag"
+            class="pdp-stock eyebrow"
             data-stock
             data-state={currentVariant.available ? 'in-stock' : 'sold-out'}
             data-label-in-stock={`[ ${strings.products.in_stock} ]`}
@@ -259,7 +259,7 @@ const archiveLine = [
 
           {showQuantity && (
             <div class="pdp-qty">
-              <span class="tag tag-mute">[ {strings.cart.quantity} ]</span>
+              <span class="eyebrow eyebrow-muted">[ {strings.cart.quantity} ]</span>
               <div class="qty-box">
                 <button type="button" class="qty-btn snap" data-qty-minus aria-label="Decrease quantity">&minus;</button>
                 <input
@@ -281,7 +281,7 @@ const archiveLine = [
             <button
               type="button"
               name="add"
-              class="directive directive--fill snap"
+              class="btn btn--solid snap"
               data-add-to-cart
               disabled={!currentVariant.available}
             >
@@ -291,19 +291,19 @@ const archiveLine = [
           </div>
         </div>
 
-        {trustNote && <p class="tag tag-mute pdp-trust">{trustNote}</p>}
+        {trustNote && <p class="eyebrow eyebrow-muted pdp-trust">{trustNote}</p>}
 
         {(sizeGuideUrl || returnsUrl) && (
           <div class="pdp-links">
-            {sizeGuideUrl && <a href={href(sizeGuideUrl)} class="tag pdp-link">{sizeGuideLabel}</a>}
-            {sizeGuideUrl && returnsUrl && <span class="tag tag-mute" aria-hidden="true">·</span>}
-            {returnsUrl && <a href={href(returnsUrl)} class="tag pdp-link">{returnsLabel}</a>}
+            {sizeGuideUrl && <a href={href(sizeGuideUrl)} class="eyebrow pdp-link">{sizeGuideLabel}</a>}
+            {sizeGuideUrl && returnsUrl && <span class="eyebrow eyebrow-muted" aria-hidden="true">·</span>}
+            {returnsUrl && <a href={href(returnsUrl)} class="eyebrow pdp-link">{returnsLabel}</a>}
           </div>
         )}
 
         <div class="pdp-archive-note">
           <hr class="sep-line" />
-          <span class="tag tag-mute">{archiveLine}</span>
+          <span class="eyebrow eyebrow-muted">{archiveLine}</span>
         </div>
 
         <script type="application/json" data-variant-json set:html={JSON.stringify(variantJson)} />
@@ -341,22 +341,22 @@ const archiveLine = [
   /* Dossier on the PDP: bare paragraphs on the black wall, sentence case,
      with the red hook line as the punchline (mockup v27). */
   .pdp-dossier { display: flex; flex-direction: column; gap: var(--s2); }
-  .pdp-dossier .dossier { background: none; border: none; padding: 0; }
-  .pdp-dossier .dossier p,
-  .pdp-dossier .dossier .dossier-desc p,
-  .pdp-dossier .dossier .dossier-desc li {
-    font-family: var(--mono); text-transform: none;
+  .pdp-dossier .details { background: none; border: none; padding: 0; }
+  .pdp-dossier .details p,
+  .pdp-dossier .details .details-copy p,
+  .pdp-dossier .details .details-copy li {
+    font-family: var(--sans); text-transform: none;
     font-size: 14px; letter-spacing: 0.02em; line-height: 1.75;
     color: var(--bone);
   }
-  .pdp-dossier .dossier p + p { margin-top: var(--s2); }
-  /* The spec line is a sibling of .dossier-desc, not a paragraph inside it, so
+  .pdp-dossier .details p + p { margin-top: var(--s2); }
+  /* The spec line is a sibling of .details-copy, not a paragraph inside it, so
      the `p + p` rhythm above does not reach it and it sat flush against the last
      line of the story. Same gap, stated for the one adjacency that rule misses. */
-  .pdp-dossier .dossier .dossier-desc + .dossier-spec { margin-top: var(--s2); }
+  .pdp-dossier .details .details-copy + .dossier-spec { margin-top: var(--s2); }
   .pdp-hook {
-    font-family: var(--mono); font-weight: 700; text-transform: uppercase;
-    font-size: 15px; letter-spacing: 0.08em; color: var(--signal); margin: var(--s1) 0 0;
+    font-family: var(--sans); font-weight: 700; text-transform: uppercase;
+    font-size: 15px; letter-spacing: 0.08em; color: var(--accent); margin: var(--s1) 0 0;
   }
 
   /* Option groups — bare COLOUR / SIZE labels over outlined pills. */
@@ -367,10 +367,10 @@ const archiveLine = [
   .pdp-options .sizes { margin-bottom: 0; flex-direction: column; align-items: flex-start; gap: 0; }
   .pdp-options .cw-opt .dot { display: none; }
   .pdp-options .cw-opt[aria-pressed="true"],
-  .pdp-options .size-pill[aria-pressed="true"] { background: transparent; color: #fff; border-color: var(--bone); }
+  .pdp-options .size-pill[aria-pressed="true"] { background: transparent; color: var(--ink); border-color: var(--bone); }
 
   /* Plain mono price on the black wall (mockup v27 — no boxed row). */
-  .pdp-price .price__current { font-family: var(--mono); font-size: 15px; letter-spacing: 0.12em; color: var(--bone); }
+  .pdp-price .price__current { font-family: var(--sans); font-size: 15px; letter-spacing: 0.12em; color: var(--bone); }
   .price__unit { display: block; font-size: 10px; letter-spacing: 0.08em; color: var(--bone-mute); }
 
   /* Plate frames — one per image, toggled via [hidden]. */
@@ -384,15 +384,10 @@ const archiveLine = [
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
   }
 
-  /* Solid signal-red ADD TO BAG bar (mockup v27). */
+  /* The solid ADD TO BAG fill itself is .btn--solid, shared sitewide
+     (theme.css §5) — only its width/spacing is PDP-specific. */
   .pdp-actions { display: flex; }
-  .pdp-buy .directive--fill {
-    flex: 1; width: auto;
-    background: var(--signal); border-color: var(--signal); color: #fff;
-    font-family: var(--mono); letter-spacing: 0.2em;
-  }
-  .pdp-buy .directive--fill:hover { background: #fff; border-color: #fff; color: var(--ink); }
-  .pdp-buy .directive--fill[disabled] { background: transparent; border-color: var(--line); color: var(--bone-mute); }
+  .pdp-buy .btn--solid { flex: 1; width: auto; letter-spacing: 0.2em; }
 
   .pdp-buy { display: flex; flex-direction: column; gap: var(--s2); }
 
@@ -406,8 +401,8 @@ const archiveLine = [
     border: none;
     border-left: 1px solid var(--line-bri);
     border-right: 1px solid var(--line-bri);
-    color: #fff;
-    font-family: var(--mono);
+    color: var(--ink);
+    font-family: var(--sans);
     font-size: 13px;
     text-align: center;
     padding: 10px 0;
@@ -419,16 +414,16 @@ const archiveLine = [
 
   /* Dossier rich text: bold carries the .hit treatment; wrappers keep
      the 28px paragraph rhythm from theme.css. */
-  .dossier strong,
-  .dossier b { font-weight: 400; color: #fff; }
-  .dossier > p + div { margin-top: 28px; }
+  .details strong,
+  .details b { font-weight: 400; color: var(--ink); }
+  .details > p + div { margin-top: 28px; }
 
   /* SIZE GUIDE · RETURNS + closing archive line. */
   .pdp-links { display: flex; align-items: center; gap: var(--s2); }
   .pdp-link { color: var(--bone-dim); text-decoration: underline; text-underline-offset: 4px; }
-  .pdp-link:hover { color: var(--signal); }
+  .pdp-link:hover { color: var(--accent); }
   .pdp-archive-note { display: flex; flex-direction: column; gap: var(--s3); margin-top: var(--s2); }
-  .pdp-archive-note .tag { letter-spacing: 0.2em; }
+  .pdp-archive-note .eyebrow { letter-spacing: 0.2em; }
 
   /* Field manual COLOURWAYS row reuses the swatch component for its display-name
      map — dots off, labels on. */

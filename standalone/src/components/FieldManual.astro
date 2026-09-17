@@ -13,12 +13,12 @@ interface Props {
 }
 const { rows, handle } = Astro.props;
 ---
-<div class="field-manual">
-  <div class="fm-head tag">[ FIELD_MANUAL // TECHNICAL_SPEC ]</div>
+<div class="spec-table">
+  <div class="spec-table-head eyebrow">[ FIELD_MANUAL // TECHNICAL_SPEC ]</div>
   {rows.map((row, i) => (
-    <div class="fm-row">
-      <span class="fm-key">{row.label.toUpperCase()}</span>
-      <span class="fm-val" data-line-id={handle && `catalogue:${handle}.fieldManual.${i}.value`}>{row.value}</span>
+    <div class="spec-row">
+      <span class="spec-key">{row.label.toUpperCase()}</span>
+      <span class="spec-value" data-line-id={handle && `catalogue:${handle}.fieldManual.${i}.value`}>{row.value}</span>
     </div>
   ))}
 </div>

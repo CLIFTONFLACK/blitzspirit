@@ -41,9 +41,9 @@ const shown = products.slice(0, 4);
 {shown.length > 0 && (
   <section class="cross-sell">
     <div class="cs-head">
-      <span class="tag">[ {heading} ]</span>
+      <span class="eyebrow">[ {heading} ]</span>
       {showViewAll && (
-        <a href={href("/collections/all")} class="tag cs-view-all">
+        <a href={href("/collections/all")} class="eyebrow cs-view-all">
           [ {viewAllLabel} ]
         </a>
       )}
@@ -56,7 +56,7 @@ const shown = products.slice(0, 4);
 )}
 
 <style>
-  .cs-view-all:hover { color: var(--signal); }
+  .cs-view-all:hover { color: var(--accent); }
   .cross-sell-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);

@@ -64,15 +64,6 @@
             "link_all": false,
             "collection": "t-shirts"
           }
-        },
-        {
-          "id": "tab-caps",
-          "type": "tab",
-          "settings": {
-            "label": "CAPS",
-            "link_all": false,
-            "collection": "caps"
-          }
         }
       ]
     },

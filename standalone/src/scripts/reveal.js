@@ -3,7 +3,7 @@
 
    Ported unchanged from the Shopify theme: it touches no Shopify data.
    Observers:
-   - dossier signal-in: `.dossier .hit` AND `.dossier strong` (bold in
+   - dossier signal-in: `.details .hit` AND `.details strong` (bold in
      dossier rich text is the metafield-era ".hit" treatment — flagged by
      the product-system workstream). Both get .hit--live when scrolled
      into view; the keyframes/hiding live in CSS behind the html.js gate,
@@ -24,7 +24,7 @@
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   var hitEls = Array.prototype.slice.call(
-    document.querySelectorAll('.dossier .hit, .dossier strong')
+    document.querySelectorAll('.details .hit, .details strong')
   );
   var revealEls = Array.prototype.slice.call(
     document.querySelectorAll('.reveal, .reveal-stagger')
@@ -32,7 +32,7 @@
 
   function fire(el) {
     /* Anything inside a dossier is a signal-in hit; the rest are reveals. */
-    el.classList.add(el.closest('.dossier') ? 'hit--live' : 'in');
+    el.classList.add(el.closest('.details') ? 'hit--live' : 'in');
   }
 
   function flush() {

@@ -83,7 +83,7 @@ const socialLinks = [
 
     {heading && <h1 class="chunk lib-heading" data-line-id={editBase && `${editBase}.settings.heading`}>{heading}</h1>}
 
-    {sub && <p class="tag lib-sub" data-line-id={editBase && `${editBase}.settings.sub`}>[ {sub} ]</p>}
+    {sub && <p class="eyebrow lib-sub" data-line-id={editBase && `${editBase}.settings.sub`}>[ {sub} ]</p>}
   </header>
 
   <div class="lib-stack">
@@ -91,12 +91,12 @@ const socialLinks = [
       if (block.type === 'link') {
         if (!block.settings.label || !block.settings.url) return null;
         return (
-          <a href={href(block.settings.url)} class="directive snap lib-link">
+          <a href={href(block.settings.url)} class="btn snap lib-link">
             <span
               class="lib-link-label"
               data-line-id={editBase && block.id && `${editBase}.blocks.${block.id}.settings.label`}
             >{block.settings.label}</span>
-            {block.settings.badge && <span class="lib-badge tag">{block.settings.badge}</span>}
+            {block.settings.badge && <span class="lib-badge eyebrow">{block.settings.badge}</span>}
           </a>
         );
       }
@@ -162,7 +162,7 @@ const socialLinks = [
     position: absolute;
     top: -8px;
     right: -6px;
-    background: var(--signal);
+    background: var(--accent);
     color: #fff;
     padding: 3px 8px;
     font-size: 9px;
@@ -178,5 +178,5 @@ const socialLinks = [
   }
   .lib-social { display: flex; justify-content: center; gap: var(--s3); padding: var(--s2) 0; }
   .lib-social-link { color: var(--bone); padding: 10px; line-height: 0; border: 1px solid var(--line); }
-  .lib-social-link:hover { color: var(--signal); border-color: var(--signal); }
+  .lib-social-link:hover { color: var(--accent); border-color: var(--accent); }
 </style>

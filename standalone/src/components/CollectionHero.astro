@@ -73,7 +73,7 @@ const metaSegments = blocks.map((block) => block.text).filter((text): text is st
 <section class:list={['about-hero', 'page-hero', `page-hero--${headingSize}`]} style={style}>
   <div>
     {(indexTag || collRef) && (
-      <p class="led-index tag ph-index">
+      <p class="product-ref eyebrow ph-index">
         [ {indexTag}{indexTag && collRef ? ' // ' : ''}{collRef} ]
       </p>
     )}
@@ -94,7 +94,7 @@ const metaSegments = blocks.map((block) => block.text).filter((text): text is st
     )}
 
     {metaSegments.length > 0 ? (
-      <p class="tag ph-meta">
+      <p class="eyebrow ph-meta">
         [{metaSegments.map((text, i) => (
           <> {text}{i < metaSegments.length - 1 ? ' //' : ''}</>
         ))} ]
@@ -115,13 +115,16 @@ const metaSegments = blocks.map((block) => block.text).filter((text): text is st
   }
   .page-hero .ph-index { margin-bottom: 46px; }
   .page-hero .ph-head {
-    color: var(--cream);
+    /* Always dark-scrimmed (see .page-hero's background above), even with no
+       image, so this stays a fixed light warm tone rather than following
+       --cream's sitewide flip to a dark ink. */
+    color: #E6DECB;
     font-size: clamp(3rem, 9vw, 8rem);
     line-height: 0.9;
     margin-bottom: 24px;
   }
   .page-hero--lg .ph-head { font-size: clamp(2.2rem, 6vw, 4.5rem); }
-  .page-hero .ph-red { color: var(--brand-red); }
+  .page-hero .ph-red { color: var(--accent); }
   .page-hero .ph-meta {
     color: var(--bone-dim);
     max-width: 60ch;

@@ -53,11 +53,11 @@ const pillOptions = product.options
   .filter(({ option }) => !['colour', 'color'].includes(option.name.toLowerCase()));
 ---
 <section class="equipment" data-product-wrap>
-  <div class="condiment-inner">
-    {label && <div class="condiment-label tag" data-line-id={editBase && `${editBase}.settings.label`}>{label}</div>}
+  <div class="equipment-inner">
+    {label && <div class="equipment-label eyebrow" data-line-id={editBase && `${editBase}.settings.label`}>{label}</div>}
 
-    <div class="condiment-body">
-      <div class="condiment-visual">
+    <div class="equipment-body">
+      <div class="equipment-visual">
         <div class="pdp-gallery-row">
           {product.media.length > 1 && (
             <div class="pdp-thumbs">
@@ -95,10 +95,10 @@ const pillOptions = product.options
         </div>
       </div>
 
-      <div class="condiment-info">
-        {issueTag && <div class="condiment-issue tag" data-line-id={editBase && `${editBase}.settings.issue_tag`}>[ {issueTag} ]</div>}
+      <div class="equipment-info">
+        {issueTag && <div class="equipment-issue eyebrow" data-line-id={editBase && `${editBase}.settings.issue_tag`}>[ {issueTag} ]</div>}
 
-        <h2 class="chunk condiment-name">
+        <h2 class="chunk equipment-name">
           {startsWithThe ? (
             <><span class="the">THE</span> {titleUp.replace(/^THE /, '')}</>
           ) : (
@@ -108,7 +108,7 @@ const pillOptions = product.options
 
         <product-form>
           {pillOptions.length > 0 && (
-            <div class="condiment-cw">
+            <div class="equipment-cw">
               {pillOptions.map(({ option, index }) => (
                 <OptionPills
                   option={option}
@@ -126,12 +126,12 @@ const pillOptions = product.options
             set:html={JSON.stringify(product.variants)}
           />
 
-          <div class="condiment-price tag"><Price product={product} /></div>
+          <div class="equipment-price eyebrow"><Price product={product} /></div>
 
           <div class="actions">
             <button
               type="button"
-              class="directive snap"
+              class="btn btn--solid snap"
               data-add-to-cart
               data-variant-id={variant.id}
               disabled={!available}
@@ -154,12 +154,12 @@ const pillOptions = product.options
     border-color: var(--line);
     padding: var(--s4);
   }
-  .condiment-visual .plate img {
+  .equipment-visual .plate img {
     background: none;
     border: none;
     padding: 0;
   }
-  .condiment-issue {
+  .equipment-issue {
     margin-bottom: var(--s2);
   }
 </style>

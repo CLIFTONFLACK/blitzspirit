@@ -61,16 +61,6 @@
             "index_label": "",
             "force_dark": false
           }
-        },
-        {
-          "id": "item_cap",
-          "type": "item",
-          "settings": {
-            "product": "the-cap",
-            "dossier": "",
-            "index_label": "",
-            "force_dark": false
-          }
         }
       ]
     },

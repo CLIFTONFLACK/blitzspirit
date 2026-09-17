@@ -28,7 +28,7 @@ const {
 } = Astro.props;
 ---
 <section class="pdp-video">
-  <div class="video-label tag">[ {label} ]</div>
+  <div class="video-label eyebrow">[ {label} ]</div>
 
   {videoSrc ? (
     <div class="video-frame video-frame--live">
@@ -36,8 +36,8 @@ const {
     </div>
   ) : (
     <div class="video-frame">
-      <span class="video-play tag">[ {playLabel} ]</span>
-      <span class="video-meta tag">[ {pendingLabel} ]</span>
+      <span class="video-play eyebrow">[ {playLabel} ]</span>
+      <span class="video-meta eyebrow">[ {pendingLabel} ]</span>
     </div>
   )}
 </section>

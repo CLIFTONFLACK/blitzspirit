@@ -41,7 +41,7 @@ const {
     <div class="coll-empty">
       <h2 class="chunk coll-empty-title">{emptyHeading}</h2>
       {emptyText && <p class="coll-empty-text">{emptyText}</p>}
-      <a href={href("/collections/all")} class="directive directive--ghost snap coll-empty-link">
+      <a href={href("/collections/all")} class="btn btn--outline snap coll-empty-link">
         [ {strings.general['404'].link} ]
       </a>
     </div>
@@ -69,7 +69,7 @@ const {
   .coll-empty-title { color: var(--cream); font-size: clamp(2.2rem, 5vw, 3.5rem); line-height: 0.92; }
   .coll-empty-text {
     color: var(--bone-dim);
-    font-family: var(--mono);
+    font-family: var(--sans);
     font-size: 12px;
     letter-spacing: 0.08em;
     text-transform: uppercase;

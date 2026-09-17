@@ -24,14 +24,14 @@ const {
 ---
 <div class="main-404">
   <div class="main-404-inner">
-    {eyebrow && <p class="tag main-404-eyebrow">{eyebrow}</p>}
+    {eyebrow && <p class="eyebrow main-404-eyebrow">{eyebrow}</p>}
     <h1 class="chunk main-404-title">{strings.general['404'].title}</h1>
     <p class="main-404-lede">{strings.general['404'].subtext}</p>
     <div class="main-404-actions">
-      <a href={href("/collections/all")} class="directive snap">
+      <a href={href("/collections/all")} class="btn snap">
         [ {primaryLabel} ]
       </a>
-      <a href={href("/")} class="directive directive--ghost snap">
+      <a href={href("/")} class="btn btn--outline snap">
         [ {secondaryLabel} ]
       </a>
     </div>
@@ -47,7 +47,7 @@ const {
     padding: var(--s7) var(--s3);
     text-align: center;
     border-bottom: 1px solid var(--line);
-    background: var(--ink);
+    background: var(--paper);
   }
   .main-404-inner {
     max-width: 720px;
@@ -57,8 +57,8 @@ const {
     gap: var(--s3);
   }
   .main-404-eyebrow {
-    color: var(--signal);
-    border: 1px solid var(--signal);
+    color: var(--accent);
+    border: 1px solid var(--accent);
     padding: 6px 13px;
     letter-spacing: 0.2em;
   }
@@ -71,5 +71,5 @@ const {
     justify-content: center;
     margin-top: var(--s2);
   }
-  .main-404-actions .directive { display: inline-block; width: auto; padding: 16px 32px; }
+  .main-404-actions .btn { display: inline-block; width: auto; padding: 16px 32px; }
 </style>
