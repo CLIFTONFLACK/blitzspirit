@@ -10,21 +10,21 @@ const { strapline, copyright } = settings.outro;
 const rule = '------------------------------------------------------------------';
 const path = Astro.url.pathname;
 ---
-<footer class="outro">
-  <div class="outro-inner">
-    <nav class="outro-nav">
+<footer class="footer">
+  <div class="footer-inner">
+    <nav class="footer-nav">
       {menus.footer.map((link) => (
         <a
           href={href(link.url)}
-          class="tag"
+          class="eyebrow"
           aria-current={link.url === path ? 'page' : undefined}>[ {link.title} ]</a>
       ))}
     </nav>
 
-    {strapline && <span class="tag outro-strap" data-line-id="settings:outro.strapline">{strapline}</span>}
+    {strapline && <span class="eyebrow outro-strap" data-line-id="settings:outro.strapline">{strapline}</span>}
   </div>
 
-  <div class="outro-foot">
+  <div class="footer-bottom">
     <div class="rule" aria-hidden="true">{rule}</div>
     <div class="copyright" data-line-id="settings:outro.copyright">{copyright}</div>
     <div class="rule" aria-hidden="true">{rule}</div>

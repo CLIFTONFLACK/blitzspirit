@@ -48,7 +48,7 @@ const { content, editBase } = Astro.props;
     text-transform: uppercase;
     letter-spacing: -0.01em;
     line-height: 0.95;
-    color: #fff;
+    color: var(--ink);
     margin: var(--s4) 0 var(--s2);
   }
   .main-page-body h2 { font-size: clamp(1.6rem, 3.5vw, 2.4rem); }
@@ -63,12 +63,12 @@ const { content, editBase } = Astro.props;
   }
   .main-page-body ul,
   .main-page-body ol { margin: 0 0 var(--s2) 20px; color: var(--bone); font-size: 13px; line-height: 1.8; }
-  .main-page-body a { color: var(--bone); border-bottom: 1px solid var(--signal); }
-  .main-page-body a:hover { color: var(--signal); }
-  .main-page-body strong { color: #fff; font-weight: 400; }
-  .main-page-body em { font-style: normal; color: #fff; }
+  .main-page-body a { color: var(--bone); border-bottom: 1px solid var(--accent); }
+  .main-page-body a:hover { color: var(--accent); }
+  .main-page-body strong { color: var(--ink); font-weight: 400; }
+  .main-page-body em { font-style: normal; color: var(--ink); }
   .main-page-body blockquote {
-    border-left: 2px solid var(--signal);
+    border-left: 2px solid var(--accent);
     padding: var(--s2) var(--s3);
     margin: var(--s3) 0;
     background: var(--panel);

@@ -5,9 +5,9 @@
     "menu": "MENU",
     "home": "HOME",
     "404": {
-      "title": "Bombed out.",
-      "subtext": "The page is gone — the spirit isn't. Dust yourself off and carry on shopping.",
-      "link": "CARRY ON SHOPPING"
+      "title": "Page not found.",
+      "subtext": "The page you're looking for doesn't exist. Let's get you back to shopping.",
+      "link": "CONTINUE SHOPPING"
     },
     "social": {
       "instagram": "Instagram",
@@ -17,11 +17,11 @@
     }
   },
   "cart": {
-    "title": "SYSTEM_LEDGER // CURRENT_BAG",
-    "empty": "LEDGER EMPTY // NO ASSETS ALLOCATED",
-    "checkout": "PROCEED TO SECURE CHECKOUT",
+    "title": "YOUR BAG",
+    "empty": "YOUR BAG IS EMPTY",
+    "checkout": "CHECKOUT",
     "remove": "REMOVE",
-    "view_bag": "VIEW FULL LEDGER",
+    "view_bag": "VIEW BAG",
     "subtotal": "SUBTOTAL",
     "quantity": "QTY",
     "update": "UPDATE",
@@ -31,11 +31,11 @@
   },
   "products": {
     "add_to_cart": "ADD TO BAG",
-    "sold_out": "STOCK EXPENDED",
+    "sold_out": "SOLD OUT",
     "unavailable": "UNAVAILABLE",
     "in_stock": "IN STOCK",
     "view": "VIEW PRODUCT",
-    "quick_add": "QUICK",
+    "quick_add": "QUICK ADD",
     "inc_vat": "// INC. VAT",
     "choose_colour": "COLOUR",
     "choose_size": "SIZE"
@@ -53,7 +53,7 @@
     "title": "SEARCH THE COLLECTION",
     "placeholder": "SEARCH",
     "submit": "SEARCH",
-    "no_results": "NOTHING LOGGED FOR \"{{ terms }}\" // TRY AGAIN"
+    "no_results": "NO RESULTS FOR \"{{ terms }}\" // TRY AGAIN"
   },
   "accessibility": {
     "skip_to_text": "Skip to content",

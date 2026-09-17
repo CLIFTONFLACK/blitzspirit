@@ -87,7 +87,7 @@ const handleize = (value: string) =>
         </div>
 
         <div class="about-copy roster-copy">
-          {s.num && <p class="led-index tag roster-num" data-line-id={b && `${b}.settings.num`}>[ {s.num} ]</p>}
+          {s.num && <p class="product-ref eyebrow roster-num" data-line-id={b && `${b}.settings.num`}>[ {s.num} ]</p>}
 
           {s.heading && <h2 class="chunk roster-head" data-line-id={b && `${b}.settings.heading`}>{s.heading}</h2>}
 
@@ -106,7 +106,7 @@ const handleize = (value: string) =>
           )}
 
           {hasMeta && (
-            <div class="roster-meta tag">
+            <div class="roster-meta eyebrow">
               {s.meta_1 && <span data-line-id={b && `${b}.settings.meta_1`}>{s.meta_1}</span>}
               {s.meta_2 && <span data-line-id={b && `${b}.settings.meta_2`}>{s.meta_2}</span>}
               {s.meta_3 && <span data-line-id={b && `${b}.settings.meta_3`}>{s.meta_3}</span>}
@@ -115,7 +115,7 @@ const handleize = (value: string) =>
 
           {s.cta_label && s.cta_link && (
             <div class="roster-cta">
-              <a href={href(s.cta_link)} class="directive snap">{s.cta_label}</a>
+              <a href={href(s.cta_link)} class="btn snap">{s.cta_label}</a>
             </div>
           )}
         </div>
@@ -133,7 +133,7 @@ const handleize = (value: string) =>
         set:html={hrefsInHtml(noteText)}
       />
       {noteCtaLabel && (
-        <button type="button" class="directive snap roster-note-cta" data-open-signup>
+        <button type="button" class="btn snap roster-note-cta" data-open-signup>
           {noteCtaLabel}
         </button>
       )}
@@ -147,8 +147,8 @@ const handleize = (value: string) =>
   .roster-item { scroll-margin-top: 64px; }
   .roster-item .roster-num { display: inline-block; margin-bottom: 0; align-self: flex-start; }
   .roster-plate { width: min(88%, 460px); margin: 0 auto; }
-  .roster-head { color: #fff; }
-  .roster-rule { border: none; border-top: 2px solid var(--signal); width: 64px; margin: 0; }
+  .roster-head { color: var(--ink); }
+  .roster-rule { border: none; border-top: 2px solid var(--accent); width: 64px; margin: 0; }
   .roster-meta {
     display: flex;
     flex-wrap: wrap;
@@ -158,7 +158,7 @@ const handleize = (value: string) =>
     border-bottom: 1px solid var(--line);
     padding: 10px 0;
   }
-  .roster-cta .directive { display: inline-block; width: auto; padding: 16px 28px; }
+  .roster-cta .btn { display: inline-block; width: auto; padding: 16px 28px; }
   .roster-note {
     border-bottom: 1px solid var(--line);
     background: var(--panel-2);
@@ -190,9 +190,9 @@ const handleize = (value: string) =>
     max-width: 52ch;
   }
   .roster-body p + p { margin-top: var(--s2); }
-  .roster-body em { font-style: normal; color: #fff; }
-  .roster-body strong { font-weight: 400; color: #fff; }
-  .roster-body p:last-child strong { color: var(--signal); }
+  .roster-body em { font-style: normal; color: var(--ink); }
+  .roster-body strong { font-weight: 400; color: var(--ink); }
+  .roster-body p:last-child strong { color: var(--accent); }
   .roster-note-body p {
     color: var(--bone-dim);
     font-size: 11px;

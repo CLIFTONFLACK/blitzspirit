@@ -7,7 +7,7 @@
 //
 // Kept from the Liquid: the gallery contract (thumb rail + one [data-plate-frame]
 // per image, all but the current one hidden) and the dossier chain being inlined
-// rather than rendered through Dossier.astro — this panel IS the .dossier box, so
+// rather than rendered through Dossier.astro — this panel IS the .details box, so
 // reusing that component would nest a second bordered panel inside it. The
 // **bold** parser below mirrors Dossier.astro's for the same reason.
 //
@@ -79,7 +79,7 @@ const parse = (text: string) =>
 ---
 <section class="featured" data-product-wrap>
   <div class="featured-visual">
-    <span class="item-asset-ref tag">[ {issueText} ]</span>
+    <span class="item-asset-ref eyebrow">[ {issueText} ]</span>
     <div class="pdp-gallery-row">
       {product.media.length > 1 && (
         <div class="pdp-thumbs">
@@ -120,7 +120,7 @@ const parse = (text: string) =>
   </div>
 
   <div class="featured-ledger">
-    <div class="dossier">
+    <div class="details">
       <span class="featured-eyebrow">★ {issueText}</span>
 
       <h2 class="featured-name chunk">
@@ -131,7 +131,7 @@ const parse = (text: string) =>
         )}
       </h2>
 
-      <div class="featured-price tag"><Price product={product} /></div>
+      <div class="featured-price eyebrow"><Price product={product} /></div>
 
       {dossier ? (
         <p>{dossier}</p>
@@ -141,7 +141,7 @@ const parse = (text: string) =>
             <p>{product.strapline}</p>
           )}
           {product.dossier.length > 0 && (
-            <div class="dossier-desc">
+            <div class="details-copy">
               {product.dossier.map((paragraph) => (
                 <p>
                   {parse(paragraph).map((run) =>
@@ -184,7 +184,7 @@ const parse = (text: string) =>
           )}
           <button
             type="button"
-            class="directive snap"
+            class="btn btn--solid snap"
             data-add-to-cart
             data-variant-id={variant.id}
             disabled={!available}
@@ -207,17 +207,17 @@ const parse = (text: string) =>
     width: min(73%, 486px);
     aspect-ratio: 1 / 1.12;
     box-shadow: 0 30px 90px rgba(0, 0, 0, 0.7);
-    outline: 2px solid var(--signal);
+    outline: 2px solid var(--accent);
     outline-offset: 10px;
   }
-  .featured .dossier .featured-price {
+  .featured .details .featured-price {
     display: block;
     margin: 0 0 var(--s3);
     color: var(--dossier-ink);
     font-size: 14px;
     letter-spacing: 0.12em;
   }
-  .featured .dossier strong {
+  .featured .details strong {
     font-weight: 400;
     color: #0a0a0a;
   }

@@ -32,7 +32,7 @@ const {
 ---
 <section class="newsletter">
   <div class="nws-inner">
-    {indexTag && <p class="led-index tag nws-index" data-line-id={editBase && `${editBase}.settings.index_tag`}>[ {indexTag} ]</p>}
+    {indexTag && <p class="product-ref eyebrow nws-index" data-line-id={editBase && `${editBase}.settings.index_tag`}>[ {indexTag} ]</p>}
 
     {heading && <h2 class="chunk nws-head" data-line-id={editBase && `${editBase}.settings.heading`}>{heading}</h2>}
 
@@ -58,14 +58,14 @@ const {
      Global here too, because the elements belong to NewsletterForm.astro and
      so never carry this component's scope attribute. */
   .nlf-success {
-    border: 1px solid var(--signal);
+    border: 1px solid var(--accent);
     padding: var(--s3);
     text-align: center;
     display: flex;
     flex-direction: column;
     gap: var(--s1);
   }
-  .nlf-success-line { color: #fff; letter-spacing: 0.16em; }
-  .nlf-code { color: var(--signal); }
-  .nlf-error { color: var(--signal); margin-bottom: var(--s1); }
+  .nlf-success-line { color: var(--ink); letter-spacing: 0.16em; }
+  .nlf-code { color: var(--accent); }
+  .nlf-error { color: var(--accent); margin-bottom: var(--s1); }
 </style>

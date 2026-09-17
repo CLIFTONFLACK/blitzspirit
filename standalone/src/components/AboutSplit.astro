@@ -61,7 +61,7 @@ const showVisual = !!image;
   )}
 
   <div class="about-copy as-copy">
-    {indexTag && <p class="led-index tag as-index" data-line-id={editBase && `${editBase}.settings.index_tag`}>[ {indexTag} ]</p>}
+    {indexTag && <p class="product-ref eyebrow as-index" data-line-id={editBase && `${editBase}.settings.index_tag`}>[ {indexTag} ]</p>}
 
     {heading && <h2 class="chunk" data-line-id={editBase && `${editBase}.settings.heading`}>{heading}</h2>}
 
@@ -78,17 +78,17 @@ const showVisual = !!image;
 
     {ctaLabel && ctaLink && (
       <div class="as-cta">
-        <a href={href(ctaLink)} class="directive snap">{ctaLabel}</a>
+        <a href={href(ctaLink)} class="btn snap">{ctaLabel}</a>
       </div>
     )}
   </div>
 </div>
 
 <style>
-  .as .as-index { align-self: flex-start; color: var(--signal); }
+  .as .as-index { align-self: flex-start; color: var(--accent); }
   .as-plate { width: min(88%, 460px); margin: 0 auto; }
   .as-cta { margin-top: var(--s2); }
-  .as-cta .directive { display: inline-block; width: auto; padding: 18px 32px; }
+  .as-cta .btn { display: inline-block; width: auto; padding: 18px 32px; }
 
   .as--band { grid-template-columns: 1fr; }
   .as--band .as-copy { max-width: 980px; }
@@ -118,10 +118,10 @@ const showVisual = !!image;
     max-width: 52ch;
   }
   .as-body p + p { margin-top: var(--s2); }
-  .as-body em { font-style: normal; color: #fff; }
-  .as-body strong { font-weight: 400; color: #fff; }
-  .as-body a { color: var(--bone); border-bottom: 1px solid var(--signal); }
-  .as-body a:hover { color: var(--signal); }
+  .as-body em { font-style: normal; color: var(--ink); }
+  .as-body strong { font-weight: 400; color: var(--ink); }
+  .as-body a { color: var(--bone); border-bottom: 1px solid var(--accent); }
+  .as-body a:hover { color: var(--accent); }
   @media (min-width: 861px) {
     .as--band .as-body p { break-inside: avoid; }
   }

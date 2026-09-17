@@ -17,21 +17,23 @@
 }
 
 :root {
-  /* Colour tokens */
+  /* Colour tokens — light theme. --paper is the page/section background;
+     --ink is the dark ink used for text and dark-fill hover/pressed states.
+     Neither is red: --accent is the sole accent colour sitewide. */
+  --paper: #FFFFFF;
   --ink: #0A0A0A;
-  --panel: #111111;
-  --panel-2: #181818;
-  --line: #2a2a2a;
-  --line-bri: #3a3a3a;
-  --bone: #ECECEC;
+  --panel: #FFFFFF;
+  --panel-2: #F4F2EE;
+  --line: #E3E0D8;
+  --line-bri: #C9C4B8;
+  --bone: #171412;
   --bone-dim: #8A8A8A;
   --bone-mute: #5A5A5A;
   --plate: #EAE8E2;
-  --signal: #FF0000;
-  --brand-red: #C23030;
+  --accent: #1E90FF;
 
   /* Type stacks */
-  --mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, 'Roboto Mono', monospace;
+  --sans: 'Montserrat', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --display-font: 'ChunkFive', Georgia, serif;
 
   /* Spacing scale */

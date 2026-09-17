@@ -24,10 +24,10 @@ const { heading = 'Full Ledger.' } = Astro.props;
 <section class="main-cart">
   <header class="main-cart-head">
     <div>
-      <div class="tag tag-mute main-cart-kicker">[ {strings.cart.title} ]</div>
+      <div class="eyebrow eyebrow-muted main-cart-kicker">[ {strings.cart.title} ]</div>
       <h1 class="chunk main-cart-title">{heading}</h1>
     </div>
-    <span class="tag main-cart-count" data-cart-count-label>[ 0 ITEMS ]</span>
+    <span class="eyebrow main-cart-count" data-cart-count-label>[ 0 ITEMS ]</span>
   </header>
 
   {settings.cart.showFreeShippingBar && settings.cart.freeShippingThreshold > 0 && (
@@ -47,7 +47,7 @@ const { heading = 'Full Ledger.' } = Astro.props;
     <div class="cart-empty">[ {strings.cart.empty} ]</div>
   </div>
 
-  <a href={href("/collections/all")} class="directive snap main-cart-continue">[ {strings.general['404'].link} ]</a>
+  <a href={href("/collections/all")} class="btn snap main-cart-continue">[ {strings.general['404'].link} ]</a>
 
   <div class="main-cart-foot">
     <div class="cart-sum">

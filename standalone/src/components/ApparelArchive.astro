@@ -12,7 +12,7 @@
 // the product's own dossier paragraphs.
 //
 // The dossier chain is inlined rather than rendered through Dossier.astro: the
-// ledger panel IS the .dossier box (it also holds the index, name, price and buy
+// ledger panel IS the .details box (it also holds the index, name, price and buy
 // controls), so reusing that component would nest a second bordered panel inside
 // it. The **bold** parser below mirrors Dossier.astro's for the same reason.
 //
@@ -141,11 +141,11 @@ const rows = blocks.map((block, i) => {
 
       <div class="item-ledger">
         <div>
-          <div class="dossier">
-            <div class="led-index tag">
+          <div class="details">
+            <div class="product-ref eyebrow">
               [ ★ {row.issueText} // <span data-line-id={row.editId && `${row.editId}.settings.index_label`}>{row.indexLabel}</span> // {row.titleUp} ]
             </div>
-            <h2 class="led-name chunk">
+            <h2 class="product-title chunk">
               {row.startsWithThe ? (
                 <><span class="the">THE</span> {row.titleUp.replace(/^THE /, '')}</>
               ) : (
@@ -153,7 +153,7 @@ const rows = blocks.map((block, i) => {
               )}
             </h2>
 
-            <div class="item-price tag"><Price product={row.product} /></div>
+            <div class="item-price eyebrow"><Price product={row.product} /></div>
 
             {row.product.strapline && (
               <p>{row.product.strapline}</p>
@@ -163,7 +163,7 @@ const rows = blocks.map((block, i) => {
               <p>{row.dossierOverride}</p>
             ) : (
               row.product.dossier.length > 0 && (
-                <div class="dossier-desc">
+                <div class="details-copy">
                   {row.product.dossier.map((paragraph) => (
                     <p>
                       {parse(paragraph).map((run) =>
@@ -207,7 +207,7 @@ const rows = blocks.map((block, i) => {
                 )}
                 <button
                   type="button"
-                  class="directive snap"
+                  class="btn btn--solid snap"
                   data-add-to-cart
                   data-variant-id={row.variant.id}
                   disabled={!row.available}
@@ -227,26 +227,18 @@ const rows = blocks.map((block, i) => {
      renders, so it stays scoped; the .item-price colour reaches Price.astro's
      spans by inheritance, as it did in the theme. */}
 <style>
-  .item .dossier .item-price {
+  .item .details .item-price {
     display: block;
     margin: 10px 0 var(--s3);
     color: var(--dossier-ink);
     font-size: 14px;
     letter-spacing: 0.12em;
   }
-  .item--dark .dossier .item-price {
-    color: var(--bone);
-  }
-  /* Both bold colours go through --dossier-strong so a skin can flip them
-     without having to out-specify these scoped selectors, which carry the
-     data-astro-cid attribute on every element and so sit far above anything
-     a stylesheet can reasonably write. The fallbacks are the theme's own
-     values, so the base build is unchanged. */
-  .item .dossier strong {
+  /* The .details card is a light panel regardless of .item--dark — that
+     modifier only darkens the .item-ledger frame around it (theme.css
+     §12d) — so dossier content needs no separate dark-row colour. */
+  .item .details strong {
     font-weight: 400;
     color: var(--dossier-strong, #0a0a0a);
-  }
-  .item--dark .dossier strong {
-    color: var(--dossier-strong, #fff);
   }
 </style>

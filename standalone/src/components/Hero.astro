@@ -43,7 +43,7 @@ const artworkWidths = [520, 1040].filter((w) => w <= artwork.width);
 ---
 <section class="hero">
   <div class="hero-copy">
-    {kicker && <span class="hero-kicker tag tag-mute" data-line-id={editBase && `${editBase}.settings.kicker`}>{kicker}</span>}
+    {kicker && <span class="hero-kicker eyebrow eyebrow-muted" data-line-id={editBase && `${editBase}.settings.kicker`}>{kicker}</span>}
     {heading && <h1 class="chunk" data-line-id={editBase && `${editBase}.settings.heading`}>{heading}</h1>}
     {ctaLabel && <a class="hero-cta snap" href={href(ctaUrl)} data-line-id={editBase && `${editBase}.settings.cta_label`}>{ctaLabel}</a>}
   </div>

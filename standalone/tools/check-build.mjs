@@ -14,13 +14,7 @@ import { dirname, join } from 'node:path';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 
-/* Two editions are built from this source: the shop at the domain root, and the
-   neomorphic edition under /neomorphism (astro.neo.config.mjs). They are the same
-   pages, so they get the same assertions - the second edition is verified, not
-   assumed. Both arguments are optional and default to the shop.
-
-     node tools/check-build.mjs                      # dist/, base ''
-     node tools/check-build.mjs dist-neo /neomorphism */
+// Both arguments are optional and default to the shop (dist/, base '').
 const dist = join(root, process.argv[2] ?? 'dist');
 
 const catalogue = JSON.parse(readFileSync(join(root, 'src/data/catalogue.json'), 'utf8'));
@@ -48,7 +42,7 @@ function html(route) {
 const CHROME = [
   ['masthead', 'class="masthead"'],
   ['cart drawer', 'id="CartDrawer"'],
-  ['footer', 'class="outro"'],
+  ['footer', 'class="footer"'],
   ['stylesheet link', '<link rel="stylesheet"'],
   ['canonical', 'rel="canonical"'],
   ['font preload', 'chunkfive.woff2'],
@@ -173,11 +167,7 @@ if (BASE) {
   for (const route of routes) {
     const doc = html(route || '/');
     if (!doc) continue;
-    // The edition mark is the one link that MUST leave the base: it is how a
-    // visitor gets back from the neomorphic edition to the shop. It says so on
-    // itself, and only elements that say so are exempt.
-    const scanned = doc.replace(/<[a-z]+[^>]*\sdata-cross-edition[^>]*>/gi, '');
-    const attrs = [...scanned.matchAll(/(?:href|src)="(\/[^"]*)"/g)].map((m) => m[1]);
+    const attrs = [...doc.matchAll(/(?:href|src)="(\/[^"]*)"/g)].map((m) => m[1]);
     const stray = [...new Set(attrs)].filter((p) => !p.startsWith(BASE + '/') && p !== BASE);
     if (stray.length) {
       fail(route || '/', `paths outside the base ${BASE}: ${stray.slice(0, 4).join(', ')}`);
@@ -208,36 +198,6 @@ for (const route of routes) {
   }
   const onDisk = join(dist, path.slice(BASE.length));
   if (!existsSync(onDisk)) fail(route || '/', `og:image not in the build: ${path}`);
-}
-
-/** The neomorphic edition must actually be wearing its skin.
- *
- *  This is the assertion that would have caught the worst plausible failure here: the
- *  edition builds, every route 200s, every word is in place - and the stylesheet
- *  never loaded, so it renders as the ordinary shop at a second URL. A route check
- *  cannot see that. So: the hook is on the page, the sheet is linked, the file
- *  shipped, and the file is the skin rather than an empty placeholder. */
-if (BASE === '/neomorphism') {
-  const sheet = join(dist, 'neo.css');
-  if (!existsSync(sheet)) {
-    fail('/neo.css', 'the skin did not ship');
-  } else {
-    const css = readFileSync(sheet, 'utf8');
-    for (const [label, needle] of [
-      ['the scope', "html[data-skin='neo']"],
-      ['the extrusion tokens', '--neo-raise:'],
-      ['the masthead treatment', '.masthead'],
-    ]) {
-      if (!css.includes(needle)) fail('/neo.css', `does not contain ${label}`);
-    }
-  }
-  for (const route of routes) {
-    const doc = html(route || '/');
-    if (!doc) continue;
-    if (!doc.includes('data-skin="neo"')) fail(route || '/', 'no data-skin hook on <html>');
-    if (!doc.includes(url('/neo.css'))) fail(route || '/', 'the skin is not linked');
-    if (!doc.includes('name="robots" content="noindex')) fail(route || '/', 'not noindex');
-  }
 }
 
 /** The cart index the drawer depends on must exist and cover every variant. */

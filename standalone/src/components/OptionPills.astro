@@ -21,7 +21,7 @@ const labelText = bare ? label : `[ ${label} ]`;
 ---
 {isColour ? (
   <div class="cw" data-option-group data-option-index={optionIndex}>
-    <span class="cw-label tag">{labelText}</span>
+    <span class="cw-label eyebrow">{labelText}</span>
     <div class="cw-opts">
       {option.values.map((v) => (
         <button
@@ -39,7 +39,7 @@ const labelText = bare ? label : `[ ${label} ]`;
   </div>
 ) : (
   <div class="sizes" data-option-group data-option-index={optionIndex}>
-    <span class="tag sizes-label" style="margin-right:4px">{labelText}</span>
+    <span class="eyebrow sizes-label" style="margin-right:4px">{labelText}</span>
     <div class="sizes-opts">
       {option.values.map((v) => (
         <button

@@ -51,12 +51,12 @@ const banded = await getImage({ src: source, width: Math.min(2000, source.width)
 <section class="promo" style={`--promo-image: url('${banded.src}')`}>
   <div class="promo-inner">
     <div class="promo-text">
-      {tag && <div class="promo-tag tag" data-line-id={editBase && `${editBase}.settings.tag`}>{tag}</div>}
+      {tag && <div class="promo-eyebrow eyebrow" data-line-id={editBase && `${editBase}.settings.tag`}>{tag}</div>}
       {heading && <h2 class="promo-title chunk" data-line-id={editBase && `${editBase}.settings.heading`}>{heading}</h2>}
       {subheading && <p class="promo-sub" data-line-id={editBase && `${editBase}.settings.subheading`}>{subheading}</p>}
 
       <div class="promo-form">
-        {leadLine && <p class="promo-cta tag" data-line-id={editBase && `${editBase}.settings.lead_line`}>{leadLine}</p>}
+        {leadLine && <p class="promo-cta eyebrow" data-line-id={editBase && `${editBase}.settings.lead_line`}>{leadLine}</p>}
         <NewsletterForm
           id={id}
           buttonLabel={buttonLabel}
@@ -76,7 +76,7 @@ const banded = await getImage({ src: source, width: Math.min(2000, source.width)
      would not reach. */}
 <style is:global>
   .promo .nlf-success-line {
-    color: var(--signal);
+    color: var(--accent);
     text-shadow: 0 1px 5px #000;
   }
   .promo .nlf-error {

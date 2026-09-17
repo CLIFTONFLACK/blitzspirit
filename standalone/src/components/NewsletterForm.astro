@@ -38,7 +38,7 @@ const codeLine = settings.discount.code
 ---
 <div class="nlf" id={`${id}-wrap`}>
   <form class="nlf-form" id={id} data-newsletter-form data-tags={tags} novalidate>
-    <p class="nlf-error tag" role="alert" hidden></p>
+    <p class="nlf-error eyebrow" role="alert" hidden></p>
     <label class="visually-hidden" for={`${id}-email`}>{strings.newsletter.label}</label>
     <div class={`${classPrefix}-row`}>
       <input
@@ -60,11 +60,11 @@ const codeLine = settings.discount.code
        copy match the Liquid version so modal.js needs no changes. */}
   <div class="nlf-success" data-signup-success role="status" hidden>
     {successText ? (
-      <p class="nlf-success-line tag">{successText}</p>
+      <p class="nlf-success-line eyebrow">{successText}</p>
     ) : (
       <>
-        <p class="nlf-success-line tag">{strings.newsletter.success}</p>
-        {codeLine && <p class="nlf-code tag">{codeLine}</p>}
+        <p class="nlf-success-line eyebrow">{strings.newsletter.success}</p>
+        {codeLine && <p class="nlf-code eyebrow">{codeLine}</p>}
       </>
     )}
   </div>

@@ -253,6 +253,14 @@ const filters = [
         --khaki: #B89B5E;
         --hair: rgba(184, 155, 94, 0.28);
         --hair-hi: rgba(184, 155, 94, 0.7);
+        /* Not part of the shop's chrome (see the file header) — this internal
+           tool keeps its own fixed dark palette rather than following the
+           shop's light theme, the same way edit.astro's :root does. */
+        --ink: #0A0A0A;
+        --bone: #ECECEC;
+        --panel: #111111;
+        --line: #2a2a2a;
+        --line-bri: #3a3a3a;
       }
 
       * { box-sizing: border-box; }
@@ -270,11 +278,11 @@ const filters = [
       .wrap { max-width: 1140px; margin: 0 auto; padding: 0 var(--s3) var(--s7); }
 
       a { color: var(--bone); }
-      ::selection { background: var(--signal); color: #fff; }
+      ::selection { background: var(--accent); color: #fff; }
       :focus-visible { outline: 2px solid var(--khaki); outline-offset: 2px; }
 
       .band {
-        background: var(--signal);
+        background: var(--accent);
         color: #fff;
         font-size: 13px;
         letter-spacing: 0.22em;
@@ -351,7 +359,7 @@ const filters = [
         cursor: pointer; transition: color .18s, border-color .18s, background-color .18s;
       }
       .chip:hover { color: var(--bone); border-color: var(--line-bri); }
-      .chip[aria-pressed='true'] { background: var(--signal); border-color: var(--signal); color: #fff; }
+      .chip[aria-pressed='true'] { background: var(--accent); border-color: var(--accent); color: #fff; }
 
       .search {
         flex: 1 1 170px; min-width: 150px;
@@ -365,11 +373,11 @@ const filters = [
 
       .editbar { display: flex; align-items: center; gap: 8px; margin-left: auto; }
       .chip.edit[aria-pressed='true'] { background: var(--khaki); border-color: var(--khaki); color: #000; }
-      .chip.save { border-color: var(--signal); color: var(--signal); }
-      .chip.save:hover { background: var(--signal); color: #fff; }
+      .chip.save { border-color: var(--accent); color: var(--accent); }
+      .chip.save:hover { background: var(--accent); color: #fff; }
       .status { font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #fff; }
       .status[data-tone='ok'] { color: var(--khaki); }
-      .status[data-tone='bad'] { color: var(--signal); }
+      .status[data-tone='bad'] { color: var(--accent); }
 
       /* ---- entries ---- */
       .lines { display: flex; flex-direction: column; gap: var(--s4); }
@@ -496,7 +504,7 @@ const filters = [
       }
       .guard ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 14px; }
       .guard li { padding-left: 20px; position: relative; max-width: 80ch; }
-      .guard li::before { content: '-'; position: absolute; left: 0; color: var(--signal); }
+      .guard li::before { content: '-'; position: absolute; left: 0; color: var(--accent); }
       .guard li b { display: block; font-family: var(--display-font); text-transform: uppercase; font-size: 17px; }
       .guard li span { color: #fff; font-size: 15px; }
 
