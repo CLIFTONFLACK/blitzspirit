@@ -31,8 +31,6 @@ const split = (s: Record<string, any>) => ({
   description="Fifty-seven consecutive nights of bombing, and a city that refused to be told when it was beaten. Blitz spirit, and what it means now."
 >
   <PageHero
-    indexTag={hero.index_tag}
-    showPageRef={hero.show_page_ref}
     pageTitle={page.title}
     heading={hero.heading}
     redFirstLine={hero.red_first_line}
@@ -46,7 +44,6 @@ const split = (s: Record<string, any>) => ({
   <ValuesGrid blocks={blocks(page, 'house-rules')} editBase="pages/story:house-rules" />
   <Newsletter
     sectionId="story"
-    indexTag={news.index_tag}
     heading={news.heading}
     body={news.body}
     buttonLabel={news.button_label}

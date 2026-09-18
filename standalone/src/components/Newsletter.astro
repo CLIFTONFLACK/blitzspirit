@@ -13,7 +13,6 @@ import NewsletterForm from '~/components/NewsletterForm.astro';
 
 interface Props {
   sectionId?: string;
-  indexTag?: string;
   heading?: string;
   body?: string;
   buttonLabel?: string;
@@ -23,7 +22,6 @@ interface Props {
 
 const {
   sectionId = 'newsletter',
-  indexTag = 'DISPATCHES // HOME_GUARD',
   heading = 'Wakey wakey.',
   body = 'First word on new drops, restocks and stories worth telling — plus 10% off your first order. No spam. That would be nonsense.',
   buttonLabel = '[ SEND IT ]',
@@ -32,8 +30,6 @@ const {
 ---
 <section class="newsletter">
   <div class="nws-inner">
-    {indexTag && <p class="product-ref eyebrow nws-index" data-line-id={editBase && `${editBase}.settings.index_tag`}>[ {indexTag} ]</p>}
-
     {heading && <h2 class="chunk nws-head" data-line-id={editBase && `${editBase}.settings.heading`}>{heading}</h2>}
 
     {body && <p data-line-id={editBase && `${editBase}.settings.body`}>{body}</p>}
@@ -47,7 +43,6 @@ const {
 </section>
 
 <style>
-  .newsletter .nws-index { display: inline-block; margin-bottom: var(--s2); }
   .newsletter .nws-head { font-size: clamp(2rem, 4vw, 3rem); }
 </style>
 

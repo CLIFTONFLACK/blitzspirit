@@ -30,7 +30,7 @@
   --bone-dim: #8A8A8A;
   --bone-mute: #5A5A5A;
   --plate: #EAE8E2;
-  --accent: #1E90FF;
+  --accent: #475160; /* sampled from the bowler hat's navy in hero-engraved.jpg */
 
   /* Type stacks */
   --sans: 'Montserrat', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;

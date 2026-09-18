@@ -18,8 +18,6 @@ const news = settings(page, 'newsletter');
   description="Give us a shout. Delivery, returns and sizing are answered on the help page first."
 >
   <PageHero
-    indexTag={hero.index_tag}
-    showPageRef={hero.show_page_ref}
     pageTitle={page.title}
     heading={hero.heading}
     redFirstLine={hero.red_first_line}
@@ -29,14 +27,12 @@ const news = settings(page, 'newsletter');
     editBase="pages/contact:hero"
   />
   <Faq
-    indexTag={contact.index_tag}
     intro={contact.intro}
     blocks={blocks(page, 'contact')}
     editBase="pages/contact:contact"
   />
   <Newsletter
     sectionId="contact"
-    indexTag={news.index_tag}
     heading={news.heading}
     body={news.body}
     buttonLabel={news.button_label}

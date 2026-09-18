@@ -32,8 +32,6 @@ const split = (s: Record<string, any>) => ({
   description="London, 2008. A bowler hat, a skull, two crossed umbrellas — and a question about what British stoicism looks like on a t-shirt."
 >
   <PageHero
-    indexTag={hero.index_tag}
-    showPageRef={hero.show_page_ref}
     pageTitle={page.title}
     heading={hero.heading}
     redFirstLine={hero.red_first_line}
@@ -48,7 +46,6 @@ const split = (s: Record<string, any>) => ({
   <AboutSplit {...split(means)} editBase="pages/about:split-means" />
   <Newsletter
     sectionId="about"
-    indexTag={news.index_tag}
     heading={news.heading}
     body={news.body}
     buttonLabel={news.button_label}

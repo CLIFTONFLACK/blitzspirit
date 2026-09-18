@@ -26,15 +26,12 @@ interface Props {
 }
 
 const { items = [], handle } = Astro.props;
-
-const pad = (n: number) => (n < 10 ? `0${n}` : String(n));
 ---
 {items.length > 0 && (
   <section class="pdp-editorial">
     <div class="editorial-grid">
       {items.map((item, i) => (
         <div class="editorial-block">
-          <div class="product-ref eyebrow editorial-tag">[ TEXT_{pad(i + 1)} ]</div>
           {item.heading && <h2 class="chunk editorial-head" data-line-id={handle && `catalogue:${handle}.editorial.${i}.heading`}>{item.heading}</h2>}
           {item.body && (
             <div class="editorial-body" data-line-id={handle && `catalogue:${handle}.editorial.${i}.body`}>

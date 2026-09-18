@@ -30,7 +30,6 @@ interface FaqBlock {
 }
 
 interface Props {
-  indexTag?: string;
   intro?: string;
   /** qa / size_table blocks, straight out of src/data/pages/*.json. */
   blocks?: FaqBlock[];
@@ -39,7 +38,6 @@ interface Props {
 }
 
 const {
-  indexTag = 'FIELD_MANUAL // STRAIGHT_ANSWERS',
   intro = 'Straight answers, no run-around. If it’s not covered here, write to us — a human reads everything.',
   blocks = [],
   editBase,
@@ -75,7 +73,6 @@ const items = blocks.map((block) => {
 ---
 <div class="faq">
   <div class="faq-inner">
-    {indexTag && <p class="product-ref eyebrow faq-index" data-line-id={editBase && `${editBase}.settings.index_tag`}>[ {indexTag} ]</p>}
     {intro && <p class="faq-intro" data-line-id={editBase && `${editBase}.settings.intro`}>{intro}</p>}
 
     {items.length > 0 && (
@@ -146,7 +143,6 @@ const items = blocks.map((block) => {
 <style>
   .faq { padding: var(--s5) var(--s3) var(--s6); border-bottom: 1px solid var(--line); }
   .faq-inner { max-width: 760px; margin: 0 auto; }
-  .faq-index { display: inline-block; }
   .faq-intro {
     color: var(--bone-dim);
     font-size: 12px;

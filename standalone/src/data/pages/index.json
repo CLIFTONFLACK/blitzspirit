@@ -17,7 +17,7 @@
         "product": "the-establishment",
         "issue_override": "",
         "dossier": "",
-        "what_label": "STORY",
+        "what_label": "VIEW PRODUCT",
         "plate_ref": "BS_002 // ISSUE_001"
       }
     },
@@ -39,7 +39,7 @@
       "type": "apparel-archive",
       "settings": {
         "auto_alternate": true,
-        "what_label": "STORY"
+        "what_label": "VIEW PRODUCT"
       },
       "blocks": [
         {

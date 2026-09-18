@@ -41,8 +41,6 @@ const heroBlocks = blocks(page, 'hero').map((b) => ({ text: b.settings.text }));
 <Base title={collection.title} description={collection.description} collection={collection}>
   <CollectionHero
     collection={collection}
-    indexTag={hero.index_tag}
-    showPageRef={hero.show_page_ref}
     heading={hero.heading}
     fallbackTitle={hero.fallback_title}
     redFirstLine={hero.red_first_line}
@@ -54,7 +52,6 @@ const heroBlocks = blocks(page, 'hero').map((b) => ({ text: b.settings.text }));
   {featured && (
     <FeaturedProduct
       product={featured.product}
-      issueOverride={featured.issue_override}
       dossier={featured.dossier}
       whatLabel={featured.what_label}
       plateRef={featured.plate_ref}

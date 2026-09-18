@@ -18,7 +18,6 @@ interface Props {
 }
 const { product, showBadge = false } = Astro.props;
 
-const issueTag = product.issue || 'ISSUE_001';
 const titleUp = product.title.toUpperCase();
 const startsWithThe = titleUp.startsWith('THE ');
 
@@ -54,7 +53,6 @@ const colourOption = product.options.find((o) => ['Colour', 'Color'].includes(o.
       <div class="plate__placeholder" aria-hidden="true"></div>
     )}
     {showBadge && product.limited && <span class="coll-badge">LIMITED EDITION</span>}
-    <span class="coll-issue">[ {issueTag} ]</span>
   </a>
   <div class="coll-info">
     <h3 class="chunk coll-name" data-line-id={`catalogue:${product.handle}.title`}>

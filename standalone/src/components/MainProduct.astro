@@ -187,13 +187,6 @@ const archiveLine = [
 
     <div class="pdp-ledger">
       <product-form data-url-update>
-        <div class="pdp-issue">
-          <div class="pdp-kicker eyebrow eyebrow-muted">
-            {issueVal.toUpperCase()}
-            {entryNum ? ` · ENTRY ${entryNum}` : indexRef ? ` · ${indexRef.toUpperCase()}` : ''}
-          </div>
-        </div>
-
         <h1 class="product-title chunk pdp-name" data-line-id={`catalogue:${product.handle}.title`}>
           {startsWithThe ? (
             <><span class="the">THE</span> {titleUp.replace(/^THE /, '')}</>
@@ -323,15 +316,6 @@ const archiveLine = [
   .pdp-ledger product-form { display: flex; flex-direction: column; gap: var(--s3); }
 
   .pdp-ledger .pdp-name { font-size: clamp(2.2rem, 5vw, 4rem); margin-bottom: 0; }
-
-  /* Kicker — "ISSUE_001 · ENTRY 02" with a short underline (mockup v27). */
-  .pdp-issue .pdp-kicker {
-    display: inline-block;
-    align-self: flex-start;
-    letter-spacing: 0.25em;
-    padding: 0 var(--s4) 12px 0;
-    border-bottom: 1px solid var(--line-bri);
-  }
 
   /* Stock reads as a quiet tag and only surfaces when it matters. */
   .pdp-stock-row { display: flex; }

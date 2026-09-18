@@ -11,20 +11,17 @@ import strings from '~/data/strings.json';
 import { href } from '~/lib/url';
 
 interface Props {
-  eyebrow?: string;
   primaryLabel?: string;
   secondaryLabel?: string;
 }
 
 const {
-  eyebrow = '[ ERROR 404 ]',
   primaryLabel = 'CHOOSE THE COLLECTION',
   secondaryLabel = 'BACK TO BASE',
 } = Astro.props;
 ---
 <div class="main-404">
   <div class="main-404-inner">
-    {eyebrow && <p class="eyebrow main-404-eyebrow">{eyebrow}</p>}
     <h1 class="chunk main-404-title">{strings.general['404'].title}</h1>
     <p class="main-404-lede">{strings.general['404'].subtext}</p>
     <div class="main-404-actions">
@@ -55,12 +52,6 @@ const {
     flex-direction: column;
     align-items: center;
     gap: var(--s3);
-  }
-  .main-404-eyebrow {
-    color: var(--accent);
-    border: 1px solid var(--accent);
-    padding: 6px 13px;
-    letter-spacing: 0.2em;
   }
   .main-404-title { color: var(--cream); font-size: clamp(3rem, 10vw, 6.5rem); line-height: 0.9; }
   .main-404-lede { color: var(--bone-dim); font-size: 14px; line-height: 1.7; max-width: 46ch; }
