@@ -488,8 +488,10 @@ a { color:inherit; text-decoration:none; }
 /* swatch snippet inside a card: dot only, hide the text label */
 .coll-dots .dot { width:10px; height:10px; border:1px solid rgba(255,255,255,.2); background:var(--dot,#333); }
 .coll-dots .cw-name { display:none; }
-.coll-cta { display:block; border:1px solid var(--ink); padding:12px var(--s2); font-size:11px; letter-spacing:.15em; text-transform:uppercase; font-family:var(--sans); color:var(--ink); text-align:center; margin-top:auto; }
+.coll-actions { display:flex; gap:8px; margin-top:auto; }
+.coll-cta { flex:1; display:block; border:1px solid var(--ink); padding:12px var(--s2); font-size:11px; letter-spacing:.15em; text-transform:uppercase; font-family:var(--sans); color:var(--ink); text-align:center; }
 .coll-cta:hover { background:var(--ink); border-color:var(--ink); color:var(--paper); }
+.coll-buy { flex:1; width:auto; padding:12px var(--s2); font-size:11px; letter-spacing:.15em; }
 
 /* ============================================================
    12. HOMEPAGE FRAMEWORK — hero / featured / promo / archive /
@@ -553,13 +555,17 @@ a { color:inherit; text-decoration:none; }
    the .promo wrapper via a style attribute or per-section CSS. */
 .promo { position:relative; padding:var(--s7) var(--s3); border-bottom:1px solid var(--line); overflow:hidden; }
 .promo::before { content:""; position:absolute; inset:0; z-index:0; background:var(--promo-image) center/cover no-repeat; transform:scaleX(-1); }
+/* Feathered dark gradient over the left ~35% of the photo, where .promo-text
+   sits, so the heading/copy stay readable over a busy photo without a flat
+   scrim across the whole image. */
+.promo::after { content:""; position:absolute; inset:0; z-index:0; background:linear-gradient(to right, rgba(0,0,0,.65) 0%, rgba(0,0,0,0) 35%); }
 .promo-inner { position:relative; z-index:1; max-width:1120px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:var(--s6); align-items:center; }
 .promo-text { text-align:left; max-width:560px; }
 /* .promo always shows a real photo (--promo-image), never a flat fallback,
-   so its headline stays a fixed light warm tone rather than following
+   so its headline stays a fixed light cool tone rather than following
    --cream's sitewide flip to a dark ink — same reasoning as .page-hero. */
-.promo-title { color:#E6DECB; font-size:clamp(2.2rem,5.2vw,4.2rem); text-shadow:0 2px 4px #000,0 4px 30px rgba(0,0,0,.9); margin-bottom:var(--s3); }
-.promo-sub { color:#E6DECB; font-family:var(--display-font); font-weight:400; font-size:clamp(.95rem,2.1vw,1.2rem); letter-spacing:0.01em; text-transform:uppercase; text-shadow:0 1px 5px #000; margin-bottom:0; }
+.promo-title { color:#D6D6D6; font-size:clamp(2.2rem,5.2vw,4.2rem); text-shadow:0 2px 4px #000,0 4px 30px rgba(0,0,0,.9); margin-bottom:var(--s3); }
+.promo-sub { color:#D6D6D6; font-family:var(--display-font); font-weight:400; font-size:clamp(.95rem,2.1vw,1.2rem); letter-spacing:0.01em; text-transform:uppercase; text-shadow:0 1px 5px #000; margin-bottom:0; }
 .promo-form { max-width:520px; margin-top:var(--s4); }
 .promo-cta { display:block; color:#fff; text-shadow:0 1px 5px #000; margin-bottom:var(--s2); }
 .promo-row { display:flex; border:1px solid var(--bone-dim); background:rgba(0,0,0,0.55); }
@@ -613,6 +619,10 @@ a { color:inherit; text-decoration:none; }
   .featured-visual { border-right:none; border-bottom:1px solid var(--line); padding:var(--s5); }
   .promo-inner { grid-template-columns:1fr; gap:var(--s4); }
   .promo-text { text-align:center; }
+  /* Text centres full-width on mobile, so the left-only fade would leave the
+     right half of the copy sitting on unfaded photo — widen it to cover the
+     whole band instead. */
+  .promo::after { background:linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)); }
   .item { grid-template-columns:1fr; min-height:0; }
   .item-visual { border-right:none; border-bottom:1px solid var(--line); padding:var(--s5); }
   .pdp { grid-template-columns:1fr; min-height:0; }

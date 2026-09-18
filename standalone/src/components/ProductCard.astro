@@ -9,7 +9,7 @@ import Swatch from './Swatch.astro';
 import Price from './Price.astro';
 import strings from '~/data/strings.json';
 import { asset, assetOrNull } from '~/lib/images';
-import type { Product } from '~/lib/catalogue';
+import { firstAvailableVariant, type Product } from '~/lib/catalogue';
 import { href } from '~/lib/url';
 
 interface Props {
@@ -23,6 +23,8 @@ const startsWithThe = titleUp.startsWith('THE ');
 
 const primary = product.media[0] ? asset(product.media[0].src) : null;
 const hover = assetOrNull(product.media[1]?.src);
+
+const variant = firstAvailableVariant(product);
 
 const colourOption = product.options.find((o) => ['Colour', 'Color'].includes(o.name));
 ---
@@ -68,6 +70,15 @@ const colourOption = product.options.find((o) => ['Colour', 'Color'].includes(o.
       </div>
     )}
     <span class="coll-price"><Price product={product} /></span>
-    <a href={href(`/products/${product.handle}`)} class="coll-cta snap">[ {strings.products.view} ]</a>
+    <div class="coll-actions">
+      <a href={href(`/products/${product.handle}`)} class="coll-cta snap">[ {strings.products.view} ]</a>
+      <button
+        type="button"
+        class="btn btn--solid snap coll-buy"
+        data-add-to-cart
+        data-variant-id={variant.id}
+        disabled={!variant.available}
+      >[ {variant.available ? strings.products.add_to_cart : strings.products.sold_out} ]</button>
+    </div>
   </div>
 </article>
