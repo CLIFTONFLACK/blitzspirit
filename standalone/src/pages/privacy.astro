@@ -1,0 +1,57 @@
+---
+// Privacy Policy — plain static legal page, no editable page-data file.
+import Base from '~/layouts/Base.astro';
+import PageHero from '~/components/PageHero.astro';
+---
+<Base
+  title="Privacy Policy"
+  description="How BlitzSpirit collects and uses your information."
+>
+  <PageHero pageTitle="Privacy Policy" headingSize="lg" />
+
+  <section class="legal">
+    <div class="legal-inner">
+      <h2>1. What we collect</h2>
+      <p>When you place an order, sign up for emails, or contact us, we collect the information needed to do that: name, email, delivery address, and order details. Payment details are handled directly by our payment processor and never stored on our servers.</p>
+
+      <h2>2. How we use it</h2>
+      <p>We use your information to process orders, respond to enquiries, and, if you opt in, send emails about new drops and offers. We don't sell your data to third parties.</p>
+
+      <h2>3. Cookies</h2>
+      <p>This site uses essential cookies to make the cart and checkout work. We may also use basic analytics cookies to understand how the site is used, in aggregate and not tied to you personally.</p>
+
+      <h2>4. Sharing</h2>
+      <p>We share information only with the services needed to fulfil an order: payment processing, delivery couriers, and email delivery. Each of those handles your data under its own privacy terms.</p>
+
+      <h2>5. How long we keep it</h2>
+      <p>Order records are kept as long as required for accounting and legal purposes. You can ask us to delete your marketing contact details at any time.</p>
+
+      <h2>6. Your rights</h2>
+      <p>You can ask what information we hold about you, ask us to correct it, or ask us to delete it, subject to what we're required to keep by law. Email us to make any of these requests.</p>
+
+      <h2>7. Contact</h2>
+      <p>Questions about this policy or your data: <a href="mailto:hq@blitzspirit.co.uk">hq@blitzspirit.co.uk</a>.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .legal { padding: var(--s6) var(--s3); border-bottom: 1px solid var(--line); }
+  .legal-inner { max-width: 680px; margin: 0 auto; }
+  .legal-inner h2 {
+    font-family: var(--sans);
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin: var(--s4) 0 var(--s1);
+  }
+  .legal-inner h2:first-child { margin-top: 0; }
+  .legal-inner p {
+    color: var(--bone-dim);
+    font-size: 14px;
+    line-height: 1.75;
+  }
+  .legal-inner a { color: var(--bone-dim); border-bottom: 1px solid var(--accent); }
+  .legal-inner a:hover { color: var(--accent); }
+</style>

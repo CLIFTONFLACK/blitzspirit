@@ -13,6 +13,7 @@ import Hero from '~/components/Hero.astro';
 import AsSeenOn from '~/components/AsSeenOn.astro';
 import CollectionGrid from '~/components/CollectionGrid.astro';
 import PromoBand from '~/components/PromoBand.astro';
+import AboutSplit from '~/components/AboutSplit.astro';
 
 import pageData from '~/data/pages/index.json';
 import { settings, type PageData } from '~/lib/pages';
@@ -23,6 +24,9 @@ const page = pageData as PageData;
 const hero = settings(page, 'hero');
 const promo = settings(page, 'promo');
 const promo2 = settings(page, 'promo_band_VF78L7');
+
+const meansHeading = 'What it means.';
+const meansBody = '<p>The blitz spirit isn’t nostalgia. It’s not bunting and Churchill quotes on a tea towel. It’s a specific quality: the ability to be <em>cheerful in adversity</em>, practical under pressure, and fundamentally unimpressed by things that are trying very hard to impress you.</p><p>It shows up in a skull wearing a bowler hat. In a mod target built from a single word. In a typographic roll call that’s set like a setlist because the names deserve the stage. <em>That’s what we make. That’s why it works.</em></p>';
 ---
 <Base
   title="BLITZSPIRIT"
@@ -44,6 +48,14 @@ const promo2 = settings(page, 'promo_band_VF78L7');
     buttonLabel={promo.button_label}
     successText={promo.success_text}
     editBase="pages/index:promo"
+  />
+
+  <AboutSplit
+    heading={meansHeading}
+    body={meansBody}
+    image="/assets/products/tee-clerk-black.jpg"
+    imageRef="FILE_003 // WHAT_IT_MEANS"
+    imageSide="left"
   />
 
   <PromoBand

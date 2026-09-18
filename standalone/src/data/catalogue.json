@@ -36,7 +36,7 @@
       "limited": true,
       "strapline": "colour print. The old guard in full regalia.",
       "dossier": [
-        "A Union Jack bowler on a grinning skull, brollies crossed like blades — **the print the whole brand argues from**."
+        "A Union Jack bowler on a grinning skull, brollies crossed like blades: **the print the whole brand argues from**."
       ],
       "spec": "220gsm heavyweight cotton. Colour screen printed in Britain. Wash inside out at 30°C. No tumble dry.",
       "fieldManual": [
@@ -76,11 +76,11 @@
       "editorial": [
         {
           "heading": "Where it started.",
-          "body": "The first image: the skull in the Union Jack bowler, the crossed umbrellas below it. One print, one question, and a name that hadn’t been earned yet. The whole brand is an argument with this image, and this is where the argument started. [PLACEHOLDER — REPLACE WITH FINAL COPY]"
+          "body": "The first image: the skull in the Union Jack bowler, the crossed umbrellas below it. One print, one question, and a name that hadn’t been earned yet. The whole brand is an argument with this image, and this is where the argument started. [PLACEHOLDER: REPLACE WITH FINAL COPY]"
         },
         {
           "heading": "The Craft.",
-          "body": "220gsm ring-spun cotton. Colour water-based screen print, applied in Britain. The extra complexity of a colour print is deliberate — this edition earns its status in every layer. Soft hand-feel that improves with washing. No cracking, no fading, no apologies. Wash inside out at 30°C — tumble dryers are for quitters. [PLACEHOLDER — REPLACE WITH FINAL COPY]"
+          "body": "220gsm ring-spun cotton. Colour water-based screen print, applied in Britain. The extra complexity of a colour print is deliberate: this edition earns its status in every layer. Soft hand-feel that improves with washing. No cracking, no fading, no apologies. Wash inside out at 30°C. Tumble dryers are for quitters. [PLACEHOLDER: REPLACE WITH FINAL COPY]"
         }
       ],
       "options": [
@@ -178,7 +178,7 @@
           "src": "/assets/products/tee-skull-black-colour.jpg",
           "width": 994,
           "height": 1092,
-          "alt": "The Establishment — OXY_BLACK"
+          "alt": "The Establishment / OXY_BLACK"
         }
       ]
     },
@@ -236,11 +236,11 @@
       "editorial": [
         {
           "heading": "The Signal.",
-          "body": "Started on Spitfire wings over Kent in 1940, lifted onto parkas and scooters a generation later. The mod roundel is the sharpest mark in British street culture — same circle, same defiance. Our version hides the whole story inside: every ring is built from the word BLITZSPIRIT, repeated like a drumbeat. [PLACEHOLDER — REPLACE WITH FINAL COPY]"
+          "body": "Started on Spitfire wings over Kent in 1940, lifted onto parkas and scooters a generation later. The mod roundel is the sharpest mark in British street culture: same circle, same defiance. Our version hides the whole story inside: every ring is built from the word BLITZSPIRIT, repeated like a drumbeat. [PLACEHOLDER: REPLACE WITH FINAL COPY]"
         },
         {
           "heading": "The Craft.",
-          "body": "220gsm ring-spun cotton. Water-based screen print, applied in Britain. Soft hand-feel that improves with washing. No cracking, no fading, no apologies. Wash inside out at 30°C — tumble dryers are for quitters. [PLACEHOLDER — REPLACE WITH FINAL COPY]"
+          "body": "220gsm ring-spun cotton. Water-based screen print, applied in Britain. Soft hand-feel that improves with washing. No cracking, no fading, no apologies. Wash inside out at 30°C. Tumble dryers are for quitters. [PLACEHOLDER: REPLACE WITH FINAL COPY]"
         }
       ],
       "options": [
@@ -448,21 +448,21 @@
           "src": "/assets/products/tee-roundel-black.jpg",
           "width": 950,
           "height": 1082,
-          "alt": "The Frequency — OXY_BLACK"
+          "alt": "The Frequency / OXY_BLACK"
         },
         {
           "colour": "Off-White",
           "src": "/assets/products/tee-roundel-offwhite.jpg",
           "width": 1000,
           "height": 1092,
-          "alt": "The Frequency — CHALK_WHITE"
+          "alt": "The Frequency / CHALK_WHITE"
         },
         {
           "colour": "Navy",
           "src": "/assets/products/tee-roundel-navy.jpg",
           "width": 974,
           "height": 1118,
-          "alt": "The Frequency — SYSTEM_NAVY"
+          "alt": "The Frequency / SYSTEM_NAVY"
         }
       ]
     },
@@ -480,7 +480,7 @@
       "limited": false,
       "strapline": "mono print. Courtesy is not weakness.",
       "dossier": [
-        "Bowler hat, umbrella, skull underneath — the politest uniform Britain ever produced."
+        "Bowler hat, umbrella, skull underneath: the politest uniform Britain ever produced."
       ],
       "spec": "220gsm heavyweight cotton. Screen printed in Britain. Wash inside out at 30°C. No tumble dry.",
       "fieldManual": [
@@ -520,11 +520,11 @@
       "editorial": [
         {
           "heading": "The City Gent.",
-          "body": "The bowler hat and the umbrella: the most polite uniform ever invented. He queued properly, apologised when you stepped on his foot — and walked to work through rubble with the morning paper under his arm, daring the Luftwaffe to make him late. Cross the brollies like cutlasses, put the skull under the brim. Politely menacing since the Blitz. [PLACEHOLDER — REPLACE WITH FINAL COPY]"
+          "body": "The bowler hat and the umbrella: the most polite uniform ever invented. He queued properly, apologised when you stepped on his foot, and walked to work through rubble with the morning paper under his arm, daring the Luftwaffe to make him late. Cross the brollies like cutlasses, put the skull under the brim. Politely menacing since the Blitz. [PLACEHOLDER: REPLACE WITH FINAL COPY]"
         },
         {
           "heading": "The Craft.",
-          "body": "220gsm ring-spun cotton. Water-based screen print, applied in Britain. Soft hand-feel that improves with washing. No cracking, no fading, no apologies. Wash inside out at 30°C — tumble dryers are for quitters. [PLACEHOLDER — REPLACE WITH FINAL COPY]"
+          "body": "220gsm ring-spun cotton. Water-based screen print, applied in Britain. Soft hand-feel that improves with washing. No cracking, no fading, no apologies. Wash inside out at 30°C. Tumble dryers are for quitters. [PLACEHOLDER: REPLACE WITH FINAL COPY]"
         }
       ],
       "options": [
@@ -677,14 +677,14 @@
           "src": "/assets/products/tee-clerk-black.jpg",
           "width": 922,
           "height": 1090,
-          "alt": "The Clerk — OXY_BLACK"
+          "alt": "The Clerk / OXY_BLACK"
         },
         {
           "colour": "Off-White",
           "src": "/assets/products/tee-clerk-white.jpg",
           "width": 940,
           "height": 1098,
-          "alt": "The Clerk — CHALK_WHITE"
+          "alt": "The Clerk / CHALK_WHITE"
         }
       ]
     }
