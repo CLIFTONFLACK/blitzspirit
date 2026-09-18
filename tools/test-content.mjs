@@ -55,9 +55,9 @@ check('reads a product field by handle', () => {
 });
 
 check('reads a dossier paragraph by index', () => {
-  const value = content.readValue(catalogue(), 'catalogue:the-establishment.dossier.1');
+  const value = content.readValue(catalogue(), 'catalogue:the-establishment.dossier.0');
   assert(value.ok, value.error);
-  assert(value.value.startsWith('Limited colour run, OXY_BLACK'), `got ${JSON.stringify(value.value.slice(0, 30))}`);
+  assert(value.value.startsWith('A Union Jack bowler'), `got ${JSON.stringify(value.value.slice(0, 30))}`);
 });
 
 check('reads a settings field', () => {
@@ -80,9 +80,9 @@ check('applies an edit and reports what changed', () => {
 
 check('applies an edit to a dossier paragraph', () => {
   const doc = catalogue();
-  const result = content.applyEdit(doc, 'catalogue:the-establishment.dossier.1', 'Changed.');
+  const result = content.applyEdit(doc, 'catalogue:the-establishment.dossier.0', 'Changed.');
   assert(result.ok, result.error);
-  assert(doc.products.find((p) => p.handle === 'the-establishment').dossier[1] === 'Changed.', 'not written');
+  assert(doc.products.find((p) => p.handle === 'the-establishment').dossier[0] === 'Changed.', 'not written');
 });
 
 check('groups edits by the file they land in', () => {

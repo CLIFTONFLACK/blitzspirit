@@ -68,44 +68,20 @@ a { color:inherit; text-decoration:none; }
 .skip-to-content-link:focus { top:var(--s1); }
 
 /* ============================================================
-   3. FIXED MASTHEAD
+   3. FLOATING SOCIAL + BAG (no nav bar)
    ============================================================ */
 .masthead {
-  position:fixed; top:0; left:0; right:0; z-index:50;
-  display:flex; align-items:center; justify-content:space-between;
-  padding:12px var(--s3); background:rgba(255,255,255,0.88);
-  backdrop-filter:blur(2px); border-bottom:1px solid var(--line);
+  position:fixed; top:16px; right:var(--s3); z-index:50;
+  display:flex; align-items:center;
 }
-.masthead .nodes { display:flex; gap:var(--s3); }
-.masthead .eyebrow { font-size:13px; }
-.masthead .mh-long { color:var(--accent); }
-.masthead a:hover,.masthead button:hover { color:var(--bone); }
-.masthead .bag { display:inline-flex; align-items:center; min-height:44px; }
-.masthead .bag b { color:var(--accent); font-weight:400; }
-
-/* 3b. MASTHEAD — left/right split layout */
-.nodes--left { display:flex; gap:var(--s3); align-items:center; min-width:0; }
-.nodes--right { display:flex; gap:var(--s2); align-items:center; flex-shrink:0; }
-.mh-long { color:var(--bone-mute); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:none; min-width:0; max-width:260px; }
-.mh-social { display:flex; align-items:center; color:var(--bone); line-height:1; }
-
-/* 3c. MASTHEAD — dropdown submenus (hover + keyboard focus) */
-.nav-item { position:relative; display:inline-flex; align-items:center; }
-.nav-dropdown {
-  position:absolute; top:100%; left:0; margin-top:10px; z-index:60;
-  display:flex; flex-direction:column; min-width:180px;
-  background:var(--panel); border:1px solid var(--line-bri);
-  padding:6px 0;
-  opacity:0; visibility:hidden; transform:translateY(-6px);
-  transition:opacity .15s ease, transform .15s ease, visibility .15s;
+.nodes--right { display:flex; gap:var(--s3); align-items:center; }
+.mh-social {
+  display:flex; align-items:center; gap:6px; color:var(--ink);
+  background:rgba(255,255,255,.82); backdrop-filter:blur(2px);
+  padding:8px; line-height:1;
 }
-.nav-item:hover .nav-dropdown,
-.nav-item:focus-within .nav-dropdown {
-  opacity:1; visibility:visible; transform:translateY(0);
-}
-.nav-dropdown-link { display:block; padding:10px 16px; color:var(--bone); white-space:nowrap; font-size:12px; }
-.nav-dropdown-link:hover, .nav-dropdown-link:focus-visible { background:var(--panel-2); color:var(--accent); }
-.mh-social:hover { color:var(--bone); }
+.mh-social:hover { color:var(--accent); }
+.mh-social.bag b { font-family:var(--sans); font-size:11px; font-weight:600; color:inherit; }
 
 /* ============================================================
    4. MINI-CART DRAWER (SYSTEM_LEDGER)
@@ -547,13 +523,6 @@ a { color:inherit; text-decoration:none; }
    it's replaced by the photo above (the box just needs to occupy roughly
    the same area the baked-in lettering sits in). */
 .hero h1 { font-size:clamp(3rem,7.5vw,6.5rem); line-height:.92; margin:0; color:transparent; }
-.hero-cta {
-  display:inline-block; margin-top:var(--s5);
-  background:var(--accent); color:#fff;
-  font-family:var(--sans); font-size:12px; letter-spacing:.28em; text-transform:uppercase;
-  padding:20px 36px;
-}
-.hero-cta:hover,.hero-cta:focus-visible { background:#fff; color:var(--ink); }
 @media (max-width:860px) {
   /* A viewport-height box forces the wide banner photo to scale up hugely to
      cover it, cropping almost everything but a sliver of its centre — drop
