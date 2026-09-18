@@ -1,0 +1,93 @@
+---
+// AsSeenOn — the ironic inverse of a normal "as seen on" logo strip. Most
+// brands borrow credibility from press/TV/shop placement or an influencer
+// deal; this one says plainly it has none of that, on purpose. Four small
+// hand-drawn icons (shop, TV, newspaper, megaphone) each carry a diagonal
+// strike, same "not this" symbol as a no-smoking sign.
+interface Props {
+  heading?: string;
+  body?: string;
+}
+
+const {
+  heading = 'AS SEEN ON: NOWHERE.',
+  body = "Never stocked in shops. Never on TV. Never in a newspaper. Never pushed by an influencer. Just made, and worn.",
+} = Astro.props;
+
+const items = [
+  { label: 'Shops' },
+  { label: 'TV' },
+  { label: 'Newspapers' },
+  { label: 'Influencers' },
+];
+---
+<section class="as-seen-on">
+  <div class="aso-inner">
+    <h2 class="chunk aso-head">{heading}</h2>
+    <p class="aso-body">{body}</p>
+    <ul class="aso-icons" aria-hidden="true">
+      {items.map((item) => (
+        <li class="aso-icon" title={item.label}>
+          {item.label === 'Shops' && (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+              <path d="M3 9l1.5-5h15L21 9" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M4 9v10a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M9 20v-6h6v6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          )}
+          {item.label === 'TV' && (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+              <rect x="3" y="6" width="18" height="13" rx="1" />
+              <path d="M8 3l4 3 4-3" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          )}
+          {item.label === 'Newspapers' && (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+              <rect x="3" y="5" width="18" height="15" rx="1" />
+              <path d="M7 9h6M7 12.5h10M7 16h10" stroke-linecap="round" />
+            </svg>
+          )}
+          {item.label === 'Influencers' && (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+              <path d="M4 10v4a1 1 0 0 0 1 1h2l4 4V5l-4 4H5a1 1 0 0 0-1 1z" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M17 9a4 4 0 0 1 0 6" stroke-linecap="round" />
+            </svg>
+          )}
+          <span class="aso-slash" />
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .as-seen-on {
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--s4) var(--s3);
+    border-bottom: 1px solid var(--line);
+    background: var(--panel-2);
+    text-align: center;
+  }
+  .aso-inner { max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: var(--s2); }
+  .aso-head { color: var(--ink); font-size: clamp(1.4rem, 3.2vw, 2rem); line-height: 1; }
+  .aso-body {
+    color: var(--bone-dim); font-family: var(--sans); font-size: 12px;
+    letter-spacing: 0.04em; text-transform: uppercase; line-height: 1.6; max-width: 46ch;
+  }
+  .aso-icons { display: flex; gap: var(--s4); list-style: none; margin-top: var(--s1); }
+  .aso-icon { position: relative; width: 28px; height: 28px; color: var(--bone-dim); }
+  .aso-icon svg { width: 100%; height: 100%; }
+  .aso-slash {
+    position: absolute; inset: 0; overflow: hidden;
+  }
+  .aso-slash::before {
+    content: ""; position: absolute; top: 50%; left: -10%; width: 120%; height: 1.5px;
+    background: var(--bone-dim); transform: rotate(-35deg);
+  }
+  @media (max-width: 480px) {
+    .aso-icons { gap: var(--s3); }
+  }
+</style>

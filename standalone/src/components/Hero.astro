@@ -1,8 +1,9 @@
 ---
 // Hero — ported from sections/hero.liquid (the v27 split hero).
 //
-// Copy column left (mono kicker, headline, CTA), skull & brollies artwork
-// right — but both the headline and the artwork are one single generated
+// Copy column left (just the headline now — no kicker, no CTA), skull &
+// brollies artwork right — but both the headline and the artwork are one
+// single generated
 // photo now (tools/openart): the whole design carved/painted into one
 // continuous concrete wall, set as `.hero`'s own background (theme.css
 // §12a). Two separate generated images (one behind the heading, one behind
@@ -16,21 +17,14 @@ import { href } from '~/lib/url';
 
 interface Props {
   heading?: string;
-  ctaLabel?: string;
-  ctaLink?: string;
   /** Address prefix for the inline copy editor, e.g. "pages/index:hero". */
   editBase?: string;
 }
 
 const {
   heading = 'BUILT FOR THE STUBBORN.',
-  ctaLabel = 'SEE THE COLLECTION',
-  ctaLink = '',
   editBase,
 } = Astro.props;
-
-// Liquid: section.settings.cta_link | default: routes.all_products_collection_url
-const ctaUrl = ctaLink || '/collections/all';
 ---
 {/* No <Image>/<img> renders this hero anymore (it's a CSS background-image
     carrying the whole visual, likely the page's LCP element), so nothing
@@ -44,7 +38,6 @@ const ctaUrl = ctaLink || '/collections/all';
 <section class="hero">
   <div class="hero-copy">
     {heading && <h1 class="chunk" data-line-id={editBase && `${editBase}.settings.heading`}>{heading}</h1>}
-    {ctaLabel && <a class="hero-cta snap" href={href(ctaUrl)} data-line-id={editBase && `${editBase}.settings.cta_label`}>{ctaLabel}</a>}
   </div>
 
   <div class="hero-art" aria-hidden="true"></div>

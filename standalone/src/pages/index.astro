@@ -1,59 +1,38 @@
 ---
 // Home — templates/index.json, section for section and in order:
-// hero, featured, promo, archive, promo_band_VF78L7.
+// hero, as-seen-on, product grid (all 3, one row), promo, promo_band_VF78L7.
 //
-// The Cap used to have its own equipment-feature band; it is an archive row like
-// every other product now, so that section is gone.
+// The featured-product band and the alternating archive rows were replaced
+// by one 3-up grid (CollectionGrid, the same one collection pages use) —
+// with only 3 products left in the catalogue, showing them all in a single
+// row above the promo band reads better than a tall stack of full-width
+// rows. `featured`/`archive` settings in pages/index.json are unused now;
+// left in place rather than edited, since /edit still addresses them.
 import Base from '~/layouts/Base.astro';
 import Hero from '~/components/Hero.astro';
-import FeaturedProduct from '~/components/FeaturedProduct.astro';
+import AsSeenOn from '~/components/AsSeenOn.astro';
+import CollectionGrid from '~/components/CollectionGrid.astro';
 import PromoBand from '~/components/PromoBand.astro';
-import ApparelArchive from '~/components/ApparelArchive.astro';
 
 import pageData from '~/data/pages/index.json';
-import { settings, blocks, type PageData } from '~/lib/pages';
+import { settings, type PageData } from '~/lib/pages';
+import { products } from '~/lib/catalogue';
 
 const page = pageData as PageData;
 
 const hero = settings(page, 'hero');
-const featured = settings(page, 'featured');
 const promo = settings(page, 'promo');
-const archive = settings(page, 'archive');
 const promo2 = settings(page, 'promo_band_VF78L7');
-
-// ApparelArchive requires a product handle on every block. Assert it here rather
-// than casting blindly: if the page data ever loses one, the build should stop with
-// a clear message instead of rendering a row with no product.
-const archiveBlocks = blocks<{
-  product: string;
-  dossier?: string;
-  index_label?: string;
-  force_dark?: boolean;
-}>(page, 'archive');
-for (const block of archiveBlocks) {
-  if (!block.settings.product) {
-    throw new Error(`homepage archive block "${block.id}" has no product handle`);
-  }
-}
 ---
 <Base
   title="BLITZSPIRIT"
   description="Ironic. Iconic. Made in Britain. Heavyweight tees and equipment with a backbone story — ISSUE_001."
 >
-  <Hero
-    heading={hero.heading}
-    ctaLabel={hero.cta_label}
-    ctaLink={hero.cta_link}
-    editBase="pages/index:hero"
-  />
+  <Hero heading={hero.heading} editBase="pages/index:hero" />
 
-  <FeaturedProduct
-    product={featured.product}
-    dossier={featured.dossier}
-    whatLabel={featured.what_label}
-    plateRef={featured.plate_ref}
-    editBase="pages/index:featured"
-  />
+  <AsSeenOn />
+
+  <CollectionGrid products={products} />
 
   <PromoBand
     id="PromoBand"
@@ -66,14 +45,6 @@ for (const block of archiveBlocks) {
     successText={promo.success_text}
     editBase="pages/index:promo"
   />
-
-  <ApparelArchive
-    blocks={archiveBlocks}
-    autoAlternate={archive.auto_alternate}
-    whatLabel={archive.what_label}
-    editBase="pages/index:archive"
-  />
-
 
   <PromoBand
     id="PromoBandEarlyBirds"

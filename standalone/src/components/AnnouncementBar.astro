@@ -35,7 +35,7 @@ const n = messages.length;
     right: 0;
     z-index: 55;
     height: 28px;
-    background: #87CEEB;
+    background: #2A2A2A;
     overflow: hidden;
   }
   .announcement-bar__msg {
@@ -51,12 +51,12 @@ const n = messages.length;
     font-weight: 600;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--ink);
+    color: #fff;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  .announcement-bar__msg a { color: var(--ink); }
+  .announcement-bar__msg a { color: #fff; }
   .announcement-bar__msg a:hover { text-decoration: underline; }
 
   /* CSS-only rotation — 6s per message, opacity cycle, no JS. */
@@ -99,8 +99,8 @@ const n = messages.length;
 </style>
 
 <style is:global>
-  /* The fixed masthead (theme.css §3, top:0) drops below the band whenever the
-     band exists on the page. Global because it targets .masthead, which lives
-     in a sibling component. Browsers without :has() degrade gracefully. */
-  body:has(.announcement-bar) .masthead { top: 28px; }
+  /* The floating social/bag icons (theme.css §3, top:16px) drop below the
+     band whenever it exists. Global because it targets .masthead, which
+     lives in a sibling component. Browsers without :has() degrade gracefully. */
+  body:has(.announcement-bar) .masthead { top: 44px; }
 </style>
