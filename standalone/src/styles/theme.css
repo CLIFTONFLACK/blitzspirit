@@ -472,7 +472,7 @@ a { color:inherit; text-decoration:none; }
 .coll-card[hidden] { display:none; }
 .coll-card-ref { padding:6px 14px; border-bottom:1px solid var(--line); background:var(--panel-2); display:flex; justify-content:space-between; align-items:center; }
 .coll-plate { display:block; background:var(--plate); height:300px; overflow:hidden; position:relative; flex-shrink:0; }
-.coll-plate img { width:100%; height:100%; object-fit:cover; transition:.3s ease; }
+.coll-plate img { width:100%; height:100%; object-fit:contain; transition:.3s ease; }
 .coll-card:hover .coll-plate img { transform:scale(1.03); }
 .coll-plate .coll-img--hover { position:absolute; inset:0; opacity:0; }
 .coll-card:hover .coll-plate .coll-img--hover { opacity:1; }

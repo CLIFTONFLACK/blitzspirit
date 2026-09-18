@@ -22,6 +22,10 @@ interface Props {
   ctaLink?: string;
   /** Address prefix for the inline copy editor, e.g. "pages/about:split-started". */
   editBase?: string;
+  /** Edge-to-edge cover image sized to match the copy column's own height,
+      instead of the boxed/padded plate treatment with a fixed aspect ratio
+      and the section's usual 55vh floor. */
+  fillVisual?: boolean;
 }
 
 const {
@@ -33,6 +37,7 @@ const {
   ctaLabel,
   ctaLink,
   editBase,
+  fillVisual = false,
 } = Astro.props;
 
 const showVisual = !!image;
@@ -43,19 +48,26 @@ const showVisual = !!image;
     'as',
     imageSide === 'right' && 'as--flip',
     !showVisual && 'as--band',
+    fillVisual && 'as--auto',
   ]}
 >
   {showVisual && (
-    <div class="about-visual as-visual">
-      <div class="as-plate">
-        <Plate
-          src={image}
-          refText={imageRef}
-          alt={heading}
-          sizes="(min-width: 860px) 50vw, 100vw"
-        />
+    fillVisual ? (
+      <div class="about-visual as-visual as-visual--fill">
+        <img class="as-fill-img" src={image} alt={heading} loading="lazy" />
       </div>
-    </div>
+    ) : (
+      <div class="about-visual as-visual">
+        <div class="as-plate">
+          <Plate
+            src={image}
+            refText={imageRef}
+            alt={heading}
+            sizes="(min-width: 860px) 50vw, 100vw"
+          />
+        </div>
+      </div>
+    )
   )}
 
   <div class="about-copy as-copy">
@@ -84,6 +96,10 @@ const showVisual = !!image;
   .as-plate { width: min(88%, 460px); margin: 0 auto; }
   .as-cta { margin-top: var(--s2); }
   .as-cta .btn { display: inline-block; width: auto; padding: 18px 32px; }
+
+  .as--auto { min-height: 0; }
+  .as-visual--fill { padding: 0; }
+  .as-fill-img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
   .as--band { grid-template-columns: 1fr; }
   .as--band .as-copy { max-width: 980px; }
