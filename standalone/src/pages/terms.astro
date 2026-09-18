@@ -1,0 +1,60 @@
+---
+// Terms & Conditions — plain static legal page, no editable page-data file.
+import Base from '~/layouts/Base.astro';
+import PageHero from '~/components/PageHero.astro';
+---
+<Base
+  title="Terms & Conditions"
+  description="BlitzSpirit's terms and conditions of sale."
+>
+  <PageHero pageTitle="Terms &amp; Conditions" headingSize="lg" />
+
+  <section class="legal">
+    <div class="legal-inner">
+      <h2>1. Who we are</h2>
+      <p>BlitzSpirit System Co. sells apparel and equipment through this website. By placing an order or using this site, you agree to the terms below.</p>
+
+      <h2>2. Orders and payment</h2>
+      <p>All prices are shown in GBP and include VAT where applicable. We accept payment through the checkout methods offered at the time of purchase. An order is confirmed once payment is authorised and you receive a confirmation email.</p>
+
+      <h2>3. Delivery</h2>
+      <p>UK orders are dispatched within 48 hours and typically arrive in 2 to 4 working days. International shipping times and duties are calculated at checkout. Risk in the goods passes to you on delivery.</p>
+
+      <h2>4. Returns and refunds</h2>
+      <p>Unworn, unwashed items with tags attached can be returned within 30 days of delivery for a refund or exchange. Faulty or misprinted items are replaced or refunded at no cost to you. Contact us before sending anything back.</p>
+
+      <h2>5. Product accuracy</h2>
+      <p>We describe products as accurately as we can. Colours may vary slightly between screens and printed garments. Minor variation is a feature of screen printing, not a fault.</p>
+
+      <h2>6. Limitation of liability</h2>
+      <p>Nothing in these terms limits any liability that cannot legally be limited, including for death, personal injury, or fraud. Beyond that, our liability is limited to the value of the order in question.</p>
+
+      <h2>7. Changes to these terms</h2>
+      <p>We may update these terms from time to time. The version in force is the one published on this page at the time of your order.</p>
+
+      <h2>8. Contact</h2>
+      <p>Questions about an order or these terms: <a href="mailto:hq@blitzspirit.co.uk">hq@blitzspirit.co.uk</a>.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .legal { padding: var(--s6) var(--s3); border-bottom: 1px solid var(--line); }
+  .legal-inner { max-width: 680px; margin: 0 auto; }
+  .legal-inner h2 {
+    font-family: var(--sans);
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin: var(--s4) 0 var(--s1);
+  }
+  .legal-inner h2:first-child { margin-top: 0; }
+  .legal-inner p {
+    color: var(--bone-dim);
+    font-size: 14px;
+    line-height: 1.75;
+  }
+  .legal-inner a { color: var(--bone-dim); border-bottom: 1px solid var(--accent); }
+  .legal-inner a:hover { color: var(--accent); }
+</style>

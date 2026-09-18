@@ -50,12 +50,13 @@ const CHROME = [
 
 const routes = [
   '',
-  '/about',
   '/story',
   '/help',
   '/contact',
   '/icons',
   '/link-in-bio',
+  '/terms',
+  '/privacy',
   '/cart',
   '/404',
   '/checkout/success',

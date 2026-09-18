@@ -5,30 +5,22 @@
       "url": "/"
     },
     {
-      "title": "ABOUT",
-      "url": "/about"
-    },
-    {
       "title": "THE COLLECTION",
       "url": "/collections/all"
     }
   ],
   "footer": [
     {
-      "title": "ABOUT",
-      "url": "/about"
-    },
-    {
-      "title": "SIZE GUIDE",
-      "url": "/help#size-guide"
-    },
-    {
-      "title": "RETURNS",
-      "url": "/help#returns"
-    },
-    {
       "title": "CONTACT",
       "url": "/help#contact"
+    },
+    {
+      "title": "TERMS",
+      "url": "/terms"
+    },
+    {
+      "title": "PRIVACY",
+      "url": "/privacy"
     }
   ]
 }
