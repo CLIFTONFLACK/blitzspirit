@@ -57,7 +57,7 @@ check('reads a product field by handle', () => {
 check('reads a dossier paragraph by index', () => {
   const value = content.readValue(catalogue(), 'catalogue:the-establishment.dossier.1');
   assert(value.ok, value.error);
-  assert(value.value.startsWith('Colour print on OXY_BLACK.'), `got ${JSON.stringify(value.value.slice(0, 30))}`);
+  assert(value.value.startsWith('Limited colour run, OXY_BLACK'), `got ${JSON.stringify(value.value.slice(0, 30))}`);
 });
 
 check('reads a settings field', () => {
