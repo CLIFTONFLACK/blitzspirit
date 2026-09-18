@@ -2,7 +2,6 @@
 # each publish; nothing else in the repo root is ever removed by it.
 404.html
 _astro
-about
 assets
 cart
 cart-index.json
@@ -14,8 +13,10 @@ help
 icons
 index.html
 link-in-bio
+privacy
 products
 sitemap-0.xml
 sitemap-index.xml
 social
 story
+terms
