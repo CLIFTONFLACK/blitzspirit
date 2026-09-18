@@ -87,8 +87,6 @@ const handleize = (value: string) =>
         </div>
 
         <div class="about-copy roster-copy">
-          {s.num && <p class="product-ref eyebrow roster-num" data-line-id={b && `${b}.settings.num`}>[ {s.num} ]</p>}
-
           {s.heading && <h2 class="chunk roster-head" data-line-id={b && `${b}.settings.heading`}>{s.heading}</h2>}
 
           <hr class="roster-rule" aria-hidden="true" />
@@ -145,7 +143,6 @@ const handleize = (value: string) =>
   /* The Liquid {% stylesheet %} block. Rules that reach into Plate.astro's
      markup or into the set:html rich text live in the global block below. */
   .roster-item { scroll-margin-top: 64px; }
-  .roster-item .roster-num { display: inline-block; margin-bottom: 0; align-self: flex-start; }
   .roster-plate { width: min(88%, 460px); margin: 0 auto; }
   .roster-head { color: var(--ink); }
   .roster-rule { border: none; border-top: 2px solid var(--accent); width: 64px; margin: 0; }

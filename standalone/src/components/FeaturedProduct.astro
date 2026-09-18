@@ -32,7 +32,6 @@ import { href } from '~/lib/url';
 interface Props {
   /** Product handle, as the Liquid product picker stored it. */
   product: string;
-  issueOverride?: string;
   /** Liquid's richtext dossier override. A non-empty string replaces the whole
    *  fallback chain (strapline + copy), as it did in the Liquid. */
   dossier?: string;
@@ -44,16 +43,14 @@ interface Props {
 
 const {
   product: handle,
-  issueOverride = '',
   dossier = '',
-  whatLabel = 'STORY',
+  whatLabel = 'VIEW PRODUCT',
   plateRef = 'BS_002 // ISSUE_000',
   editBase,
 } = Astro.props;
 
 const product = getProduct(handle);
 
-const issueText = issueOverride || product.issue || 'ISSUE_000 // LIMITED EDITION';
 const titleUp = product.title.toUpperCase();
 const startsWithThe = titleUp.startsWith('THE ');
 
@@ -79,7 +76,6 @@ const parse = (text: string) =>
 ---
 <section class="featured" data-product-wrap>
   <div class="featured-visual">
-    <span class="item-asset-ref eyebrow">[ {issueText} ]</span>
     <div class="pdp-gallery-row">
       {product.media.length > 1 && (
         <div class="pdp-thumbs">
@@ -121,8 +117,6 @@ const parse = (text: string) =>
 
   <div class="featured-ledger">
     <div class="details">
-      <span class="featured-eyebrow">★ {issueText}</span>
-
       <h2 class="featured-name chunk">
         {startsWithThe ? (
           <><span class="the">THE</span> {titleUp.replace(/^THE /, '')}</>
@@ -180,7 +174,7 @@ const parse = (text: string) =>
               class="what-link snap"
               href={href(`/products/${product.handle}`)}
               data-line-id={editBase && `${editBase}.settings.what_label`}
-            ><span><span class="what-link-name">{titleUp} </span>{whatLabel}</span></a>
+            ><span>{whatLabel}</span></a>
           )}
           <button
             type="button"

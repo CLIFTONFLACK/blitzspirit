@@ -55,7 +55,7 @@ interface Props {
   editBase?: string;
 }
 
-const { blocks, autoAlternate = true, whatLabel = 'STORY', editBase } = Astro.props;
+const { blocks, autoAlternate = true, whatLabel = 'VIEW PRODUCT', editBase } = Astro.props;
 
 const parse = (text: string) =>
   text
@@ -142,9 +142,6 @@ const rows = blocks.map((block, i) => {
       <div class="item-ledger">
         <div>
           <div class="details">
-            <div class="product-ref eyebrow">
-              [ ★ {row.issueText} // <span data-line-id={row.editId && `${row.editId}.settings.index_label`}>{row.indexLabel}</span> // {row.titleUp} ]
-            </div>
             <h2 class="product-title chunk">
               {row.startsWithThe ? (
                 <><span class="the">THE</span> {row.titleUp.replace(/^THE /, '')}</>
@@ -202,7 +199,7 @@ const rows = blocks.map((block, i) => {
                     href={href(`/products/${row.product.handle}`)}
                     data-line-id={editBase && `${editBase}.settings.what_label`}
                   >
-                    <span><span class="what-link-name">{row.titleUp} </span>{whatLabel}</span>
+                    <span>{whatLabel}</span>
                   </a>
                 )}
                 <button

@@ -21,8 +21,9 @@
 
 /* The section-level visual panels behind product photography share one
    concrete backdrop. The product .plate sits on top with its own opaque
-   fill, so the texture only shows in the panel's margins around it. */
-.hero, .featured-visual, .item-visual, .pdp-gallery, .about-visual {
+   fill, so the texture only shows in the panel's margins around it.
+   .hero carries its own bespoke photo instead (see §12a). */
+.featured-visual, .item-visual, .pdp-gallery, .about-visual {
   background: var(--paper) url('/assets/backgrounds/concrete-panel.jpg') center/cover no-repeat;
 }
 
@@ -519,33 +520,33 @@ a { color:inherit; text-decoration:none; }
        equipment (shared 50/50 layouts, ported from index.html)
    ============================================================ */
 
-/* 12a. HERO — copy left / artwork right */
+/* 12a. HERO — copy left / artwork right, both baked into one photo.
+   A single generated shot of the headline and the skull-and-brollies
+   emblem carved/painted into one continuous concrete wall (tools/openart) —
+   two separate generated images here read as two pasted-on tiles rather
+   than one wall, so this is one wide photo set as the section's own
+   background instead. .hero-art (Hero.astro) is an empty grid spacer;
+   the artwork itself is just the right half of this photo. */
 .hero {
-  min-height:100vh;
+  /* Height tracks the photo's own aspect ratio (1920/1072) rather than the
+     viewport's, capped so it never exceeds the screen: forcing 100vh
+     regardless of width made portrait tablets and narrow-but-tall windows
+     scale the photo up drastically to "cover" an unrelated shape, cropping
+     into the headline text itself rather than just the decorative skull
+     half. Below 860px the aspect-ratio is dropped for content-driven height
+     instead (see media query) — copy stacked in one column needs more room
+     than the image's own shape provides. */
+  aspect-ratio:1920/1072; max-height:100vh;
   display:grid; grid-template-columns:1.1fr 1fr; align-items:center; gap:var(--s5);
   padding:96px var(--s6) var(--s6);
   border-bottom:1px solid var(--line);
+  background:var(--paper) url('/assets/backgrounds/hero-engraved.jpg') left center/cover no-repeat;
 }
 .hero-copy { max-width:680px; }
-.hero-kicker { display:block; letter-spacing:.3em; margin-bottom:var(--s4); }
-/* The headline reads as carved into the same concrete panel behind it: the
-   glyphs are filled with that panel's own texture (darkened a touch so they
-   sit a shade below the wall) plus a light/dark bevel pair for a shallow
-   engraved edge — deliberately subtle, not the deep gouged-relief look. */
-.hero h1 {
-  font-size:clamp(3rem,7.5vw,6.5rem); line-height:.92; margin:0;
-  color:var(--cream);
-  background:
-    linear-gradient(rgba(10,9,8,.42),rgba(10,9,8,.42)),
-    url('/assets/backgrounds/concrete-panel.jpg') center/cover no-repeat;
-  -webkit-background-clip:text; background-clip:text; color:transparent;
-  text-shadow:
-    -1px -1px 1px rgba(255,255,255,.28),
-    1px 1.5px 2px rgba(10,9,8,.4);
-}
-@supports not ((background-clip:text) or (-webkit-background-clip:text)) {
-  .hero h1 { color:var(--cream); background:none; text-shadow:none; }
-}
+/* The headline's real text stays in the DOM for accessibility/SEO; visually
+   it's replaced by the photo above (the box just needs to occupy roughly
+   the same area the baked-in lettering sits in). */
+.hero h1 { font-size:clamp(3rem,7.5vw,6.5rem); line-height:.92; margin:0; color:transparent; }
 .hero-cta {
   display:inline-block; margin-top:var(--s5);
   background:var(--accent); color:#fff;
@@ -553,18 +554,24 @@ a { color:inherit; text-decoration:none; }
   padding:20px 36px;
 }
 .hero-cta:hover,.hero-cta:focus-visible { background:#fff; color:var(--ink); }
-.hero-art { display:flex; align-items:center; justify-content:center; }
-.hero-art img { width:min(100%,520px); height:auto; }
 @media (max-width:860px) {
-  .hero { grid-template-columns:1fr; align-content:center; padding:96px var(--s3) var(--s5); gap:var(--s4); }
-  .hero-art img { width:min(68%,340px); }
+  /* A viewport-height box forces the wide banner photo to scale up hugely to
+     cover it, cropping almost everything but a sliver of its centre — drop
+     to a content-driven height so the crop stays modest, and keep the crop
+     anchored left (above) so it eats into the decorative skull half rather
+     than the headline. */
+  .hero {
+    grid-template-columns:1fr; align-content:center; padding:96px var(--s3) var(--s5); gap:var(--s4);
+    aspect-ratio:auto; min-height:auto; max-height:none;
+    background-image:url('/assets/backgrounds/hero-engraved-mobile.jpg');
+  }
+  .hero-art { display:none; }
 }
 
 /* 12b. FEATURED PRODUCT — elevated showcase */
 .featured { position:relative; display:grid; grid-template-columns:1.05fr 1fr; border-bottom:1px solid var(--line); }
 .featured-visual { position:relative; display:flex; align-items:flex-start; justify-content:center; padding:var(--s4); border-right:1px solid var(--line); }
 .featured-ledger { background:var(--panel); display:flex; flex-direction:column; justify-content:center; gap:var(--s3); padding:clamp(20px,3vw,40px) clamp(28px,5vw,72px); }
-.featured-eyebrow { display:inline-block; border:1px solid var(--accent); color:var(--accent); padding:6px 13px; font-size:11px; letter-spacing:.2em; text-transform:uppercase; margin-bottom:var(--s2); }
 .featured-name { color:var(--cream); font-size:clamp(1.8rem,3.4vw,2.9rem); margin:0 0 var(--s2); line-height:.95; }
 .featured-name .the { color:var(--accent); }
 .featured-foot { display:flex; flex-direction:column; gap:var(--s3); }
@@ -576,7 +583,6 @@ a { color:inherit; text-decoration:none; }
 .promo::before { content:""; position:absolute; inset:0; z-index:0; background:var(--promo-image) center/cover no-repeat; transform:scaleX(-1); }
 .promo-inner { position:relative; z-index:1; max-width:1120px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:var(--s6); align-items:center; }
 .promo-text { text-align:left; max-width:560px; }
-.promo-eyebrow { margin-bottom:var(--s3); color:#fff; text-shadow:0 1px 6px #000; }
 /* .promo always shows a real photo (--promo-image), never a flat fallback,
    so its headline stays a fixed light warm tone rather than following
    --cream's sitewide flip to a dark ink — same reasoning as .page-hero. */
@@ -599,8 +605,6 @@ a { color:inherit; text-decoration:none; }
   position:relative; display:flex; align-items:flex-start; justify-content:center;
   padding:var(--s4); border-right:1px solid var(--line);
 }
-.item-asset-ref { position:absolute; top:var(--s3); left:var(--s3); z-index:2; }
-.item--dark .item-asset-ref { color:var(--bone); }
 .item .plate {
   width:min(77%,466px); aspect-ratio:1/1.12;
   border:1px solid #0c0c0c; box-shadow:0 24px 60px rgba(0,0,0,.4);
@@ -608,7 +612,6 @@ a { color:inherit; text-decoration:none; }
 .item--dark .plate { border-color:#000; box-shadow:0 24px 70px rgba(0,0,0,.7); }
 .item-ledger { background:var(--panel); display:flex; flex-direction:column; justify-content:center; padding:clamp(20px,3vw,40px) clamp(24px,4vw,56px); }
 .item--dark .item-ledger { background:#0c0c0c; }
-.item-ledger .product-ref { margin-bottom:var(--s2); }
 .item-ledger .product-title { font-size:clamp(1.9rem,3.6vw,3rem); margin-bottom:var(--s2); }
 .item-ledger .details { margin:0 -10px; }
 .item-ledger .cw { margin-bottom:var(--s4); }

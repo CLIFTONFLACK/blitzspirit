@@ -6,12 +6,11 @@ import { href } from '~/lib/url';
 ---
 <Base title="Checkout cancelled" description="Nothing was charged. Your bag is where you left it.">
   <section class="checkout-outcome">
-    <p class="eyebrow eyebrow-muted">[ TRANSACTION // ABANDONED ]</p>
     <h1 class="chunk">Nothing charged.</h1>
     <p class="checkout-body">
       You backed out of checkout, which is your right. The bag is exactly where you
       left it — carry on when you are ready.
     </p>
-    <a href={href("/cart")} class="btn snap">[ VIEW FULL LEDGER ]</a>
+    <a href={href("/cart")} class="btn snap">[ VIEW BAG ]</a>
   </section>
 </Base>

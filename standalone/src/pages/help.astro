@@ -18,8 +18,6 @@ const faq = settings(page, 'faq');
   description="Delivery, returns, sizing and care. Straight answers, no run-around."
 >
   <PageHero
-    indexTag={hero.index_tag}
-    showPageRef={hero.show_page_ref}
     pageTitle={page.title}
     heading={hero.heading}
     redFirstLine={hero.red_first_line}
@@ -29,7 +27,6 @@ const faq = settings(page, 'faq');
     editBase="pages/help:hero"
   />
   <Faq
-    indexTag={faq.index_tag}
     intro={faq.intro}
     blocks={blocks(page, 'faq')}
     editBase="pages/help:faq"

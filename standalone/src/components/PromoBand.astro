@@ -18,7 +18,6 @@ import { asset } from '~/lib/images';
 interface Props {
   id?: string;
   image?: string;
-  tag?: string;
   heading?: string;
   subheading?: string;
   leadLine?: string;
@@ -32,7 +31,6 @@ interface Props {
 const {
   id = 'PromoBand',
   image = '/assets/promo-milkman.jpg',
-  tag = '[ DISPATCH // STAND BY ]',
   heading = 'GOT MORE BOTTLE THAN THE MILKMAN',
   subheading = 'Put the kettle on, time for a nice cup of tea!',
   leadLine = 'ENTER YOUR EMAIL ADDRESS TO BE THE FIRST IN THE KNOW',
@@ -51,7 +49,6 @@ const banded = await getImage({ src: source, width: Math.min(2000, source.width)
 <section class="promo" style={`--promo-image: url('${banded.src}')`}>
   <div class="promo-inner">
     <div class="promo-text">
-      {tag && <div class="promo-eyebrow eyebrow" data-line-id={editBase && `${editBase}.settings.tag`}>{tag}</div>}
       {heading && <h2 class="promo-title chunk" data-line-id={editBase && `${editBase}.settings.heading`}>{heading}</h2>}
       {subheading && <p class="promo-sub" data-line-id={editBase && `${editBase}.settings.subheading`}>{subheading}</p>}
 

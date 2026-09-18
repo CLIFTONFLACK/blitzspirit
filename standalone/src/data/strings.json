@@ -30,7 +30,7 @@
     "checkout_error": "CHECKOUT UNREACHABLE // TRY AGAIN"
   },
   "products": {
-    "add_to_cart": "ADD TO BAG",
+    "add_to_cart": "BUY NOW",
     "sold_out": "SOLD OUT",
     "unavailable": "UNAVAILABLE",
     "in_stock": "IN STOCK",

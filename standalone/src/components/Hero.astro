@@ -1,61 +1,51 @@
 ---
 // Hero — ported from sections/hero.liquid (the v27 split hero).
 //
-// Flat black wall, copy column left (mono kicker, ChunkFive headline, solid
-// signal-red CTA), skull & brollies artwork right. Framework CSS lives in
-// theme.css §12a — including the invert/dim filter that turns the black-on-white
-// artwork into a grey print on the black wall — so this section ships no CSS of
-// its own, exactly as the Liquid did.
-//
-// The Liquid had two artwork branches: an image_picker srcset (520w/1040w) and a
-// fallback to the packaged hero-skull-umbrella.png. Here the packaged asset is
-// simply the prop default and one <Image> serves both — the 1040w step is only
-// emitted when the source is actually that wide, so the 535px packaged mark is
-// never upscaled.
-import { Image } from 'astro:assets';
-import { asset } from '~/lib/images';
+// Copy column left (mono kicker, headline, CTA), skull & brollies artwork
+// right — but both the headline and the artwork are one single generated
+// photo now (tools/openart): the whole design carved/painted into one
+// continuous concrete wall, set as `.hero`'s own background (theme.css
+// §12a). Two separate generated images (one behind the heading, one behind
+// the artwork column) each carried their own baked-in patch of concrete,
+// which read as two pasted-on tiles rather than one wall — a single wide
+// photo avoids that seam entirely. The h1 keeps its real text in the DOM
+// (accessible/SEO) positioned over the image's own text half; `.hero-art`
+// is now just an empty spacer holding the grid's right column open so the
+// copy column sits where the photo's text half actually is.
 import { href } from '~/lib/url';
 
 interface Props {
-  kicker?: string;
   heading?: string;
   ctaLabel?: string;
   ctaLink?: string;
-  artworkImage?: string;
   /** Address prefix for the inline copy editor, e.g. "pages/index:hero". */
   editBase?: string;
 }
 
 const {
-  kicker = 'ISSUE_001 · THE FIRST COLLECTION',
   heading = 'BUILT FOR THE STUBBORN.',
   ctaLabel = 'SEE THE COLLECTION',
   ctaLink = '',
-  artworkImage = '/assets/hero-skull-umbrella.png',
   editBase,
 } = Astro.props;
 
 // Liquid: section.settings.cta_link | default: routes.all_products_collection_url
 const ctaUrl = ctaLink || '/collections/all';
-
-const artwork = asset(artworkImage);
-const artworkWidths = [520, 1040].filter((w) => w <= artwork.width);
 ---
+{/* No <Image>/<img> renders this hero anymore (it's a CSS background-image
+    carrying the whole visual, likely the page's LCP element), so nothing
+    hints the browser to fetch it early the way astro:assets' `loading="eager"
+    fetchpriority="high"` used to. A plain <link preload> stands in — browsers'
+    preload scanners process it wherever it sits, not just in <head>. Two
+    variants, gated by `media` to match theme.css's own breakpoint, so a
+    phone doesn't fetch the unused desktop image (or vice versa). */}
+<link rel="preload" as="image" href={href('/assets/backgrounds/hero-engraved.jpg')} media="(min-width: 861px)" fetchpriority="high" />
+<link rel="preload" as="image" href={href('/assets/backgrounds/hero-engraved-mobile.jpg')} media="(max-width: 860px)" fetchpriority="high" />
 <section class="hero">
   <div class="hero-copy">
-    {kicker && <span class="hero-kicker eyebrow eyebrow-muted" data-line-id={editBase && `${editBase}.settings.kicker`}>{kicker}</span>}
     {heading && <h1 class="chunk" data-line-id={editBase && `${editBase}.settings.heading`}>{heading}</h1>}
     {ctaLabel && <a class="hero-cta snap" href={href(ctaUrl)} data-line-id={editBase && `${editBase}.settings.cta_label`}>{ctaLabel}</a>}
   </div>
 
-  <div class="hero-art" aria-hidden="true">
-    <Image
-      src={artwork}
-      alt=""
-      widths={artworkWidths.length > 0 ? artworkWidths : [artwork.width]}
-      sizes="(min-width: 861px) 520px, 68vw"
-      loading="eager"
-      fetchpriority="high"
-    />
-  </div>
+  <div class="hero-art" aria-hidden="true"></div>
 </section>

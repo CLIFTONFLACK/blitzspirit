@@ -18,8 +18,6 @@ const news = settings(page, 'newsletter');
   description="Every design has a backbone story. Boudica, the Roundel, Skull & Brollies — nothing here is decoration."
 >
   <PageHero
-    indexTag={hero.index_tag}
-    showPageRef={hero.show_page_ref}
     pageTitle={page.title}
     heading={hero.heading}
     redFirstLine={hero.red_first_line}
@@ -36,7 +34,6 @@ const news = settings(page, 'newsletter');
   />
   <Newsletter
     sectionId="icons"
-    indexTag={news.index_tag}
     heading={news.heading}
     body={news.body}
     buttonLabel={news.button_label}
