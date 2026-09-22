@@ -105,11 +105,14 @@ const showVisual = !!image;
      container stayed the copy column's full height no matter how small
      the image itself was. */
   .as-visual--fill { padding: 0; background: none; align-self: start; min-height: 0; }
-  /* width:60% + height:auto scales the whole photo down by its own natural
-     aspect ratio — no object-fit:cover box to crop into, so the container
-     hugs the image exactly (no leftover space) and nothing gets cropped
-     that the asset itself didn't already crop. */
-  .as-fill-img { display: block; width: 60%; height: auto; }
+  /* width:100% + height:auto fills the column edge to edge at the photo's
+     own aspect ratio — no object-fit:cover box to crop into, so the
+     container hugs the image exactly (no leftover space above/below).
+     max-width:none overrides the boxed/plate variant's `.about-visual img
+     { max-width:90% }` (theme.css), which otherwise still applies here
+     since this is also an img inside .about-visual and that rule never
+     gets beaten on the max-width property specifically. */
+  .as-fill-img { display: block; width: 100%; max-width: none; height: auto; }
 
   .as--band { grid-template-columns: 1fr; }
   .as--band .as-copy { max-width: 980px; }
