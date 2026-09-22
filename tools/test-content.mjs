@@ -89,7 +89,7 @@ check('groups edits by the file they land in', () => {
   const grouped = content.groupByFile([
     { address: 'catalogue:the-establishment.strapline', value: 'a' },
     { address: 'settings:outro.strapline', value: 'b' },
-    { address: 'catalogue:the-clerk.strapline', value: 'c' },
+    { address: 'catalogue:the-stubborn.strapline', value: 'c' },
   ]);
   assert(grouped.ok, grouped.error);
   const files = Object.keys(grouped.groups).sort();

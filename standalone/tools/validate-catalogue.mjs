@@ -38,6 +38,7 @@ for (const handle of handles) {
 
 const seenVariantIds = new Set();
 const seenSkus = new Set();
+const seenPrintfulIds = new Set();
 
 for (const product of products) {
   // 3. Every referenced image is actually on disk. Data paths read "/assets/..."
@@ -61,6 +62,15 @@ for (const product of products) {
     if (!Number.isInteger(variant.price) || variant.price <= 0) {
       fail(`${variant.id}: price ${variant.price} is not a positive integer (pence)`);
     }
+
+    // 12. Every variant can be fulfilled: a paid order for one with no Printful id
+    //     reaches the webhook and cannot be sent anywhere. Run tools/printful-sync.mjs.
+    if (!Number.isInteger(variant.printfulVariantId) || variant.printfulVariantId <= 0) {
+      fail(`${variant.id}: no printfulVariantId - run npm run printful:sync`);
+    } else if (seenPrintfulIds.has(variant.printfulVariantId)) {
+      fail(`${variant.id}: printfulVariantId ${variant.printfulVariantId} is used twice`);
+    }
+    seenPrintfulIds.add(variant.printfulVariantId);
 
     // 6. Every option the variant claims exists on the product, with that value.
     for (const [name, value] of Object.entries(variant.options)) {

@@ -24,12 +24,13 @@
   "products": [
     {
       "handle": "the-establishment",
+      "printfulProductId": 473360161,
       "title": "The Establishment",
       "kind": "product",
       "code": "ESTB",
       "type": "T-Shirt",
       "tags": [],
-      "price": 2800,
+      "price": 3000,
       "compareAtPrice": null,
       "issue": "ISSUE_001",
       "indexRef": "LIMITED EDITION",
@@ -116,6 +117,10 @@
             {
               "value": "XXL",
               "display": "XXL"
+            },
+            {
+              "value": "3XL",
+              "display": "3XL"
             }
           ]
         }
@@ -128,8 +133,9 @@
             "Colour": "Black",
             "Size": "S"
           },
-          "price": 2800,
-          "available": true
+          "price": 3000,
+          "available": true,
+          "printfulVariantId": 5506816806
         },
         {
           "id": "the-establishment-blk-m",
@@ -138,8 +144,9 @@
             "Colour": "Black",
             "Size": "M"
           },
-          "price": 2800,
-          "available": true
+          "price": 3000,
+          "available": true,
+          "printfulVariantId": 5506816807
         },
         {
           "id": "the-establishment-blk-l",
@@ -148,8 +155,9 @@
             "Colour": "Black",
             "Size": "L"
           },
-          "price": 2800,
-          "available": true
+          "price": 3000,
+          "available": true,
+          "printfulVariantId": 5506816808
         },
         {
           "id": "the-establishment-blk-xl",
@@ -158,8 +166,9 @@
             "Colour": "Black",
             "Size": "XL"
           },
-          "price": 2800,
-          "available": true
+          "price": 3000,
+          "available": true,
+          "printfulVariantId": 5506816809
         },
         {
           "id": "the-establishment-blk-xxl",
@@ -168,8 +177,20 @@
             "Colour": "Black",
             "Size": "XXL"
           },
-          "price": 2800,
-          "available": true
+          "price": 3000,
+          "available": true,
+          "printfulVariantId": 5506816810
+        },
+        {
+          "id": "the-establishment-blk-3xl",
+          "sku": "BS-ESTB-BLK-3XL",
+          "options": {
+            "Colour": "Black",
+            "Size": "3XL"
+          },
+          "price": 3000,
+          "available": true,
+          "printfulVariantId": 5506816811
         }
       ],
       "media": [
@@ -184,12 +205,13 @@
     },
     {
       "handle": "the-frequency",
+      "printfulProductId": 473359698,
       "title": "The Frequency",
       "kind": "product",
       "code": "FREQ",
       "type": "T-Shirt",
       "tags": [],
-      "price": 2800,
+      "price": 3000,
       "compareAtPrice": null,
       "issue": "ISSUE_001",
       "indexRef": "#04",
@@ -222,7 +244,7 @@
         },
         {
           "label": "COLOURWAYS",
-          "value": "OXY_BLACK / CHALK_WHITE / SYSTEM_NAVY"
+          "value": "CHALK_WHITE / SYSTEM_NAVY"
         },
         {
           "label": "CARE",
@@ -247,11 +269,6 @@
         {
           "name": "Colour",
           "values": [
-            {
-              "value": "Black",
-              "display": "OXY_BLACK",
-              "hex": "#0a0a0a"
-            },
             {
               "value": "Off-White",
               "display": "CHALK_WHITE",
@@ -286,61 +303,15 @@
             {
               "value": "XXL",
               "display": "XXL"
+            },
+            {
+              "value": "3XL",
+              "display": "3XL"
             }
           ]
         }
       ],
       "variants": [
-        {
-          "id": "the-frequency-blk-s",
-          "sku": "BS-FREQ-BLK-S",
-          "options": {
-            "Colour": "Black",
-            "Size": "S"
-          },
-          "price": 2800,
-          "available": true
-        },
-        {
-          "id": "the-frequency-blk-m",
-          "sku": "BS-FREQ-BLK-M",
-          "options": {
-            "Colour": "Black",
-            "Size": "M"
-          },
-          "price": 2800,
-          "available": true
-        },
-        {
-          "id": "the-frequency-blk-l",
-          "sku": "BS-FREQ-BLK-L",
-          "options": {
-            "Colour": "Black",
-            "Size": "L"
-          },
-          "price": 2800,
-          "available": true
-        },
-        {
-          "id": "the-frequency-blk-xl",
-          "sku": "BS-FREQ-BLK-XL",
-          "options": {
-            "Colour": "Black",
-            "Size": "XL"
-          },
-          "price": 2800,
-          "available": true
-        },
-        {
-          "id": "the-frequency-blk-xxl",
-          "sku": "BS-FREQ-BLK-XXL",
-          "options": {
-            "Colour": "Black",
-            "Size": "XXL"
-          },
-          "price": 2800,
-          "available": true
-        },
         {
           "id": "the-frequency-owh-s",
           "sku": "BS-FREQ-OWH-S",
@@ -348,8 +319,9 @@
             "Colour": "Off-White",
             "Size": "S"
           },
-          "price": 2800,
-          "available": true
+          "price": 3000,
+          "available": true,
+          "printfulVariantId": 5506814483
         },
         {
           "id": "the-frequency-owh-m",
@@ -358,8 +330,9 @@
             "Colour": "Off-White",
             "Size": "M"
           },
-          "price": 2800,
-          "available": true
+          "price": 3000,
+          "available": true,
+          "printfulVariantId": 5506814484
         },
         {
           "id": "the-frequency-owh-l",
@@ -368,8 +341,9 @@
             "Colour": "Off-White",
             "Size": "L"
           },
-          "price": 2800,
-          "available": true
+          "price": 3000,
+          "available": true,
+          "printfulVariantId": 5506814486
         },
         {
           "id": "the-frequency-owh-xl",
@@ -378,8 +352,9 @@
             "Colour": "Off-White",
             "Size": "XL"
           },
-          "price": 2800,
-          "available": true
+          "price": 3000,
+          "available": true,
+          "printfulVariantId": 5506814487
         },
         {
           "id": "the-frequency-owh-xxl",
@@ -388,8 +363,20 @@
             "Colour": "Off-White",
             "Size": "XXL"
           },
-          "price": 2800,
-          "available": true
+          "price": 3000,
+          "available": true,
+          "printfulVariantId": 5506814488
+        },
+        {
+          "id": "the-frequency-owh-3xl",
+          "sku": "BS-FREQ-OWH-3XL",
+          "options": {
+            "Colour": "Off-White",
+            "Size": "3XL"
+          },
+          "price": 3000,
+          "available": true,
+          "printfulVariantId": 5506814489
         },
         {
           "id": "the-frequency-nvy-s",
@@ -398,8 +385,9 @@
             "Colour": "Navy",
             "Size": "S"
           },
-          "price": 2800,
-          "available": true
+          "price": 3000,
+          "available": true,
+          "printfulVariantId": 5506814473
         },
         {
           "id": "the-frequency-nvy-m",
@@ -408,8 +396,9 @@
             "Colour": "Navy",
             "Size": "M"
           },
-          "price": 2800,
-          "available": true
+          "price": 3000,
+          "available": true,
+          "printfulVariantId": 5506814474
         },
         {
           "id": "the-frequency-nvy-l",
@@ -418,8 +407,9 @@
             "Colour": "Navy",
             "Size": "L"
           },
-          "price": 2800,
-          "available": true
+          "price": 3000,
+          "available": true,
+          "printfulVariantId": 5506814475
         },
         {
           "id": "the-frequency-nvy-xl",
@@ -428,8 +418,9 @@
             "Colour": "Navy",
             "Size": "XL"
           },
-          "price": 2800,
-          "available": true
+          "price": 3000,
+          "available": true,
+          "printfulVariantId": 5506814480
         },
         {
           "id": "the-frequency-nvy-xxl",
@@ -438,18 +429,23 @@
             "Colour": "Navy",
             "Size": "XXL"
           },
-          "price": 2800,
-          "available": true
+          "price": 3000,
+          "available": true,
+          "printfulVariantId": 5506814481
+        },
+        {
+          "id": "the-frequency-nvy-3xl",
+          "sku": "BS-FREQ-NVY-3XL",
+          "options": {
+            "Colour": "Navy",
+            "Size": "3XL"
+          },
+          "price": 3000,
+          "available": true,
+          "printfulVariantId": 5506814482
         }
       ],
       "media": [
-        {
-          "colour": "Black",
-          "src": "/assets/products/tee-roundel-black.jpg",
-          "width": 950,
-          "height": 1082,
-          "alt": "The Frequency / OXY_BLACK"
-        },
         {
           "colour": "Off-White",
           "src": "/assets/products/tee-roundel-offwhite.jpg",
@@ -467,26 +463,27 @@
       ]
     },
     {
-      "handle": "the-clerk",
-      "title": "The Clerk",
+      "handle": "the-stubborn",
+      "printfulProductId": 473361359,
+      "title": "The Stubborn",
       "kind": "product",
-      "code": "CLRK",
+      "code": "STBN",
       "type": "T-Shirt",
       "tags": [],
-      "price": 2800,
+      "price": 3000,
       "compareAtPrice": null,
       "issue": "ISSUE_001",
-      "indexRef": "#05",
+      "indexRef": "#06",
       "limited": false,
-      "strapline": "mono print. Courtesy is not weakness.",
+      "strapline": "cream print. Too stubborn to worry.",
       "dossier": [
-        "Bowler hat, umbrella, skull underneath: the politest uniform Britain ever produced."
+        "The Stubborn. [PLACEHOLDER: REPLACE WITH FINAL COPY]"
       ],
-      "spec": "220gsm heavyweight cotton. Screen printed in Britain. Wash inside out at 30°C. No tumble dry.",
+      "spec": "Gildan Softstyle 64000. 100% ring-spun cotton. Printed to order. Wash inside out at 30°C. No tumble dry. [PLACEHOLDER: CHECK AGAINST PRINTFUL]",
       "fieldManual": [
         {
           "label": "ENTRY",
-          "value": "#05 // THE CLERK"
+          "value": "#06 // THE STUBBORN"
         },
         {
           "label": "ISSUE",
@@ -494,11 +491,11 @@
         },
         {
           "label": "PRINT",
-          "value": "MONO // WATER-BASED SCREEN PRINT // UK"
+          "value": "CREAM // PRINTED TO ORDER"
         },
         {
           "label": "FABRIC",
-          "value": "100% RING-SPUN COTTON // 220GSM"
+          "value": "100% RING-SPUN COTTON"
         },
         {
           "label": "FIT",
@@ -506,7 +503,7 @@
         },
         {
           "label": "COLOURWAYS",
-          "value": "OXY_BLACK / CHALK_WHITE"
+          "value": "OXY_BLACK ONLY"
         },
         {
           "label": "CARE",
@@ -519,12 +516,8 @@
       ],
       "editorial": [
         {
-          "heading": "The City Gent.",
-          "body": "The bowler hat and the umbrella: the most polite uniform ever invented. He queued properly, apologised when you stepped on his foot, and walked to work through rubble with the morning paper under his arm, daring the Luftwaffe to make him late. Cross the brollies like cutlasses, put the skull under the brim. Politely menacing since the Blitz. [PLACEHOLDER: REPLACE WITH FINAL COPY]"
-        },
-        {
-          "heading": "The Craft.",
-          "body": "220gsm ring-spun cotton. Water-based screen print, applied in Britain. Soft hand-feel that improves with washing. No cracking, no fading, no apologies. Wash inside out at 30°C. Tumble dryers are for quitters. [PLACEHOLDER: REPLACE WITH FINAL COPY]"
+          "heading": "The Stubborn.",
+          "body": "The Blitz, the weather, the pub queue: Brits are too stubborn to worry. [PLACEHOLDER: REPLACE WITH FINAL COPY]"
         }
       ],
       "options": [
@@ -535,11 +528,6 @@
               "value": "Black",
               "display": "OXY_BLACK",
               "hex": "#0a0a0a"
-            },
-            {
-              "value": "Off-White",
-              "display": "CHALK_WHITE",
-              "hex": "#e7e7e2"
             }
           ]
         },
@@ -565,126 +553,89 @@
             {
               "value": "XXL",
               "display": "XXL"
+            },
+            {
+              "value": "3XL",
+              "display": "3XL"
             }
           ]
         }
       ],
       "variants": [
         {
-          "id": "the-clerk-blk-s",
-          "sku": "BS-CLRK-BLK-S",
+          "id": "the-stubborn-blk-s",
+          "sku": "BS-STBN-BLK-S",
           "options": {
             "Colour": "Black",
             "Size": "S"
           },
-          "price": 2800,
-          "available": true
+          "price": 3000,
+          "available": true,
+          "printfulVariantId": 5506823309
         },
         {
-          "id": "the-clerk-blk-m",
-          "sku": "BS-CLRK-BLK-M",
+          "id": "the-stubborn-blk-m",
+          "sku": "BS-STBN-BLK-M",
           "options": {
             "Colour": "Black",
             "Size": "M"
           },
-          "price": 2800,
-          "available": true
+          "price": 3000,
+          "available": true,
+          "printfulVariantId": 5506823310
         },
         {
-          "id": "the-clerk-blk-l",
-          "sku": "BS-CLRK-BLK-L",
+          "id": "the-stubborn-blk-l",
+          "sku": "BS-STBN-BLK-L",
           "options": {
             "Colour": "Black",
             "Size": "L"
           },
-          "price": 2800,
-          "available": true
+          "price": 3000,
+          "available": true,
+          "printfulVariantId": 5506823311
         },
         {
-          "id": "the-clerk-blk-xl",
-          "sku": "BS-CLRK-BLK-XL",
+          "id": "the-stubborn-blk-xl",
+          "sku": "BS-STBN-BLK-XL",
           "options": {
             "Colour": "Black",
             "Size": "XL"
           },
-          "price": 2800,
-          "available": true
+          "price": 3000,
+          "available": true,
+          "printfulVariantId": 5506823312
         },
         {
-          "id": "the-clerk-blk-xxl",
-          "sku": "BS-CLRK-BLK-XXL",
+          "id": "the-stubborn-blk-xxl",
+          "sku": "BS-STBN-BLK-XXL",
           "options": {
             "Colour": "Black",
             "Size": "XXL"
           },
-          "price": 2800,
-          "available": true
+          "price": 3000,
+          "available": true,
+          "printfulVariantId": 5506823313
         },
         {
-          "id": "the-clerk-owh-s",
-          "sku": "BS-CLRK-OWH-S",
+          "id": "the-stubborn-blk-3xl",
+          "sku": "BS-STBN-BLK-3XL",
           "options": {
-            "Colour": "Off-White",
-            "Size": "S"
+            "Colour": "Black",
+            "Size": "3XL"
           },
-          "price": 2800,
-          "available": true
-        },
-        {
-          "id": "the-clerk-owh-m",
-          "sku": "BS-CLRK-OWH-M",
-          "options": {
-            "Colour": "Off-White",
-            "Size": "M"
-          },
-          "price": 2800,
-          "available": true
-        },
-        {
-          "id": "the-clerk-owh-l",
-          "sku": "BS-CLRK-OWH-L",
-          "options": {
-            "Colour": "Off-White",
-            "Size": "L"
-          },
-          "price": 2800,
-          "available": true
-        },
-        {
-          "id": "the-clerk-owh-xl",
-          "sku": "BS-CLRK-OWH-XL",
-          "options": {
-            "Colour": "Off-White",
-            "Size": "XL"
-          },
-          "price": 2800,
-          "available": true
-        },
-        {
-          "id": "the-clerk-owh-xxl",
-          "sku": "BS-CLRK-OWH-XXL",
-          "options": {
-            "Colour": "Off-White",
-            "Size": "XXL"
-          },
-          "price": 2800,
-          "available": true
+          "price": 3000,
+          "available": true,
+          "printfulVariantId": 5506823314
         }
       ],
       "media": [
         {
           "colour": "Black",
-          "src": "/assets/products/tee-clerk-black.jpg",
-          "width": 922,
-          "height": 1090,
-          "alt": "The Clerk / OXY_BLACK"
-        },
-        {
-          "colour": "Off-White",
-          "src": "/assets/products/tee-clerk-white.jpg",
-          "width": 940,
-          "height": 1098,
-          "alt": "The Clerk / CHALK_WHITE"
+          "src": "/assets/products/tee-stubborn-black.png",
+          "width": 800,
+          "height": 800,
+          "alt": "The Stubborn / OXY_BLACK"
         }
       ]
     }
