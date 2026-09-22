@@ -367,6 +367,19 @@ const archiveLine = [
     margin: 0 auto;
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
   }
+  /* .pdp-gallery (theme.css) is sticky and height-capped to one viewport with
+     overflow-y:auto; on shorter screens the 500px plate plus the thumb rail is
+     taller than that cap and forces an internal scrollbar. Shrink the plate by
+     the same width/height ratio, based on what the column actually has left
+     after its padding, row gap and thumb row, so it always fits without one.
+     No lower floor: the aspect-ratio-derived height must stay in lockstep with
+     the width the flex column actually allocates it, or the plate overlaps
+     the thumb row instead of scrolling (worse than the scrollbar it replaces). */
+  @media (min-width: 861px) {
+    .pdp-gallery .plate {
+      width: min(100%, 500px, calc((100vh - 48px - 2 * var(--s5) - var(--s3) - 92px) / 1.12));
+    }
+  }
 
   /* The solid ADD TO BAG fill itself is .btn--solid, shared sitewide
      (theme.css §5) — only its width/spacing is PDP-specific. */
