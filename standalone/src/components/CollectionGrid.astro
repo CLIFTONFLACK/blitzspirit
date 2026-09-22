@@ -26,6 +26,8 @@ interface Props {
   showBadge?: boolean;
   emptyHeading?: string;
   emptyText?: string;
+  /** Widen the grid wrap for the homepage's single-row 3-up showcase. */
+  wide?: boolean;
 }
 
 const {
@@ -34,9 +36,10 @@ const {
   showBadge = true,
   emptyHeading = 'Bombed out.',
   emptyText = 'Nothing filed under this yet.',
+  wide = false,
 } = Astro.props;
 ---
-<div class="coll-grid-wrap">
+<div class:list={['coll-grid-wrap', wide && 'coll-grid-wrap--wide']}>
   {products.length === 0 ? (
     <div class="coll-empty">
       <h2 class="chunk coll-empty-title">{emptyHeading}</h2>
@@ -56,6 +59,8 @@ const {
   @media (min-width: 861px) {
     .coll-grid-wrap .coll-grid { grid-template-columns: repeat(var(--coll-cols, 3), 1fr); }
   }
+  /* 14% wider than the shared 1027px wrap, for the homepage showcase row. */
+  .coll-grid-wrap--wide { max-width: 1171px; }
   .coll-empty {
     border: 1px solid var(--line);
     background: var(--panel);
