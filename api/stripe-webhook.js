@@ -16,9 +16,14 @@
 // checkout.session.async_payment_succeeded for delayed methods (Bacs, Pay by Bank),
 // which complete unpaid and settle later. The Stripe endpoint must send both events.
 //
+// Test mode: a test-mode payment costs nothing (Stripe's test cards are public), so
+// its events are ignored unless ALLOW_TEST_ORDERS is "true", and even then the order
+// is always a draft - a test payment can never start real production.
+//
 // Env: STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, PRINTFUL_API_TOKEN (all required),
-//      PRINTFUL_CONFIRM_ORDERS ("true" sends orders straight to production; anything
-//      else leaves them as drafts to confirm in the Printful dashboard),
+//      PRINTFUL_CONFIRM_ORDERS ("true" sends live orders straight to production;
+//      anything else leaves them as drafts to confirm in the Printful dashboard),
+//      ALLOW_TEST_ORDERS ("true" turns test-mode payments into draft orders),
 //      ORDER_ALERT_EMAIL + RESEND_API_KEY (optional; without them alerts are logs only),
 //      ORDER_ALERT_FROM (optional sender, default Resend's onboarding address).
 
@@ -161,13 +166,17 @@ async function handler(req, res) {
   if (!isFulfillable(event, session)) {
     return res.status(200).json({ ignored: event.type });
   }
+  var live = event.livemode === true;
+  if (!live && process.env.ALLOW_TEST_ORDERS !== 'true') {
+    return res.status(200).json({ ignored: 'test-mode event' });
+  }
 
   try {
     var lineItems = await fetchLineItems(session.id, secretKey);
     var order = printful.buildPrintfulOrder(session, lineItems);
     var result = await printful.submitOrder(order, {
       token: printfulToken,
-      confirm: process.env.PRINTFUL_CONFIRM_ORDERS === 'true',
+      confirm: live && process.env.PRINTFUL_CONFIRM_ORDERS === 'true',
     });
     console.log(
       'stripe-webhook: ' + (result.created ? 'created' : 'already had') +

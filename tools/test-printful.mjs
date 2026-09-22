@@ -814,6 +814,7 @@ const ENV = {
   PRINTFUL_CONFIRM_ORDERS: undefined,
   ORDER_ALERT_EMAIL: undefined,
   RESEND_API_KEY: undefined,
+  ALLOW_TEST_ORDERS: undefined,
 };
 
 const ENV_WITH_ALERTS = {
@@ -940,6 +941,7 @@ await check('fulfils a paid session end to end', () =>
       async (calls) => {
         const req = signedRequest({
           type: 'checkout.session.completed',
+          livemode: true,
           data: { object: sessionFixture() },
         });
         const res = fakeRes();
@@ -968,6 +970,7 @@ await check('fulfils a completed zero-total session (payment_status: no_payment_
       async (calls) => {
         const req = signedRequest({
           type: 'checkout.session.completed',
+          livemode: true,
           data: { object: sessionFixture({ payment_status: 'no_payment_required' }) },
         });
         const res = fakeRes();
@@ -990,6 +993,7 @@ await check('fulfils an async_payment_succeeded event whatever its payment_statu
       async (calls) => {
         const req = signedRequest({
           type: 'checkout.session.async_payment_succeeded',
+          livemode: true,
           data: { object: sessionFixture({ payment_status: 'unpaid' }) },
         });
         const res = fakeRes();
@@ -1011,6 +1015,7 @@ await check('returns 500 (retry) when a transient Printful failure happens', () 
       async (calls) => {
         const req = signedRequest({
           type: 'checkout.session.completed',
+          livemode: true,
           data: { object: sessionFixture() },
         });
         const res = fakeRes();
@@ -1025,7 +1030,7 @@ await check('returns 500 (retry) when a transient Printful failure happens', () 
 await check('returns 500 when Stripe line_items is unreachable (network failure)', () =>
   withEnv(ENV, () =>
     withFetch([{ throws: true }], async (calls) => {
-      const req = signedRequest({ type: 'checkout.session.completed', data: { object: sessionFixture() } });
+      const req = signedRequest({ type: 'checkout.session.completed', livemode: true, data: { object: sessionFixture() } });
       const res = fakeRes();
       await stripeWebhook(req, res);
       assert(res.statusCode === 500, `status ${res.statusCode}`);
@@ -1037,7 +1042,7 @@ await check('returns 500 when Stripe line_items is unreachable (network failure)
 await check('returns 500 when Stripe line_items returns a 5xx', () =>
   withEnv(ENV, () =>
     withFetch([{ status: 503, body: null }], async (calls) => {
-      const req = signedRequest({ type: 'checkout.session.completed', data: { object: sessionFixture() } });
+      const req = signedRequest({ type: 'checkout.session.completed', livemode: true, data: { object: sessionFixture() } });
       const res = fakeRes();
       await stripeWebhook(req, res);
       assert(res.statusCode === 500, `status ${res.statusCode}`);
@@ -1049,7 +1054,7 @@ await check('returns 500 when Stripe line_items returns a 5xx', () =>
 await check('returns 500 when Stripe line_items returns 429', () =>
   withEnv(ENV, () =>
     withFetch([{ status: 429, body: null }], async (calls) => {
-      const req = signedRequest({ type: 'checkout.session.completed', data: { object: sessionFixture() } });
+      const req = signedRequest({ type: 'checkout.session.completed', livemode: true, data: { object: sessionFixture() } });
       const res = fakeRes();
       await stripeWebhook(req, res);
       assert(res.statusCode === 500, `status ${res.statusCode}`);
@@ -1060,7 +1065,7 @@ await check('returns 500 when Stripe line_items returns 429', () =>
 await check('returns 200 unfulfilled (not 500) when Stripe line_items returns an ordinary 4xx', () =>
   withEnv(ENV, () =>
     withFetch([{ status: 400, body: null }], async (calls) => {
-      const req = signedRequest({ type: 'checkout.session.completed', data: { object: sessionFixture() } });
+      const req = signedRequest({ type: 'checkout.session.completed', livemode: true, data: { object: sessionFixture() } });
       const res = fakeRes();
       await stripeWebhook(req, res);
       assert(res.statusCode === 200, `status ${res.statusCode}`);
@@ -1072,7 +1077,7 @@ await check('returns 200 unfulfilled (not 500) when Stripe line_items returns an
 await check('returns 200 unfulfilled and does not email an alert when no alert address is configured', () =>
   withEnv(ENV, () =>
     withFetch([{ status: 200, body: { data: unknownVariantLineItems() } }], async (calls) => {
-      const req = signedRequest({ type: 'checkout.session.completed', data: { object: sessionFixture() } });
+      const req = signedRequest({ type: 'checkout.session.completed', livemode: true, data: { object: sessionFixture() } });
       const res = fakeRes();
       await stripeWebhook(req, res);
       assert(res.statusCode === 200, `status ${res.statusCode}`);
@@ -1089,7 +1094,7 @@ await check('emails the owner with the session id but never the customer name, a
         { status: 200, body: {} }, // Resend accepts the alert
       ],
       async (calls) => {
-        const req = signedRequest({ type: 'checkout.session.completed', data: { object: sessionFixture() } });
+        const req = signedRequest({ type: 'checkout.session.completed', livemode: true, data: { object: sessionFixture() } });
         const res = fakeRes();
         await stripeWebhook(req, res);
         assert(res.statusCode === 200, `status ${res.statusCode}`);
@@ -1116,7 +1121,7 @@ await check('still returns 200 when the alert email itself fails to send', () =>
         { throws: true }, // Resend unreachable
       ],
       async (calls) => {
-        const req = signedRequest({ type: 'checkout.session.completed', data: { object: sessionFixture() } });
+        const req = signedRequest({ type: 'checkout.session.completed', livemode: true, data: { object: sessionFixture() } });
         const res = fakeRes();
         await stripeWebhook(req, res);
         assert(res.statusCode === 200, `status ${res.statusCode}, an alert failure must not change the response`);
@@ -1124,6 +1129,135 @@ await check('still returns 200 when the alert email itself fails to send', () =>
         assert(calls.length === 2, `expected the alert to still be attempted, got ${calls.length}`);
       }
     )
+  ));
+
+await check('ignores a test-mode event and makes no fetch calls, even with PRINTFUL_CONFIRM_ORDERS=true', () =>
+  withEnv({ ...ENV, PRINTFUL_CONFIRM_ORDERS: 'true' }, () =>
+    withFetch([], async (calls) => {
+      const req = signedRequest({
+        type: 'checkout.session.completed',
+        livemode: false,
+        data: { object: sessionFixture() },
+      });
+      const res = fakeRes();
+      await stripeWebhook(req, res);
+      assert(res.statusCode === 200, `status ${res.statusCode}`);
+      assert(res.body.ignored === 'test-mode event', `body ${JSON.stringify(res.body)}`);
+      assert(calls.length === 0, `fetch should not be called for a test-mode event, got ${calls.length} calls`);
+    })
+  ));
+
+await check('treats a missing livemode as test-mode and ignores it', () =>
+  withEnv(ENV, () =>
+    withFetch([], async (calls) => {
+      const req = signedRequest({
+        type: 'checkout.session.completed',
+        data: { object: sessionFixture() },
+      });
+      const res = fakeRes();
+      await stripeWebhook(req, res);
+      assert(res.statusCode === 200, `status ${res.statusCode}`);
+      assert(res.body.ignored === 'test-mode event', `body ${JSON.stringify(res.body)}`);
+      assert(calls.length === 0, `fetch should not be called when livemode is missing, got ${calls.length} calls`);
+    })
+  ));
+
+await check('confirms an allowed test-mode order as a draft (confirm=false) even when PRINTFUL_CONFIRM_ORDERS=true', () =>
+  withEnv({ ...ENV, ALLOW_TEST_ORDERS: 'true', PRINTFUL_CONFIRM_ORDERS: 'true' }, () =>
+    withFetch(
+      [
+        { status: 200, body: { data: lineItemsFixture() } },
+        { status: 404, body: null },
+        { status: 200, body: { result: { id: 6001 } } },
+      ],
+      async (calls) => {
+        const req = signedRequest({
+          type: 'checkout.session.completed',
+          livemode: false,
+          data: { object: sessionFixture() },
+        });
+        const res = fakeRes();
+        await stripeWebhook(req, res);
+        assert(res.statusCode === 200, `status ${res.statusCode}`);
+        assert(res.body.printfulOrder === 6001, `body ${JSON.stringify(res.body)}`);
+        assert(calls.length === 3, `expected the full flow, got ${calls.length}`);
+        assert(calls[2].url.includes('confirm=false'), `an allowed test order must never confirm to production: ${calls[2].url}`);
+      }
+    )
+  ));
+
+await check('confirms a live order to production when PRINTFUL_CONFIRM_ORDERS=true', () =>
+  withEnv({ ...ENV, PRINTFUL_CONFIRM_ORDERS: 'true' }, () =>
+    withFetch(
+      [
+        { status: 200, body: { data: lineItemsFixture() } },
+        { status: 404, body: null },
+        { status: 200, body: { result: { id: 6002 } } },
+      ],
+      async (calls) => {
+        const req = signedRequest({
+          type: 'checkout.session.completed',
+          livemode: true,
+          data: { object: sessionFixture() },
+        });
+        const res = fakeRes();
+        await stripeWebhook(req, res);
+        assert(calls[2].url.includes('confirm=true'), `expected confirm=true for a live order: ${calls[2].url}`);
+      }
+    )
+  ));
+
+await check('leaves a live order as a draft when PRINTFUL_CONFIRM_ORDERS is unset', () =>
+  withEnv(ENV, () =>
+    withFetch(
+      [
+        { status: 200, body: { data: lineItemsFixture() } },
+        { status: 404, body: null },
+        { status: 200, body: { result: { id: 6003 } } },
+      ],
+      async (calls) => {
+        const req = signedRequest({
+          type: 'checkout.session.completed',
+          livemode: true,
+          data: { object: sessionFixture() },
+        });
+        const res = fakeRes();
+        await stripeWebhook(req, res);
+        assert(calls[2].url.includes('confirm=false'), `expected confirm=false when PRINTFUL_CONFIRM_ORDERS is unset: ${calls[2].url}`);
+      }
+    )
+  ));
+
+await check('still ignores test mode when ALLOW_TEST_ORDERS is "1", not exactly "true"', () =>
+  withEnv({ ...ENV, ALLOW_TEST_ORDERS: '1' }, () =>
+    withFetch([], async (calls) => {
+      const req = signedRequest({
+        type: 'checkout.session.completed',
+        livemode: false,
+        data: { object: sessionFixture() },
+      });
+      const res = fakeRes();
+      await stripeWebhook(req, res);
+      assert(res.statusCode === 200, `status ${res.statusCode}`);
+      assert(res.body.ignored === 'test-mode event', `body ${JSON.stringify(res.body)}`);
+      assert(calls.length === 0, `fetch should not be called, got ${calls.length} calls`);
+    })
+  ));
+
+await check('still ignores test mode when ALLOW_TEST_ORDERS is "TRUE" (case-sensitive)', () =>
+  withEnv({ ...ENV, ALLOW_TEST_ORDERS: 'TRUE' }, () =>
+    withFetch([], async (calls) => {
+      const req = signedRequest({
+        type: 'checkout.session.completed',
+        livemode: false,
+        data: { object: sessionFixture() },
+      });
+      const res = fakeRes();
+      await stripeWebhook(req, res);
+      assert(res.statusCode === 200, `status ${res.statusCode}`);
+      assert(res.body.ignored === 'test-mode event', `body ${JSON.stringify(res.body)}`);
+      assert(calls.length === 0, `fetch should not be called, got ${calls.length} calls`);
+    })
   ));
 
 if (failed) {
