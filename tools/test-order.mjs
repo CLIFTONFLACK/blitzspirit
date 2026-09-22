@@ -22,6 +22,21 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const settings = JSON.parse(
   readFileSync(join(root, 'standalone/src/data/settings.json'), 'utf8')
 );
+const catalogue = JSON.parse(
+  readFileSync(join(root, 'standalone/src/data/catalogue.json'), 'utf8')
+);
+
+// Prices are synced from Printful, so the expected charge is read from the committed
+// catalogue rather than hard-coded: the tests check buildOrder charges what the
+// catalogue says, whatever Printful set it to.
+const priceOf = (id) => {
+  for (const product of catalogue.products) {
+    const variant = product.variants.find((v) => v.id === id);
+    if (variant) return variant.price;
+  }
+  throw new Error(`fixture variant ${id} is not in the catalogue`);
+};
+const ESTB = priceOf('the-establishment-blk-s');
 
 let failed = 0;
 function check(name, fn) {
@@ -58,8 +73,8 @@ console.log('buildOrder:');
 check('prices a single line from the catalogue, not the request', () => {
   const { lineItems, subtotal } = buildOrder([{ id: 'the-establishment-blk-s', quantity: 1 }]);
   assert(lineItems.length === 1, 'expected one line item');
-  assert(lineItems[0].price_data.unit_amount === 2800, 'establishment should be 2800 pence');
-  assert(subtotal === 2800, `subtotal ${subtotal}`);
+  assert(lineItems[0].price_data.unit_amount === ESTB, `establishment should be ${ESTB} pence`);
+  assert(subtotal === ESTB, `subtotal ${subtotal}`);
   assert(lineItems[0].price_data.tax_behavior === 'inclusive', 'VAT must be inclusive');
   assert(lineItems[0].price_data.currency === 'gbp', 'currency should be gbp');
   assert(
@@ -76,10 +91,10 @@ check('a client-supplied price is ignored entirely', () => {
     { id: 'the-establishment-blk-s', quantity: 1, price: 1, unit_amount: 1, amount: 1 },
   ]);
   assert(
-    lineItems[0].price_data.unit_amount === 2800,
+    lineItems[0].price_data.unit_amount === ESTB,
     `unit_amount ${lineItems[0].price_data.unit_amount} - client price leaked into the charge`
   );
-  assert(subtotal === 2800, `subtotal ${subtotal} - client price leaked in`);
+  assert(subtotal === ESTB, `subtotal ${subtotal} - client price leaked in`);
 });
 
 check('every line item is charged the catalogue price', () => {
@@ -88,13 +103,9 @@ check('every line item is charged the catalogue price', () => {
   const lines = [
     { id: 'the-establishment-blk-s', quantity: 1, price: 1 },
     { id: 'the-frequency-nvy-xl', quantity: 3, price: 1 },
-    { id: 'the-clerk-blk-m', quantity: 1, price: 1 },
+    { id: 'the-stubborn-blk-3xl', quantity: 1, price: 1 },
   ];
-  const expected = {
-    'the-establishment-blk-s': 2800,
-    'the-frequency-nvy-xl': 2800,
-    'the-clerk-blk-m': 2800,
-  };
+  const expected = Object.fromEntries(lines.map((l) => [l.id, priceOf(l.id)]));
   const { lineItems } = buildOrder(lines);
   for (const item of lineItems) {
     const id = item.price_data.product_data.metadata.variant_id;
@@ -110,7 +121,7 @@ check('multiplies by quantity and sums across lines', () => {
     { id: 'the-establishment-blk-s', quantity: 2 },
     { id: 'the-frequency-nvy-xl', quantity: 1 },
   ]);
-  assert(subtotal === 2800 * 2 + 2800, `subtotal ${subtotal}`);
+  assert(subtotal === ESTB * 2 + priceOf('the-frequency-nvy-xl'), `subtotal ${subtotal}`);
 });
 
 check('charges delivery below the free threshold', () => {
@@ -123,7 +134,7 @@ check('charges delivery below the free threshold', () => {
 });
 
 check('free delivery turns on AT the threshold, to the penny', () => {
-  // No combination of the current four products sums to exactly the threshold, so
+  // No combination of the current products sums to exactly the threshold, so
   // this tests the decision itself rather than a basket. Without it, `>=` written
   // as `>` passes every basket-level test.
   const t = settings.shipping.freeThresholdPence;
@@ -144,8 +155,9 @@ check('a basket over the threshold ships free', () => {
 });
 
 check('still charges delivery just under the threshold', () => {
-  // £28 is the closest the catalogue gets to £40 from below - no combination of
-  // these prices lands on £39.99, so this is the tightest real fixture available.
+  // A single tee is the closest the catalogue gets to the threshold from below - no
+  // combination of these prices lands a penny under it, so this is the tightest real
+  // fixture available.
   const { subtotal, shippingOption } = buildOrder([{ id: 'the-frequency-nvy-xl', quantity: 1 }]);
   assert(subtotal < settings.shipping.freeThresholdPence, `subtotal ${subtotal} not below threshold`);
   assert(
@@ -186,7 +198,7 @@ check('encodes nested line items with bracketed paths', () => {
   const { lineItems } = buildOrder([{ id: 'the-establishment-blk-s', quantity: 2 }]);
   const encoded = toBody({ line_items: lineItems });
   assert(
-    encoded.includes('line_items%5B0%5D%5Bprice_data%5D%5Bunit_amount%5D=2800'),
+    encoded.includes(`line_items%5B0%5D%5Bprice_data%5D%5Bunit_amount%5D=${ESTB}`),
     `unit_amount not encoded as Stripe expects: ${encoded}`
   );
   assert(

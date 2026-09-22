@@ -54,7 +54,7 @@ jobs:
         run: node tools/check-edit-ids.mjs standalone/dist
 
       - name: Checkout and content tests
-        run: node tools/test-order.mjs && node tools/test-content.mjs
+        run: node tools/test-order.mjs && node tools/test-content.mjs && node tools/test-printful.mjs
 
       - name: Publish to the repo root
         run: node tools/publish.mjs

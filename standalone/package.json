@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "astro dev",
     "validate": "node tools/validate-catalogue.mjs",
+    "printful:sync": "node tools/printful-sync.mjs",
     "check": "astro check --minimumSeverity error",
     "prebuild": "npm run validate && npm run check",
     "build": "astro build",
