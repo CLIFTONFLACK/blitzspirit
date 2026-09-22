@@ -8,6 +8,9 @@
 // row above the promo band reads better than a tall stack of full-width
 // rows. `featured`/`archive` settings in pages/index.json are unused now;
 // left in place rather than edited, since /edit still addresses them.
+//
+// At ≤860px, where the 3-up row would otherwise wrap, the grid becomes a
+// one-row swipe carousel that also auto-advances (CollectionGrid `carousel`).
 import Base from '~/layouts/Base.astro';
 import Hero from '~/components/Hero.astro';
 import AsSeenOn from '~/components/AsSeenOn.astro';
@@ -36,7 +39,7 @@ const meansBody = '<p>The blitz spirit isn’t nostalgia. It’s not bunting and
 
   <AsSeenOn />
 
-  <CollectionGrid products={products} wide />
+  <CollectionGrid products={products} wide carousel />
 
   <PromoBand
     id="PromoBand"
