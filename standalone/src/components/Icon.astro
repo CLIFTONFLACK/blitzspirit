@@ -1,7 +1,7 @@
 ---
 // Icon — ported from snippets/icon.liquid. Inline stroke-based SVGs, 16px.
 interface Props {
-  name: 'instagram' | 'x' | 'tiktok' | 'facebook' | 'bag' | 'close' | 'play' | 'arrow' | 'mark';
+  name: 'instagram' | 'x' | 'tiktok' | 'facebook' | 'bag' | 'close' | 'play' | 'pause' | 'arrow' | 'mark';
 }
 const { name } = Astro.props;
 ---
@@ -25,6 +25,9 @@ const { name } = Astro.props;
 )}
 {name === 'play' && (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" focusable="false"><path d="M7 4.5v15l13-7.5z"/></svg>
+)}
+{name === 'pause' && (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" focusable="false"><path d="M8 4.5v15M16 4.5v15"/></svg>
 )}
 {name === 'arrow' && (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" focusable="false"><path d="M3 12h18M14 5l7 7-7 7"/></svg>

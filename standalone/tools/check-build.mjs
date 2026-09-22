@@ -140,6 +140,56 @@ for (const [handle, collection] of Object.entries(collections)) {
   if (strays.length) fail(route, `grid links to products not in the collection: ${strays.join(', ')}`);
 }
 
+/** Homepage-only product carousel (CollectionGrid's `carousel` prop, ≤860px):
+ *  a data-carousel wrapper around a data-carousel-track, one dot per catalogue
+ *  product with only the first marked aria-current, a labelled pause/resume
+ *  toggle rendering both icon states, and the carousel script inlined. Astro
+ *  only emits that script inside {isCarousel && (...)}, so it - and all the
+ *  markup above - must not leak onto collection pages or anywhere else that
+ *  renders CollectionGrid without the prop. */
+const CAROUSEL_SCRIPT_FINGERPRINT = '"[data-carousel]"'; // a querySelectorAll selector string in carousel.js - a literal, so unlike a var/function name it survives minification
+
+if (catalogue.products.length > 1) {
+  const home = html('/');
+  if (home) {
+    if (!/<div class="coll-grid-wrap[^"]*"\s+data-carousel(?:\s|>)/.test(home)) {
+      fail('/', 'no data-carousel wrapper on the homepage grid');
+    }
+    // Matched inside a tag: the inlined script also contains "[data-carousel-track]",
+    // so a bare includes() would pass with the attribute gone from the markup.
+    if (!/<div[^>]*\sdata-carousel-track(?:\s|=|>)/.test(home)) {
+      fail('/', 'no data-carousel-track on the homepage grid');
+    }
+
+    const dots = home.match(/<button[^>]*\bdata-carousel-dot\b[^>]*>/g) ?? [];
+    if (dots.length !== catalogue.products.length) {
+      fail('/', `expected ${catalogue.products.length} carousel dots, found ${dots.length}`);
+    }
+    const current = dots.filter((d) => d.includes('aria-current="true"'));
+    if (current.length !== 1) fail('/', `expected exactly one aria-current dot, found ${current.length}`);
+    if (dots.length && current[0] !== dots[0]) fail('/', 'aria-current is not on the first dot');
+
+    const toggle = home.match(/<button[^>]*\bdata-carousel-toggle\b[^>]*>/);
+    if (!toggle) fail('/', 'no data-carousel-toggle button');
+    else if (!/aria-label="[^"]+"/.test(toggle[0])) fail('/', 'carousel toggle has no aria-label');
+
+    if (!home.includes('coll-carousel-icon--pause') || !home.includes('M8 4.5v15M16 4.5v15')) {
+      fail('/', "carousel toggle's pause icon did not render");
+    }
+
+    if (!home.includes(CAROUSEL_SCRIPT_FINGERPRINT)) fail('/', 'carousel script not inlined on the homepage');
+  }
+
+  for (const route of routes) {
+    const name = route || '/';
+    if (name === '/') continue; // the carousel is homepage-only
+    const doc = html(route || '/');
+    if (!doc) continue;
+    if (doc.includes('data-carousel')) fail(name, 'carousel markup leaked onto a non-homepage route');
+    if (doc.includes(CAROUSEL_SCRIPT_FINGERPRINT)) fail(name, 'carousel script leaked onto a non-homepage route');
+  }
+}
+
 /** The help page anchors the footer links into must exist. */
 const help = html('/help');
 if (help) {

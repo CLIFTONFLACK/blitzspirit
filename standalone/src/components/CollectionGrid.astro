@@ -15,7 +15,13 @@
 // cards, .coll-grid-hint and .coll-placeholder-svg). It only ever ran inside the
 // theme editor via request.design_mode, and it leaned on placeholder_svg_tag,
 // which has no equivalent here. Also dropped: data-section-id.
+//
+// `carousel` (homepage only): at ≤860px the grid becomes a single-row
+// scroll-snap carousel instead of wrapping to 2 / 1 columns. Swiping is plain
+// native scrolling, so it works without JS; scripts/carousel.js adds the
+// auto-advance, the dots and the pause toggle, which are hidden until html.js.
 import ProductCard from '~/components/ProductCard.astro';
+import Icon from '~/components/Icon.astro';
 import strings from '~/data/strings.json';
 import type { Product } from '~/lib/catalogue';
 import { href } from '~/lib/url';
@@ -28,6 +34,8 @@ interface Props {
   emptyText?: string;
   /** Widen the grid wrap for the homepage's single-row 3-up showcase. */
   wide?: boolean;
+  /** Below 861px, show the products as a one-row auto-advancing carousel. */
+  carousel?: boolean;
 }
 
 const {
@@ -37,9 +45,15 @@ const {
   emptyHeading = 'Bombed out.',
   emptyText = 'Nothing filed under this yet.',
   wide = false,
+  carousel = false,
 } = Astro.props;
+
+const isCarousel = carousel && products.length > 1;
 ---
-<div class:list={['coll-grid-wrap', wide && 'coll-grid-wrap--wide']}>
+<div
+  class:list={['coll-grid-wrap', wide && 'coll-grid-wrap--wide']}
+  data-carousel={isCarousel ? '' : undefined}
+>
   {products.length === 0 ? (
     <div class="coll-empty">
       <h2 class="chunk coll-empty-title">{emptyHeading}</h2>
@@ -49,11 +63,49 @@ const {
       </a>
     </div>
   ) : (
-    <div class="coll-grid" style={`--coll-cols: ${columnsDesktop}`}>
-      {products.map((product) => <ProductCard product={product} showBadge={showBadge} />)}
-    </div>
+    <>
+      <div
+        class:list={['coll-grid', isCarousel && 'coll-grid--carousel']}
+        style={`--coll-cols: ${columnsDesktop}`}
+        data-carousel-track={isCarousel ? '' : undefined}
+      >
+        {products.map((product) => <ProductCard product={product} showBadge={showBadge} />)}
+      </div>
+      {isCarousel && (
+        <div class="coll-carousel-nav">
+          <div class="coll-carousel-dots">
+            {products.map((product, i) => (
+              <button
+                type="button"
+                class="coll-carousel-dot"
+                data-carousel-dot
+                aria-label={`Show ${product.title}`}
+                aria-current={i === 0 ? 'true' : undefined}
+              ></button>
+            ))}
+          </div>
+          <button
+            type="button"
+            class="coll-carousel-toggle"
+            data-carousel-toggle
+            data-label-pause="Pause auto-scroll"
+            data-label-play="Resume auto-scroll"
+            aria-label="Pause auto-scroll"
+          >
+            <span class="coll-carousel-icon coll-carousel-icon--pause"><Icon name="pause" /></span>
+            <span class="coll-carousel-icon coll-carousel-icon--play"><Icon name="play" /></span>
+          </button>
+        </div>
+      )}
+    </>
   )}
 </div>
+
+{isCarousel && (
+  <script>
+    import '~/scripts/carousel.js';
+  </script>
+)}
 
 <style>
   @media (min-width: 861px) {
@@ -81,4 +133,79 @@ const {
     max-width: 52ch;
   }
   .coll-empty-link { width: auto; padding: 16px 32px; margin-top: var(--s2); }
+
+  /* Carousel: one swipeable row at ≤860px, where the grid would otherwise wrap.
+     The track bleeds to the wrap's edges so the next card peeks off-screen,
+     and cards snap to centre so all three get a distinct resting position. */
+  .coll-carousel-nav { display: none; }
+  @media (max-width: 860px) {
+    .coll-grid--carousel {
+      display: flex;
+      gap: var(--s2);
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      margin-inline: calc(-1 * var(--s3));
+      padding-inline: var(--s3);
+      /* overflow-x:auto clips vertically too; 4px keeps the 2px + 2px-offset
+         :focus-visible ring on a card's image link whole. */
+      margin-block: -4px;
+      padding-block: 4px;
+      scroll-padding-inline: var(--s3);
+      position: relative; /* offsetParent for the cards, which carousel.js measures */
+    }
+    .coll-grid--carousel::-webkit-scrollbar { display: none; }
+    .coll-grid--carousel > :global(.coll-card) {
+      flex: 0 0 min(86%, 340px);
+      min-width: 0;
+      scroll-snap-align: center;
+    }
+    /* A carousel card is narrower than the old full-width mobile card; these
+       keep [ VIEW ] and [ BUY NOW ] on one line down to a 360px phone. */
+    .coll-grid--carousel :global(.coll-info) { padding-inline: var(--s2); }
+    .coll-grid--carousel :global(.coll-cta),
+    .coll-grid--carousel :global(.coll-buy) { padding-inline: var(--s1); }
+    /* Dots and pause only do anything with JS; swiping works without it. */
+    :global(html.js) .coll-carousel-nav {
+      display: grid;
+      grid-template-columns: 44px 1fr 44px;
+      align-items: center;
+      margin-top: var(--s2);
+    }
+  }
+  .coll-carousel-dots { grid-column: 2; display: flex; justify-content: center; }
+  /* 44px touch targets; the visible mark is the brand's 10px square swatch. */
+  .coll-carousel-dot { width: 44px; height: 44px; display: grid; place-items: center; }
+  .coll-carousel-dot::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border: 1px solid var(--bone-mute);
+    transition: width 0.2s ease-out, background-color 0.2s ease-out, border-color 0.2s ease-out;
+  }
+  /* Active is wider as well as filled, so it doesn't rely on colour alone. */
+  .coll-carousel-dot[aria-current='true']::before {
+    width: 24px;
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .coll-carousel-toggle {
+    grid-column: 3;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--line-bri);
+    color: var(--ink);
+  }
+  .coll-carousel-toggle:hover { border-color: var(--ink); }
+  .coll-carousel-toggle[hidden] { display: none; }
+  .coll-carousel-icon { display: block; }
+  .coll-carousel-icon--play,
+  .coll-carousel-toggle[data-paused] .coll-carousel-icon--pause { display: none; }
+  .coll-carousel-toggle[data-paused] .coll-carousel-icon--play { display: block; }
+  @media (prefers-reduced-motion: reduce) {
+    .coll-carousel-dot::before { transition: none; }
+  }
 </style>
