@@ -489,9 +489,9 @@ a { color:inherit; text-decoration:none; }
 .coll-dots .dot { width:10px; height:10px; border:1px solid rgba(255,255,255,.2); background:var(--dot,#333); }
 .coll-dots .cw-name { display:none; }
 .coll-actions { display:flex; gap:8px; margin-top:auto; }
-.coll-cta { flex:1; display:block; border:1px solid var(--ink); padding:12px var(--s2); font-size:11px; letter-spacing:.15em; text-transform:uppercase; font-family:var(--sans); color:var(--ink); text-align:center; }
+.coll-cta { flex:1; display:block; border:1px solid var(--ink); padding:7.6px var(--s2); font-size:11px; font-weight:700; letter-spacing:.15em; text-transform:uppercase; font-family:var(--sans); color:var(--ink); text-align:center; }
 .coll-cta:hover { background:var(--ink); border-color:var(--ink); color:var(--paper); }
-.coll-buy { flex:1; width:auto; padding:12px var(--s2); font-size:11px; letter-spacing:.15em; }
+.coll-buy { flex:1; width:auto; padding:7.6px var(--s2); font-size:11px; font-weight:700; letter-spacing:.15em; }
 
 /* ============================================================
    12. HOMEPAGE FRAMEWORK — hero / featured / promo / archive /
