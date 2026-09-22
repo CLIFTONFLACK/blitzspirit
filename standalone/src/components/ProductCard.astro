@@ -69,7 +69,7 @@ const colourOption = product.options.find((o) => ['Colour', 'Color'].includes(o.
         {colourOption.values.map((v) => <Swatch value={v.value} />)}
       </div>
     )}
-    <span class="coll-price"><Price product={product} /></span>
+    <span class="coll-price"><Price product={product} showVat={false} /></span>
     <div class="coll-actions">
       <a href={href(`/products/${product.handle}`)} class="coll-cta snap">[ {strings.products.view} ]</a>
       <button
