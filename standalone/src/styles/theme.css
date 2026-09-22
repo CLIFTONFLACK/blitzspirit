@@ -514,7 +514,12 @@ a { color:inherit; text-decoration:none; }
      half. Below 860px the aspect-ratio is dropped for content-driven height
      instead (see media query) — copy stacked in one column needs more room
      than the image's own shape provides. */
-  aspect-ratio:1920/1072; max-height:100vh;
+  /* Explicit width:100% stops the browser from also shrinking the box's
+     width to satisfy aspect-ratio once max-height clamps it (the default
+     "auto" fill-width is treated as adjustable here on wide-but-short
+     windows, leaving a gap beside the hero) — cover still crops the photo
+     to fit whatever height max-height leaves. */
+  width:100%; aspect-ratio:1920/1072; max-height:100vh;
   display:grid; grid-template-columns:1.1fr 1fr; align-items:center; gap:var(--s5);
   padding:96px var(--s6) var(--s6);
   border-bottom:1px solid var(--line);
