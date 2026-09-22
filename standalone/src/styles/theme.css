@@ -523,7 +523,15 @@ a { color:inherit; text-decoration:none; }
   display:grid; grid-template-columns:1.1fr 1fr; align-items:center; gap:var(--s5);
   padding:96px var(--s6) var(--s6);
   border-bottom:1px solid var(--line);
-  background:var(--paper) url('/assets/backgrounds/hero-engraved.jpg') left center/cover no-repeat;
+  /* Anchored slightly below center (55% rather than 50%): the emblem's
+     content band isn't symmetric around the image's midline — the bowler
+     hat starts at ~14% from the top but the umbrella tips run to ~89%
+     (measured off the source photo), so a plain center anchor spends
+     equal crop budget on both ends while the bottom only has ~11% of
+     slack to give. On a wide-but-short window (max-height clamps below
+     the photo's own aspect-ratio height) that budget ran out first at the
+     bottom, cropping into the crossed umbrellas before it touched the hat. */
+  background:var(--paper) url('/assets/backgrounds/hero-engraved.jpg') left 55%/cover no-repeat;
 }
 .hero-copy { max-width:680px; }
 /* The headline's real text stays in the DOM for accessibility/SEO; visually
