@@ -540,9 +540,11 @@ for (const route of ['', ...Object.keys(collections).map((h) => `/collections/${
     if (product && dialog) {
       const frames = (dialog.match(/<img\b[^>]*>/g) ?? []).filter((f) => hasAttr(f, 'data-plate-frame'));
       const ids = frames.map((f) => f.match(/\bdata-media-id="([^"]*)"/)?.[1]);
-      const want = product.media.map((m) => m.colour);
+      // One frame per DISTINCT colour, in first-appearance order: a colour can have
+      // several photos in the catalogue, but the card keys its photo by colour.
+      const want = [...new Set(product.media.map((m) => m.colour))];
       if (frames.length !== want.length || want.some((c, i) => ids[i] !== c)) {
-        fail(name, `card ${label}: plate frames [${ids.join(', ')}] do not match media colours [${want.join(', ')}]`);
+        fail(name, `card ${label}: plate frames [${ids.join(', ')}] do not match distinct media colours [${want.join(', ')}]`);
       }
       const shown = frames.filter((f) => !hasAttr(f, 'hidden'));
       if (shown.length !== 1) fail(name, `card ${label}: ${shown.length} plate frames visible, expected 1`);
@@ -587,6 +589,127 @@ for (const route of ['/', ...Object.keys(collections).map((h) => `/collections/$
   if (!add) fail(route, 'featured block has no add button');
   else if (/\bdata-variant-id\b/.test(add[0])) {
     fail(route, 'featured add button has a fixed data-variant-id (always adds one size)');
+  }
+
+  // One photo per distinct colour: frames here are keyed by colourway, so the
+  // product's further photos of a colour belong to its product page and would
+  // show up as duplicate frames with the same data-media-id.
+  const featuredId = sec.match(/<input\b[^>]*\bname="id"[^>]*\svalue="([^"]*)"/)?.[1];
+  const featured = catalogue.products.find((p) => p.variants.some((v) => v.id === featuredId));
+  if (!featured) {
+    fail(route, `featured input id "${featuredId}" is not a catalogue variant`);
+    continue;
+  }
+  const featuredFrames = (sec.match(/<[a-z]+\b[^>]*\sdata-plate-frame(?=[\s=/>])[^>]*>/g) ?? []).map((f) => ({
+    id: decodeEntities(f.match(/\sdata-media-id="([^"]*)"/)?.[1] ?? ''),
+    hidden: hasAttr(f, 'hidden'),
+  }));
+  const featuredWant = [...new Set(featured.media.map((m) => m.colour))];
+  const featuredIds = featuredFrames.map((f) => f.id);
+  if (featuredIds.length !== featuredWant.length || featuredWant.some((c, i) => featuredIds[i] !== c)) {
+    fail(route, `featured ${featured.handle}: plate frames [${featuredIds.join(', ')}] do not match distinct media colours [${featuredWant.join(', ')}]`);
+  }
+  if (new Set(featuredIds).size !== featuredIds.length) {
+    fail(route, `featured ${featured.handle}: two plate frames share a data-media-id [${featuredIds.join(', ')}]`);
+  }
+  const featuredShown = featuredFrames.filter((f) => !f.hidden);
+  if (featuredShown.length !== 1) fail(route, `featured ${featured.handle}: ${featuredShown.length} plate frames visible, expected 1`);
+}
+
+/** Product page gallery. Every media entry gets its own frame and (past one photo) its
+ *  own thumb; exactly one frame shows, the first photo of the colour the hidden id
+ *  input starts on. The thumb rail shows only that colour's photos until the inline
+ *  script swaps them, so a thumb of another colour rendered without `hidden` is a
+ *  photo the visitor is offered but that belongs to a different shirt. */
+for (const product of catalogue.products) {
+  const route = `/products/${product.handle}`;
+  const doc = html(route);
+  if (!doc) continue;
+
+  const start = doc.indexOf('class="pdp-gallery"');
+  const end = start === -1 ? -1 : doc.indexOf('class="pdp-ledger"', start);
+  if (start === -1 || end === -1) {
+    fail(route, 'no pdp-gallery / pdp-ledger to check the gallery in');
+    continue;
+  }
+  const gallery = doc.slice(start, end);
+
+  // The current colour is that of the variant in the buy box's hidden id input.
+  const buyStart = doc.indexOf('class="pdp-buy"');
+  const idValue = (buyStart === -1 ? '' : doc.slice(buyStart)).match(/<input\b[^>]*\bname="id"[^>]*\svalue="([^"]*)"/)?.[1];
+  const currentVariant = product.variants.find((v) => v.id === idValue);
+  if (!currentVariant) {
+    fail(route, `pdp-buy input id "${idValue}" is not a variant of the product`);
+    continue;
+  }
+  const currentColour = currentVariant.options.Colour;
+  const currentIndex = product.media.findIndex((m) => m.colour === currentColour);
+  if (currentIndex === -1) {
+    fail(route, `no media entry for the current colour ${currentColour}`);
+    continue;
+  }
+  const currentSrc = product.media[currentIndex].src;
+
+  // Frames: one per entry, in order, exactly one shown.
+  const frames = gallery.match(/<[a-z]+\b[^>]*\sdata-plate-frame(?=[\s=/>])[^>]*>/g) ?? [];
+  const frameIds = frames.map((f) => f.match(/\sdata-media-id="([^"]*)"/)?.[1]);
+  const wantSrcs = product.media.map((m) => m.src);
+  if (frames.length !== wantSrcs.length || wantSrcs.some((s, i) => frameIds[i] !== s)) {
+    fail(route, `gallery frames [${frameIds.join(', ')}] do not match media [${wantSrcs.join(', ')}]`);
+  }
+  const shownIds = frames.filter((f) => !hasAttr(f, 'hidden')).map((f) => f.match(/\sdata-media-id="([^"]*)"/)?.[1]);
+  if (shownIds.length !== 1) fail(route, `${shownIds.length} gallery frames visible [${shownIds.join(', ')}], expected 1`);
+  else if (shownIds[0] !== currentSrc) {
+    fail(route, `visible gallery frame is ${shownIds[0]}, expected ${currentSrc} (first ${currentColour} photo)`);
+  }
+
+  // Thumb rail: only when there is more than one photo.
+  if (product.media.length > 1) {
+    const rail = gallery.match(/<div\b[^>]*\bclass="pdp-thumbs"[^>]*>/)?.[0];
+    const colourIndex = product.options.findIndex((o) => o.name === 'Colour');
+    if (!rail) fail(route, `${product.media.length} photos but no pdp-thumbs rail`);
+    else if (rail.match(/\sdata-thumb-colours="([^"]*)"/)?.[1] !== String(colourIndex)) {
+      fail(route, `pdp-thumbs data-thumb-colours is "${rail.match(/\sdata-thumb-colours="([^"]*)"/)?.[1]}", expected ${colourIndex}`);
+    }
+    const thumbs = (gallery.match(/<button\b[^>]*>/g) ?? []).filter((b) => hasAttr(b, 'data-thumb'));
+    if (thumbs.length !== product.media.length) {
+      fail(route, `${thumbs.length} data-thumb buttons, expected ${product.media.length}`);
+    }
+    product.media.forEach((media, i) => {
+      const thumb = thumbs[i];
+      if (!thumb) return;
+      const thumbAt = `thumb ${i + 1} (${media.src})`;
+      if (thumb.match(/\sdata-media-id="([^"]*)"/)?.[1] !== media.src) fail(route, `${thumbAt}: data-media-id is not the entry's src`);
+      if (decodeEntities(thumb.match(/\sdata-colour="([^"]*)"/)?.[1] ?? '') !== media.colour) {
+        fail(route, `${thumbAt}: data-colour is not ${media.colour}`);
+      }
+      const shouldHide = media.colour !== currentColour;
+      if (hasAttr(thumb, 'hidden') !== shouldHide) {
+        fail(route, `${thumbAt}: ${shouldHide ? 'is a different colour to the current one but is not hidden' : 'is the current colour but is hidden'}`);
+      }
+      const pressed = thumb.match(/\saria-pressed="([^"]*)"/)?.[1];
+      if (pressed !== (i === currentIndex ? 'true' : 'false')) {
+        fail(route, `${thumbAt}: aria-pressed is "${pressed}", expected "${i === currentIndex}"`);
+      }
+    });
+  }
+
+  // Images: every one processed, and every frame holds a real photo, not a placeholder.
+  const imgs = gallery.match(/<img\b[^>]*>/g) ?? [];
+  const plates = imgs.filter((img) => hasAttr(img, 'data-plate'));
+  if (plates.length !== product.media.length) {
+    fail(route, `${plates.length} gallery photos rendered (data-plate), expected ${product.media.length}`);
+  }
+  for (const img of imgs) {
+    const srcset = img.match(/\ssrcset="([^"]*)"/)?.[1] ?? '';
+    const urls = [
+      img.match(/\ssrc="([^"]*)"/)?.[1],
+      ...srcset.split(',').map((s) => s.trim().split(/\s+/)[0]).filter(Boolean),
+    ];
+    for (const u of urls) {
+      if (!u || !u.startsWith(url('/_astro/'))) fail(route, `gallery image is not a processed _astro/ file: ${u}`);
+      else if (!existsSync(join(dist, u.slice(BASE.length)))) fail(route, `gallery image not in the build: ${u}`);
+    }
   }
 }
 

@@ -25,6 +25,7 @@ import OptionPills from './OptionPills.astro';
 import strings from '~/data/strings.json';
 import { asset, assetOrNull } from '~/lib/images';
 import {
+  colourMedia,
   firstAvailableVariant,
   mediaForColour,
   pickerOptions,
@@ -143,7 +144,7 @@ const sizes = '(min-width: 860px) 33vw, (min-width: 540px) 50vw, 100vw';
               dialog never starts loading, so the photo would arrive after the
               modal opened. They are 240px wide, so the cost is small. */}
           <div class="card-pick-photo">
-            {product.media.map((media) => (
+            {colourMedia(product).map((media) => (
               <Image
                 src={asset(media.src)}
                 alt={media.alt ?? product.title}

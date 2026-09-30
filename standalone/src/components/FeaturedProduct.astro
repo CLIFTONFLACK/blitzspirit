@@ -27,7 +27,7 @@ import Price from './Price.astro';
 import OptionPills from './OptionPills.astro';
 import strings from '~/data/strings.json';
 import { asset } from '~/lib/images';
-import { getProduct, firstAvailableVariant, mediaForColour, variantFormData } from '~/lib/catalogue';
+import { colourMedia, getProduct, firstAvailableVariant, mediaForColour, variantFormData } from '~/lib/catalogue';
 import { href } from '~/lib/url';
 
 interface Props {
@@ -57,6 +57,9 @@ const startsWithThe = titleUp.startsWith('THE ');
 
 const variant = firstAvailableVariant(product);
 const currentMedia = mediaForColour(product, variant.options.Colour ?? variant.options.Color);
+// Frames and thumbs here are keyed by colourway, so one photo per colour: the
+// product's further photos of a colour belong to the product page's gallery.
+const shots = colourMedia(product);
 
 // Liquid filtered by option NAME, not by value count: colour is chosen on the
 // thumb rail here, so only the other options get pills.
@@ -77,9 +80,9 @@ const parse = (text: string) =>
 <section class="featured" data-product-wrap>
   <div class="featured-visual">
     <div class="pdp-gallery-row">
-      {product.media.length > 1 && (
+      {shots.length > 1 && (
         <div class="pdp-thumbs">
-          {product.media.map((media) => (
+          {shots.map((media) => (
             <button
               type="button"
               class="pdp-thumb snap"
@@ -100,7 +103,7 @@ const parse = (text: string) =>
         </div>
       )}
       <div class="pdp-gallery-main">
-        {product.media.map((media) => (
+        {shots.map((media) => (
           <div data-plate-frame data-media-id={media.colour} hidden={media !== currentMedia}>
             <Plate
               src={media.src}

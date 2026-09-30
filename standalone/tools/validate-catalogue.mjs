@@ -20,6 +20,28 @@ const settings = read('src/data/settings.json');
 const failures = [];
 const fail = (msg) => failures.push(msg);
 
+/** Width and height read straight from a JPEG or PNG header (no dependency), or null. */
+function imageSize(buf) {
+  if (buf.length > 24 && buf.readUInt32BE(0) === 0x89504e47) {
+    return { width: buf.readUInt32BE(16), height: buf.readUInt32BE(20) }; // IHDR
+  }
+  if (buf.length > 4 && buf[0] === 0xff && buf[1] === 0xd8) {
+    let i = 2;
+    while (i + 9 < buf.length) {
+      if (buf[i] !== 0xff) { i++; continue; }
+      const marker = buf[i + 1];
+      if (marker === 0xff) { i++; continue; } // fill byte
+      // SOF0-SOF15 carry the frame size, except DHT (c4), JPG (c8) and DAC (cc).
+      if (marker >= 0xc0 && marker <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(marker)) {
+        return { width: buf.readUInt16BE(i + 7), height: buf.readUInt16BE(i + 5) };
+      }
+      if (marker === 0xd8 || marker === 0x01 || (marker >= 0xd0 && marker <= 0xd7)) { i += 2; continue; }
+      i += 2 + buf.readUInt16BE(i + 2);
+    }
+  }
+  return null;
+}
+
 const products = catalogue.products;
 const handles = new Set(products.map((p) => p.handle));
 
@@ -47,6 +69,39 @@ for (const product of products) {
   for (const media of product.media) {
     if (!existsSync(join(root, media.src.replace(/^\/assets\//, 'src/assets/')))) {
       fail(`${product.handle}: missing image ${media.src}`);
+    }
+  }
+
+  // 3b. Each media entry is complete and honest. A colourway can have several photos,
+  //     keyed by `colour`: a value that is not a declared Colour option ("Off White" for
+  //     "Off-White") silently drops the photo from its colourway, and a wrong
+  //     width/height makes the page reserve the wrong box (layout shift).
+  const declaredColours = new Set(
+    (product.options.find((o) => o.name === 'Colour')?.values ?? []).map((v) => v.value)
+  );
+  const seenSrcs = new Set();
+  for (const media of product.media) {
+    const at = `${product.handle}: media ${media.src ?? '(no src)'}`;
+    for (const key of ['colour', 'src', 'alt']) {
+      if (typeof media[key] !== 'string' || !media[key].trim()) fail(`${at}: ${key} is missing or empty`);
+    }
+    for (const key of ['width', 'height']) {
+      if (!Number.isInteger(media[key]) || media[key] <= 0) {
+        fail(`${at}: ${key} ${media[key]} is not a positive integer`);
+      }
+    }
+    if (seenSrcs.has(media.src)) fail(`${at}: src is listed twice (frames and thumbs are keyed by it)`);
+    seenSrcs.add(media.src);
+    if (typeof media.colour === 'string' && !declaredColours.has(media.colour)) {
+      fail(`${at}: colour "${media.colour}" is not a declared Colour value (${[...declaredColours].join(', ')})`);
+    }
+    if (typeof media.src === 'string') {
+      const file = join(root, media.src.replace(/^\/assets\//, 'src/assets/'));
+      const actual = existsSync(file) ? imageSize(readFileSync(file)) : null;
+      if (existsSync(file) && !actual) fail(`${at}: not a JPEG or PNG, cannot read its size`);
+      else if (actual && (actual.width !== media.width || actual.height !== media.height)) {
+        fail(`${at}: recorded ${media.width}x${media.height} but the file is ${actual.width}x${actual.height}`);
+      }
     }
   }
 
