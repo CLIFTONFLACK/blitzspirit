@@ -133,13 +133,12 @@ const showVisual = !!image;
      this component's scope attribute. */
   .as-plate .plate { aspect-ratio: 1 / 1.12; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35); }
   .as-plate .plate__placeholder { width: 100%; height: 100%; opacity: 0.35; }
+  /* Sentence case at 16px, matching .about-copy p in theme.css. */
   .as-body p {
     color: var(--bone);
-    font-size: 14px;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    line-height: 1.75;
-    max-width: 52ch;
+    font-size: 16px;
+    line-height: 1.7;
+    max-width: 60ch;
   }
   .as-body p + p { margin-top: var(--s2); }
   .as-body em { font-style: normal; color: var(--ink); }

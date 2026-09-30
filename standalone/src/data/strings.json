@@ -26,8 +26,8 @@
     "quantity": "QTY",
     "update": "UPDATE",
     "free_shipping_away": "{{ amount }} MORE FOR FREE UK DELIVERY",
-    "free_shipping_ok": "SHIPS FREE // WELL DONE",
-    "checkout_error": "CHECKOUT UNREACHABLE // TRY AGAIN"
+    "free_shipping_ok": "FREE UK DELIVERY UNLOCKED",
+    "checkout_error": "CHECKOUT DIDN'T LOAD. PLEASE TRY AGAIN."
   },
   "products": {
     "add_to_cart": "BUY NOW",
@@ -35,13 +35,14 @@
     "unavailable": "UNAVAILABLE",
     "in_stock": "IN STOCK",
     "view": "VIEW",
+    "choose_size_cta": "CHOOSE SIZE",
     "quick_add": "QUICK ADD",
     "inc_vat": "// INC. VAT",
     "choose_colour": "COLOUR",
     "choose_size": "SIZE"
   },
   "newsletter": {
-    "label": "ENTER YOUR EMAIL ADDRESS TO BE THE FIRST IN THE KNOW",
+    "label": "EMAIL ADDRESS",
     "email_placeholder": "NAME@DOMAIN.CO.UK",
     "submit": "NOTIFY ME",
     "success": "WELCOME TO THE HOME GUARD.",

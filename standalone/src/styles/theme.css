@@ -68,20 +68,44 @@ a { color:inherit; text-decoration:none; }
 .skip-to-content-link:focus { top:var(--s1); }
 
 /* ============================================================
-   3. FLOATING SOCIAL + BAG (no nav bar)
+   3. MASTHEAD — wordmark, main menu, social + bag
+   A bar in the page flow, sticky under the announcement band
+   (AnnouncementBar.astro sets the offset). Every control is a
+   44px touch target. The ≤860px menu rules are in §13.
    ============================================================ */
 .masthead {
-  position:fixed; top:16px; right:var(--s3); z-index:50;
-  display:flex; align-items:center;
+  position:sticky; top:0; z-index:50;
+  display:flex; align-items:center; gap:var(--s3);
+  min-height:var(--masthead-h); padding:0 var(--s3);
+  background:var(--paper); border-bottom:1px solid var(--line);
 }
-.nodes--right { display:flex; gap:var(--s3); align-items:center; }
+.mh-brand {
+  display:flex; align-items:center; min-height:44px;
+  font-family:var(--display-font); font-weight:400; font-size:20px; letter-spacing:.01em;
+  text-transform:uppercase; color:var(--ink);
+}
+.mh-brand:hover { color:var(--accent); }
+.mh-nav { display:flex; align-items:center; gap:var(--s3); margin-left:auto; }
+.mh-link {
+  display:inline-flex; align-items:center; min-height:44px;
+  font-family:var(--sans); font-size:12px; font-weight:600; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--ink);
+}
+.mh-link:hover { color:var(--accent); }
+.mh-link[aria-current="page"] { text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:6px; }
+.nodes--right { display:flex; gap:var(--s1); align-items:center; }
 .mh-social {
-  display:flex; align-items:center; gap:6px; color:var(--ink);
-  background:rgba(255,255,255,.82); backdrop-filter:blur(2px);
-  padding:8px; line-height:1;
+  display:flex; align-items:center; justify-content:center; gap:6px; color:var(--ink);
+  min-width:44px; min-height:44px; line-height:1;
 }
 .mh-social:hover { color:var(--accent); }
 .mh-social.bag b { font-family:var(--sans); font-size:11px; font-weight:600; color:inherit; }
+.mh-menu {
+  display:none; align-items:center; min-height:44px; padding:0 12px;
+  border:1px solid var(--ink); color:var(--ink);
+  font-family:var(--sans); font-size:11px; font-weight:700; letter-spacing:.15em; text-transform:uppercase;
+}
+.mh-menu:hover, .mh-menu[aria-expanded="true"] { background:var(--ink); color:var(--paper); }
 
 /* ============================================================
    4. MINI-CART DRAWER (SYSTEM_LEDGER)
@@ -91,7 +115,7 @@ a { color:inherit; text-decoration:none; }
 .cart-drawer { position:fixed; top:0; right:0; height:100%; width:min(440px,100%); background:#000; border-left:1px solid var(--line); z-index:70; transform:translateX(100%); transition:transform 180ms cubic-bezier(.16,1,.3,1); display:flex; flex-direction:column; padding:var(--s3); }
 .cart-drawer.open { transform:translateX(0); }
 .cart-head { display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--line); padding-bottom:var(--s2); margin-bottom:var(--s3); }
-.cart-close { border:1px solid var(--line); padding:6px 10px; font-size:11px; letter-spacing:.1em; color:#fff; text-transform:uppercase; }
+.cart-close { border:1px solid var(--line); min-height:44px; padding:6px 12px; font-size:11px; letter-spacing:.1em; color:#fff; text-transform:uppercase; }
 .cart-close:hover { border-color:#fff; color:#fff; }
 .cart-items { flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:var(--s2); }
 .cart-empty { border:1px dashed var(--line); padding:var(--s5) var(--s3); text-align:center; color:var(--bone-mute); font-size:11px; letter-spacing:.14em; text-transform:uppercase; }
@@ -105,7 +129,7 @@ a { color:inherit; text-decoration:none; }
 .cart-sum b { color:#fff; font-weight:400; }
 .cart-checkout { width:100%; border:1px solid var(--accent); background:var(--accent); color:#fff; padding:16px; font-size:12px; letter-spacing:.18em; text-transform:uppercase; }
 .cart-checkout:hover { background:#fff; color:var(--ink); border-color:#fff; }
-.cart-note { font-size:9px; color:var(--bone-mute); text-align:center; letter-spacing:.08em; margin-top:10px; text-transform:uppercase; }
+.cart-note { font-size:11px; color:var(--bone-mute); text-align:center; letter-spacing:.08em; margin-top:10px; text-transform:uppercase; }
 
 /* ============================================================
    5. SHARED COMPONENTS — directives, colourways, sizes, plates
@@ -121,8 +145,8 @@ a { color:inherit; text-decoration:none; }
 .btn--accent:hover { background:transparent; color:var(--accent); border-color:var(--accent); }
 /* The solid Add to Bag fill — same button everywhere it appears (PDP,
    homepage archive/featured rows, equipment cross-sell), defined once. */
-.btn--solid { background:#3D8BD4; border-color:#3D8BD4; color:#fff; }
-.btn--solid:hover { background:#fff; border-color:#3D8BD4; color:#3D8BD4; }
+.btn--solid { background:var(--btn-blue); border-color:var(--btn-blue); color:#fff; }
+.btn--solid:hover { background:#fff; border-color:var(--btn-blue); color:var(--btn-blue); }
 .btn--solid[disabled] { background:transparent; border-color:var(--line); color:var(--bone-mute); }
 .btn--flicker:hover { animation:flicker .45s infinite steps(1); }
 .btn[disabled],.btn[aria-disabled="true"] { border-color:var(--line); color:var(--bone-mute); cursor:not-allowed; }
@@ -291,7 +315,8 @@ a { color:inherit; text-decoration:none; }
    ============================================================ */
 .footer { text-align:center; padding:var(--s7) var(--s3); border-top:1px solid var(--line); background:var(--paper); }
 .footer-inner { display:flex; flex-direction:column; gap:var(--s3); align-items:center; }
-.footer-nav { display:flex; gap:var(--s3); flex-wrap:wrap; justify-content:center; }
+.footer-nav { display:flex; gap:0 var(--s2); flex-wrap:wrap; justify-content:center; }
+.footer-nav a { display:inline-flex; align-items:center; min-height:44px; padding:0 4px; }
 .footer-nav a:hover { color:var(--accent); }
 .footer-shop-list { display:flex; flex-direction:column; gap:var(--s4); margin:var(--s5) 0; }
 .footer-shop-item { position:relative; display:flex; justify-content:center; align-items:center; line-height:1; padding:2px 0; }
@@ -306,7 +331,6 @@ a { color:inherit; text-decoration:none; }
 /* ============================================================
    7. PDP LAYOUT
    ============================================================ */
-.pdp-wrap { padding-top:48px; }
 
 .pdp-breadcrumb { padding:10px var(--s3); border-bottom:1px solid var(--line); }
 .pdp-breadcrumb a:hover { color:var(--bone); }
@@ -314,12 +338,12 @@ a { color:inherit; text-decoration:none; }
 
 .pdp {
   display:grid; grid-template-columns:1fr 1fr;
-  min-height:calc(100vh - 48px);
+  min-height:calc(100vh - var(--chrome-h));
   border-bottom:1px solid var(--line);
 }
 
 .pdp-gallery {
-  position:sticky; top:48px; height:calc(100vh - 48px); overflow-y:auto;
+  position:sticky; top:var(--chrome-h); height:calc(100vh - var(--chrome-h)); overflow-y:auto;
   padding:var(--s5) var(--s4);
   display:flex; flex-direction:column; gap:var(--s3);
 }
@@ -429,7 +453,9 @@ a { color:inherit; text-decoration:none; }
   display:flex; flex-direction:column; justify-content:center; gap:var(--s3);
 }
 .about-copy h2 { color:var(--ink); font-size:clamp(1.8rem,4vw,3rem); margin-bottom:var(--s2); }
-.about-copy p { color:var(--bone); font-size:14px; letter-spacing:.05em; text-transform:uppercase; line-height:1.75; max-width:52ch; }
+/* Long-form story copy: sentence case at 16px. Set in capitals at 14px with
+   tracking, 300 words of it was a wall. */
+.about-copy p { color:var(--bone); font-size:16px; line-height:1.7; max-width:60ch; }
 .about-copy p + p { margin-top:var(--s2); }
 .about-copy .hit { color:var(--bone); }
 
@@ -459,7 +485,7 @@ a { color:inherit; text-decoration:none; }
 .coll-title { color:var(--cream); font-size:clamp(2.8rem,6vw,5rem); line-height:.92; }
 .coll-meta-col { display:flex; flex-direction:column; gap:var(--s1); align-items:flex-end; }
 
-.coll-filter { border-bottom:1px solid var(--line); background:var(--panel-2); position:sticky; top:45px; z-index:30; }
+.coll-filter { border-bottom:1px solid var(--line); background:var(--panel-2); position:sticky; top:var(--chrome-h); z-index:30; }
 .coll-filter-inner { max-width:1280px; margin:0 auto; display:flex; align-items:stretch; }
 .coll-tab { display:inline-block; padding:14px 28px; font-size:11px; letter-spacing:.2em; text-transform:uppercase; font-family:var(--sans); color:var(--bone); border-right:1px solid var(--line); cursor:pointer; background:none; }
 .coll-tab:hover { color:var(--bone); background:rgba(255,255,255,.04); }
@@ -489,9 +515,9 @@ a { color:inherit; text-decoration:none; }
 .coll-dots .dot { width:10px; height:10px; border:1px solid rgba(255,255,255,.2); background:var(--dot,#333); }
 .coll-dots .cw-name { display:none; }
 .coll-actions { display:flex; gap:8px; margin-top:auto; }
-.coll-cta { flex:1; display:block; border:1px solid var(--ink); padding:7.6px var(--s2); font-size:11px; font-weight:700; letter-spacing:.15em; text-transform:uppercase; font-family:var(--sans); color:var(--ink); text-align:center; }
+.coll-cta { flex:1; display:flex; align-items:center; justify-content:center; min-height:44px; border:1px solid var(--ink); padding:7.6px var(--s2); font-size:11px; font-weight:700; letter-spacing:.15em; text-transform:uppercase; font-family:var(--sans); color:var(--ink); text-align:center; }
 .coll-cta:hover { background:var(--ink); border-color:var(--ink); color:var(--paper); }
-.coll-buy { flex:1; width:auto; padding:7.6px var(--s2); font-size:11px; font-weight:700; letter-spacing:.15em; }
+.coll-buy { flex:1; width:auto; display:flex; align-items:center; justify-content:center; min-height:44px; padding:7.6px var(--s2); font-size:11px; font-weight:700; letter-spacing:.15em; }
 
 /* ============================================================
    12. HOMEPAGE FRAMEWORK — hero / featured / promo / archive /
@@ -519,7 +545,7 @@ a { color:inherit; text-decoration:none; }
      "auto" fill-width is treated as adjustable here on wide-but-short
      windows, leaving a gap beside the hero) — cover still crops the photo
      to fit whatever height max-height leaves. */
-  width:100%; aspect-ratio:1920/1072; max-height:100vh;
+  width:100%; aspect-ratio:1920/1072; max-height:calc(100vh - var(--chrome-h));
   display:grid; grid-template-columns:1.1fr 1fr; align-items:center; gap:var(--s5);
   padding:96px var(--s6) var(--s6);
   border-bottom:1px solid var(--line);
@@ -622,12 +648,26 @@ a { color:inherit; text-decoration:none; }
 /* ============================================================
    13. RESPONSIVE
    ============================================================ */
-@media (min-width:1100px) {
-  .mh-long { display:inline; }
-}
 @media (max-width:860px) {
-  .masthead { padding:10px 16px; font-size:10px; }
-  .masthead .nodes { gap:16px; }
+  :root { --masthead-h:52px; }
+  /* Masthead: wordmark left, bag + [ MENU ] right. Without JS the menu links
+     wrap onto a second row; with JS they wait behind the button (nav.js). */
+  .masthead { flex-wrap:wrap; gap:0 var(--s1); padding:0 var(--s2); }
+  .nodes--right { margin-left:auto; }
+  .mh-social:not(.bag) { display:none; }
+  .mh-nav { order:3; flex-basis:100%; flex-wrap:wrap; margin-left:0; gap:0 var(--s3); }
+  /* That wrapped no-JS header is taller than --masthead-h, so it scrolls away
+     instead of sticking, and nothing else has to clear it. */
+  .no-js .masthead { position:static; }
+  .no-js { --masthead-h:0px; }
+  .js .mh-menu { display:inline-flex; }
+  .js .mh-nav {
+    display:none; position:absolute; top:100%; left:0; right:0;
+    flex-direction:column; align-items:stretch; gap:0;
+    background:var(--paper); border-bottom:1px solid var(--line);
+  }
+  .js .masthead.nav-open .mh-nav { display:flex; }
+  .js .mh-nav .mh-link { min-height:48px; padding:0 var(--s2); border-top:1px solid var(--line); }
   .featured { grid-template-columns:1fr; }
   .featured-visual { border-right:none; border-bottom:1px solid var(--line); padding:var(--s5); }
   .promo-inner { grid-template-columns:1fr; gap:var(--s4); }
@@ -639,9 +679,15 @@ a { color:inherit; text-decoration:none; }
   .item { grid-template-columns:1fr; min-height:0; }
   .item-visual { border-right:none; border-bottom:1px solid var(--line); padding:var(--s5); }
   .pdp { grid-template-columns:1fr; min-height:0; }
-  .pdp-gallery { position:static; height:auto; border-right:none; border-bottom:1px solid var(--line); }
-  .pdp-gallery-row { flex-direction:column; }
-  .pdp-thumbs { flex-direction:row; flex-wrap:wrap; overflow-y:visible; }
+  /* Stacked PDP: keep the photo compact so the size pills and the buy button
+     land on the first screen of a phone instead of a thousand pixels down. */
+  .pdp-gallery { position:static; height:auto; border-right:none; border-bottom:1px solid var(--line); padding:var(--s2); gap:var(--s2); }
+  .pdp-gallery-row { flex-direction:column; gap:var(--s2); }
+  .pdp-thumbs { flex-direction:row; flex-wrap:wrap; justify-content:center; overflow-y:visible; }
+  .pdp-gallery .pdp-thumb { width:48px; }
+  /* Page heroes are a heading and a line of meta: at phone width the desktop
+     65vh floor only pushed the page's real content off the first screen. */
+  .about-hero { min-height:calc(200px + var(--ph-extra-h, 0px)); padding:var(--s5) var(--s3) var(--s4); }
   .about-block { grid-template-columns:1fr; }
   .about-visual { border-right:none; border-bottom:1px solid var(--line); min-height:300px; }
   .values-grid { grid-template-columns:1fr 1fr; }
@@ -663,9 +709,6 @@ a { color:inherit; text-decoration:none; }
   .coll-grid { grid-template-columns:1fr; }
 }
 @media (max-width:480px) {
-  .masthead { white-space:nowrap; font-size:9px; letter-spacing:.06em; }
-  .masthead .nodes { gap:12px; }
-  .mh-long { display:none; }
   .promo-row { flex-direction:column; }
   .promo-submit { border-left:none; border-top:1px solid var(--bone-dim); padding:14px; }
   .cs-grid { grid-template-columns:1fr; }

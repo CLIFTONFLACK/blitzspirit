@@ -113,8 +113,8 @@ function buildOrder(lines) {
       },
       tax_behavior: 'inclusive',
       delivery_estimate: {
-        minimum: { unit: 'business_day', value: 2 },
-        maximum: { unit: 'business_day', value: 5 },
+        minimum: { unit: 'business_day', value: 5 },
+        maximum: { unit: 'business_day', value: 10 },
       },
     },
   };

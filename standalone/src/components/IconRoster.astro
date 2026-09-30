@@ -11,7 +11,9 @@
 // and the class list are carried over character for character.
 //
 // Kept as-is: the CTA renders only when the block supplies BOTH cta_label and
-// cta_link, as the Liquid required. The schema's per-block defaults
+// cta_link, as the Liquid required. A file whose shirt is on sale sets cta_link to
+// its product page; MainProduct.astro reads the same field to link back here, so
+// a withdrawn design (no cta_link) gets neither button nor back-link. The schema's per-block defaults
 // ("FILE 01 / AD 60", "[ CHOOSE THIS ICON ]") are deliberately NOT used as
 // fallbacks — in Shopify they seed a newly added block, they are not a
 // render-time default, and applying them here would stamp "FILE 01" on every
@@ -21,7 +23,7 @@
 // Dropped: data-section-id and block.shopify_attributes (Shopify section
 // rendering ids).
 import Plate from '~/components/Plate.astro';
-import { href, hrefsInHtml } from '~/lib/url';
+import { handleize, href, hrefsInHtml } from '~/lib/url';
 
 interface RosterBlock {
   id?: string;
@@ -53,16 +55,6 @@ const {
   blocks = [],
   editBase,
 } = Astro.props;
-
-// Stand-in for Liquid's `handleize`, which built each row's anchor id from the
-// icon name: lowercase, strip diacritics, collapse non-alphanumerics to a dash.
-const handleize = (value: string) =>
-  value
-    .normalize('NFD')
-    .replace(/\p{M}/gu, '')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
 ---
 <div class="roster">
   {blocks.map((block, i) => {
@@ -142,7 +134,7 @@ const handleize = (value: string) =>
 <style>
   /* The Liquid {% stylesheet %} block. Rules that reach into Plate.astro's
      markup or into the set:html rich text live in the global block below. */
-  .roster-item { scroll-margin-top: 64px; }
+  .roster-item { scroll-margin-top: calc(var(--chrome-h) + 8px); }
   .roster-plate { width: min(88%, 460px); margin: 0 auto; }
   .roster-head { color: var(--ink); }
   .roster-rule { border: none; border-top: 2px solid var(--accent); width: 64px; margin: 0; }

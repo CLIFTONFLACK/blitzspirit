@@ -6,7 +6,7 @@
       "settings": {
         "index_tag": "SYSTEM_LEDGER // THE collections",
         "show_page_ref": false,
-        "heading": "nostalgia reborn\nclothing built to last.",
+        "heading": "backbone, printed.\nclothing built to last.",
         "fallback_title": "Full Kit.",
         "red_first_line": true,
         "heading_size": "lg",
@@ -24,7 +24,7 @@
           "id": "meta-2",
           "type": "meta_tag",
           "settings": {
-            "text": "made in britain"
+            "text": "printed in britain"
           }
         }
       ]

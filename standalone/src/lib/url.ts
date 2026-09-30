@@ -29,6 +29,18 @@ export function href(path: string): string {
   return root + path;
 }
 
+/** Stand-in for Liquid's `handleize`: lowercase, strip diacritics, collapse
+ *  non-alphanumerics to a dash. Builds the anchor ids on /icons, and the links
+ *  that point at them. */
+export function handleize(value: string): string {
+  return value
+    .normalize('NFD')
+    .replace(/\p{M}/gu, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
 /** The site root, for "back to base" style links. */
 export const home = BASE;
 

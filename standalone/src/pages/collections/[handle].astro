@@ -49,15 +49,6 @@ const heroBlocks = blocks(page, 'hero').map((b) => ({ text: b.settings.text }));
     blocks={heroBlocks}
   />
 
-  {featured && (
-    <FeaturedProduct
-      product={featured.product}
-      dossier={featured.dossier}
-      whatLabel={featured.what_label}
-      plateRef={featured.plate_ref}
-    />
-  )}
-
   <CollectionTabs
     collection={collection}
     showCount={tabsSettings.show_count}
@@ -71,4 +62,15 @@ const heroBlocks = blocks(page, 'hero').map((b) => ({ text: b.settings.text }));
     emptyHeading={grid.empty_heading}
     emptyText={grid.empty_text}
   />
+
+  {/* Below the grid, not above it: a shopper on a collection page is looking for
+      the list, and the showcase used to push it two screens down. */}
+  {featured && (
+    <FeaturedProduct
+      product={featured.product}
+      dossier={featured.dossier}
+      whatLabel={featured.what_label}
+      plateRef={featured.plate_ref}
+    />
+  )}
 </Base>

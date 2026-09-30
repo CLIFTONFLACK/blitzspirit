@@ -1,14 +1,21 @@
 ---
-// Masthead — no nav bar: just social + bag, floating over whatever sits at
-// the top of the page (the hero photo on the homepage, plain page content
-// everywhere else). The full text nav (site menu, dropdowns) was dropped —
-// the footer (Outro.astro) still carries About/Size Guide/Returns/Contact.
+// Masthead — the site header: wordmark (home), the main menu, social + bag.
+//
+// A real bar in the page flow (sticky under the announcement band) rather than
+// icons floating over whatever sits at the top of the page: with no menu, /story,
+// /icons and /help could not be reached from the homepage at all.
+//
+// At ≤860px the menu collapses behind a [ MENU ] button (scripts/nav.js toggles
+// .nav-open). Without JS the button stays hidden and the links simply wrap under
+// the bar, so the menu is never unreachable.
 //
 // cart.js contract preserved exactly: [data-cart-toggle] opens the drawer and
 // [data-cart-count] is the live count target. The bag link stays a real /cart
 // anchor so a no-JS visitor lands on the full ledger page.
 import Icon from './Icon.astro';
+import menus from '~/data/menus.json';
 import settings from '~/data/settings.json';
+import strings from '~/data/strings.json';
 import { href } from '~/lib/url';
 
 const social = settings.social;
@@ -18,8 +25,27 @@ const socialLinks = [
   { key: 'x', url: social.x, label: 'X' },
   { key: 'facebook', url: social.facebook, label: 'Facebook' },
 ].filter((s) => s.url !== '');
+
+// Built pages are served as /story/, the menu data says /story.
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+// Any collection or product page counts as being in the shop.
+const isCurrent = (url: string) =>
+  url === '/collections/all'
+    ? path.startsWith('/collections') || path.startsWith('/products')
+    : path === url;
 ---
 <header class="masthead">
+  <a href={href("/")} class="mh-brand" aria-label={`${settings.shop.name} home`}>{settings.shop.name}</a>
+
+  <nav class="mh-nav" id="SiteNav" aria-label="Main">
+    {menus.main.map((link) => (
+      <a
+        href={href(link.url)}
+        class="mh-link"
+        aria-current={isCurrent(link.url) ? 'page' : undefined}>{link.title}</a>
+    ))}
+  </nav>
+
   <div class="nodes nodes--right">
     {socialLinks.map((s) => (
       <a
@@ -41,5 +67,11 @@ const socialLinks = [
       <Icon name="bag" />
       <b data-cart-count>0</b>
     </a>
+    <button
+      type="button"
+      class="mh-menu snap"
+      data-nav-toggle
+      aria-controls="SiteNav"
+      aria-expanded="false">{strings.general.menu}</button>
   </div>
 </header>

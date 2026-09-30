@@ -31,6 +31,18 @@
   --bone-mute: #5A5A5A;
   --plate: #EAE8E2;
   --accent: #475160; /* sampled from the bowler hat's navy in hero-engraved.jpg */
+  /* Solid buy-button fill. White text on it measures 5.2:1; the #3D8BD4 it
+     replaced measured 3.6:1 and failed AA at the 11-13px the buttons use. */
+  --btn-blue: #1F6FB5;
+  /* Accent line on the dark-scrimmed page heroes, where --accent (a dark navy)
+     all but vanished. A cool counterpart to the heading's warm cream. */
+  --hero-accent: #BFD8F5;
+  --hero-meta: #D6D6D6;
+
+  /* Sticky chrome: the masthead's own height, and the full offset anything else
+     sticky has to clear (AnnouncementBar.astro adds its 28px when it renders). */
+  --masthead-h: 56px;
+  --chrome-h: var(--masthead-h);
 
   /* Type stacks */
   --sans: 'Montserrat', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;

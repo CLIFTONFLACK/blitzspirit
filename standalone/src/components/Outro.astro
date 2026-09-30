@@ -8,7 +8,8 @@ import { href } from '~/lib/url';
 
 const { strapline, copyright } = settings.outro;
 const rule = '------------------------------------------------------------------';
-const path = Astro.url.pathname;
+// Built pages are served as /story/, the menu data says /story.
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
 <footer class="footer">
   <div class="footer-inner">

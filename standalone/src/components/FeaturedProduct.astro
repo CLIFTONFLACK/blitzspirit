@@ -12,8 +12,9 @@
 // **bold** parser below mirrors Dossier.astro's for the same reason.
 //
 // Changed / dropped:
-// - {% form 'product' %} and its hidden id input: the add button carries
-//   [data-add-to-cart] + [data-variant-id] and Phase 4 wires the click.
+// - {% form 'product' %}: the add button carries [data-add-to-cart] and cart.js
+//   reads the hidden id input, which product-form.js updates as a size is picked.
+//   (It used to carry a fixed [data-variant-id], so it always added size S.)
 // - data-media-id now carries the colourway, the only stable media identifier in
 //   catalogue.json; Shopify's numeric preview_image id (data-image-id) has no
 //   equivalent and is dropped.
@@ -26,7 +27,7 @@ import Price from './Price.astro';
 import OptionPills from './OptionPills.astro';
 import strings from '~/data/strings.json';
 import { asset } from '~/lib/images';
-import { getProduct, firstAvailableVariant, mediaForColour } from '~/lib/catalogue';
+import { getProduct, firstAvailableVariant, mediaForColour, variantFormData } from '~/lib/catalogue';
 import { href } from '~/lib/url';
 
 interface Props {
@@ -56,7 +57,6 @@ const startsWithThe = titleUp.startsWith('THE ');
 
 const variant = firstAvailableVariant(product);
 const currentMedia = mediaForColour(product, variant.options.Colour ?? variant.options.Color);
-const available = product.variants.some((v) => v.available);
 
 // Liquid filtered by option NAME, not by value count: colour is chosen on the
 // thumb rail here, so only the other options get pills.
@@ -161,12 +161,16 @@ const parse = (text: string) =>
           </div>
         )}
 
+        {/* Frames and thumbs here are keyed by colourway, so the variant JSON is too. */}
         <script
           type="application/json"
           data-variant-json
           is:inline
-          set:html={JSON.stringify(product.variants)}
+          set:html={JSON.stringify(variantFormData(product, (media) => media.colour))}
         />
+
+        {/* product-form.js keeps this in step with the pills; cart.js reads it on add. */}
+        <input type="hidden" name="id" value={variant.id} />
 
         <div class="actions">
           {whatLabel && (
@@ -178,11 +182,15 @@ const parse = (text: string) =>
           )}
           <button
             type="button"
+            name="add"
             class="btn btn--solid snap"
             data-add-to-cart
-            data-variant-id={variant.id}
-            disabled={!available}
-          >[ {available ? strings.products.add_to_cart : strings.products.sold_out} ]</button>
+            disabled={!variant.available}
+          >
+            {/* Both labels render; product-form.js shows the one for the size picked. */}
+            <span data-add-label hidden={!variant.available}>[ {strings.products.add_to_cart} ]</span>
+            <span data-sold-label hidden={variant.available}>[ {strings.products.sold_out} ]</span>
+          </button>
         </div>
       </product-form>
     </div>
@@ -211,6 +219,7 @@ const parse = (text: string) =>
     font-size: 14px;
     letter-spacing: 0.12em;
   }
+  .featured [data-add-to-cart] [hidden] { display: none; }
   .featured .details strong {
     font-weight: 400;
     color: #0a0a0a;
