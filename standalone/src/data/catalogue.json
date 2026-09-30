@@ -449,15 +449,15 @@
         {
           "colour": "Off-White",
           "src": "/assets/products/tee-roundel-offwhite.jpg",
-          "width": 1000,
-          "height": 1092,
+          "width": 974,
+          "height": 1118,
           "alt": "The Frequency / CHALK_WHITE"
         },
         {
           "colour": "Navy",
           "src": "/assets/products/tee-roundel-navy.jpg",
-          "width": 974,
-          "height": 1118,
+          "width": 1000,
+          "height": 1092,
           "alt": "The Frequency / SYSTEM_NAVY"
         }
       ]

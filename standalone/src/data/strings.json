@@ -30,12 +30,12 @@
     "checkout_error": "CHECKOUT DIDN'T LOAD. PLEASE TRY AGAIN."
   },
   "products": {
-    "add_to_cart": "BUY NOW",
+    "add_to_cart": "ADD TO CART",
     "sold_out": "SOLD OUT",
     "unavailable": "UNAVAILABLE",
     "in_stock": "IN STOCK",
     "view": "VIEW",
-    "choose_size_cta": "CHOOSE SIZE",
+    "pick_size": "PICK A SIZE TO ADD IT",
     "quick_add": "QUICK ADD",
     "inc_vat": "// INC. VAT",
     "choose_colour": "COLOUR",

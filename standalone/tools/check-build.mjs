@@ -303,6 +303,8 @@ for (const route of routes) {
   for (const phrase of BANNED_COPY) {
     if (text.includes(phrase.toLowerCase())) fail(route || '/', `banned copy shipped: "${phrase}"`);
   }
+  // The label is ADD TO CART site-wide; a leftover BUY NOW is a string that was missed.
+  if (text.includes('buy now')) fail(route || '/', 'old label shipped: "BUY NOW"');
 }
 
 /** cart.js strings are shown to customers at runtime (drawer states) but live in the
@@ -315,6 +317,13 @@ for (const file of bundles) {
   for (const phrase of ['LEDGER EMPTY', 'NO ASSETS ALLOCATED', 'SHIPS FREE', 'CHECKOUT UNREACHABLE']) {
     if (js.includes(phrase.toLowerCase())) fail(`/_astro/${file}`, `banned runtime copy: "${phrase}"`);
   }
+}
+
+/** card-pick.js must be shipped, or [ ADD TO CART ] does nothing. The selector string
+ *  '[data-card-pick]' is a literal inside it, so unlike a variable or function name it
+ *  survives minification. */
+if (!bundles.some((f) => readFileSync(join(astroDir, f), 'utf8').includes('data-card-pick'))) {
+  fail('/_astro', 'no JS bundle contains data-card-pick (card-pick.js not shipped)');
 }
 
 /** settings.json feeds the Stripe shipping label (api/_order.js), which never appears
@@ -362,21 +371,115 @@ for (const route of routes) {
   }
 }
 
-/** Product cards link to the product; they never add to the bag from the grid. */
+/** Product cards: a [ VIEW ] link and an [ ADD TO CART ] button that never adds by
+ *  itself. A card shows no size, so a one-tap add could only add size S unasked (the
+ *  old bug). The button opens a hidden picker; the tap on a size is the add. */
+const hasAttr = (tag, attr) => new RegExp(`\\s${attr}(?=[\\s=/>])`).test(tag);
 for (const route of ['', ...Object.keys(collections).map((h) => `/collections/${h}`)]) {
   const doc = html(route || '/');
   if (!doc) continue;
   const name = route || '/';
-  const cards = doc.match(/<article class="coll-card"[\s\S]*?<\/article>/g) ?? [];
+  // The article tag also carries data-product-wrap, so match on the class only.
+  const cards = doc.match(/<article\b[^>]*\bclass="coll-card"[^>]*>[\s\S]*?<\/article>/g) ?? [];
   if (!cards.length) fail(name, 'no coll-card articles found');
   for (const card of cards) {
-    const label = card.match(/href="([^"]*\/products\/[^"]*)"/)?.[1] ?? 'unknown card';
-    if (card.includes('data-add-to-cart')) fail(name, `card adds to the bag straight from the grid: ${label}`);
+    const handle = card.match(/href="[^"]*\/products\/([^"/?#]+)"/)?.[1];
+    const label = handle ?? 'unknown card';
+    const product = catalogue.products.find((p) => p.handle === handle);
+
+    // a. the visible control is a card-pick button that cannot add on its own.
+    const buttons = card.match(/<button\b[^>]*\bdata-card-pick\b[^>]*>/g) ?? [];
+    if (buttons.length !== 1) {
+      fail(name, `card ${label} has ${buttons.length} data-card-pick buttons, expected 1`);
+    }
+    const pickBtn = buttons[0];
+    if (pickBtn && hasAttr(pickBtn, 'data-add-to-cart')) {
+      fail(name, `card ${label}: ADD TO CART button carries data-add-to-cart (adds without asking)`);
+    }
+    if (pickBtn && hasAttr(pickBtn, 'data-variant-id')) {
+      fail(name, `card ${label}: ADD TO CART button carries data-variant-id (always adds one size)`);
+    }
+
+    // b. aria-controls names a hidden element inside this card.
+    const controls = pickBtn?.match(/aria-controls="([^"]+)"/)?.[1];
+    let picker = null;
+    if (pickBtn && !controls) fail(name, `card ${label}: ADD TO CART button has no aria-controls`);
+    if (controls) {
+      const open = [...card.matchAll(/<([a-z][\w-]*)\b[^>]*>/g)].find((m) =>
+        m[0].includes(`id="${controls}"`),
+      );
+      if (!open) fail(name, `card ${label}: aria-controls #${controls} does not exist inside the card`);
+      else {
+        if (!hasAttr(open[0], 'hidden')) fail(name, `card ${label}: picker #${controls} is not rendered hidden`);
+        const from = open.index;
+        const close = card.indexOf(`</${open[1]}>`, from);
+        picker = card.slice(from, close === -1 ? undefined : close);
+      }
+    }
+
+    // c. the only data-add-to-cart in the card is the picker's hidden one.
+    const adds = card.match(/<[a-z]+\b[^>]*\bdata-add-to-cart\b[^>]*>/g) ?? [];
+    if (adds.length !== 1) fail(name, `card ${label} has ${adds.length} data-add-to-cart elements, expected 1`);
+    for (const add of adds) {
+      if (!hasAttr(add, 'hidden')) fail(name, `card ${label}: data-add-to-cart is not hidden`);
+      if (hasAttr(add, 'data-variant-id')) fail(name, `card ${label}: data-add-to-cart has a fixed data-variant-id`);
+      if (picker && !picker.includes(add)) fail(name, `card ${label}: data-add-to-cart is outside the picker`);
+    }
+
+    // d. the picker's variant JSON and hidden id input.
+    let variants = null;
+    const json = picker?.match(/<script[^>]*data-variant-json[^>]*>([\s\S]*?)<\/script>/);
+    if (picker && !json) fail(name, `card ${label}: picker has no data-variant-json`);
+    if (json) {
+      try {
+        variants = JSON.parse(json[1]);
+      } catch {
+        fail(name, `card ${label}: data-variant-json is not valid JSON`);
+      }
+    }
+    if (variants) {
+      if (!Array.isArray(variants) || !variants.length) {
+        fail(name, `card ${label}: variant JSON is not a non-empty array`);
+        variants = null;
+      } else if (variants.some((v) => !Array.isArray(v.options))) {
+        fail(name, `card ${label}: variant options are not arrays (size pills would be disabled)`);
+      }
+    }
+    const idInput = card.match(/<input\b[^>]*\bname="id"[^>]*>/)?.[0];
+    const idValue = idInput?.match(/\bvalue="([^"]*)"/)?.[1];
+    if (!idInput) fail(name, `card ${label}: no input name="id"`);
+    else if (variants && !variants.some((v) => v.id === idValue)) {
+      fail(name, `card ${label}: input id "${idValue}" is not in the variant JSON`);
+    }
+
+    // e. no size is preselected: the tap on a size is the add.
+    for (const pill of picker?.match(/<[a-z]+\b[^>]*class="size-pill[^>]*>/g) ?? []) {
+      if (/aria-pressed="true"/.test(pill)) fail(name, `card ${label}: a size pill is preselected: ${pill.slice(0, 80)}`);
+    }
+
+    // f. a VIEW link to the product page.
     const links = [...card.matchAll(/<a\b[^>]*href="[^"]*\/products\/[^"]*"[^>]*>([\s\S]*?)<\/a>/g)].map((m) =>
       m[1].replace(/<[^>]+>/g, ' ').toUpperCase(),
     );
-    if (!links.some((t) => t.includes('CHOOSE SIZE') || t.includes('SOLD OUT'))) {
-      fail(name, `card has no CHOOSE SIZE / SOLD OUT product link: ${label}`);
+    if (!links.some((t) => t.includes('VIEW'))) fail(name, `card ${label} has no VIEW link to the product`);
+
+    // g. one photo per media entry keyed by colour, exactly one shown, and it is the
+    //    colour of the variant in the hidden input.
+    const colourOpt = product?.options.find((o) => o.name === 'Colour');
+    if (product && colourOpt && colourOpt.values.length > 1) {
+      const frames = card.match(/<img\b[^>]*\bdata-plate-frame\b[^>]*>/g) ?? [];
+      const ids = frames.map((f) => f.match(/\bdata-media-id="([^"]*)"/)?.[1]);
+      const want = product.media.map((m) => m.colour);
+      if (frames.length !== want.length || want.some((c, i) => ids[i] !== c)) {
+        fail(name, `card ${label}: plate frames [${ids.join(', ')}] do not match media colours [${want.join(', ')}]`);
+      }
+      const shown = frames.filter((f) => !hasAttr(f, 'hidden'));
+      if (shown.length !== 1) fail(name, `card ${label}: ${shown.length} plate frames visible, expected 1`);
+      const inputColour = product.variants.find((v) => v.id === idValue)?.options.Colour;
+      const shownId = shown[0]?.match(/\bdata-media-id="([^"]*)"/)?.[1];
+      if (shown.length === 1 && shownId !== inputColour) {
+        fail(name, `card ${label}: visible photo is ${shownId} but the id input is ${inputColour}`);
+      }
     }
   }
 }
