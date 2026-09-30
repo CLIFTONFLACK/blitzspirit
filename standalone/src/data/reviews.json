@@ -1,0 +1,40 @@
+{
+  "reviews": [
+    {
+      "product": "the-establishment",
+      "name": "Sample customer",
+      "text": "Wore it to the office. Nobody said a word. Several people stood up straighter.",
+      "sample": true
+    },
+    {
+      "product": "the-establishment",
+      "name": "Sample customer",
+      "text": "The skull has better manners than most of my colleagues.",
+      "sample": true
+    },
+    {
+      "product": "the-frequency",
+      "name": "Sample customer",
+      "text": "From across the road it is a target. Up close it is the brand name, over and over. I like a shirt with a second look in it.",
+      "sample": true
+    },
+    {
+      "product": "the-frequency",
+      "name": "Sample customer",
+      "text": "Bought it for the roundel. Spent the bus ride reading the rings.",
+      "sample": true
+    },
+    {
+      "product": "the-stubborn",
+      "name": "Sample customer",
+      "text": "Four letters, then four more. It says what I would have said, only shorter.",
+      "sample": true
+    },
+    {
+      "product": "the-stubborn",
+      "name": "Sample customer",
+      "text": "Put it on the morning of a difficult meeting. The meeting lost.",
+      "sample": true
+    }
+  ]
+}

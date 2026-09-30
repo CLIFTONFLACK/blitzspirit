@@ -28,7 +28,7 @@ import settings from '~/data/settings.json';
 import strings from '~/data/strings.json';
 import { asset } from '~/lib/images';
 import { getProduct } from '~/lib/catalogue';
-import { href } from '~/lib/url';
+import { href, safeExternalUrl } from '~/lib/url';
 
 interface LinkBlock {
   id?: string;
@@ -64,10 +64,10 @@ const stickerImage = asset(sticker);
 
 const social = settings.social;
 const socialLinks = [
-  { key: 'instagram', url: social.instagram, label: strings.general.social.instagram },
-  { key: 'tiktok', url: social.tiktok, label: strings.general.social.tiktok },
-  { key: 'x', url: social.x, label: strings.general.social.x },
-  { key: 'facebook', url: social.facebook, label: strings.general.social.facebook },
+  { key: 'instagram', url: safeExternalUrl(social.instagram), label: strings.general.social.instagram },
+  { key: 'tiktok', url: safeExternalUrl(social.tiktok), label: strings.general.social.tiktok },
+  { key: 'x', url: safeExternalUrl(social.x), label: strings.general.social.x },
+  { key: 'facebook', url: safeExternalUrl(social.facebook), label: strings.general.social.facebook },
 ].filter((s) => s.url !== '');
 ---
 <div class="lib">

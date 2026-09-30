@@ -170,13 +170,13 @@ const {
      which carry this component's scope attribute. */
   .roster-plate .plate { aspect-ratio: 1 / 1.12; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35); }
   .roster-plate .plate__placeholder { width: 100%; height: 100%; opacity: 0.35; }
+  /* Sentence case at 16px, matching .as-body p (AboutSplit.astro): each file is
+     about a hundred words, too many to read in tracked capitals at 12px. */
   .roster-body p {
     color: var(--bone);
-    font-size: 12px;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    line-height: 1.75;
-    max-width: 52ch;
+    font-size: 16px;
+    line-height: 1.7;
+    max-width: 60ch;
   }
   .roster-body p + p { margin-top: var(--s2); }
   .roster-body em { font-style: normal; color: var(--ink); }

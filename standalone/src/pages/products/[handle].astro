@@ -1,11 +1,12 @@
 ---
-// PDP — templates/product.json: main, video, editorial, promo.
+// PDP — templates/product.json: main, video, editorial, reviews, promo.
 //
 // One page per product handle, bundles included.
 import Base from '~/layouts/Base.astro';
 import MainProduct from '~/components/MainProduct.astro';
 import ProductVideo from '~/components/ProductVideo.astro';
 import ProductEditorial from '~/components/ProductEditorial.astro';
+import ProductReviews from '~/components/ProductReviews.astro';
 import PromoBand from '~/components/PromoBand.astro';
 
 import { getImage } from 'astro:assets';
@@ -48,6 +49,7 @@ const shareImage = product.media[0]
   <MainProduct product={product} collection={home} />
   {video.video_src && <ProductVideo label={video.label} videoSrc={video.video_src} />}
   <ProductEditorial items={product.editorial} handle={product.handle} />
+  <ProductReviews handle={product.handle} />
   <PromoBand
     id={`PromoBand-${product.handle}`}
     image={promo.image}

@@ -180,6 +180,12 @@ if (catalogue.products.length > 1) {
     }
 
     if (!home.includes(CAROUSEL_SCRIPT_FINGERPRINT)) fail('/', 'carousel script not inlined on the homepage');
+
+    // modalOpen() in carousel.js holds the carousel still while a card's size picker
+    // is open. Its selector 'dialog[open]' is a string literal, so it survives
+    // minification where the function name does not; without it the card is scrolled
+    // out from under the visitor mid-choice.
+    if (!home.includes('dialog[open]')) fail('/', 'carousel script has no dialog[open] check (it would advance under an open size picker)');
   }
 
   for (const route of routes) {
@@ -377,6 +383,16 @@ for (const route of routes) {
  *  card; the tap on a size in that dialog is the add. The dialog, not the article, is
  *  the product-form scope (data-product-wrap), so the card photo carries no frames. */
 const hasAttr = (tag, attr) => new RegExp(`\\s${attr}(?=[\\s=/>])`).test(tag);
+// Astro escapes ' " & < > in text; compare against the source strings, not the escapes.
+const decodeEntities = (s) =>
+  s
+    .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
+    .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16)))
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'")
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&');
 for (const route of ['', ...Object.keys(collections).map((h) => `/collections/${h}`)]) {
   const doc = html(route || '/');
   if (!doc) continue;
@@ -498,6 +514,29 @@ for (const route of ['', ...Object.keys(collections).map((h) => `/collections/${
     if (strayFrames.length) {
       fail(name, `card ${label}: ${strayFrames.length} data-plate-frame img(s) outside the dialog`);
     }
+    // i. "T-SHIRT" (the catalogue's `type`) is named once in the card info and once in
+    //    the dialog summary: a name like THE FREQUENCY does not say what the thing is.
+    if (product) {
+      const typeOf = (scope) =>
+        [...scope.matchAll(/<[a-z]+\b[^>]*\bclass="[^"]*\bcoll-type\b[^"]*"[^>]*>([^<]*)</g)].map((m) =>
+          decodeEntities(m[1]).trim(),
+        );
+      const inCard = typeOf(outside);
+      if (inCard.length !== 1 || inCard[0] !== product.type) {
+        fail(name, `card ${label}: coll-type in the card info is [${inCard.join(', ')}], expected [${product.type}]`);
+      }
+      const inDialog = dialog ? typeOf(dialog) : [];
+      if (inDialog.length !== 1 || inDialog[0] !== product.type) {
+        fail(name, `card ${label}: coll-type in the dialog is [${inDialog.join(', ')}], expected [${product.type}]`);
+      }
+    }
+
+    // j. a lazy image in a closed <dialog> never starts loading, so every photo in the
+    //    dialog must be eager or the picker opens onto blanks.
+    for (const frame of (dialog?.match(/<img\b[^>]*>/g) ?? []).filter((f) => hasAttr(f, 'data-plate-frame'))) {
+      if (!/\sloading="eager"/.test(frame)) fail(name, `card ${label}: dialog photo is not loading="eager": ${frame.slice(0, 90)}`);
+    }
+
     if (product && dialog) {
       const frames = (dialog.match(/<img\b[^>]*>/g) ?? []).filter((f) => hasAttr(f, 'data-plate-frame'));
       const ids = frames.map((f) => f.match(/\bdata-media-id="([^"]*)"/)?.[1]);
@@ -606,6 +645,197 @@ for (const product of catalogue.products) {
         fail(`/products/${m[1]}`, `no link back to /icons#${anchor}`);
       }
     }
+  }
+}
+
+const strings = JSON.parse(readFileSync(join(root, 'src/data/strings.json'), 'utf8'));
+const jsonLdOf = (doc) =>
+  [...doc.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)].map((m) => m[1]);
+
+/** Reviews. A sample review (placeholder copy written by us) must never reach a
+ *  customer unlabelled, so this is checked on the data AND on every built page.
+ *  The data checks come first because a typo there ("sample": "false", "Sample": true)
+ *  is exactly what would silently drop the label. */
+const reviewsFile = JSON.parse(readFileSync(join(root, 'src/data/reviews.json'), 'utf8'));
+const reviews = Array.isArray(reviewsFile.reviews) ? reviewsFile.reviews : [];
+if (!Array.isArray(reviewsFile.reviews)) fail('reviews.json', 'no "reviews" array');
+const handles = catalogue.products.map((p) => p.handle);
+reviews.forEach((review, i) => {
+  const at = `reviews.json[${i}]`;
+  for (const key of ['product', 'name', 'text']) {
+    if (typeof review[key] !== 'string' || !review[key].trim()) fail(at, `${key} is missing or empty`);
+  }
+  if (typeof review.product === 'string' && !handles.includes(review.product)) {
+    fail(at, `product "${review.product}" is not a catalogue handle`);
+  }
+  if ('sample' in review && review.sample !== true) {
+    fail(at, `sample is ${JSON.stringify(review.sample)}; when present it must be boolean true`);
+  }
+  for (const key of Object.keys(review)) {
+    if (!['product', 'name', 'text', 'sample'].includes(key)) {
+      fail(at, `unknown key "${key}" (a misspelt "sample" would unlabel the entry)`);
+    }
+  }
+  if (/sample/i.test(review.name ?? '') && review.sample !== true) {
+    fail(at, `name "${review.name}" says sample but the entry is not flagged sample: true`);
+  }
+});
+
+for (const product of catalogue.products) {
+  const route = `/products/${product.handle}`;
+  const doc = html(route);
+  if (!doc) continue;
+  const mine = reviews.filter((r) => r.product === product.handle);
+  const start = doc.indexOf('<section class="pdp-reviews"');
+  if (!mine.length) {
+    if (start !== -1) fail(route, 'renders a reviews section for a product with no reviews');
+    continue;
+  }
+  if (start === -1) {
+    fail(route, `no reviews section, but reviews.json has ${mine.length} for this product`);
+    continue;
+  }
+  const section = doc.slice(start, doc.indexOf('</section>', start));
+  const items = section.match(/<li\b[^>]*\bclass="review"[^>]*>[\s\S]*?<\/li>/g) ?? [];
+  if (items.length !== mine.length) {
+    fail(route, `${items.length} class="review" items rendered, reviews.json has ${mine.length}`);
+  }
+  const tagRe = new RegExp(`<span\\b[^>]*\\bclass="review-tag"[^>]*>\\s*${strings.reviews.sample_tag}\\s*</span>`);
+  for (const review of mine) {
+    const item = items.find((li) => decodeEntities(li).includes(review.text));
+    if (!item) {
+      fail(route, `review not shown: "${review.text.slice(0, 40)}"`);
+      continue;
+    }
+    const openTag = item.match(/^<li\b[^>]*>/)[0];
+    const tag = item.match(/<span\b[^>]*\bclass="review-tag"[^>]*>/)?.[0];
+    if (review.sample === true) {
+      if (!hasAttr(openTag, 'data-sample')) fail(route, `SAMPLE review has no data-sample: "${review.text.slice(0, 40)}"`);
+      if (!tagRe.test(item)) fail(route, `SAMPLE review rendered without the ${strings.reviews.sample_tag} tag: "${review.text.slice(0, 40)}"`);
+      if (tag && hasAttr(tag, 'hidden')) fail(route, `SAMPLE tag is hidden: "${review.text.slice(0, 40)}"`);
+      if (hasAttr(openTag, 'hidden')) fail(route, `SAMPLE review is hidden: "${review.text.slice(0, 40)}"`);
+    } else if (hasAttr(openTag, 'data-sample') || tag) {
+      fail(route, `a real review is labelled as a sample: "${review.text.slice(0, 40)}"`);
+    }
+  }
+  if (mine.some((r) => r.sample === true) && !decodeEntities(section).includes(strings.reviews.sample_note)) {
+    fail(route, 'samples are shown but the "not written by customers" note is missing');
+  }
+  if (!mine.some((r) => r.sample === true) && section.includes('reviews-note')) {
+    fail(route, 'samples note shown with no samples');
+  }
+  if (/[★☆]/.test(section)) fail(route, 'star glyph in the reviews section (no ratings exist)');
+}
+
+for (const route of routes) {
+  const doc = html(route || '/');
+  if (!doc) continue;
+  for (const block of jsonLdOf(doc)) {
+    if (/"review"|"aggregateRating"|"ratingValue"/i.test(block) || /"@type"\s*:\s*"(?:Aggregate)?(?:Rating|Review)"/i.test(block)) {
+      fail(route || '/', 'JSON-LD carries review or rating data (samples are not customer reviews)');
+    }
+  }
+}
+
+/** Bag delivery row. cart.js reads these two numbers to show delivery, so they must be
+ *  the ones api/_order.js charges by. The rule itself sits inside cart.js's IIFE, so it
+ *  is not reachable from here; tools/test-order.mjs pins the server side of it. */
+for (const route of routes) {
+  const doc = html(route || '/');
+  if (!doc) continue;
+  const name = route || '/';
+  const rows = doc.match(/<div\b[^>]*\bdata-cart-delivery(?=[\s=>])[^>]*>/g) ?? [];
+  if (!rows.length) fail(name, 'no data-cart-delivery row (bag shows no delivery cost)');
+  for (const row of rows) {
+    if (!hasAttr(row, 'hidden')) fail(name, 'delivery row is not rendered hidden (shows before the bag has items)');
+    const standard = row.match(/\sdata-standard-pence="([^"]*)"/)?.[1];
+    const threshold = row.match(/\sdata-free-threshold="([^"]*)"/)?.[1];
+    const label = row.match(/\sdata-free-label="([^"]*)"/)?.[1];
+    if (standard !== String(settings.shipping.ukStandardPence)) {
+      fail(name, `delivery row data-standard-pence is "${standard}", server charges ${settings.shipping.ukStandardPence}`);
+    }
+    if (threshold !== String(settings.shipping.freeThresholdPence)) {
+      fail(name, `delivery row data-free-threshold is "${threshold}", server threshold is ${settings.shipping.freeThresholdPence}`);
+    }
+    if (decodeEntities(label ?? '') !== strings.cart.delivery_free) {
+      fail(name, `delivery row data-free-label is "${label}", expected "${strings.cart.delivery_free}"`);
+    }
+  }
+  const terms = [...doc.matchAll(/<p\b[^>]*\bclass="cart-note cart-terms"[^>]*>([^<]*)</g)].map((m) => decodeEntities(m[1]).trim());
+  if (terms.length !== rows.length) fail(name, `${terms.length} terms lines for ${rows.length} delivery rows`);
+  for (const text of terms) {
+    if (text !== strings.cart.terms) fail(name, `terms line is "${text}", expected "${strings.cart.terms}"`);
+  }
+  if (name === '/cart') {
+    const mainStart = doc.indexOf('class="main-cart"');
+    const mainEnd = mainStart === -1 ? -1 : doc.indexOf('</section>', mainStart);
+    const inMain = mainStart === -1 ? '' : doc.slice(mainStart, mainEnd === -1 ? undefined : mainEnd);
+    const mainRows = inMain.match(/\bdata-cart-delivery(?=[\s=>])/g) ?? [];
+    if (mainRows.length !== 1) fail(name, `expected one delivery row inside class="main-cart", found ${mainRows.length}`);
+    if (rows.length !== 2) fail(name, `expected the page row plus the drawer's (2), found ${rows.length}`);
+  }
+}
+
+/** /story carries the origin section between the 1940 and today sections. */
+{
+  const story = html('/story');
+  const pageData = JSON.parse(readFileSync(join(root, 'src/data/pages/story.json'), 'utf8'));
+  const headingOf = (id) => pageData.sections.find((s) => s.id === id)?.settings?.heading;
+  if (story) {
+    const at = {};
+    for (const id of ['split-1940', 'split-origin', 'split-today']) {
+      const heading = headingOf(id);
+      if (!heading) {
+        fail('/story', `story.json has no ${id} heading`);
+        continue;
+      }
+      at[id] = decodeEntities(story).indexOf(`>${heading}<`);
+      if (at[id] === -1) fail('/story', `${id} heading "${heading}" not rendered`);
+    }
+    if (at['split-origin'] > -1 && !(at['split-1940'] < at['split-origin'] && at['split-origin'] < at['split-today'])) {
+      fail('/story', 'split-origin section is not between split-1940 and split-today');
+    }
+  }
+}
+
+/** Social links: settings.social.* goes through safeExternalUrl(), so a stray
+ *  javascript: value in the file cannot become an href or a sameAs entry. */
+const SAFE_EXTERNAL = /^https?:\/\/\S+$/i;
+for (const route of routes) {
+  const doc = html(route || '/');
+  if (!doc) continue;
+  const name = route || '/';
+  const start = doc.indexOf('<header class="masthead"');
+  const head = start === -1 ? '' : doc.slice(start, doc.indexOf('</header>', start));
+  for (const anchor of head.match(/<a\b[^>]*>/g) ?? []) {
+    if (!/\starget="_blank"/.test(anchor)) continue;
+    const target = decodeEntities(anchor.match(/\shref="([^"]*)"/)?.[1] ?? '');
+    if (target !== '#' && !SAFE_EXTERNAL.test(target)) {
+      fail(name, `masthead external link has an unsafe href: "${target}"`);
+    }
+  }
+  for (const block of jsonLdOf(doc)) {
+    let data;
+    try {
+      data = JSON.parse(block);
+    } catch {
+      fail(name, 'JSON-LD is not valid JSON');
+      continue;
+    }
+    const walk = (node) => {
+      if (Array.isArray(node)) return node.forEach(walk);
+      if (!node || typeof node !== 'object') return;
+      if ('sameAs' in node) {
+        const list = Array.isArray(node.sameAs) ? node.sameAs : [node.sameAs];
+        for (const entry of list) {
+          if (typeof entry !== 'string' || !SAFE_EXTERNAL.test(entry)) {
+            fail(name, `JSON-LD sameAs entry is not an http(s) URL: ${JSON.stringify(entry)}`);
+          }
+        }
+      }
+      Object.values(node).forEach(walk);
+    };
+    walk(data);
   }
 }
 

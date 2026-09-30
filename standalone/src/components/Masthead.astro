@@ -16,14 +16,14 @@ import Icon from './Icon.astro';
 import menus from '~/data/menus.json';
 import settings from '~/data/settings.json';
 import strings from '~/data/strings.json';
-import { href } from '~/lib/url';
+import { href, safeExternalUrl } from '~/lib/url';
 
 const social = settings.social;
 const socialLinks = [
-  { key: 'instagram', url: social.instagram, label: 'Instagram' },
-  { key: 'tiktok', url: social.tiktok, label: 'TikTok' },
-  { key: 'x', url: social.x, label: 'X' },
-  { key: 'facebook', url: social.facebook, label: 'Facebook' },
+  { key: 'instagram', url: safeExternalUrl(social.instagram), label: 'Instagram' },
+  { key: 'tiktok', url: safeExternalUrl(social.tiktok), label: 'TikTok' },
+  { key: 'x', url: safeExternalUrl(social.x), label: 'X' },
+  { key: 'facebook', url: safeExternalUrl(social.facebook), label: 'Facebook' },
 ].filter((s) => s.url !== '');
 
 // Built pages are served as /story/, the menu data says /story.

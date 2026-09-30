@@ -91,9 +91,16 @@
       });
     }
 
+    // A card's size picker is a modal <dialog> inside its card, so inside this
+    // root. While one is open the visitor is choosing, and the card that owns it
+    // must not be scrolled out from under them.
+    function modalOpen() {
+      return !!root.querySelector('dialog[open]');
+    }
+
     function canRun() {
       return layout.matches && !reduceMotion.matches && !paused &&
-        onScreen && !document.hidden && !hovered && !focused;
+        onScreen && !document.hidden && !hovered && !focused && !modalOpen();
     }
 
     // Never fires before a manual hold has run out, whoever reschedules: focus,
@@ -178,6 +185,12 @@
       focused = false;
       schedule(ADVANCE_MS);
     });
+
+    // Nothing else restarts the clock once a modal has stopped it: `close` does
+    // not bubble, so it is caught on the way down.
+    root.addEventListener('close', function () {
+      schedule(ADVANCE_MS);
+    }, true);
 
     if ('IntersectionObserver' in window) {
       // isIntersecting is true for any overlap at all; the threshold only sets

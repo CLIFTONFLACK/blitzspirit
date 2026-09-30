@@ -258,6 +258,24 @@ import { formatMoney } from '../lib/money';
     }
   }
 
+  /* What UK delivery will cost at checkout, under the subtotal. The charge and
+     the free-delivery threshold arrive as data attributes from settings.shipping,
+     and the comparison is api/_order.js isFreeDelivery's (subtotal >= threshold),
+     so this line cannot promise something the checkout then does not charge.
+     Hidden while the bag is empty or its prices have not loaded. */
+  function renderDelivery(total) {
+    document.querySelectorAll('[data-cart-delivery]').forEach((row) => {
+      const pence = parseInt(row.getAttribute('data-standard-pence'), 10);
+      const threshold = parseInt(row.getAttribute('data-free-threshold'), 10);
+      const amount = row.querySelector('[data-cart-delivery-amount]');
+      const known = !!index && state.length > 0 && !isNaN(pence) && !isNaN(threshold) && !!amount;
+      row.hidden = !known;
+      if (!known) return;
+      amount.textContent =
+        total >= threshold ? row.getAttribute('data-free-label') || formatMoney(0) : formatMoney(pence);
+    });
+  }
+
   function render() {
     setCount(itemCount());
 
@@ -282,6 +300,7 @@ import { formatMoney } from '../lib/money';
       el.textContent = formatMoney(total);
     });
     renderFreeShipping(total);
+    renderDelivery(total);
 
     document.querySelectorAll('[data-checkout]').forEach((btn) => {
       btn.disabled = state.length === 0;

@@ -36,6 +36,19 @@
       }
     },
     {
+      "id": "split-origin",
+      "type": "about-split",
+      "settings": {
+        "index_tag": "FILE_001B // 2008_HOW_IT_STARTED",
+        "heading": "How it started.",
+        "body": "<p>2008. A skull in a bowler hat, two umbrellas crossed beneath it, printed on a t-shirt. That was the first BlitzSpirit tee.</p><p>Some characters refuse to stay retired. He is back, with the same straight face and the same raised eyebrow, and a few more designs for company.</p>",
+        "image_ref": "",
+        "image_side": "left",
+        "cta_label": "",
+        "cta_link": ""
+      }
+    },
+    {
       "id": "split-today",
       "type": "about-split",
       "settings": {
@@ -93,7 +106,7 @@
       "settings": {
         "index_tag": "DISPATCHES // HOME_GUARD",
         "heading": "Wakey wakey.",
-        "body": "Join the Home Guard: first word on new drops and stories worth telling, plus 10% off your first order. No spam. That would be nonsense.",
+        "body": "Join the Home Guard. What you get: first word on new designs, and 10% off your first order. That is all. No spam. That would be nonsense.",
         "button_label": "[ SIGN UP ]"
       }
     }

@@ -115,6 +115,21 @@ function readValue(document, address) {
   return { ok: true, value: value, container: container, key: last };
 }
 
+/** Editable fields the site renders as a link target rather than as text. The
+ *  markup check in edit.js does nothing for these: "javascript:alert(1)" has no
+ *  angle bracket in it, and the masthead would publish it as an href. */
+function isUrlAddress(address) {
+  var parsed = parseAddress(address);
+  return !!parsed && parsed.source === 'settings' && parsed.segments[0] === 'social';
+}
+
+/** Blank (no link), "#" (placeholder), or an absolute http(s) URL. Anything else,
+ *  including other schemes, protocol-relative and relative values, is refused.
+ *  standalone/src/lib/url.ts safeExternalUrl() applies the same rule at render. */
+function isSafeUrl(value) {
+  return value === '' || value === '#' || /^https?:\/\/[^\s]+$/i.test(value);
+}
+
 /**
  * Apply an edit in place.
  * @returns {{ok: true, from: string, to: string} | {ok: false, error: string}}
@@ -129,6 +144,10 @@ function applyEdit(document, address, nextValue) {
 
   var read = readValue(document, address);
   if (!read.ok) return read;
+
+  if (isUrlAddress(address) && !isSafeUrl(nextValue)) {
+    return { ok: false, error: 'not a safe url: ' + address };
+  }
 
   var key = read.key;
   if (Array.isArray(read.container)) {

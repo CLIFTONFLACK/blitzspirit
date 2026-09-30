@@ -132,6 +132,64 @@ check('refuses a non-string new value', () =>
 check('refuses an absurdly long value', () =>
   refuses(settings(), 'settings:outro.strapline', 'x'.repeat(8001), 'too long'));
 
+// Social links are rendered as hrefs, so their values are held to a URL rule that
+// the editor's markup check cannot provide.
+for (const [label, value] of [
+  ['a javascript: URL', 'javascript:alert(1)'],
+  ['a mixed-case javascript: URL', 'JaVaScRiPt:alert(1)'],
+  ['a data: URL', 'data:text/html,<script>alert(1)</script>'],
+  ['a protocol-relative URL', '//evil.example/x'],
+  ['a relative path', '/somewhere'],
+  ['a URL with a leading space', ' https://instagram.com/blitzspirit'],
+  ['a URL with whitespace inside', 'https://instagram.com/blitz spirit'],
+]) {
+  check(`refuses ${label} for a social link`, () =>
+    refuses(settings(), 'settings:social.instagram', value, 'not a safe url'));
+}
+
+for (const value of ['https://instagram.com/blitzspirit', 'http://x.com/blitzspirit', '#', '']) {
+  check(`accepts ${JSON.stringify(value)} for a social link`, () => {
+    const doc = settings();
+    const result = content.applyEdit(doc, 'settings:social.instagram', value);
+    assert(result.ok, `refused: ${result.error}`);
+    assert(doc.social.instagram === value, 'value was not written');
+  });
+}
+
+// The rule keys on the whole social group, not on instagram alone.
+for (const key of ['tiktok', 'x', 'facebook']) {
+  check(`refuses a javascript: URL for social.${key}`, () =>
+    refuses(settings(), `settings:social.${key}`, 'javascript:alert(1)', 'not a safe url'));
+}
+
+for (const [label, value] of [
+  ['an ftp: URL', 'ftp://example.com/x'],
+  ['a scheme with nothing after it', 'https://'],
+  ['a URL with a trailing newline', 'https://instagram.com/blitzspirit\n'],
+  ['a URL with a tab inside', 'https://instagram.com/blitz\tspirit'],
+  ['a bare domain', 'instagram.com/blitzspirit'],
+]) {
+  check(`refuses ${label} for a social link`, () =>
+    refuses(settings(), 'settings:social.instagram', value, 'not a safe url'));
+}
+
+check('accepts an upper-case HTTPS scheme for a social link', () => {
+  const result = content.applyEdit(settings(), 'settings:social.instagram', 'HTTPS://instagram.com/blitzspirit');
+  assert(result.ok, `refused: ${result.error}`);
+});
+
+check('a refused social link leaves the stored value untouched', () => {
+  const doc = settings();
+  const before = doc.social.instagram;
+  content.applyEdit(doc, 'settings:social.instagram', 'javascript:alert(1)');
+  assert(doc.social.instagram === before, `changed to ${JSON.stringify(doc.social.instagram)}`);
+});
+
+check('the URL rule does not apply to ordinary copy', () => {
+  const result = content.applyEdit(settings(), 'settings:outro.strapline', 'javascript: a word, not a link');
+  assert(result.ok, `refused: ${result.error}`);
+});
+
 check('a refused edit leaves the document untouched', () => {
   const doc = settings();
   const before = JSON.stringify(doc);
