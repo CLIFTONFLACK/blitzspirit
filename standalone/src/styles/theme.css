@@ -500,10 +500,8 @@ a { color:inherit; text-decoration:none; }
 .coll-plate { display:block; background:var(--plate); height:300px; overflow:hidden; position:relative; flex-shrink:0; }
 .coll-plate img { width:100%; height:100%; object-fit:contain; transition:.3s ease; }
 .coll-card:hover .coll-plate img { transform:scale(1.03); }
-/* One photo per colourway; product-form.js shows the one for the colour picked
-   in the card's size picker by toggling [hidden]. (`img { display:block }` in
-   the reset would otherwise beat the UA's [hidden] rule.) */
-.coll-card [hidden] { display:none !important; }
+.coll-plate .coll-img--hover { position:absolute; inset:0; opacity:0; }
+.coll-card:hover .coll-plate .coll-img--hover { opacity:1; }
 .coll-badge { position:absolute; top:10px; left:0; background:var(--accent); color:#fff; font-size:10px; letter-spacing:.15em; text-transform:uppercase; font-family:var(--sans); padding:4px 10px; z-index:2; }
 .coll-issue { position:absolute; top:0; right:0; background:rgba(10,10,10,.82); color:var(--accent); font-family:var(--sans); font-size:10px; letter-spacing:.12em; text-transform:uppercase; padding:6px 10px; border-left:1px solid var(--line-bri); border-bottom:1px solid var(--line-bri); z-index:2; }
 .coll-info { background:var(--panel); padding:var(--s2) var(--s3) var(--s3); flex:1; display:flex; flex-direction:column; gap:8px; border-top:1px solid var(--line); }
@@ -519,8 +517,33 @@ a { color:inherit; text-decoration:none; }
 .coll-actions { display:flex; gap:8px; margin-top:auto; }
 .coll-cta { flex:1; display:flex; align-items:center; justify-content:center; min-height:44px; border:1px solid var(--ink); padding:7.6px var(--s2); font-size:11px; font-weight:700; letter-spacing:.15em; text-transform:uppercase; font-family:var(--sans); color:var(--ink); text-align:center; }
 .coll-cta:hover { background:var(--ink); border-color:var(--ink); color:var(--paper); }
-/* Card size picker (ProductCard.astro, card-pick.js). */
-.coll-pick { display:flex; flex-direction:column; gap:var(--s1); border-top:1px solid var(--line); padding-top:var(--s2); }
+/* Card size picker: a modal <dialog> per card (ProductCard.astro, card-pick.js).
+   Same frame as the signup modal: flat panel, hairline border, pale backdrop. */
+dialog.card-pick-modal {
+  /* margin:auto restated: the reset's `* { margin:0 }` removes the UA value that
+     centres a modal dialog, which would pin it to the top-left corner. */
+  background:var(--panel); border:1px solid var(--line-bri); padding:0; margin:auto; color:var(--bone);
+  width:min(440px, calc(100% - 32px)); max-height:calc(100% - 32px); overflow-y:auto;
+}
+dialog.card-pick-modal::backdrop { background:rgba(255,255,255,.88); }
+/* 52px on top clears the 44px close button, so the heading row below it can use
+   the full width. */
+.card-pick-inner { position:relative; padding:52px var(--s3) var(--s3); display:flex; flex-direction:column; gap:var(--s2); }
+.card-pick-close { position:absolute; top:6px; right:6px; width:44px; height:44px; display:flex; align-items:center; justify-content:center; color:var(--bone); line-height:0; }
+.card-pick-close:hover { color:var(--accent); }
+.card-pick-head { display:flex; align-items:center; gap:var(--s2); }
+.card-pick-photo { flex:0 0 72px; height:81px; background:var(--plate); border:1px solid var(--line); }
+.card-pick-photo img { width:100%; height:100%; object-fit:contain; }
+/* `img { display:block }` in the reset would otherwise beat the UA's [hidden]
+   rule on the photo that is not the chosen colour. */
+.card-pick-modal [hidden] { display:none !important; }
+.card-pick-summary { display:flex; flex-direction:column; gap:6px; min-width:0; }
+/* Sized so the longest word in a title (ESTABLISHMENT) fits beside the photo at
+   375px; overflow-wrap only breaks a word that still cannot fit. */
+.card-pick-title { color:var(--cream); font-size:20px; line-height:1; overflow-wrap:break-word; }
+.card-pick-more { align-self:flex-start; display:inline-flex; align-items:center; min-height:44px; color:var(--bone-mute); text-decoration:underline; text-underline-offset:4px; }
+.card-pick-more:hover { color:var(--accent); }
+.coll-pick { display:flex; flex-direction:column; gap:var(--s2); border-top:1px solid var(--line); padding-top:var(--s2); }
 .coll-pick-hint { color:var(--bone-mute); }
 .coll-pick .cw { border:none; padding:0; margin:0; }
 .coll-pick .cw-label, .coll-pick .sizes-label { display:block; color:var(--bone-mute); font-size:10px; letter-spacing:.25em; margin-bottom:6px; }

@@ -1,14 +1,15 @@
 ---
 // Home — templates/index.json, section for section and in order:
-// hero, as-seen-on, product grid (all 3, one row), featured product, promo,
-// what-it-means, closing promo band.
+// hero, as-seen-on, featured product, statement band, product grid (all 3, one
+// row), promo (signup), what-it-means.
 //
-// One email ask only: the closing band (promo_band_VF78L7) renders without its
-// signup form, because with the promo band above and the signup modal a second
-// form made three asks against one product row.
+// One email ask only: the statement band (promo_band_VF78L7, "The Blitz, the
+// weather, the pub queue.") renders without its signup form, because with the
+// promo band below and the signup modal a second form made three asks against
+// one product row.
 //
-// The grid comes first so every product is on screen early; the featured band
-// (The Establishment, from pages/index.json `featured`) follows it. The
+// The featured band (The Establishment, from pages/index.json `featured`) leads,
+// the statement band follows it, then the grid of the whole range. The
 // alternating archive rows stay replaced by the grid: `archive` settings in
 // pages/index.json are unused, left in place since /edit still addresses them.
 //
@@ -44,8 +45,6 @@ const meansBody = '<p>The blitz spirit isn’t nostalgia. It’s not bunting and
 
   <AsSeenOn />
 
-  <CollectionGrid products={products} wide carousel />
-
   <FeaturedProduct
     product={featured.product}
     dossier={featured.dossier}
@@ -53,6 +52,17 @@ const meansBody = '<p>The blitz spirit isn’t nostalgia. It’s not bunting and
     plateRef={featured.plate_ref}
     editBase="pages/index:featured"
   />
+
+  <PromoBand
+    id="PromoBandStatement"
+    image={promo2.image}
+    heading={promo2.heading}
+    subheading={promo2.subheading}
+    showForm={false}
+    editBase="pages/index:promo_band_VF78L7"
+  />
+
+  <CollectionGrid products={products} wide carousel />
 
   <PromoBand
     id="PromoBand"
@@ -72,14 +82,5 @@ const meansBody = '<p>The blitz spirit isn’t nostalgia. It’s not bunting and
     image="/assets/backgrounds/skull-umbrella-banner.jpg"
     imageSide="left"
     fillVisual
-  />
-
-  <PromoBand
-    id="PromoBandClosing"
-    image={promo2.image}
-    heading={promo2.heading}
-    subheading={promo2.subheading}
-    showForm={false}
-    editBase="pages/index:promo_band_VF78L7"
   />
 </Base>

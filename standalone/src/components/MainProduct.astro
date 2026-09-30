@@ -255,7 +255,7 @@ const archiveLine = [
 
           {showQuantity && (
             <div class="pdp-qty">
-              <span class="eyebrow eyebrow-muted">[ {strings.cart.quantity} ]</span>
+              <span class="dossier-spec">[ {strings.cart.quantity} ]</span>
               <div class="qty-box">
                 <button type="button" class="qty-btn snap" data-qty-minus aria-label="Decrease quantity">&minus;</button>
                 <input
@@ -287,16 +287,16 @@ const archiveLine = [
           </div>
         </div>
 
-        {trustNote && <p class="eyebrow eyebrow-muted pdp-trust">{trustNote}</p>}
+        {trustNote && <p class="dossier-spec pdp-trust">{trustNote}</p>}
 
         {(sizeGuideUrl || returnsUrl) && (
           <div class="pdp-links">
             {sizeGuideUrl && <a href={href(sizeGuideUrl)} class="eyebrow pdp-link">{sizeGuideLabel}</a>}
-            {sizeGuideUrl && returnsUrl && <span class="eyebrow eyebrow-muted" aria-hidden="true">·</span>}
+            {sizeGuideUrl && returnsUrl && <span class="dossier-spec" aria-hidden="true">·</span>}
             {returnsUrl && <a href={href(returnsUrl)} class="eyebrow pdp-link">{returnsLabel}</a>}
             {iconFileUrl && (
               <>
-                <span class="eyebrow eyebrow-muted" aria-hidden="true">·</span>
+                <span class="dossier-spec" aria-hidden="true">·</span>
                 <a href={href(iconFileUrl)} class="eyebrow pdp-link">READ THE FILE</a>
               </>
             )}
@@ -305,7 +305,7 @@ const archiveLine = [
 
         <div class="pdp-archive-note">
           <hr class="sep-line" />
-          <span class="eyebrow eyebrow-muted">{archiveLine}</span>
+          <span class="dossier-spec">{archiveLine}</span>
         </div>
 
         <script type="application/json" data-variant-json set:html={JSON.stringify(variantJson)} />
@@ -347,6 +347,15 @@ const archiveLine = [
      the `p + p` rhythm above does not reach it and it sat flush against the last
      line of the story. Same gap, stated for the one adjacency that rule misses. */
   .pdp-dossier .details .details-copy + .dossier-spec { margin-top: var(--s2); }
+  /* The ledger's small print (delivery note, link separators, archive line) reads
+     as the spec line does: sentence case in the body face, not a tracked-out
+     muted eyebrow. Inside .details the spec line already gets this from the
+     paragraph rule above; this states it for the ones outside that panel. */
+  .pdp-ledger .dossier-spec {
+    font-family: var(--sans); text-transform: none;
+    font-size: 14px; letter-spacing: 0.02em; line-height: 1.75;
+    color: var(--ink);
+  }
   .pdp-hook {
     font-family: var(--sans); font-weight: 700; text-transform: uppercase;
     font-size: 15px; letter-spacing: 0.08em; color: var(--accent); margin: var(--s1) 0 0;
@@ -444,7 +453,6 @@ const archiveLine = [
   }
   .pdp-link:hover { color: var(--accent); }
   .pdp-archive-note { display: flex; flex-direction: column; gap: var(--s3); margin-top: var(--s2); }
-  .pdp-archive-note .eyebrow { letter-spacing: 0.2em; }
 
   /* Field manual COLOURWAYS row reuses the swatch component for its display-name
      map — dots off, labels on. */
