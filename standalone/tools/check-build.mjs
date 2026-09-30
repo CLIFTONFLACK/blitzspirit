@@ -373,13 +373,14 @@ for (const route of routes) {
 
 /** Product cards: a [ VIEW ] link and an [ ADD TO CART ] button that never adds by
  *  itself. A card shows no size, so a one-tap add could only add size S unasked (the
- *  old bug). The button opens a hidden picker; the tap on a size is the add. */
+ *  old bug). The button opens a size-picker MODAL (<dialog>) that lives inside the
+ *  card; the tap on a size in that dialog is the add. The dialog, not the article, is
+ *  the product-form scope (data-product-wrap), so the card photo carries no frames. */
 const hasAttr = (tag, attr) => new RegExp(`\\s${attr}(?=[\\s=/>])`).test(tag);
 for (const route of ['', ...Object.keys(collections).map((h) => `/collections/${h}`)]) {
   const doc = html(route || '/');
   if (!doc) continue;
   const name = route || '/';
-  // The article tag also carries data-product-wrap, so match on the class only.
   const cards = doc.match(/<article\b[^>]*\bclass="coll-card"[^>]*>[\s\S]*?<\/article>/g) ?? [];
   if (!cards.length) fail(name, 'no coll-card articles found');
   for (const card of cards) {
@@ -387,8 +388,15 @@ for (const route of ['', ...Object.keys(collections).map((h) => `/collections/${
     const label = handle ?? 'unknown card';
     const product = catalogue.products.find((p) => p.handle === handle);
 
+    // h. the dialog is the scope: the article tag itself must not also carry it.
+    const articleTag = card.match(/^<article\b[^>]*>/)[0];
+    if (hasAttr(articleTag, 'data-product-wrap')) {
+      fail(name, `card ${label}: <article> carries data-product-wrap (the dialog is the scope)`);
+    }
+
     // a. the visible control is a card-pick button that cannot add on its own.
-    const buttons = card.match(/<button\b[^>]*\bdata-card-pick\b[^>]*>/g) ?? [];
+    //    hasAttr is exact, so data-card-pick-close is not counted here.
+    const buttons = (card.match(/<button\b[^>]*>/g) ?? []).filter((b) => hasAttr(b, 'data-card-pick'));
     if (buttons.length !== 1) {
       fail(name, `card ${label} has ${buttons.length} data-card-pick buttons, expected 1`);
     }
@@ -399,37 +407,56 @@ for (const route of ['', ...Object.keys(collections).map((h) => `/collections/${
     if (pickBtn && hasAttr(pickBtn, 'data-variant-id')) {
       fail(name, `card ${label}: ADD TO CART button carries data-variant-id (always adds one size)`);
     }
-
-    // b. aria-controls names a hidden element inside this card.
-    const controls = pickBtn?.match(/aria-controls="([^"]+)"/)?.[1];
-    let picker = null;
-    if (pickBtn && !controls) fail(name, `card ${label}: ADD TO CART button has no aria-controls`);
-    if (controls) {
-      const open = [...card.matchAll(/<([a-z][\w-]*)\b[^>]*>/g)].find((m) =>
-        m[0].includes(`id="${controls}"`),
-      );
-      if (!open) fail(name, `card ${label}: aria-controls #${controls} does not exist inside the card`);
-      else {
-        if (!hasAttr(open[0], 'hidden')) fail(name, `card ${label}: picker #${controls} is not rendered hidden`);
-        const from = open.index;
-        const close = card.indexOf(`</${open[1]}>`, from);
-        picker = card.slice(from, close === -1 ? undefined : close);
+    if (pickBtn && !/\saria-haspopup="dialog"/.test(pickBtn)) {
+      fail(name, `card ${label}: ADD TO CART button lacks aria-haspopup="dialog"`);
+    }
+    if (pickBtn) {
+      const fallback = pickBtn.match(/\sdata-fallback-href="([^"]*)"/)?.[1];
+      if (fallback !== url(`/products/${handle}`)) {
+        fail(name, `card ${label}: data-fallback-href is "${fallback}", expected ${url(`/products/${handle}`)}`);
       }
     }
 
-    // c. the only data-add-to-cart in the card is the picker's hidden one.
+    // b. aria-controls names a closed <dialog> inside this card, which is the scope.
+    const controls = pickBtn?.match(/aria-controls="([^"]+)"/)?.[1];
+    let dialog = null;
+    if (pickBtn && !controls) fail(name, `card ${label}: ADD TO CART button has no aria-controls`);
+    if (controls) {
+      const open = [...card.matchAll(/<dialog\b[^>]*>/g)].find((m) => m[0].includes(`id="${controls}"`));
+      if (!open) fail(name, `card ${label}: aria-controls #${controls} is not a <dialog> inside the card`);
+      else {
+        if (hasAttr(open[0], 'open')) fail(name, `card ${label}: dialog #${controls} is rendered open`);
+        if (!hasAttr(open[0], 'data-product-wrap')) fail(name, `card ${label}: dialog #${controls} lacks data-product-wrap`);
+        const close = card.indexOf('</dialog>', open.index);
+        dialog = card.slice(open.index, close === -1 ? undefined : close);
+        const labelled = open[0].match(/\saria-labelledby="([^"]+)"/)?.[1];
+        if (!labelled) fail(name, `card ${label}: dialog has no aria-labelledby`);
+        else if (!dialog.includes(`id="${labelled}"`)) {
+          fail(name, `card ${label}: dialog aria-labelledby #${labelled} does not exist inside the dialog`);
+        }
+      }
+    }
+
+    // c. a labelled close button inside the dialog.
+    if (dialog) {
+      const closeBtn = (dialog.match(/<button\b[^>]*>/g) ?? []).find((b) => hasAttr(b, 'data-card-pick-close'));
+      if (!closeBtn) fail(name, `card ${label}: dialog has no data-card-pick-close button`);
+      else if (!/\saria-label="[^"]+"/.test(closeBtn)) fail(name, `card ${label}: close button has no aria-label`);
+    }
+
+    // d. the only data-add-to-cart in the card is the dialog's hidden one.
     const adds = card.match(/<[a-z]+\b[^>]*\bdata-add-to-cart\b[^>]*>/g) ?? [];
     if (adds.length !== 1) fail(name, `card ${label} has ${adds.length} data-add-to-cart elements, expected 1`);
     for (const add of adds) {
       if (!hasAttr(add, 'hidden')) fail(name, `card ${label}: data-add-to-cart is not hidden`);
       if (hasAttr(add, 'data-variant-id')) fail(name, `card ${label}: data-add-to-cart has a fixed data-variant-id`);
-      if (picker && !picker.includes(add)) fail(name, `card ${label}: data-add-to-cart is outside the picker`);
+      if (dialog && !dialog.includes(add)) fail(name, `card ${label}: data-add-to-cart is outside the dialog`);
     }
 
-    // d. the picker's variant JSON and hidden id input.
+    // e. the dialog's variant JSON and hidden id input.
     let variants = null;
-    const json = picker?.match(/<script[^>]*data-variant-json[^>]*>([\s\S]*?)<\/script>/);
-    if (picker && !json) fail(name, `card ${label}: picker has no data-variant-json`);
+    const json = dialog?.match(/<script[^>]*data-variant-json[^>]*>([\s\S]*?)<\/script>/);
+    if (dialog && !json) fail(name, `card ${label}: dialog has no data-variant-json`);
     if (json) {
       try {
         variants = JSON.parse(json[1]);
@@ -445,29 +472,34 @@ for (const route of ['', ...Object.keys(collections).map((h) => `/collections/${
         fail(name, `card ${label}: variant options are not arrays (size pills would be disabled)`);
       }
     }
-    const idInput = card.match(/<input\b[^>]*\bname="id"[^>]*>/)?.[0];
+    const idInput = dialog?.match(/<input\b[^>]*\bname="id"[^>]*>/)?.[0];
     const idValue = idInput?.match(/\bvalue="([^"]*)"/)?.[1];
-    if (!idInput) fail(name, `card ${label}: no input name="id"`);
+    if (dialog && !idInput) fail(name, `card ${label}: dialog has no input name="id"`);
     else if (variants && !variants.some((v) => v.id === idValue)) {
       fail(name, `card ${label}: input id "${idValue}" is not in the variant JSON`);
     }
 
-    // e. no size is preselected: the tap on a size is the add.
-    for (const pill of picker?.match(/<[a-z]+\b[^>]*class="size-pill[^>]*>/g) ?? []) {
+    // f. no size is preselected: the tap on a size is the add.
+    for (const pill of dialog?.match(/<[a-z]+\b[^>]*class="size-pill[^>]*>/g) ?? []) {
       if (/aria-pressed="true"/.test(pill)) fail(name, `card ${label}: a size pill is preselected: ${pill.slice(0, 80)}`);
     }
 
-    // f. a VIEW link to the product page.
+    // h. a VIEW link to the product page.
     const links = [...card.matchAll(/<a\b[^>]*href="[^"]*\/products\/[^"]*"[^>]*>([\s\S]*?)<\/a>/g)].map((m) =>
       m[1].replace(/<[^>]+>/g, ' ').toUpperCase(),
     );
     if (!links.some((t) => t.includes('VIEW'))) fail(name, `card ${label} has no VIEW link to the product`);
 
-    // g. one photo per media entry keyed by colour, exactly one shown, and it is the
-    //    colour of the variant in the hidden input.
-    const colourOpt = product?.options.find((o) => o.name === 'Colour');
-    if (product && colourOpt && colourOpt.values.length > 1) {
-      const frames = card.match(/<img\b[^>]*\bdata-plate-frame\b[^>]*>/g) ?? [];
+    // g. the dialog holds one photo per media entry keyed by colour, exactly one shown,
+    //    and it is the colour of the variant in the hidden input. Frames anywhere else
+    //    in the card would sit in no product-form scope of their own and fight these.
+    const outside = dialog ? card.replace(dialog, '') : card;
+    const strayFrames = (outside.match(/<img\b[^>]*>/g) ?? []).filter((f) => hasAttr(f, 'data-plate-frame'));
+    if (strayFrames.length) {
+      fail(name, `card ${label}: ${strayFrames.length} data-plate-frame img(s) outside the dialog`);
+    }
+    if (product && dialog) {
+      const frames = (dialog.match(/<img\b[^>]*>/g) ?? []).filter((f) => hasAttr(f, 'data-plate-frame'));
       const ids = frames.map((f) => f.match(/\bdata-media-id="([^"]*)"/)?.[1]);
       const want = product.media.map((m) => m.colour);
       if (frames.length !== want.length || want.some((c, i) => ids[i] !== c)) {
