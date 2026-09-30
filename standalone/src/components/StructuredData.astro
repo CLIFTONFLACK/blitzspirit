@@ -10,6 +10,7 @@
 // here, as the `| divided_by: 100.00` filter did.
 import settings from '~/data/settings.json';
 import type { Collection, Product } from '~/lib/catalogue';
+import { safeExternalUrl } from '~/lib/url';
 
 interface Props {
   product?: Product;
@@ -22,12 +23,16 @@ const { product, collection, productImage } = Astro.props;
 const site = (Astro.site ?? new URL(settings.shop.url)).origin;
 const abs = (path: string) => new URL(path, site).href;
 
+// Real profile URLs only: the "#" placeholder is not a profile, and nothing but
+// http(s) belongs in sameAs.
 const sameAs = [
   settings.social.instagram,
   settings.social.tiktok,
   settings.social.x,
   settings.social.facebook,
-].filter(Boolean);
+]
+  .map(safeExternalUrl)
+  .filter((url) => url !== '' && url !== '#');
 
 const organization: Record<string, unknown> = {
   '@context': 'https://schema.org',

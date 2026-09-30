@@ -180,6 +180,12 @@ if (catalogue.products.length > 1) {
     }
 
     if (!home.includes(CAROUSEL_SCRIPT_FINGERPRINT)) fail('/', 'carousel script not inlined on the homepage');
+
+    // modalOpen() in carousel.js holds the carousel still while a card's size picker
+    // is open. Its selector 'dialog[open]' is a string literal, so it survives
+    // minification where the function name does not; without it the card is scrolled
+    // out from under the visitor mid-choice.
+    if (!home.includes('dialog[open]')) fail('/', 'carousel script has no dialog[open] check (it would advance under an open size picker)');
   }
 
   for (const route of routes) {
@@ -377,6 +383,16 @@ for (const route of routes) {
  *  card; the tap on a size in that dialog is the add. The dialog, not the article, is
  *  the product-form scope (data-product-wrap), so the card photo carries no frames. */
 const hasAttr = (tag, attr) => new RegExp(`\\s${attr}(?=[\\s=/>])`).test(tag);
+// Astro escapes ' " & < > in text; compare against the source strings, not the escapes.
+const decodeEntities = (s) =>
+  s
+    .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
+    .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16)))
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'")
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&');
 for (const route of ['', ...Object.keys(collections).map((h) => `/collections/${h}`)]) {
   const doc = html(route || '/');
   if (!doc) continue;
@@ -498,12 +514,37 @@ for (const route of ['', ...Object.keys(collections).map((h) => `/collections/${
     if (strayFrames.length) {
       fail(name, `card ${label}: ${strayFrames.length} data-plate-frame img(s) outside the dialog`);
     }
+    // i. "T-SHIRT" (the catalogue's `type`) is named once in the card info and once in
+    //    the dialog summary: a name like THE FREQUENCY does not say what the thing is.
+    if (product) {
+      const typeOf = (scope) =>
+        [...scope.matchAll(/<[a-z]+\b[^>]*\bclass="[^"]*\bcoll-type\b[^"]*"[^>]*>([^<]*)</g)].map((m) =>
+          decodeEntities(m[1]).trim(),
+        );
+      const inCard = typeOf(outside);
+      if (inCard.length !== 1 || inCard[0] !== product.type) {
+        fail(name, `card ${label}: coll-type in the card info is [${inCard.join(', ')}], expected [${product.type}]`);
+      }
+      const inDialog = dialog ? typeOf(dialog) : [];
+      if (inDialog.length !== 1 || inDialog[0] !== product.type) {
+        fail(name, `card ${label}: coll-type in the dialog is [${inDialog.join(', ')}], expected [${product.type}]`);
+      }
+    }
+
+    // j. a lazy image in a closed <dialog> never starts loading, so every photo in the
+    //    dialog must be eager or the picker opens onto blanks.
+    for (const frame of (dialog?.match(/<img\b[^>]*>/g) ?? []).filter((f) => hasAttr(f, 'data-plate-frame'))) {
+      if (!/\sloading="eager"/.test(frame)) fail(name, `card ${label}: dialog photo is not loading="eager": ${frame.slice(0, 90)}`);
+    }
+
     if (product && dialog) {
       const frames = (dialog.match(/<img\b[^>]*>/g) ?? []).filter((f) => hasAttr(f, 'data-plate-frame'));
       const ids = frames.map((f) => f.match(/\bdata-media-id="([^"]*)"/)?.[1]);
-      const want = product.media.map((m) => m.colour);
+      // One frame per DISTINCT colour, in first-appearance order: a colour can have
+      // several photos in the catalogue, but the card keys its photo by colour.
+      const want = [...new Set(product.media.map((m) => m.colour))];
       if (frames.length !== want.length || want.some((c, i) => ids[i] !== c)) {
-        fail(name, `card ${label}: plate frames [${ids.join(', ')}] do not match media colours [${want.join(', ')}]`);
+        fail(name, `card ${label}: plate frames [${ids.join(', ')}] do not match distinct media colours [${want.join(', ')}]`);
       }
       const shown = frames.filter((f) => !hasAttr(f, 'hidden'));
       if (shown.length !== 1) fail(name, `card ${label}: ${shown.length} plate frames visible, expected 1`);
@@ -548,6 +589,127 @@ for (const route of ['/', ...Object.keys(collections).map((h) => `/collections/$
   if (!add) fail(route, 'featured block has no add button');
   else if (/\bdata-variant-id\b/.test(add[0])) {
     fail(route, 'featured add button has a fixed data-variant-id (always adds one size)');
+  }
+
+  // One photo per distinct colour: frames here are keyed by colourway, so the
+  // product's further photos of a colour belong to its product page and would
+  // show up as duplicate frames with the same data-media-id.
+  const featuredId = sec.match(/<input\b[^>]*\bname="id"[^>]*\svalue="([^"]*)"/)?.[1];
+  const featured = catalogue.products.find((p) => p.variants.some((v) => v.id === featuredId));
+  if (!featured) {
+    fail(route, `featured input id "${featuredId}" is not a catalogue variant`);
+    continue;
+  }
+  const featuredFrames = (sec.match(/<[a-z]+\b[^>]*\sdata-plate-frame(?=[\s=/>])[^>]*>/g) ?? []).map((f) => ({
+    id: decodeEntities(f.match(/\sdata-media-id="([^"]*)"/)?.[1] ?? ''),
+    hidden: hasAttr(f, 'hidden'),
+  }));
+  const featuredWant = [...new Set(featured.media.map((m) => m.colour))];
+  const featuredIds = featuredFrames.map((f) => f.id);
+  if (featuredIds.length !== featuredWant.length || featuredWant.some((c, i) => featuredIds[i] !== c)) {
+    fail(route, `featured ${featured.handle}: plate frames [${featuredIds.join(', ')}] do not match distinct media colours [${featuredWant.join(', ')}]`);
+  }
+  if (new Set(featuredIds).size !== featuredIds.length) {
+    fail(route, `featured ${featured.handle}: two plate frames share a data-media-id [${featuredIds.join(', ')}]`);
+  }
+  const featuredShown = featuredFrames.filter((f) => !f.hidden);
+  if (featuredShown.length !== 1) fail(route, `featured ${featured.handle}: ${featuredShown.length} plate frames visible, expected 1`);
+}
+
+/** Product page gallery. Every media entry gets its own frame and (past one photo) its
+ *  own thumb; exactly one frame shows, the first photo of the colour the hidden id
+ *  input starts on. The thumb rail shows only that colour's photos until the inline
+ *  script swaps them, so a thumb of another colour rendered without `hidden` is a
+ *  photo the visitor is offered but that belongs to a different shirt. */
+for (const product of catalogue.products) {
+  const route = `/products/${product.handle}`;
+  const doc = html(route);
+  if (!doc) continue;
+
+  const start = doc.indexOf('class="pdp-gallery"');
+  const end = start === -1 ? -1 : doc.indexOf('class="pdp-ledger"', start);
+  if (start === -1 || end === -1) {
+    fail(route, 'no pdp-gallery / pdp-ledger to check the gallery in');
+    continue;
+  }
+  const gallery = doc.slice(start, end);
+
+  // The current colour is that of the variant in the buy box's hidden id input.
+  const buyStart = doc.indexOf('class="pdp-buy"');
+  const idValue = (buyStart === -1 ? '' : doc.slice(buyStart)).match(/<input\b[^>]*\bname="id"[^>]*\svalue="([^"]*)"/)?.[1];
+  const currentVariant = product.variants.find((v) => v.id === idValue);
+  if (!currentVariant) {
+    fail(route, `pdp-buy input id "${idValue}" is not a variant of the product`);
+    continue;
+  }
+  const currentColour = currentVariant.options.Colour;
+  const currentIndex = product.media.findIndex((m) => m.colour === currentColour);
+  if (currentIndex === -1) {
+    fail(route, `no media entry for the current colour ${currentColour}`);
+    continue;
+  }
+  const currentSrc = product.media[currentIndex].src;
+
+  // Frames: one per entry, in order, exactly one shown.
+  const frames = gallery.match(/<[a-z]+\b[^>]*\sdata-plate-frame(?=[\s=/>])[^>]*>/g) ?? [];
+  const frameIds = frames.map((f) => f.match(/\sdata-media-id="([^"]*)"/)?.[1]);
+  const wantSrcs = product.media.map((m) => m.src);
+  if (frames.length !== wantSrcs.length || wantSrcs.some((s, i) => frameIds[i] !== s)) {
+    fail(route, `gallery frames [${frameIds.join(', ')}] do not match media [${wantSrcs.join(', ')}]`);
+  }
+  const shownIds = frames.filter((f) => !hasAttr(f, 'hidden')).map((f) => f.match(/\sdata-media-id="([^"]*)"/)?.[1]);
+  if (shownIds.length !== 1) fail(route, `${shownIds.length} gallery frames visible [${shownIds.join(', ')}], expected 1`);
+  else if (shownIds[0] !== currentSrc) {
+    fail(route, `visible gallery frame is ${shownIds[0]}, expected ${currentSrc} (first ${currentColour} photo)`);
+  }
+
+  // Thumb rail: only when there is more than one photo.
+  if (product.media.length > 1) {
+    const rail = gallery.match(/<div\b[^>]*\bclass="pdp-thumbs"[^>]*>/)?.[0];
+    const colourIndex = product.options.findIndex((o) => o.name === 'Colour');
+    if (!rail) fail(route, `${product.media.length} photos but no pdp-thumbs rail`);
+    else if (rail.match(/\sdata-thumb-colours="([^"]*)"/)?.[1] !== String(colourIndex)) {
+      fail(route, `pdp-thumbs data-thumb-colours is "${rail.match(/\sdata-thumb-colours="([^"]*)"/)?.[1]}", expected ${colourIndex}`);
+    }
+    const thumbs = (gallery.match(/<button\b[^>]*>/g) ?? []).filter((b) => hasAttr(b, 'data-thumb'));
+    if (thumbs.length !== product.media.length) {
+      fail(route, `${thumbs.length} data-thumb buttons, expected ${product.media.length}`);
+    }
+    product.media.forEach((media, i) => {
+      const thumb = thumbs[i];
+      if (!thumb) return;
+      const thumbAt = `thumb ${i + 1} (${media.src})`;
+      if (thumb.match(/\sdata-media-id="([^"]*)"/)?.[1] !== media.src) fail(route, `${thumbAt}: data-media-id is not the entry's src`);
+      if (decodeEntities(thumb.match(/\sdata-colour="([^"]*)"/)?.[1] ?? '') !== media.colour) {
+        fail(route, `${thumbAt}: data-colour is not ${media.colour}`);
+      }
+      const shouldHide = media.colour !== currentColour;
+      if (hasAttr(thumb, 'hidden') !== shouldHide) {
+        fail(route, `${thumbAt}: ${shouldHide ? 'is a different colour to the current one but is not hidden' : 'is the current colour but is hidden'}`);
+      }
+      const pressed = thumb.match(/\saria-pressed="([^"]*)"/)?.[1];
+      if (pressed !== (i === currentIndex ? 'true' : 'false')) {
+        fail(route, `${thumbAt}: aria-pressed is "${pressed}", expected "${i === currentIndex}"`);
+      }
+    });
+  }
+
+  // Images: every one processed, and every frame holds a real photo, not a placeholder.
+  const imgs = gallery.match(/<img\b[^>]*>/g) ?? [];
+  const plates = imgs.filter((img) => hasAttr(img, 'data-plate'));
+  if (plates.length !== product.media.length) {
+    fail(route, `${plates.length} gallery photos rendered (data-plate), expected ${product.media.length}`);
+  }
+  for (const img of imgs) {
+    const srcset = img.match(/\ssrcset="([^"]*)"/)?.[1] ?? '';
+    const urls = [
+      img.match(/\ssrc="([^"]*)"/)?.[1],
+      ...srcset.split(',').map((s) => s.trim().split(/\s+/)[0]).filter(Boolean),
+    ];
+    for (const u of urls) {
+      if (!u || !u.startsWith(url('/_astro/'))) fail(route, `gallery image is not a processed _astro/ file: ${u}`);
+      else if (!existsSync(join(dist, u.slice(BASE.length)))) fail(route, `gallery image not in the build: ${u}`);
+    }
   }
 }
 
@@ -606,6 +768,197 @@ for (const product of catalogue.products) {
         fail(`/products/${m[1]}`, `no link back to /icons#${anchor}`);
       }
     }
+  }
+}
+
+const strings = JSON.parse(readFileSync(join(root, 'src/data/strings.json'), 'utf8'));
+const jsonLdOf = (doc) =>
+  [...doc.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)].map((m) => m[1]);
+
+/** Reviews. A sample review (placeholder copy written by us) must never reach a
+ *  customer unlabelled, so this is checked on the data AND on every built page.
+ *  The data checks come first because a typo there ("sample": "false", "Sample": true)
+ *  is exactly what would silently drop the label. */
+const reviewsFile = JSON.parse(readFileSync(join(root, 'src/data/reviews.json'), 'utf8'));
+const reviews = Array.isArray(reviewsFile.reviews) ? reviewsFile.reviews : [];
+if (!Array.isArray(reviewsFile.reviews)) fail('reviews.json', 'no "reviews" array');
+const handles = catalogue.products.map((p) => p.handle);
+reviews.forEach((review, i) => {
+  const at = `reviews.json[${i}]`;
+  for (const key of ['product', 'name', 'text']) {
+    if (typeof review[key] !== 'string' || !review[key].trim()) fail(at, `${key} is missing or empty`);
+  }
+  if (typeof review.product === 'string' && !handles.includes(review.product)) {
+    fail(at, `product "${review.product}" is not a catalogue handle`);
+  }
+  if ('sample' in review && review.sample !== true) {
+    fail(at, `sample is ${JSON.stringify(review.sample)}; when present it must be boolean true`);
+  }
+  for (const key of Object.keys(review)) {
+    if (!['product', 'name', 'text', 'sample'].includes(key)) {
+      fail(at, `unknown key "${key}" (a misspelt "sample" would unlabel the entry)`);
+    }
+  }
+  if (/sample/i.test(review.name ?? '') && review.sample !== true) {
+    fail(at, `name "${review.name}" says sample but the entry is not flagged sample: true`);
+  }
+});
+
+for (const product of catalogue.products) {
+  const route = `/products/${product.handle}`;
+  const doc = html(route);
+  if (!doc) continue;
+  const mine = reviews.filter((r) => r.product === product.handle);
+  const start = doc.indexOf('<section class="pdp-reviews"');
+  if (!mine.length) {
+    if (start !== -1) fail(route, 'renders a reviews section for a product with no reviews');
+    continue;
+  }
+  if (start === -1) {
+    fail(route, `no reviews section, but reviews.json has ${mine.length} for this product`);
+    continue;
+  }
+  const section = doc.slice(start, doc.indexOf('</section>', start));
+  const items = section.match(/<li\b[^>]*\bclass="review"[^>]*>[\s\S]*?<\/li>/g) ?? [];
+  if (items.length !== mine.length) {
+    fail(route, `${items.length} class="review" items rendered, reviews.json has ${mine.length}`);
+  }
+  const tagRe = new RegExp(`<span\\b[^>]*\\bclass="review-tag"[^>]*>\\s*${strings.reviews.sample_tag}\\s*</span>`);
+  for (const review of mine) {
+    const item = items.find((li) => decodeEntities(li).includes(review.text));
+    if (!item) {
+      fail(route, `review not shown: "${review.text.slice(0, 40)}"`);
+      continue;
+    }
+    const openTag = item.match(/^<li\b[^>]*>/)[0];
+    const tag = item.match(/<span\b[^>]*\bclass="review-tag"[^>]*>/)?.[0];
+    if (review.sample === true) {
+      if (!hasAttr(openTag, 'data-sample')) fail(route, `SAMPLE review has no data-sample: "${review.text.slice(0, 40)}"`);
+      if (!tagRe.test(item)) fail(route, `SAMPLE review rendered without the ${strings.reviews.sample_tag} tag: "${review.text.slice(0, 40)}"`);
+      if (tag && hasAttr(tag, 'hidden')) fail(route, `SAMPLE tag is hidden: "${review.text.slice(0, 40)}"`);
+      if (hasAttr(openTag, 'hidden')) fail(route, `SAMPLE review is hidden: "${review.text.slice(0, 40)}"`);
+    } else if (hasAttr(openTag, 'data-sample') || tag) {
+      fail(route, `a real review is labelled as a sample: "${review.text.slice(0, 40)}"`);
+    }
+  }
+  if (mine.some((r) => r.sample === true) && !decodeEntities(section).includes(strings.reviews.sample_note)) {
+    fail(route, 'samples are shown but the "not written by customers" note is missing');
+  }
+  if (!mine.some((r) => r.sample === true) && section.includes('reviews-note')) {
+    fail(route, 'samples note shown with no samples');
+  }
+  if (/[★☆]/.test(section)) fail(route, 'star glyph in the reviews section (no ratings exist)');
+}
+
+for (const route of routes) {
+  const doc = html(route || '/');
+  if (!doc) continue;
+  for (const block of jsonLdOf(doc)) {
+    if (/"review"|"aggregateRating"|"ratingValue"/i.test(block) || /"@type"\s*:\s*"(?:Aggregate)?(?:Rating|Review)"/i.test(block)) {
+      fail(route || '/', 'JSON-LD carries review or rating data (samples are not customer reviews)');
+    }
+  }
+}
+
+/** Bag delivery row. cart.js reads these two numbers to show delivery, so they must be
+ *  the ones api/_order.js charges by. The rule itself sits inside cart.js's IIFE, so it
+ *  is not reachable from here; tools/test-order.mjs pins the server side of it. */
+for (const route of routes) {
+  const doc = html(route || '/');
+  if (!doc) continue;
+  const name = route || '/';
+  const rows = doc.match(/<div\b[^>]*\bdata-cart-delivery(?=[\s=>])[^>]*>/g) ?? [];
+  if (!rows.length) fail(name, 'no data-cart-delivery row (bag shows no delivery cost)');
+  for (const row of rows) {
+    if (!hasAttr(row, 'hidden')) fail(name, 'delivery row is not rendered hidden (shows before the bag has items)');
+    const standard = row.match(/\sdata-standard-pence="([^"]*)"/)?.[1];
+    const threshold = row.match(/\sdata-free-threshold="([^"]*)"/)?.[1];
+    const label = row.match(/\sdata-free-label="([^"]*)"/)?.[1];
+    if (standard !== String(settings.shipping.ukStandardPence)) {
+      fail(name, `delivery row data-standard-pence is "${standard}", server charges ${settings.shipping.ukStandardPence}`);
+    }
+    if (threshold !== String(settings.shipping.freeThresholdPence)) {
+      fail(name, `delivery row data-free-threshold is "${threshold}", server threshold is ${settings.shipping.freeThresholdPence}`);
+    }
+    if (decodeEntities(label ?? '') !== strings.cart.delivery_free) {
+      fail(name, `delivery row data-free-label is "${label}", expected "${strings.cart.delivery_free}"`);
+    }
+  }
+  const terms = [...doc.matchAll(/<p\b[^>]*\bclass="cart-note cart-terms"[^>]*>([^<]*)</g)].map((m) => decodeEntities(m[1]).trim());
+  if (terms.length !== rows.length) fail(name, `${terms.length} terms lines for ${rows.length} delivery rows`);
+  for (const text of terms) {
+    if (text !== strings.cart.terms) fail(name, `terms line is "${text}", expected "${strings.cart.terms}"`);
+  }
+  if (name === '/cart') {
+    const mainStart = doc.indexOf('class="main-cart"');
+    const mainEnd = mainStart === -1 ? -1 : doc.indexOf('</section>', mainStart);
+    const inMain = mainStart === -1 ? '' : doc.slice(mainStart, mainEnd === -1 ? undefined : mainEnd);
+    const mainRows = inMain.match(/\bdata-cart-delivery(?=[\s=>])/g) ?? [];
+    if (mainRows.length !== 1) fail(name, `expected one delivery row inside class="main-cart", found ${mainRows.length}`);
+    if (rows.length !== 2) fail(name, `expected the page row plus the drawer's (2), found ${rows.length}`);
+  }
+}
+
+/** /story carries the origin section between the 1940 and today sections. */
+{
+  const story = html('/story');
+  const pageData = JSON.parse(readFileSync(join(root, 'src/data/pages/story.json'), 'utf8'));
+  const headingOf = (id) => pageData.sections.find((s) => s.id === id)?.settings?.heading;
+  if (story) {
+    const at = {};
+    for (const id of ['split-1940', 'split-origin', 'split-today']) {
+      const heading = headingOf(id);
+      if (!heading) {
+        fail('/story', `story.json has no ${id} heading`);
+        continue;
+      }
+      at[id] = decodeEntities(story).indexOf(`>${heading}<`);
+      if (at[id] === -1) fail('/story', `${id} heading "${heading}" not rendered`);
+    }
+    if (at['split-origin'] > -1 && !(at['split-1940'] < at['split-origin'] && at['split-origin'] < at['split-today'])) {
+      fail('/story', 'split-origin section is not between split-1940 and split-today');
+    }
+  }
+}
+
+/** Social links: settings.social.* goes through safeExternalUrl(), so a stray
+ *  javascript: value in the file cannot become an href or a sameAs entry. */
+const SAFE_EXTERNAL = /^https?:\/\/\S+$/i;
+for (const route of routes) {
+  const doc = html(route || '/');
+  if (!doc) continue;
+  const name = route || '/';
+  const start = doc.indexOf('<header class="masthead"');
+  const head = start === -1 ? '' : doc.slice(start, doc.indexOf('</header>', start));
+  for (const anchor of head.match(/<a\b[^>]*>/g) ?? []) {
+    if (!/\starget="_blank"/.test(anchor)) continue;
+    const target = decodeEntities(anchor.match(/\shref="([^"]*)"/)?.[1] ?? '');
+    if (target !== '#' && !SAFE_EXTERNAL.test(target)) {
+      fail(name, `masthead external link has an unsafe href: "${target}"`);
+    }
+  }
+  for (const block of jsonLdOf(doc)) {
+    let data;
+    try {
+      data = JSON.parse(block);
+    } catch {
+      fail(name, 'JSON-LD is not valid JSON');
+      continue;
+    }
+    const walk = (node) => {
+      if (Array.isArray(node)) return node.forEach(walk);
+      if (!node || typeof node !== 'object') return;
+      if ('sameAs' in node) {
+        const list = Array.isArray(node.sameAs) ? node.sameAs : [node.sameAs];
+        for (const entry of list) {
+          if (typeof entry !== 'string' || !SAFE_EXTERNAL.test(entry)) {
+            fail(name, `JSON-LD sameAs entry is not an http(s) URL: ${JSON.stringify(entry)}`);
+          }
+        }
+      }
+      Object.values(node).forEach(walk);
+    };
+    walk(data);
   }
 }
 

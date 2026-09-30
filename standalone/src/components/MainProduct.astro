@@ -89,6 +89,9 @@ const entryNum = indexRef.startsWith('#') ? indexRef.slice(1) : '';
 
 const currentMedia = mediaForColour(product, currentVariant.options.Colour);
 const currentMediaId = currentMedia?.src ?? '';
+// Where Colour sits in each variant's options array (variantFormData keeps the
+// product's option order), so the gallery script can read a variant's colour.
+const colourIndex = product.options.findIndex((o) => ['colour', 'color'].includes(o.name.toLowerCase()));
 
 const titleUp = product.title.toUpperCase();
 const startsWithThe = titleUp.startsWith('THE ');
@@ -144,8 +147,11 @@ const archiveLine = [
   <div class="pdp">
     <div class="pdp-gallery">
       <div class="pdp-gallery-row">
+        {/* A colourway can have several photos. The rail shows the ones for the
+            colour currently chosen; the script at the foot of this file swaps the
+            set when the colour changes. */}
         {product.media.length > 1 && (
-          <div class="pdp-thumbs">
+          <div class="pdp-thumbs" data-thumb-colours={colourIndex}>
             {product.media.map((media) => (
               <button
                 type="button"
@@ -153,6 +159,8 @@ const archiveLine = [
                 data-thumb
                 data-media-id={media.src}
                 data-image-id={media.src}
+                data-colour={media.colour}
+                hidden={media.colour !== currentMedia?.colour}
                 aria-pressed={media.src === currentMediaId ? 'true' : 'false'}
                 aria-label={media.alt}
               >
@@ -173,7 +181,7 @@ const archiveLine = [
               >
                 <Plate
                   src={media.src}
-                  alt={product.title}
+                  alt={media.alt || product.title}
                   priority={media.src === currentMediaId}
                   sizes="(min-width: 860px) 36vw, 80vw"
                 />
@@ -313,6 +321,28 @@ const archiveLine = [
     </div>
   </div>
 </section>
+
+<script>
+  // Keep the thumbnail rail on the chosen colour's photos. product-form.js fires
+  // variant:change (bubbling) whenever a pill or a thumbnail changes the variant;
+  // its detail carries the variant, whose options array holds the colour at the
+  // index the rail was rendered with.
+  document.addEventListener('variant:change', (event) => {
+    const form = event.target instanceof Element ? event.target : null;
+    const scope = form?.closest('[data-product-wrap]');
+    const rail = scope?.querySelector('[data-thumb-colours]');
+    const variant = (event as CustomEvent).detail?.variant;
+    if (!rail || !variant || !Array.isArray(variant.options)) return;
+
+    const index = parseInt(rail.getAttribute('data-thumb-colours') ?? '', 10);
+    const colour = variant.options[index];
+    if (typeof colour !== 'string') return;
+
+    rail.querySelectorAll<HTMLElement>('[data-thumb][data-colour]').forEach((thumb) => {
+      thumb.hidden = thumb.getAttribute('data-colour') !== colour;
+    });
+  });
+</script>
 
 <style is:global>
   /* Global rather than scoped: product-form.js injects nothing, but the option pills,

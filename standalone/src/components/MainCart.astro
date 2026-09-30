@@ -54,6 +54,20 @@ const { heading = 'Full Ledger.' } = Astro.props;
       <span>[ {strings.cart.subtotal} ]</span>
       <b data-cart-subtotal>{formatMoney(0)}</b>
     </div>
+    {/* Same row as the drawer's: cart.js fills it in from these two numbers, which
+        are the ones api/_order.js charges by. */}
+    <div
+      class="cart-sum"
+      data-cart-delivery
+      data-standard-pence={settings.shipping.ukStandardPence}
+      data-free-threshold={settings.shipping.freeThresholdPence}
+      data-free-label={strings.cart.delivery_free}
+      hidden
+    >
+      <span>[ {strings.cart.delivery} ]</span>
+      <b data-cart-delivery-amount></b>
+    </div>
+    <p class="cart-note cart-terms">{strings.cart.terms}</p>
     <div class="main-cart-actions">
       <button type="button" class="cart-checkout snap" data-checkout disabled>[ {strings.cart.checkout} ]</button>
     </div>
@@ -140,6 +154,9 @@ const { heading = 'Full Ledger.' } = Astro.props;
     margin-top: var(--s2);
   }
   .main-cart-continue { max-width: 420px; margin: var(--s3) auto 0; }
+  /* theme.css paints the totals white for the black drawer. This page is white,
+     so the subtotal and delivery amounts were invisible here. */
+  .main-cart .cart-sum b { color: var(--ink); }
   @media (max-width: 640px) {
     .main-cart-lines .cart-row { grid-template-columns: 64px minmax(0, 1fr); }
     .main-cart-lines .ci-controls { grid-column: 2; }

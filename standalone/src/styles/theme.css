@@ -127,6 +127,11 @@ a { color:inherit; text-decoration:none; }
 .cart-foot { border-top:1px solid var(--line); padding-top:var(--s3); margin-top:var(--s3); }
 .cart-sum { display:flex; justify-content:space-between; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--bone); margin-bottom:var(--s2); }
 .cart-sum b { color:#fff; font-weight:400; }
+/* The delivery row stays out of sight until cart.js knows what it will cost;
+   display:flex above would otherwise beat the [hidden] attribute. */
+.cart-sum[hidden] { display:none; }
+/* Returns and lead time, between the totals and the checkout button. */
+.cart-terms { margin:0 0 var(--s2); }
 .cart-checkout { width:100%; border:1px solid var(--accent); background:var(--accent); color:#fff; padding:16px; font-size:12px; letter-spacing:.18em; text-transform:uppercase; }
 .cart-checkout:hover { background:#fff; color:var(--ink); border-color:#fff; }
 .cart-note { font-size:11px; color:var(--bone-mute); text-align:center; letter-spacing:.08em; margin-top:10px; text-transform:uppercase; }
@@ -507,6 +512,7 @@ a { color:inherit; text-decoration:none; }
 .coll-info { background:var(--panel); padding:var(--s2) var(--s3) var(--s3); flex:1; display:flex; flex-direction:column; gap:8px; border-top:1px solid var(--line); }
 .coll-name { color:var(--cream); font-size:24px; line-height:.95; margin-top:4px; }
 .coll-name .the { color:var(--accent); display:block; }
+.coll-type { color:var(--bone-mute); }
 .coll-price { color:var(--ink); font-size:18px; letter-spacing:.04em; font-family:var(--display-font); font-weight:400; }
 .coll-dots { display:flex; gap:5px; align-items:center; margin:2px 0 8px; }
 .coll-dot { display:inline-block; width:10px; height:10px; background:var(--dot,#333); border:1px solid rgba(255,255,255,.2); }

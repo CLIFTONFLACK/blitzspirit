@@ -25,6 +25,7 @@ import OptionPills from './OptionPills.astro';
 import strings from '~/data/strings.json';
 import { asset, assetOrNull } from '~/lib/images';
 import {
+  colourMedia,
   firstAvailableVariant,
   mediaForColour,
   pickerOptions,
@@ -97,6 +98,8 @@ const sizes = '(min-width: 860px) 33vw, (min-width: 540px) 50vw, 100vw';
         titleUp
       )}
     </h3>
+    {/* Says what the thing is: a name like THE FREQUENCY does not. */}
+    {product.type && <span class="eyebrow coll-type">{product.type}</span>}
     {colourOption && (
       <div class="coll-dots">
         {colourOption.values.map((v) => <Swatch value={v.value} />)}
@@ -137,14 +140,17 @@ const sizes = '(min-width: 860px) 33vw, (min-width: 540px) 50vw, 100vw';
 
         <div class="card-pick-head">
           {/* One photo per colourway; product-form.js shows the one for the colour
-              picked by toggling [hidden]. */}
+              picked by toggling [hidden]. Eager: a lazy image inside a closed
+              dialog never starts loading, so the photo would arrive after the
+              modal opened. They are 240px wide, so the cost is small. */}
           <div class="card-pick-photo">
-            {product.media.map((media) => (
+            {colourMedia(product).map((media) => (
               <Image
                 src={asset(media.src)}
                 alt={media.alt ?? product.title}
                 width={240}
-                loading="lazy"
+                loading="eager"
+                decoding="async"
                 data-plate-frame
                 data-media-id={media.colour}
                 hidden={media !== currentMedia}
@@ -153,6 +159,7 @@ const sizes = '(min-width: 860px) 33vw, (min-width: 540px) 50vw, 100vw';
           </div>
           <div class="card-pick-summary">
             <h2 class="chunk card-pick-title" id={`${pickId}-title`}>{titleUp}</h2>
+            {product.type && <span class="eyebrow coll-type">{product.type}</span>}
             <span class="coll-price"><Price product={product} showVat={false} /></span>
           </div>
         </div>

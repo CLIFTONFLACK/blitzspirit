@@ -41,6 +41,15 @@ export function handleize(value: string): string {
     .replace(/^-+|-+$/g, '');
 }
 
+/** A value from settings that is about to become an href to another site: "#"
+ *  (placeholder) or an absolute http(s) URL passes, anything else comes back as
+ *  '' so the caller renders no link. api/_content.js refuses such a value when
+ *  the copy editor saves it; this covers one already sitting in the file. */
+export function safeExternalUrl(value: string | undefined | null): string {
+  if (typeof value !== 'string') return '';
+  return value === '#' || /^https?:\/\/[^\s]+$/i.test(value) ? value : '';
+}
+
 /** The site root, for "back to base" style links. */
 export const home = BASE;
 

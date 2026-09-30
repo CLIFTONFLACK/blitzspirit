@@ -23,6 +23,9 @@
     "remove": "REMOVE",
     "view_bag": "VIEW BAG",
     "subtotal": "SUBTOTAL",
+    "delivery": "UK DELIVERY",
+    "delivery_free": "FREE",
+    "terms": "30-day returns. Printed to order, 5–10 working days.",
     "quantity": "QTY",
     "update": "UPDATE",
     "free_shipping_away": "{{ amount }} MORE FOR FREE UK DELIVERY",
@@ -41,6 +44,11 @@
     "inc_vat": "// INC. VAT",
     "choose_colour": "COLOUR",
     "choose_size": "SIZE"
+  },
+  "reviews": {
+    "heading": "Reviews.",
+    "sample_note": "Sample reviews, shown to illustrate the layout. Not written by customers.",
+    "sample_tag": "SAMPLE"
   },
   "newsletter": {
     "label": "EMAIL ADDRESS",

@@ -104,7 +104,21 @@ export function firstAvailableVariant(product: Product): Variant {
   return product.variants.find((v) => v.available) ?? product.variants[0];
 }
 
-/** The photo for a colourway, falling back to the first image. */
+/** One photo per colourway: the first listed for each colour. A product can carry
+ *  several photos of one colour; the product page shows them all, but anything
+ *  that keys its photos by colour (the card's size modal, the featured block)
+ *  wants exactly one each, or product-form.js would find two frames for a colour. */
+export function colourMedia(product: Product): Media[] {
+  const seen = new Set<string>();
+  return product.media.filter((media) => {
+    if (seen.has(media.colour)) return false;
+    seen.add(media.colour);
+    return true;
+  });
+}
+
+/** The photo for a colourway (its first, when it has several), falling back to
+ *  the first image. */
 export function mediaForColour(product: Product, colour: string | undefined): Media | undefined {
   if (!colour) return product.media[0];
   return product.media.find((m) => m.colour === colour) ?? product.media[0];

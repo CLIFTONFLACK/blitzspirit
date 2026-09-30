@@ -1,6 +1,6 @@
 ---
-// The Story — templates/page.story.json: hero, split-1940, split-today,
-// house-rules, newsletter.
+// The Story — templates/page.story.json: hero, split-1940, split-origin,
+// split-today, house-rules, newsletter.
 import Base from '~/layouts/Base.astro';
 import PageHero from '~/components/PageHero.astro';
 import AboutSplit from '~/components/AboutSplit.astro';
@@ -13,6 +13,7 @@ import { settings, blocks, type PageData } from '~/lib/pages';
 const page = pageData as PageData;
 const hero = settings(page, 'hero');
 const nineteenForty = settings(page, 'split-1940');
+const origin = settings(page, 'split-origin');
 const today = settings(page, 'split-today');
 const news = settings(page, 'newsletter');
 
@@ -40,6 +41,7 @@ const split = (s: Record<string, any>) => ({
     editBase="pages/story:hero"
   />
   <AboutSplit {...split(nineteenForty)} editBase="pages/story:split-1940" />
+  <AboutSplit {...split(origin)} editBase="pages/story:split-origin" />
   <AboutSplit {...split(today)} editBase="pages/story:split-today" />
   <ValuesGrid blocks={blocks(page, 'house-rules')} editBase="pages/story:house-rules" />
   <Newsletter

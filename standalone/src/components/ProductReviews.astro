@@ -1,0 +1,97 @@
+---
+// ProductReviews — reviews for one product, from src/data/reviews.json.
+//
+// An entry marked `sample: true` is placeholder copy written by us, not by a
+// customer, and it must never read as anything else: each one carries a visible
+// SAMPLE tag, and while any are showing the block opens with a line saying so.
+// A real review is an entry without `sample`; once no samples are left for a
+// product, the note goes with them.
+//
+// Deliberately absent: star ratings, counts, and any Review / AggregateRating
+// structured data. A sample has no rating to give, and a search engine reading
+// one as a customer review would be the same deception in a different place.
+// tools/check-build.mjs holds the build to all of this.
+//
+// Renders nothing for a product with no entries.
+import reviewsData from '~/data/reviews.json';
+import strings from '~/data/strings.json';
+
+interface Review {
+  product: string;
+  name: string;
+  text: string;
+  sample?: boolean;
+}
+
+interface Props {
+  /** Product handle. */
+  handle: string;
+}
+
+const { handle } = Astro.props;
+
+const reviews = (reviewsData.reviews as Review[]).filter((review) => review.product === handle);
+const hasSamples = reviews.some((review) => review.sample);
+const headingId = `Reviews-${handle}`;
+---
+{reviews.length > 0 && (
+  <section class="pdp-reviews" aria-labelledby={headingId}>
+    <div class="reviews-inner">
+      <h2 class="chunk reviews-head" id={headingId}>{strings.reviews.heading}</h2>
+      {hasSamples && <p class="reviews-note">{strings.reviews.sample_note}</p>}
+
+      <ul class="reviews-list">
+        {reviews.map((review) => (
+          <li class="review" data-sample={review.sample ? 'true' : undefined}>
+            {review.sample && <span class="review-tag">{strings.reviews.sample_tag}</span>}
+            <blockquote class="review-text">{review.text}</blockquote>
+            <p class="eyebrow review-name">{review.name}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+)}
+
+<style>
+  .pdp-reviews {
+    padding: var(--s5) var(--s3);
+    border-bottom: 1px solid var(--line);
+    background: var(--panel-2);
+  }
+  .reviews-inner { max-width: 1027px; margin: 0 auto; display: flex; flex-direction: column; gap: var(--s2); }
+  .reviews-head { color: var(--ink); font-size: clamp(1.8rem, 3.5vw, 2.8rem); line-height: 0.95; }
+  .reviews-note { color: var(--bone-mute); font-size: 14px; line-height: 1.6; max-width: 60ch; }
+  .reviews-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--s3);
+    margin-top: var(--s2);
+  }
+  .review {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    padding: var(--s3);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s2);
+  }
+  .review-tag {
+    background: var(--ink);
+    color: #fff;
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+  }
+  .review-text { color: var(--bone); font-size: 16px; line-height: 1.6; }
+  .review-name { color: var(--bone-mute); }
+
+  @media (max-width: 860px) {
+    .reviews-list { grid-template-columns: 1fr; gap: var(--s2); }
+  }
+</style>

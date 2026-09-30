@@ -57,6 +57,20 @@ import { href } from '~/lib/url';
       <span>[ {strings.cart.subtotal} ]</span>
       <b data-cart-subtotal>{formatMoney(0)}</b>
     </div>
+    {/* cart.js fills this in and shows it once there is something in the bag. The
+        two numbers are the ones api/_order.js charges by. */}
+    <div
+      class="cart-sum"
+      data-cart-delivery
+      data-standard-pence={settings.shipping.ukStandardPence}
+      data-free-threshold={settings.shipping.freeThresholdPence}
+      data-free-label={strings.cart.delivery_free}
+      hidden
+    >
+      <span>[ {strings.cart.delivery} ]</span>
+      <b data-cart-delivery-amount></b>
+    </div>
+    <p class="cart-note cart-terms">{strings.cart.terms}</p>
     <button type="button" class="cart-checkout snap" data-checkout disabled>[ {strings.cart.checkout} ]</button>
     <a href={href("/cart")} class="cart-view snap">[ {strings.cart.view_bag} ]</a>
     {settings.cart.note && <p class="cart-note">{settings.cart.note}</p>}
