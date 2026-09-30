@@ -23,7 +23,7 @@
           "id": "meta-2",
           "type": "meta_tag",
           "settings": {
-            "text": "FOUR FILES"
+            "text": "THREE FILES"
           }
         },
         {
@@ -51,21 +51,24 @@
       },
       "blocks": [
         {
-          "id": "boudica",
+          "id": "skull-brollies",
           "type": "icon",
           "settings": {
-            "num": "FILE 01 / AD 60",
-            "heading": "Boudica",
-            "description": "<p>Queen of the Iceni. When Rome (the largest military machine on Earth) broke its word, burned her lands and bet she’d kneel, she raised East Anglia and burned <em>their</em> cities instead. Londinium learned her name the hard way.</p><p>Our Boudica carries the trident and the shield because she was never just a rebel: she’s the original guardian of these islands. The first and fiercest entry in the blitz spirit ledger, nineteen centuries before anyone coined the phrase.</p><p><strong>She doesn’t ask. She doesn’t explain. She stands.</strong></p>",
-            "meta_1": "Not currently issued",
-            "meta_2": "File kept open",
-            "cta_label": "[ CHOOSE BOUDICA ]"
+            "image": "/assets/products/tee-skull-black-colour.jpg",
+            "num": "FILE 01 / THE CITY GENT",
+            "heading": "Skull & Brollies",
+            "description": "<p>The bowler hat and the umbrella: the most polite uniform ever invented. The man who wore it queued properly, apologised when you stepped on <em>his</em> foot, and walked to work through rubble with the morning paper under his arm, daring the Luftwaffe to make him late.</p><p>Cross the brollies like cutlasses, put the skull under the brim, and you get the truth of him: courtesy is not weakness. It’s the Jolly Roger of good manners, <em>politely menacing since the Blitz</em>.</p><p><strong>Keep calm. With teeth.</strong></p>",
+            "meta_1": "On the shirt: The Establishment",
+            "meta_2": "Colour print on Black",
+            "cta_label": "[ SHOP THIS DESIGN ]",
+            "cta_link": "/products/the-establishment"
           }
         },
         {
           "id": "roundel",
           "type": "icon",
           "settings": {
+            "image": "/assets/products/tee-roundel-navy.jpg",
             "num": "FILE 02 / 1940 → 1964",
             "heading": "The Roundel",
             "description": "<p>It started on the wings of Spitfires: the RAF roundel, painted over Kent in the summer of 1940. A generation later the mods lifted it onto parkas and scooters and made it the sharpest mark in British street culture. Same circle, same defiance, better tailoring.</p><p>Ours plays the long game: from a distance it’s a classic mod target. Up close, every ring is <em>built entirely from the word blitzspirit</em>, repeated like a drumbeat. No extra logo. No signature. Just the brand, in the brand.</p><p><strong>A mod icon. Closer look. Same spirit.</strong></p>",
@@ -76,28 +79,17 @@
           }
         },
         {
-          "id": "skull-brollies",
+          "id": "stubborn",
           "type": "icon",
           "settings": {
-            "num": "FILE 03 / THE CITY GENT",
-            "heading": "Skull & Brollies",
-            "description": "<p>The bowler hat and the umbrella: the most polite uniform ever invented. The man who wore it queued properly, apologised when you stepped on <em>his</em> foot, and walked to work through rubble with the morning paper under his arm, daring the Luftwaffe to make him late.</p><p>Cross the brollies like cutlasses, put the skull under the brim, and you get the truth of him: courtesy is not weakness. It’s the Jolly Roger of good manners, <em>politely menacing since the Blitz</em>.</p><p><strong>Keep calm. With teeth.</strong></p>",
-            "meta_1": "On the shirt: The Establishment",
-            "meta_2": "Colour print on Black",
+            "image": "/assets/products/tee-stubborn-black.png",
+            "num": "FILE 03 / THE REFUSAL",
+            "heading": "The Stubborn",
+            "description": "<p>The Blitz, the weather, the pub queue. There is a particular British refusal that needs no flag and no speech: the quiet decision not to be moved. Told to give up, it puts the kettle on.</p><p>So this one is only the word, broken in two and set in cream on black: <em>STUB / BORN</em>. No skull. No roundel. No explanation. If you have ever dug your heels in and been right, it is already yours.</p><p><strong>Too stubborn to worry.</strong></p>",
+            "meta_1": "On the shirt: The Stubborn",
+            "meta_2": "Cream print on Black",
             "cta_label": "[ SHOP THIS DESIGN ]",
-            "cta_link": "/products/the-establishment"
-          }
-        },
-        {
-          "id": "roll-call",
-          "type": "icon",
-          "settings": {
-            "num": "FILE 04 / THE ROLL CALL",
-            "heading": "Tommy, Katie, Winston & Boudica.",
-            "description": "<p><strong>Tommy:</strong> every lad who shouldered a pack and went. <strong>Katie:</strong> every woman who ran the switchboards, drove the ambulances and built the bombers. <strong>Winston:</strong> the growl on the wireless when it mattered most. <strong>Boudica:</strong> the one who started it all.</p><p>Set like a band line-up, because that’s what they are: the greatest line-up these islands ever fielded. If you know, you know, and if someone asks, you get to tell the whole story.</p><p><strong>The roll call. Answer your name.</strong></p>",
-            "meta_1": "Not currently issued",
-            "meta_2": "File kept open",
-            "cta_label": "[ CHOOSE THE ROLL CALL ]"
+            "cta_link": "/products/the-stubborn"
           }
         }
       ]

@@ -484,9 +484,9 @@ for (const route of ['', ...Object.keys(collections).map((h) => `/collections/${
   }
 }
 
-/** Featured block on collection pages: size selection must actually work. */
-for (const handle of Object.keys(collections)) {
-  const route = `/collections/${handle}`;
+/** Featured block on the homepage and collection pages: size selection must
+ *  actually work. */
+for (const route of ['/', ...Object.keys(collections).map((h) => `/collections/${h}`)]) {
   const doc = html(route);
   if (!doc) continue;
   const start = doc.indexOf('<section class="featured"');
@@ -525,12 +525,16 @@ for (const product of catalogue.products) {
   if (doc && doc.includes('class="pdp-video"')) fail(`/products/${product.handle}`, 'renders pdp-video with no video');
 }
 
-/** Exactly one promo band on the homepage. */
+/** Two promo bands on the homepage, but only ONE email ask between them: the
+ *  closing band is a statement, not a second signup form. (With the signup
+ *  modal, two forms made three asks against one row of products.) */
 {
   const home = html('/');
   if (home) {
-    const n = (home.match(/<section class="promo"/g) ?? []).length;
-    if (n !== 1) fail('/', `expected exactly one promo band, found ${n}`);
+    const bands = home.match(/<section class="promo"[\s\S]*?<\/section>/g) ?? [];
+    if (bands.length !== 2) fail('/', `expected two promo bands, found ${bands.length}`);
+    const forms = bands.filter((band) => /<form\b/.test(band)).length;
+    if (forms !== 1) fail('/', `expected exactly one promo band with a signup form, found ${forms}`);
   }
 }
 

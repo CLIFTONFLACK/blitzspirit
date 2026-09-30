@@ -1,17 +1,16 @@
 ---
 // Home — templates/index.json, section for section and in order:
-// hero, as-seen-on, product grid (all 3, one row), promo, what-it-means.
+// hero, as-seen-on, product grid (all 3, one row), featured product, promo,
+// what-it-means, closing promo band.
 //
-// One email ask only: the second promo band (promo_band_VF78L7) was removed from
-// the page because, with the signup modal, it made three asks against one
-// product row. Its settings stay in pages/index.json, unused, like featured/archive.
+// One email ask only: the closing band (promo_band_VF78L7) renders without its
+// signup form, because with the promo band above and the signup modal a second
+// form made three asks against one product row.
 //
-// The featured-product band and the alternating archive rows were replaced
-// by one 3-up grid (CollectionGrid, the same one collection pages use) —
-// with only 3 products left in the catalogue, showing them all in a single
-// row above the promo band reads better than a tall stack of full-width
-// rows. `featured`/`archive` settings in pages/index.json are unused now;
-// left in place rather than edited, since /edit still addresses them.
+// The grid comes first so every product is on screen early; the featured band
+// (The Establishment, from pages/index.json `featured`) follows it. The
+// alternating archive rows stay replaced by the grid: `archive` settings in
+// pages/index.json are unused, left in place since /edit still addresses them.
 //
 // At ≤860px, where the 3-up row would otherwise wrap, the grid becomes a
 // one-row swipe carousel that also auto-advances (CollectionGrid `carousel`).
@@ -19,6 +18,7 @@ import Base from '~/layouts/Base.astro';
 import Hero from '~/components/Hero.astro';
 import AsSeenOn from '~/components/AsSeenOn.astro';
 import CollectionGrid from '~/components/CollectionGrid.astro';
+import FeaturedProduct from '~/components/FeaturedProduct.astro';
 import PromoBand from '~/components/PromoBand.astro';
 import AboutSplit from '~/components/AboutSplit.astro';
 
@@ -29,7 +29,9 @@ import { products } from '~/lib/catalogue';
 const page = pageData as PageData;
 
 const hero = settings(page, 'hero');
+const featured = settings(page, 'featured');
 const promo = settings(page, 'promo');
+const promo2 = settings(page, 'promo_band_VF78L7');
 
 const meansHeading = 'What it means.';
 const meansBody = '<p>The blitz spirit isn’t nostalgia. It’s not bunting and Churchill quotes on a tea towel.</p><p>It’s a specific quality: the ability to be <em>cheerful in adversity</em>, practical under pressure, and fundamentally unimpressed by things that are trying very hard to impress you.</p>';
@@ -43,6 +45,14 @@ const meansBody = '<p>The blitz spirit isn’t nostalgia. It’s not bunting and
   <AsSeenOn />
 
   <CollectionGrid products={products} wide carousel />
+
+  <FeaturedProduct
+    product={featured.product}
+    dossier={featured.dossier}
+    whatLabel={featured.what_label}
+    plateRef={featured.plate_ref}
+    editBase="pages/index:featured"
+  />
 
   <PromoBand
     id="PromoBand"
@@ -62,5 +72,14 @@ const meansBody = '<p>The blitz spirit isn’t nostalgia. It’s not bunting and
     image="/assets/backgrounds/skull-umbrella-banner.jpg"
     imageSide="left"
     fillVisual
+  />
+
+  <PromoBand
+    id="PromoBandClosing"
+    image={promo2.image}
+    heading={promo2.heading}
+    subheading={promo2.subheading}
+    showForm={false}
+    editBase="pages/index:promo_band_VF78L7"
   />
 </Base>
