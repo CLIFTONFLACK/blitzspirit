@@ -100,29 +100,30 @@ import { href } from '~/lib/url';
   .ci-name a:hover { color: var(--accent); }
   .ci-controls {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: var(--s2);
+    gap: var(--s1) var(--s2);
     margin-top: 10px;
   }
   .ci-qty { display: inline-flex; align-items: stretch; border: 1px solid var(--line); }
   .ci-qty-btn {
-    width: 26px;
-    height: 26px;
+    width: 44px;
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--bone-dim);
-    font-size: 13px;
+    color: var(--bone-mute);
+    font-size: 15px;
     line-height: 1;
   }
   .ci-qty-btn:hover { color: var(--ink); }
   .ci-qty-val {
-    min-width: 26px;
+    min-width: 32px;
     padding: 0 4px;
     text-align: center;
-    font-size: 11px;
-    line-height: 26px;
+    font-size: 12px;
+    line-height: 44px;
     color: var(--bone);
     border-left: 1px solid var(--line);
     border-right: 1px solid var(--line);
@@ -161,10 +162,15 @@ import { href } from '~/lib/url';
     font-size: 10px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--bone-dim);
+    color: var(--bone-mute);
     margin-bottom: 8px;
   }
   .fsb-msg--ok { color: var(--bone); }
+  /* The drawer is black, the /cart page white: the muted greys that pass on
+     one fail on the other, so the drawer states its own. */
+  .cart-drawer .fsb-msg,
+  .cart-drawer .cart-empty,
+  .cart-drawer .cart-note { color: #B8B8B8; }
   .fsb-track { height: 4px; border: 1px solid var(--line); background: var(--panel); }
   .fsb-fill {
     height: 100%;

@@ -13,7 +13,7 @@
   "t-shirts": {
     "handle": "t-shirts",
     "title": "The Range.",
-    "description": "The printed archive. 220gsm, screen printed in Britain.",
+    "description": "The printed archive. Printed in Britain when you order it.",
     "rule": "type = T-Shirt",
     "products": [
       "the-establishment",

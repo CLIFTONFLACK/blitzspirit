@@ -265,14 +265,20 @@
 
     refreshOptionAvailability() {
       var self = this;
+      // data-colour-any-size (the product-card picker): a colour is offered when
+      // ANY size of it is in stock. There no size is chosen up front, so gating
+      // colours on the internal default size would grey one out for a reason the
+      // shopper cannot see. Sizes are still gated on the colour picked.
+      var looseColour = this.hasAttribute('data-colour-any-size');
       this.groups.forEach(function (group) {
         var index = (parseInt(group.getAttribute('data-option-index'), 10) || 1) - 1;
+        var loose = looseColour && group.classList.contains('cw');
         toArray(group.querySelectorAll('[data-value]')).forEach(function (btn) {
           var value = btn.getAttribute('data-value');
           var available = self.variants.some(function (variant) {
             var opts = variantOptions(variant);
             if (opts[index] !== value) return false;
-            for (var j = 0; j < self.selected.length; j++) {
+            for (var j = 0; !loose && j < self.selected.length; j++) {
               if (j !== index && opts[j] !== self.selected[j]) return false;
             }
             return variant.available;

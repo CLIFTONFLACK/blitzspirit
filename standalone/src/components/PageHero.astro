@@ -98,9 +98,11 @@ const metaSegments = blocks
     margin-bottom: 24px;
   }
   .page-hero--lg .ph-head { font-size: clamp(2.2rem, 6vw, 4.5rem); }
-  .page-hero .ph-red { color: var(--accent); }
+  /* Light tones, for the same reason as .ph-head: the scrim is always dark, so
+     the sitewide navy accent and mid-grey both sank into it. */
+  .page-hero .ph-red { color: var(--hero-accent); }
   .page-hero .ph-meta {
-    color: var(--bone-dim);
+    color: var(--hero-meta);
     max-width: 60ch;
     line-height: 1.8;
   }

@@ -1,15 +1,39 @@
 {
   "main": [
     {
-      "title": "HOME",
-      "url": "/"
+      "title": "SHOP",
+      "url": "/collections/all"
     },
     {
-      "title": "THE COLLECTION",
-      "url": "/collections/all"
+      "title": "THE DESIGNS",
+      "url": "/icons"
+    },
+    {
+      "title": "OUR STORY",
+      "url": "/story"
+    },
+    {
+      "title": "HELP",
+      "url": "/help"
     }
   ],
   "footer": [
+    {
+      "title": "SHOP",
+      "url": "/collections/all"
+    },
+    {
+      "title": "THE DESIGNS",
+      "url": "/icons"
+    },
+    {
+      "title": "OUR STORY",
+      "url": "/story"
+    },
+    {
+      "title": "HELP",
+      "url": "/help"
+    },
     {
       "title": "CONTACT",
       "url": "/help#contact"

@@ -153,7 +153,7 @@ const items = blocks.map((block) => {
     margin-bottom: var(--s4);
   }
   .faq-list { display: flex; flex-direction: column; gap: var(--s2); }
-  .faq-item { border: 1px solid var(--line); background: var(--panel); scroll-margin-top: 64px; }
+  .faq-item { border: 1px solid var(--line); background: var(--panel); scroll-margin-top: calc(var(--chrome-h) + 8px); }
   .faq-item[open] { border-color: var(--line-bri); }
   .faq-q {
     display: flex;

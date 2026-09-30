@@ -99,8 +99,15 @@ const n = messages.length;
 </style>
 
 <style is:global>
-  /* The floating social/bag icons (theme.css §3, top:16px) drop below the
-     band whenever it exists. Global because it targets .masthead, which
-     lives in a sibling component. Browsers without :has() degrade gracefully. */
-  body:has(.announcement-bar) .masthead { top: 44px; }
+  /* The band is fixed, so the page starts below it and the sticky masthead
+     (theme.css §3) parks under it rather than behind it. --chrome-h is what
+     everything else sticky offsets by. Global because it targets body and
+     .masthead, which live outside this component. Keyed on a class Base.astro
+     sets on <html> rather than :has(), so a browser without :has() does not
+     lose the offset and park the masthead behind the band. */
+  .has-announcement body { padding-top: 28px; }
+  .has-announcement .masthead { top: 28px; }
+  /* html. prefix: must outrank the :root default in tokens.css whatever order
+     the stylesheets are bundled in. */
+  html.has-announcement { --chrome-h: calc(28px + var(--masthead-h)); }
 </style>

@@ -55,8 +55,8 @@ export interface Product {
   limited: boolean;
   strapline: string;
   dossier: string[];
-  /** Materials and care, e.g. "220gsm heavyweight cotton. Screen printed in
-   *  Britain." Kept OUT of `dossier` so the home page's cards and featured block
+  /** Materials and care, e.g. "100% ring-spun cotton. Printed in Britain when
+   *  you order it." Kept OUT of `dossier` so the home page's cards and featured block
    *  carry the story and the product page carries the spec — the cards were
    *  repeating four lines of wash instructions above the buy button. */
   spec?: string;
@@ -108,6 +108,28 @@ export function firstAvailableVariant(product: Product): Variant {
 export function mediaForColour(product: Product, colour: string | undefined): Media | undefined {
   if (!colour) return product.media[0];
   return product.media.find((m) => m.colour === colour) ?? product.media[0];
+}
+
+/** The variant list in the shape product-form.js reads: `options` as an array in
+ *  the product's option order (it cannot resolve the catalogue's name-keyed
+ *  object, and disables every pill when handed one), plus the key the page's
+ *  plate frames and thumbs carry in data-media-id. */
+export function variantFormData(
+  product: Product,
+  mediaKey: (media: Media) => string = (media) => media.src
+) {
+  const optionNames = product.options.map((o) => o.name);
+  return product.variants.map((v) => {
+    const media = mediaForColour(product, v.options.Colour);
+    const mediaId = media ? mediaKey(media) : '';
+    return {
+      id: v.id,
+      available: v.available,
+      options: optionNames.map((name) => v.options[name]),
+      featured_media: { id: mediaId },
+      featured_image: { id: mediaId },
+    };
+  });
 }
 
 /** The variant matching a full set of option values, if one exists. */

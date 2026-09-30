@@ -14,7 +14,7 @@ const content = {
   eyebrow: 'DISPATCHES',
   heading: 'Join the Home Guard.',
   subheading: 'Take 10% off your first order.',
-  body: 'First word on new drops and restocks, stories worth telling, and a code for 10% off. No spam — that would be nonsense.',
+  body: 'First word on new drops, stories worth telling, and a code for 10% off. No spam — that would be nonsense.',
   buttonLabel: '[ SIGN ME UP ]',
   dismissLabel: 'No thanks — I’ll pay full price',
   carryOnLabel: '[ CARRY ON SHOPPING ]',
@@ -80,9 +80,13 @@ const content = {
   .frame-tick--br { bottom: 10px; right: 10px; border-left: none; border-top: none; }
   .signup-close {
     position: absolute;
-    top: 12px;
-    right: 14px;
-    padding: 8px;
+    top: 6px;
+    right: 6px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--bone);
     line-height: 0;
   }
@@ -90,7 +94,7 @@ const content = {
   .signup-head { color: var(--ink); font-size: clamp(1.8rem, 5vw, 2.6rem); }
   .signup-sub { color: var(--accent); }
   .signup-body {
-    color: var(--bone-dim);
+    color: var(--bone-mute);
     font-size: 12px;
     letter-spacing: 0.05em;
     text-transform: uppercase;
@@ -98,7 +102,8 @@ const content = {
   }
   .signup-dismiss {
     align-self: center;
-    margin-top: var(--s1);
+    min-height: 44px;
+    padding: 0 var(--s1);
     color: var(--bone-mute);
     font-family: var(--sans);
     font-size: 11px;

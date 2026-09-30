@@ -36,11 +36,14 @@ import { asset } from '~/lib/images';
 import { formatMoney } from '~/lib/money';
 import strings from '~/data/strings.json';
 import settings from '~/data/settings.json';
-import { href } from '~/lib/url';
+import iconsPage from '~/data/pages/icons.json';
+import { blocks, type PageData } from '~/lib/pages';
+import { handleize, href } from '~/lib/url';
 import {
   firstAvailableVariant,
   mediaForColour,
   pickerOptions,
+  variantFormData,
   type Collection,
   type Product,
 } from '~/lib/catalogue';
@@ -70,7 +73,9 @@ const {
   sizeGuideLabel = 'SIZE GUIDE',
   returnsUrl = '/help#returns',
   returnsLabel = 'RETURNS',
-  trustNote = 'PRINTED WHEN YOU ORDER IT, NOT WAREHOUSED. ALLOW 5–10 WORKING DAYS. UK DELIVERY FREE OVER £40.',
+  // One fulfilment sentence sitewide (settings.json), so the product page, the
+  // order confirmation and the help page cannot drift apart again.
+  trustNote = `${settings.fulfilment.note} UK delivery free over ${formatMoney(settings.cart.freeShippingThreshold).replace(/\.00$/, '')}.`,
   archiveLabel = 'ARCHIVE ENTRY',
 } = Astro.props;
 
@@ -90,19 +95,17 @@ const startsWithThe = titleUp.startsWith('THE ');
 
 const pickers = pickerOptions(product);
 
-// Ordered option names drive the variant JSON's options array, which is the shape
-// product-form.js's variantOptions() reads.
-const optionNames = product.options.map((o) => o.name);
-const variantJson = product.variants.map((v) => {
-  const mediaId = mediaForColour(product, v.options.Colour)?.src ?? currentMediaId;
-  return {
-    id: v.id,
-    available: v.available,
-    options: optionNames.map((name) => v.options[name]),
-    featured_media: { id: mediaId },
-    featured_image: { id: mediaId },
-  };
-});
+const variantJson = variantFormData(product);
+
+// The design's backstory on /icons, when one of the files there points at this
+// product (its cta_link). The mapping lives in that one field, so the two pages
+// cannot disagree about which shirt carries which design.
+const iconFile = blocks(iconsPage as PageData, 'roster').find(
+  (b) => b.settings.cta_link === `/products/${product.handle}`
+);
+const iconFileUrl = iconFile?.settings.heading
+  ? `/icons#${handleize(iconFile.settings.heading)}`
+  : '';
 
 // "#04 OF 05" only reads correctly while the entry number is within the collection.
 // Products can be withdrawn - The Boudica (#01) and The Roll Call (#03) were - and
@@ -291,6 +294,12 @@ const archiveLine = [
             {sizeGuideUrl && <a href={href(sizeGuideUrl)} class="eyebrow pdp-link">{sizeGuideLabel}</a>}
             {sizeGuideUrl && returnsUrl && <span class="eyebrow eyebrow-muted" aria-hidden="true">·</span>}
             {returnsUrl && <a href={href(returnsUrl)} class="eyebrow pdp-link">{returnsLabel}</a>}
+            {iconFileUrl && (
+              <>
+                <span class="eyebrow eyebrow-muted" aria-hidden="true">·</span>
+                <a href={href(iconFileUrl)} class="eyebrow pdp-link">READ THE FILE</a>
+              </>
+            )}
           </div>
         )}
 
@@ -377,8 +386,20 @@ const archiveLine = [
      the thumb row instead of scrolling (worse than the scrollbar it replaces). */
   @media (min-width: 861px) {
     .pdp-gallery .plate {
-      width: min(100%, 500px, calc((100vh - 48px - 2 * var(--s5) - var(--s3) - 92px) / 1.12));
+      width: min(100%, 500px, calc((100vh - var(--chrome-h) - 2 * var(--s5) - var(--s3) - 92px) / 1.12));
     }
+  }
+
+  /* Stacked layout: the buying controls come before the story. Title, price,
+     size, buy, delivery note and links first; the dossier and archive line
+     follow. `order` only moves non-interactive copy past the controls, so the
+     tab sequence through the pills and the button is unchanged. */
+  @media (max-width: 860px) {
+    .pdp-gallery .plate { width: min(100%, 250px); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2); }
+    .pdp-ledger product-form { gap: var(--s2); }
+    .pdp-options { gap: var(--s2); }
+    .pdp-ledger .pdp-dossier { order: 1; }
+    .pdp-ledger .pdp-archive-note { order: 2; }
   }
 
   /* The solid ADD TO BAG fill itself is .btn--solid, shared sitewide
@@ -416,8 +437,11 @@ const archiveLine = [
   .details > p + div { margin-top: 28px; }
 
   /* SIZE GUIDE · RETURNS + closing archive line. */
-  .pdp-links { display: flex; align-items: center; gap: var(--s2); }
-  .pdp-link { color: var(--bone-dim); text-decoration: underline; text-underline-offset: 4px; }
+  .pdp-links { display: flex; align-items: center; flex-wrap: wrap; gap: 0 var(--s2); }
+  .pdp-link {
+    display: inline-flex; align-items: center; min-height: 44px;
+    color: var(--bone-mute); text-decoration: underline; text-underline-offset: 4px;
+  }
   .pdp-link:hover { color: var(--accent); }
   .pdp-archive-note { display: flex; flex-direction: column; gap: var(--s3); margin-top: var(--s2); }
   .pdp-archive-note .eyebrow { letter-spacing: 0.2em; }

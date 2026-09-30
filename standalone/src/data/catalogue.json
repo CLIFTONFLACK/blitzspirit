@@ -39,7 +39,7 @@
       "dossier": [
         "A Union Jack bowler on a grinning skull, brollies crossed like blades: **the print the whole brand argues from**."
       ],
-      "spec": "220gsm heavyweight cotton. Colour screen printed in Britain. Wash inside out at 30°C. No tumble dry.",
+      "spec": "100% ring-spun cotton. Unisex regular fit. Printed in Britain when you order it. Wash inside out at 30°C. No tumble dry.",
       "fieldManual": [
         {
           "label": "ENTRY",
@@ -51,11 +51,11 @@
         },
         {
           "label": "PRINT",
-          "value": "COLOUR // WATER-BASED SCREEN PRINT // UK"
+          "value": "COLOUR // PRINTED TO ORDER // UK"
         },
         {
           "label": "FABRIC",
-          "value": "100% RING-SPUN COTTON // 220GSM"
+          "value": "100% RING-SPUN COTTON"
         },
         {
           "label": "FIT",
@@ -71,17 +71,17 @@
         },
         {
           "label": "DELIVERY",
-          "value": "FREE UK OVER £40 // 2–5 WORKING DAYS"
+          "value": "FREE UK OVER £40 // 5–10 WORKING DAYS"
         }
       ],
       "editorial": [
         {
           "heading": "Where it started.",
-          "body": "The first image: the skull in the Union Jack bowler, the crossed umbrellas below it. One print, one question, and a name that hadn’t been earned yet. The whole brand is an argument with this image, and this is where the argument started. [PLACEHOLDER: REPLACE WITH FINAL COPY]"
+          "body": "The first image: the skull in the Union Jack bowler, the crossed umbrellas below it. One print, one question, and a name that hadn’t been earned yet. The whole brand is an argument with this image, and this is where the argument started."
         },
         {
           "heading": "The Craft.",
-          "body": "220gsm ring-spun cotton. Colour water-based screen print, applied in Britain. The extra complexity of a colour print is deliberate: this edition earns its status in every layer. Soft hand-feel that improves with washing. No cracking, no fading, no apologies. Wash inside out at 30°C. Tumble dryers are for quitters. [PLACEHOLDER: REPLACE WITH FINAL COPY]"
+          "body": "100% ring-spun cotton, printed in Britain when you order it. Nothing sits in a warehouse waiting for a buyer. The full-colour print is deliberate: this is the image the brand started with, so it gets every colour it asked for. Wash inside out at 30°C. Tumble dryers are for quitters."
         }
       ],
       "options": [
@@ -220,7 +220,7 @@
       "dossier": [
         "A classic RAF roundel built entirely from the word **BLITZSPIRIT**, repeated like a drumbeat. No logo needed."
       ],
-      "spec": "220gsm heavyweight cotton. Screen printed in Britain. Wash inside out at 30°C. No tumble dry.",
+      "spec": "100% ring-spun cotton. Unisex regular fit. Printed in Britain when you order it. Wash inside out at 30°C. No tumble dry.",
       "fieldManual": [
         {
           "label": "ENTRY",
@@ -232,11 +232,11 @@
         },
         {
           "label": "FABRIC",
-          "value": "100% RING-SPUN COTTON // 220GSM"
+          "value": "100% RING-SPUN COTTON"
         },
         {
           "label": "PRINT",
-          "value": "WATER-BASED SCREEN PRINT // UK"
+          "value": "PRINTED TO ORDER // UK"
         },
         {
           "label": "FIT",
@@ -252,17 +252,17 @@
         },
         {
           "label": "DELIVERY",
-          "value": "FREE UK OVER £40 // 2–5 WORKING DAYS"
+          "value": "FREE UK OVER £40 // 5–10 WORKING DAYS"
         }
       ],
       "editorial": [
         {
           "heading": "The Signal.",
-          "body": "Started on Spitfire wings over Kent in 1940, lifted onto parkas and scooters a generation later. The mod roundel is the sharpest mark in British street culture: same circle, same defiance. Our version hides the whole story inside: every ring is built from the word BLITZSPIRIT, repeated like a drumbeat. [PLACEHOLDER: REPLACE WITH FINAL COPY]"
+          "body": "Started on Spitfire wings over Kent in 1940, lifted onto parkas and scooters a generation later. The mod roundel is the sharpest mark in British street culture: same circle, same defiance. Our version hides the whole story inside: every ring is built from the word BLITZSPIRIT, repeated like a drumbeat."
         },
         {
           "heading": "The Craft.",
-          "body": "220gsm ring-spun cotton. Water-based screen print, applied in Britain. Soft hand-feel that improves with washing. No cracking, no fading, no apologies. Wash inside out at 30°C. Tumble dryers are for quitters. [PLACEHOLDER: REPLACE WITH FINAL COPY]"
+          "body": "100% ring-spun cotton, printed in Britain when you order it. Nothing sits in a warehouse waiting for a buyer. Yours is made because you asked for it. Wash inside out at 30°C. Tumble dryers are for quitters."
         }
       ],
       "options": [
@@ -449,15 +449,15 @@
         {
           "colour": "Off-White",
           "src": "/assets/products/tee-roundel-offwhite.jpg",
-          "width": 1000,
-          "height": 1092,
+          "width": 974,
+          "height": 1118,
           "alt": "The Frequency / CHALK_WHITE"
         },
         {
           "colour": "Navy",
           "src": "/assets/products/tee-roundel-navy.jpg",
-          "width": 974,
-          "height": 1118,
+          "width": 1000,
+          "height": 1092,
           "alt": "The Frequency / SYSTEM_NAVY"
         }
       ]
@@ -477,9 +477,9 @@
       "limited": false,
       "strapline": "cream print. Too stubborn to worry.",
       "dossier": [
-        "The Stubborn. [PLACEHOLDER: REPLACE WITH FINAL COPY]"
+        "For anyone told to give up who put the kettle on instead. **Wear it on the days that need it.**"
       ],
-      "spec": "Gildan Softstyle 64000. 100% ring-spun cotton. Printed to order. Wash inside out at 30°C. No tumble dry. [PLACEHOLDER: CHECK AGAINST PRINTFUL]",
+      "spec": "100% ring-spun cotton. Unisex regular fit. Printed in Britain when you order it. Wash inside out at 30°C. No tumble dry.",
       "fieldManual": [
         {
           "label": "ENTRY",
@@ -511,13 +511,13 @@
         },
         {
           "label": "DELIVERY",
-          "value": "FREE UK OVER £40 // 2–5 WORKING DAYS"
+          "value": "FREE UK OVER £40 // 5–10 WORKING DAYS"
         }
       ],
       "editorial": [
         {
           "heading": "The Stubborn.",
-          "body": "The Blitz, the weather, the pub queue: Brits are too stubborn to worry. [PLACEHOLDER: REPLACE WITH FINAL COPY]"
+          "body": "The Blitz, the weather, the pub queue: Brits are too stubborn to worry."
         }
       ],
       "options": [

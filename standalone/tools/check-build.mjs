@@ -8,7 +8,7 @@
  *
  *   node tools/check-build.mjs
  */
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -127,11 +127,13 @@ for (const [handle, collection] of Object.entries(collections)) {
       fail(route, `does not link to ${productHandle}`);
     }
   }
-  // The collection template also carries a featured-product band above the grid
-  // (v27 features The Establishment on every collection page), so only the grid
-  // itself is required to be exclusive.
+  // The collection template also carries a featured-product band below the grid
+  // (it features The Establishment on every collection page), so only the grid
+  // itself is required to be exclusive: the slice stops where that band starts.
   const gridStart = doc.indexOf('class="coll-grid-wrap"');
-  const grid = gridStart === -1 ? doc : doc.slice(gridStart);
+  const featuredStart = gridStart === -1 ? -1 : doc.indexOf('<section class="featured"', gridStart);
+  const grid =
+    gridStart === -1 ? doc : doc.slice(gridStart, featuredStart === -1 ? undefined : featuredStart);
   if (gridStart === -1) fail(route, 'no product grid rendered');
   const strays = catalogue.products
     .map((p) => p.handle)
@@ -265,6 +267,307 @@ if (!existsSync(indexFile)) {
         fail('/cart-index.json', `price mismatch on ${variant.id}`);
       } else if (!entry.thumb) {
         fail('/cart-index.json', `no thumbnail for ${variant.id}`);
+      }
+    }
+  }
+}
+
+/** No unfinished or false copy may reach customers.
+ *  Scanned as TEXT, not raw HTML: inline <script>/<style>/comments are stripped and
+ *  tags removed, so the inlined variant JSON and bundled JS cannot trip a phrase, and
+ *  class names/URLs (a "restock" CSS hook) that nobody reads cannot either. Attributes
+ *  customers or search results do see (alt, title, aria-label, placeholder, meta
+ *  content) are appended so copy hidden there is still caught. Bare "48 hours" is NOT
+ *  banned: /help legitimately promises subscribers 48 hours before anyone else. */
+const BANNED_COPY = [
+  '[PLACEHOLDER', 'VIDEO ASSET PENDING', 'LEDGER EMPTY', 'NO ASSETS ALLOCATED', 'SECURITY OVERRIDE',
+  '220gsm', 'heavyweight', 'screen print', 'Made in Britain', 'Gildan', 'small runs', 'restock',
+  'dispatch within 48 hours', '2–4 working days', '2-4 working days', '2 to 4 working days',
+  '2–5 working days',
+];
+const visibleText = (doc) => {
+  const noScript = doc.replace(/<script[\s\S]*?<\/script>/gi, ' ');
+  const text = noScript
+    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<!--[\s\S]*?-->/g, ' ')
+    .replace(/<[^>]+>/g, ' ');
+  const attrs = [...noScript.matchAll(/\s(?:alt|title|aria-label|placeholder|content)="([^"]*)"/g)].map(
+    (m) => m[1],
+  );
+  return (text + ' ' + attrs.join(' ')).replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').toLowerCase();
+};
+for (const route of routes) {
+  const doc = html(route || '/');
+  if (!doc) continue;
+  const text = visibleText(doc);
+  for (const phrase of BANNED_COPY) {
+    if (text.includes(phrase.toLowerCase())) fail(route || '/', `banned copy shipped: "${phrase}"`);
+  }
+  // The label is ADD TO CART site-wide; a leftover BUY NOW is a string that was missed.
+  if (text.includes('buy now')) fail(route || '/', 'old label shipped: "BUY NOW"');
+}
+
+/** cart.js strings are shown to customers at runtime (drawer states) but live in the
+ *  bundle, not the HTML, so scan the built JS for the placeholder/false-claim strings. */
+const astroDir = join(dist, '_astro');
+const bundles = existsSync(astroDir) ? readdirSync(astroDir).filter((f) => f.endsWith('.js')) : [];
+if (!bundles.length) fail('/_astro', 'no JS bundles found to scan');
+for (const file of bundles) {
+  const js = readFileSync(join(astroDir, file), 'utf8').toLowerCase();
+  for (const phrase of ['LEDGER EMPTY', 'NO ASSETS ALLOCATED', 'SHIPS FREE', 'CHECKOUT UNREACHABLE']) {
+    if (js.includes(phrase.toLowerCase())) fail(`/_astro/${file}`, `banned runtime copy: "${phrase}"`);
+  }
+}
+
+/** card-pick.js must be shipped, or [ ADD TO CART ] does nothing. The selector string
+ *  '[data-card-pick]' is a literal inside it, so unlike a variable or function name it
+ *  survives minification. */
+if (!bundles.some((f) => readFileSync(join(astroDir, f), 'utf8').includes('data-card-pick'))) {
+  fail('/_astro', 'no JS bundle contains data-card-pick (card-pick.js not shipped)');
+}
+
+/** settings.json feeds the Stripe shipping label (api/_order.js), which never appears
+ *  in built HTML, so the source data is checked directly. */
+const settings = JSON.parse(readFileSync(join(root, 'src/data/settings.json'), 'utf8'));
+const shipLabel = settings.shipping?.ukStandardLabel ?? '';
+if (!shipLabel.includes('5-10')) fail('settings.json', `shipping.ukStandardLabel lacks "5-10": ${shipLabel}`);
+if (shipLabel.includes('2-4')) fail('settings.json', `shipping.ukStandardLabel still says "2-4": ${shipLabel}`);
+if (typeof settings.fulfilment?.note !== 'string' || !settings.fulfilment.note.trim()) {
+  fail('settings.json', 'fulfilment.note missing or empty');
+}
+for (const [key, value] of Object.entries({ ...settings.shipping, ...settings.fulfilment, ...settings.cart })) {
+  if (typeof value !== 'string') continue;
+  for (const phrase of BANNED_COPY) {
+    if (value.toLowerCase().includes(phrase.toLowerCase())) {
+      fail('settings.json', `${key} contains banned copy "${phrase}"`);
+    }
+  }
+}
+
+/** Every page carries the main menu: links to the four sections, a home link, and a
+ *  toggle whose aria-controls points at an id that exists (else mobile has no menu). */
+for (const route of routes) {
+  const doc = html(route || '/');
+  if (!doc) continue;
+  const name = route || '/';
+  const start = doc.indexOf('<header class="masthead"');
+  const head = start === -1 ? '' : doc.slice(start, doc.indexOf('</header>', start));
+  if (!head) {
+    fail(name, 'no <header class="masthead"> to check the menu in');
+    continue;
+  }
+  for (const path of ['/collections/all', '/icons', '/story', '/help']) {
+    if (!head.includes(`href="${url(path)}"`)) fail(name, `masthead has no link to ${path}`);
+  }
+  if (!head.includes(`href="${url('/')}"`)) fail(name, 'masthead has no home link');
+  const toggle = head.match(/<button[^>]*\bdata-nav-toggle\b[^>]*>/);
+  if (!toggle) fail(name, 'masthead has no data-nav-toggle button');
+  else {
+    const controls = toggle[0].match(/aria-controls="([^"]+)"/);
+    if (!controls) fail(name, 'nav toggle has no aria-controls');
+    else if (!doc.includes(`id="${controls[1]}"`)) {
+      fail(name, `nav toggle controls #${controls[1]}, which does not exist`);
+    }
+  }
+}
+
+/** Product cards: a [ VIEW ] link and an [ ADD TO CART ] button that never adds by
+ *  itself. A card shows no size, so a one-tap add could only add size S unasked (the
+ *  old bug). The button opens a hidden picker; the tap on a size is the add. */
+const hasAttr = (tag, attr) => new RegExp(`\\s${attr}(?=[\\s=/>])`).test(tag);
+for (const route of ['', ...Object.keys(collections).map((h) => `/collections/${h}`)]) {
+  const doc = html(route || '/');
+  if (!doc) continue;
+  const name = route || '/';
+  // The article tag also carries data-product-wrap, so match on the class only.
+  const cards = doc.match(/<article\b[^>]*\bclass="coll-card"[^>]*>[\s\S]*?<\/article>/g) ?? [];
+  if (!cards.length) fail(name, 'no coll-card articles found');
+  for (const card of cards) {
+    const handle = card.match(/href="[^"]*\/products\/([^"/?#]+)"/)?.[1];
+    const label = handle ?? 'unknown card';
+    const product = catalogue.products.find((p) => p.handle === handle);
+
+    // a. the visible control is a card-pick button that cannot add on its own.
+    const buttons = card.match(/<button\b[^>]*\bdata-card-pick\b[^>]*>/g) ?? [];
+    if (buttons.length !== 1) {
+      fail(name, `card ${label} has ${buttons.length} data-card-pick buttons, expected 1`);
+    }
+    const pickBtn = buttons[0];
+    if (pickBtn && hasAttr(pickBtn, 'data-add-to-cart')) {
+      fail(name, `card ${label}: ADD TO CART button carries data-add-to-cart (adds without asking)`);
+    }
+    if (pickBtn && hasAttr(pickBtn, 'data-variant-id')) {
+      fail(name, `card ${label}: ADD TO CART button carries data-variant-id (always adds one size)`);
+    }
+
+    // b. aria-controls names a hidden element inside this card.
+    const controls = pickBtn?.match(/aria-controls="([^"]+)"/)?.[1];
+    let picker = null;
+    if (pickBtn && !controls) fail(name, `card ${label}: ADD TO CART button has no aria-controls`);
+    if (controls) {
+      const open = [...card.matchAll(/<([a-z][\w-]*)\b[^>]*>/g)].find((m) =>
+        m[0].includes(`id="${controls}"`),
+      );
+      if (!open) fail(name, `card ${label}: aria-controls #${controls} does not exist inside the card`);
+      else {
+        if (!hasAttr(open[0], 'hidden')) fail(name, `card ${label}: picker #${controls} is not rendered hidden`);
+        const from = open.index;
+        const close = card.indexOf(`</${open[1]}>`, from);
+        picker = card.slice(from, close === -1 ? undefined : close);
+      }
+    }
+
+    // c. the only data-add-to-cart in the card is the picker's hidden one.
+    const adds = card.match(/<[a-z]+\b[^>]*\bdata-add-to-cart\b[^>]*>/g) ?? [];
+    if (adds.length !== 1) fail(name, `card ${label} has ${adds.length} data-add-to-cart elements, expected 1`);
+    for (const add of adds) {
+      if (!hasAttr(add, 'hidden')) fail(name, `card ${label}: data-add-to-cart is not hidden`);
+      if (hasAttr(add, 'data-variant-id')) fail(name, `card ${label}: data-add-to-cart has a fixed data-variant-id`);
+      if (picker && !picker.includes(add)) fail(name, `card ${label}: data-add-to-cart is outside the picker`);
+    }
+
+    // d. the picker's variant JSON and hidden id input.
+    let variants = null;
+    const json = picker?.match(/<script[^>]*data-variant-json[^>]*>([\s\S]*?)<\/script>/);
+    if (picker && !json) fail(name, `card ${label}: picker has no data-variant-json`);
+    if (json) {
+      try {
+        variants = JSON.parse(json[1]);
+      } catch {
+        fail(name, `card ${label}: data-variant-json is not valid JSON`);
+      }
+    }
+    if (variants) {
+      if (!Array.isArray(variants) || !variants.length) {
+        fail(name, `card ${label}: variant JSON is not a non-empty array`);
+        variants = null;
+      } else if (variants.some((v) => !Array.isArray(v.options))) {
+        fail(name, `card ${label}: variant options are not arrays (size pills would be disabled)`);
+      }
+    }
+    const idInput = card.match(/<input\b[^>]*\bname="id"[^>]*>/)?.[0];
+    const idValue = idInput?.match(/\bvalue="([^"]*)"/)?.[1];
+    if (!idInput) fail(name, `card ${label}: no input name="id"`);
+    else if (variants && !variants.some((v) => v.id === idValue)) {
+      fail(name, `card ${label}: input id "${idValue}" is not in the variant JSON`);
+    }
+
+    // e. no size is preselected: the tap on a size is the add.
+    for (const pill of picker?.match(/<[a-z]+\b[^>]*class="size-pill[^>]*>/g) ?? []) {
+      if (/aria-pressed="true"/.test(pill)) fail(name, `card ${label}: a size pill is preselected: ${pill.slice(0, 80)}`);
+    }
+
+    // f. a VIEW link to the product page.
+    const links = [...card.matchAll(/<a\b[^>]*href="[^"]*\/products\/[^"]*"[^>]*>([\s\S]*?)<\/a>/g)].map((m) =>
+      m[1].replace(/<[^>]+>/g, ' ').toUpperCase(),
+    );
+    if (!links.some((t) => t.includes('VIEW'))) fail(name, `card ${label} has no VIEW link to the product`);
+
+    // g. one photo per media entry keyed by colour, exactly one shown, and it is the
+    //    colour of the variant in the hidden input.
+    const colourOpt = product?.options.find((o) => o.name === 'Colour');
+    if (product && colourOpt && colourOpt.values.length > 1) {
+      const frames = card.match(/<img\b[^>]*\bdata-plate-frame\b[^>]*>/g) ?? [];
+      const ids = frames.map((f) => f.match(/\bdata-media-id="([^"]*)"/)?.[1]);
+      const want = product.media.map((m) => m.colour);
+      if (frames.length !== want.length || want.some((c, i) => ids[i] !== c)) {
+        fail(name, `card ${label}: plate frames [${ids.join(', ')}] do not match media colours [${want.join(', ')}]`);
+      }
+      const shown = frames.filter((f) => !hasAttr(f, 'hidden'));
+      if (shown.length !== 1) fail(name, `card ${label}: ${shown.length} plate frames visible, expected 1`);
+      const inputColour = product.variants.find((v) => v.id === idValue)?.options.Colour;
+      const shownId = shown[0]?.match(/\bdata-media-id="([^"]*)"/)?.[1];
+      if (shown.length === 1 && shownId !== inputColour) {
+        fail(name, `card ${label}: visible photo is ${shownId} but the id input is ${inputColour}`);
+      }
+    }
+  }
+}
+
+/** Featured block on collection pages: size selection must actually work. */
+for (const handle of Object.keys(collections)) {
+  const route = `/collections/${handle}`;
+  const doc = html(route);
+  if (!doc) continue;
+  const start = doc.indexOf('<section class="featured"');
+  if (start === -1) {
+    fail(route, 'no featured section');
+    continue;
+  }
+  const sec = doc.slice(start, doc.indexOf('</section>', start));
+  const json = sec.match(/<script[^>]*data-variant-json[^>]*>([\s\S]*?)<\/script>/);
+  if (!json) fail(route, 'featured block has no data-variant-json');
+  else {
+    let variants = null;
+    try {
+      variants = JSON.parse(json[1]);
+    } catch {
+      fail(route, 'featured data-variant-json is not valid JSON');
+    }
+    if (variants) {
+      if (!Array.isArray(variants) || !variants.length) fail(route, 'featured variant JSON is not a non-empty array');
+      else if (variants.some((v) => !Array.isArray(v.options))) {
+        fail(route, 'featured variant options are not arrays (size pills would be disabled)');
+      }
+    }
+  }
+  if (!/<input[^>]*\bname="id"/.test(sec)) fail(route, 'featured block has no input name="id"');
+  const add = sec.match(/<button[^>]*\bdata-add-to-cart\b[^>]*>/);
+  if (!add) fail(route, 'featured block has no add button');
+  else if (/\bdata-variant-id\b/.test(add[0])) {
+    fail(route, 'featured add button has a fixed data-variant-id (always adds one size)');
+  }
+}
+
+/** No video section unless a product has a video (none do today). */
+for (const product of catalogue.products) {
+  const doc = html(`/products/${product.handle}`);
+  if (doc && doc.includes('class="pdp-video"')) fail(`/products/${product.handle}`, 'renders pdp-video with no video');
+}
+
+/** Exactly one promo band on the homepage. */
+{
+  const home = html('/');
+  if (home) {
+    const n = (home.match(/<section class="promo"/g) ?? []).length;
+    if (n !== 1) fail('/', `expected exactly one promo band, found ${n}`);
+  }
+}
+
+/** Design <-> product links agree both ways. Anchors are read from the built /icons
+ *  page, since they need not equal the block id in icons.json. */
+{
+  const icons = html('/icons');
+  const pageData = JSON.parse(readFileSync(join(root, 'src/data/pages/icons.json'), 'utf8'));
+  const roster = pageData.sections.find((s) => s.id === 'roster');
+  if (icons && !roster) fail('/icons', 'icons.json has no roster section');
+  if (icons && roster) {
+    const items = icons.match(/<article class="[^"]*\broster-item\b[^"]*"[^>]*>[\s\S]*?<\/article>/g) ?? [];
+    const withCta = roster.blocks.filter((b) => b.settings.cta_link);
+    const ctaCount = (icons.match(/class="roster-cta"/g) ?? []).length;
+    if (ctaCount !== withCta.length) {
+      fail('/icons', `${ctaCount} .roster-cta rendered but ${withCta.length} blocks have a cta_link`);
+    }
+    for (const block of withCta) {
+      const m = block.settings.cta_link.match(/^\/products\/([^/#?]+)$/);
+      if (!m) continue;
+      const item = items.find((it) => it.includes(`href="${url(block.settings.cta_link)}"`));
+      if (!item) {
+        fail('/icons', `no roster item links to ${block.settings.cta_link}`);
+        continue;
+      }
+      const anchor = item.match(/\sid="([^"]+)"/)?.[1];
+      if (!anchor) {
+        fail('/icons', `roster item for ${m[1]} has no id anchor`);
+        continue;
+      }
+      const product = html(`/products/${m[1]}`);
+      if (!product) {
+        fail(`/products/${m[1]}`, 'linked from /icons but not built');
+        continue;
+      }
+      if (!product.includes(`href="${url('/icons')}#${anchor}"`)) {
+        fail(`/products/${m[1]}`, `no link back to /icons#${anchor}`);
       }
     }
   }

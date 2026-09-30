@@ -46,7 +46,7 @@ const shareImage = product.media[0]
   collection={home}
 >
   <MainProduct product={product} collection={home} />
-  <ProductVideo label={video.label} videoSrc={video.video_src} />
+  {video.video_src && <ProductVideo label={video.label} videoSrc={video.video_src} />}
   <ProductEditorial items={product.editorial} handle={product.handle} />
   <PromoBand
     id={`PromoBand-${product.handle}`}

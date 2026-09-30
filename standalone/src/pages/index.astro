@@ -1,6 +1,10 @@
 ---
 // Home — templates/index.json, section for section and in order:
-// hero, as-seen-on, product grid (all 3, one row), promo, promo_band_VF78L7.
+// hero, as-seen-on, product grid (all 3, one row), promo, what-it-means.
+//
+// One email ask only: the second promo band (promo_band_VF78L7) was removed from
+// the page because, with the signup modal, it made three asks against one
+// product row. Its settings stay in pages/index.json, unused, like featured/archive.
 //
 // The featured-product band and the alternating archive rows were replaced
 // by one 3-up grid (CollectionGrid, the same one collection pages use) —
@@ -26,14 +30,13 @@ const page = pageData as PageData;
 
 const hero = settings(page, 'hero');
 const promo = settings(page, 'promo');
-const promo2 = settings(page, 'promo_band_VF78L7');
 
 const meansHeading = 'What it means.';
 const meansBody = '<p>The blitz spirit isn’t nostalgia. It’s not bunting and Churchill quotes on a tea towel.</p><p>It’s a specific quality: the ability to be <em>cheerful in adversity</em>, practical under pressure, and fundamentally unimpressed by things that are trying very hard to impress you.</p>';
 ---
 <Base
   title="BLITZSPIRIT"
-  description="Ironic. Iconic. Made in Britain. Heavyweight tees and equipment with a backbone story — ISSUE_001."
+  description="Ironic. Iconic. Printed in Britain. T-shirts with a backbone story — ISSUE_001."
 >
   <Hero heading={hero.heading} editBase="pages/index:hero" />
 
@@ -59,17 +62,5 @@ const meansBody = '<p>The blitz spirit isn’t nostalgia. It’s not bunting and
     image="/assets/backgrounds/skull-umbrella-banner.jpg"
     imageSide="left"
     fillVisual
-  />
-
-  <PromoBand
-    id="PromoBandEarlyBirds"
-    image={promo2.image}
-    heading={promo2.heading}
-    subheading={promo2.subheading}
-    leadLine={promo2.lead_line}
-    placeholder={promo2.placeholder}
-    buttonLabel={promo2.button_label}
-    successText={promo2.success_text}
-    editBase="pages/index:promo_band_VF78L7"
   />
 </Base>

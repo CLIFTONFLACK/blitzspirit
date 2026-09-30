@@ -24,19 +24,22 @@
   },
   "outro": {
     "strapline": "[ NOT HERE TO BE LIKED ]",
-    "copyright": "© 2026 BLITZSPIRIT SYSTEM CO. // ALL RIGHTS RESERVED // SECURITY OVERRIDE PRIMED.",
+    "copyright": "© 2026 BLITZSPIRIT SYSTEM CO. // ALL RIGHTS RESERVED.",
     "showPaymentIcons": false
   },
   "cart": {
-    "note": "Interface drops away at checkout // routes to native encrypted payment.",
+    "note": "Secure checkout by Stripe.",
     "showFreeShippingBar": true,
     "freeShippingThreshold": 4000
   },
   "shipping": {
     "ukStandardPence": 395,
-    "ukStandardLabel": "UK TRACKED // 2-4 WORKING DAYS",
+    "ukStandardLabel": "UK TRACKED // PRINTED TO ORDER, 5-10 WORKING DAYS",
     "freeThresholdPence": 4000,
     "freeLabel": "UK TRACKED // FREE OVER £40"
+  },
+  "fulfilment": {
+    "note": "Printed in Britain when you order it. Nothing sits in a warehouse. Allow 5–10 working days."
   },
   "discount": {
     "code": "BACKBONE10",

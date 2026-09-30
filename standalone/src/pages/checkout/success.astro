@@ -1,14 +1,14 @@
 ---
 // Where Stripe returns a shopper after a completed payment.
 import Base from '~/layouts/Base.astro';
+import settings from '~/data/settings.json';
 import { href } from '~/lib/url';
 ---
 <Base title="Order received" description="Your order is in. Carry on.">
   <section class="checkout-outcome">
     <h1 class="chunk">Order received.</h1>
     <p class="checkout-body">
-      Stripe has your payment and your receipt is on its way by email. Everything is
-      printed when you order it, not warehoused — allow 5–10 working days.
+      Stripe has your payment and your receipt is on its way by email. {settings.fulfilment.note}
     </p>
     <a href={href("/collections/all")} class="btn snap">[ CARRY ON SHOPPING ]</a>
   </section>

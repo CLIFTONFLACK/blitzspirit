@@ -37,13 +37,17 @@ interface Props {
 
 const { title, description, image, ogType, product, collection } = Astro.props;
 
+// Same test AnnouncementBar.astro uses to decide whether it renders; its CSS keys
+// the page's top offset on this class.
+const hasAnnouncement = settings.announcement.messages.some((m) => m.text.trim() !== '');
+
 // theme.liquid: append the shop name unless the title already carries it.
 const fullTitle = title.includes(settings.shop.name)
   ? title
   : `${title} – ${settings.shop.name}`;
 ---
 <!doctype html>
-<html class="no-js" lang="en-GB">
+<html class:list={['no-js', hasAnnouncement && 'has-announcement']} lang="en-GB">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -95,8 +99,10 @@ const fullTitle = title.includes(settings.shop.name)
     <SignupModal />
 
     <script>
+      import '~/scripts/nav.js';
       import '~/scripts/cart.js';
       import '~/scripts/product-form.js';
+      import '~/scripts/card-pick.js';
       import '~/scripts/modal.js';
       import '~/scripts/reveal.js';
       import '~/scripts/newsletter.js';

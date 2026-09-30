@@ -1,15 +1,33 @@
 ---
 // ProductCard — ported from snippets/product-card.liquid.
 //
-// Plate image with a hover swap to the second photo, [ ISSUE ] corner, LIMITED badge,
-// colour dots, price, and the [ VIEW PRODUCT ] link. Class names are unchanged so the
-// .coll-card CSS that ships with the collection sections still applies.
+// Plate image, LIMITED badge, colour dots, price, then two controls: a [ VIEW ]
+// link to the product page and an [ ADD TO CART ] button. Class names are
+// unchanged so the .coll-card CSS that ships with the collection sections still
+// applies.
+//
+// [ ADD TO CART ] never adds anything by itself: a card shows no size, so a
+// one-tap add could only ever pick the first variant (size S) without asking,
+// which is what it used to do. It opens a small picker instead (card-pick.js)
+// and the tap on a size is what adds that size to the bag.
+//
+// The picker is a <product-form>, so product-form.js does the variant work as it
+// does on the product page: it keeps the hidden id input in step with the pills,
+// disables sold-out sizes, and swaps the card photo when a colour is chosen.
+// cart.js then adds whatever id that input holds. The add button itself stays
+// hidden; card-pick.js presses it once a size has been chosen.
 import { Image } from 'astro:assets';
 import Swatch from './Swatch.astro';
 import Price from './Price.astro';
+import OptionPills from './OptionPills.astro';
 import strings from '~/data/strings.json';
 import { asset, assetOrNull } from '~/lib/images';
-import { firstAvailableVariant, type Product } from '~/lib/catalogue';
+import {
+  firstAvailableVariant,
+  pickerOptions,
+  variantFormData,
+  type Product,
+} from '~/lib/catalogue';
 import { href } from '~/lib/url';
 
 interface Props {
@@ -22,32 +40,47 @@ const titleUp = product.title.toUpperCase();
 const startsWithThe = titleUp.startsWith('THE ');
 
 const primary = product.media[0] ? asset(product.media[0].src) : null;
-const hover = assetOrNull(product.media[1]?.src);
+const second = assetOrNull(product.media[1]?.src);
 
+const available = product.variants.some((v) => v.available);
 const variant = firstAvailableVariant(product);
 
 const colourOption = product.options.find((o) => ['Colour', 'Color'].includes(o.name));
+const isColour = (name: string) => ['colour', 'color'].includes(name.toLowerCase());
+
+const pickers = pickerOptions(product);
+// A size tap is the only thing that adds from a card. A product with nothing to
+// pick a size from (one size, or colours only) gets a plain link to its page
+// instead of a picker that could never add.
+const hasSizePick = pickers.some(({ option }) => !isColour(option.name));
+const pickId = `CardPick-${product.handle}`;
+const sizes = '(min-width: 860px) 33vw, (min-width: 540px) 50vw, 100vw';
 ---
-<article class="coll-card">
+<article class="coll-card" data-product-wrap>
   <a href={href(`/products/${product.handle}`)} class="coll-plate">
     {primary ? (
       <>
+        {/* The photos are keyed by colourway so product-form.js can show the one
+            for the colour picked below. */}
         <Image
           src={primary}
           alt={product.media[0].alt ?? product.title}
           widths={[400, 600, 800]}
-          sizes="(min-width: 860px) 33vw, (min-width: 540px) 50vw, 100vw"
+          sizes={sizes}
           loading="lazy"
+          data-plate-frame
+          data-media-id={product.media[0].colour}
         />
-        {hover && (
+        {second && (
           <Image
-            class="coll-img--hover"
-            src={hover}
-            alt=""
+            src={second}
+            alt={product.media[1].alt ?? product.title}
             widths={[400, 600, 800]}
-            sizes="(min-width: 860px) 33vw, (min-width: 540px) 50vw, 100vw"
+            sizes={sizes}
             loading="lazy"
-            aria-hidden="true"
+            data-plate-frame
+            data-media-id={product.media[1].colour}
+            hidden
           />
         )}
       </>
@@ -72,13 +105,46 @@ const colourOption = product.options.find((o) => ['Colour', 'Color'].includes(o.
     <span class="coll-price"><Price product={product} showVat={false} /></span>
     <div class="coll-actions">
       <a href={href(`/products/${product.handle}`)} class="coll-cta snap">[ {strings.products.view} ]</a>
-      <button
-        type="button"
-        class="btn btn--solid snap coll-buy"
-        data-add-to-cart
-        data-variant-id={variant.id}
-        disabled={!variant.available}
-      >[ {variant.available ? strings.products.add_to_cart : strings.products.sold_out} ]</button>
+      {hasSizePick ? (
+        <button
+          type="button"
+          class="btn btn--solid snap coll-buy"
+          data-card-pick
+          aria-expanded="false"
+          aria-controls={pickId}
+          disabled={!available}
+        >[ {available ? strings.products.add_to_cart : strings.products.sold_out} ]</button>
+      ) : (
+        <a href={href(`/products/${product.handle}`)} class="btn btn--solid snap coll-buy">
+          [ {available ? strings.products.add_to_cart : strings.products.sold_out} ]
+        </a>
+      )}
     </div>
+
+    {hasSizePick && (
+    <product-form class="coll-pick" id={pickId} data-colour-any-size hidden>
+      <p class="eyebrow coll-pick-hint">{strings.products.pick_size}</p>
+
+      {/* Colour keeps its current value pressed; size starts with nothing
+          pressed, because the tap on a size is the add. */}
+      {pickers.map(({ option, index }) => (
+        <OptionPills
+          option={option}
+          optionIndex={index}
+          selected={isColour(option.name) ? variant.options[option.name] : ''}
+          bare={true}
+        />
+      ))}
+
+      <script
+        type="application/json"
+        data-variant-json
+        is:inline
+        set:html={JSON.stringify(variantFormData(product, (media) => media.colour))}
+      />
+      <input type="hidden" name="id" value={variant.id} />
+      <button type="button" name="add" data-add-to-cart hidden tabindex="-1" disabled={!variant.available}></button>
+    </product-form>
+    )}
   </div>
 </article>

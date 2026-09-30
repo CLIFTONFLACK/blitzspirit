@@ -254,7 +254,7 @@ import { formatMoney } from '../lib/money';
       msg.textContent = '[ ' + formatMoney(remaining) + ' MORE FOR FREE UK DELIVERY ]';
     } else {
       msg.classList.add('fsb-msg--ok');
-      msg.textContent = '[ SHIPS FREE // WELL DONE ]';
+      msg.textContent = '[ FREE UK DELIVERY UNLOCKED ]';
     }
   }
 
@@ -267,7 +267,7 @@ import { formatMoney } from '../lib/money';
       if (!state.length || !index) {
         const empty = document.createElement('div');
         empty.className = 'cart-empty';
-        empty.textContent = '[ LEDGER EMPTY // NO ASSETS ALLOCATED ]';
+        empty.textContent = '[ YOUR BAG IS EMPTY ]';
         items.appendChild(empty);
       } else {
         state.forEach((line) => {
@@ -338,7 +338,7 @@ import { formatMoney } from '../lib/money';
       })
       .catch(() => {
         openDrawer();
-        showError('CHECKOUT UNREACHABLE // TRY AGAIN');
+        showError("CHECKOUT DIDN'T LOAD. PLEASE TRY AGAIN.");
       })
       .finally(() => {
         busy = false;
