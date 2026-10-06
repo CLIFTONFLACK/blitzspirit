@@ -85,7 +85,7 @@ h1, h2, h3, h4, h5, h6 { font-family:var(--display-font); font-weight:400; }
 .mh-brand {
   display:flex; align-items:center; min-height:44px;
   font-family:var(--display-font); font-weight:400; font-size:20px; letter-spacing:.01em;
-  text-transform:uppercase; color:var(--ink);
+  text-transform:lowercase; color:var(--ink);
 }
 .mh-brand:hover { color:var(--accent); }
 .mh-nav { display:flex; align-items:center; gap:var(--s3); margin-left:auto; }
