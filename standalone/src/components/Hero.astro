@@ -4,14 +4,13 @@
 //   2. the product mockup: a cut-out of the wearer (hero-figure.webp), left
 //   3. the skull & brollies emblem (hero-emblem.webp), right, multiplied into
 //      the wall so its own concrete tile dissolves into the real one
-//   4. the call to action under the emblem: real ChunkFive text and a button
+//   4. the call to action under the emblem: a button
 // Layout and sizes live in theme.css §12a. The h1 keeps the editable headline
 // in the DOM (visually hidden) so the copy editor and search still see it.
 import { href } from '~/lib/url';
 
 interface Props {
   heading?: string;
-  ctaHeading?: string;
   ctaLabel?: string;
   ctaLink?: string;
   /** Address prefix for the inline copy editor, e.g. "pages/index:hero". */
@@ -20,7 +19,6 @@ interface Props {
 
 const {
   heading = 'BUILT FOR THE STUBBORN.',
-  ctaHeading = 'Score yours today',
   ctaLabel = '[ SCORE YOURS TODAY ]',
   ctaLink = '/products/the-establishment',
   editBase,
@@ -34,7 +32,7 @@ const {
     class="hero-figure"
     src={href('/assets/backgrounds/hero-figure.webp')}
     alt="The Establishment tee, worn"
-    width="496"
+    width="396"
     height="1600"
     fetchpriority="high"
     decoding="async"
@@ -45,12 +43,11 @@ const {
       class="hero-emblem"
       src={href('/assets/backgrounds/hero-emblem.webp')}
       alt=""
-      width="900"
-      height="900"
+      width="831"
+      height="1000"
       decoding="async"
     />
     <div class="hero-cta">
-      <h2 class="chunk hero-cta-head">{ctaHeading}</h2>
       <a href={href(ctaLink)} class="btn btn--solid snap">{ctaLabel}</a>
     </div>
   </div>
