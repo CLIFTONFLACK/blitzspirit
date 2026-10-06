@@ -602,10 +602,8 @@ dialog.card-pick-modal::backdrop { background:rgba(255,255,255,.88); }
      ~49%, which at the hero's 1920/1072 ratio is 27.4% of its width, i.e.
      54.8% of this half. */
   width:54.8%; max-width:100%; height:auto;
-  mix-blend-mode:multiply;
 }
 .hero-cta { text-align:center; display:flex; flex-direction:column; align-items:center; gap:var(--s2); }
-.hero-cta-head { color:var(--cream); font-size:clamp(1.6rem,3.6vw,3rem); }
 .hero-cta .btn { width:auto; padding:14px 32px; }
 @media (max-width:860px) {
   .hero { flex-direction:column; aspect-ratio:auto; padding:var(--s4) var(--s3) 0; gap:var(--s4); }
