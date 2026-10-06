@@ -84,7 +84,7 @@ h1, h2, h3, h4, h5, h6 { font-family:var(--display-font); font-weight:400; }
 }
 .mh-brand {
   display:flex; align-items:center; min-height:44px;
-  font-family:var(--display-font); font-weight:400; font-size:20px; letter-spacing:.01em;
+  font-family:var(--display-font); font-weight:400; font-size:32px; letter-spacing:.01em;
   text-transform:lowercase; color:var(--ink);
 }
 .mh-brand:hover { color:var(--accent); }
@@ -587,7 +587,7 @@ dialog.card-pick-modal::backdrop { background:rgba(255,255,255,.88); }
      "auto" fill-width is treated as adjustable here on wide-but-short
      windows, leaving a gap beside the hero) — cover still crops the photo
      to fit whatever height max-height leaves. */
-  width:100%; aspect-ratio:1920/1072; max-height:calc(100vh - var(--chrome-h));
+  width:100%; aspect-ratio:1920/1072;
   display:grid; grid-template-columns:1.1fr 1fr; align-items:center; gap:var(--s5);
   padding:96px var(--s6) var(--s6);
   border-bottom:1px solid var(--line);
@@ -599,7 +599,7 @@ dialog.card-pick-modal::backdrop { background:rgba(255,255,255,.88); }
      slack to give. On a wide-but-short window (max-height clamps below
      the photo's own aspect-ratio height) that budget ran out first at the
      bottom, cropping into the crossed umbrellas before it touched the hat. */
-  background:var(--paper) url('/assets/backgrounds/hero-engraved.jpg') left 55%/cover no-repeat;
+  background:var(--paper) url('/assets/backgrounds/hero-engraved.jpg') center/cover no-repeat;
 }
 .hero-copy { max-width:680px; }
 /* The headline's real text stays in the DOM for accessibility/SEO; visually
