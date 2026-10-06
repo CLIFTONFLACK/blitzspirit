@@ -16,24 +16,23 @@ interface Props {
 
 const { heading = 'BUILT FOR THE STUBBORN' } = Astro.props;
 ---
-<link rel="preload" as="image" href={href('/assets/backgrounds/stubborn-brass.webp')} />
+<link rel="preload" as="image" href={href('/assets/backgrounds/stubborn-brass.jpg')} />
 <section class="stubborn-title reveal">
   <h2 class="chunk stubborn-head">{heading}</h2>
   <span class="stubborn-sheen" aria-hidden="true"></span>
 </section>
 
 <style>
-  /* Two layers from the one render: the lettering cropped tight (contain,
-     so it sets the band's height with ~4% padding) over a plain plank strip
-     that fills the full width. The band is deliberately short. */
+  /* One render: BUILT FOR THE STUBBORN on a single line, same size every
+     letter, on oak. Cropped to a 2400x1008 strip around the lettering and
+     set to cover, so the brass scales with the width and the band stays
+     short with a thin wood margin above and below. */
   .stubborn-title {
     position: relative;
     width: 100%;
-    height: clamp(110px, 11vw, 190px);
+    height: clamp(120px, 11vw, 210px);
     border-bottom: 1px solid var(--line);
-    background:
-      url('/assets/backgrounds/stubborn-brass.webp') center / auto 92% no-repeat,
-      #2a1d12 url('/assets/backgrounds/stubborn-wood.jpg') center / cover no-repeat;
+    background: #2a1d12 url('/assets/backgrounds/stubborn-brass.jpg') center / cover no-repeat;
     overflow: hidden;
   }
   /* Real text for assistive tech and crawlers; the photo is the visual. */
