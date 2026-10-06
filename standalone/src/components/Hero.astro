@@ -1,26 +1,22 @@
 ---
 // Hero — built in parts (2026-10-06) so each can be edited on its own:
-//   1. the empty concrete wall, as .hero's background (hero-wall.jpg)
+//   1. the concrete wall, as .hero's background (hero-wall.jpg, the
+//      concrete-panel.jpg texture upscaled from 850px)
 //   2. the product mockup: a cut-out of the wearer (hero-figure.webp), left
 //   3. the skull & brollies emblem (hero-emblem.webp), right, multiplied into
 //      the wall so its own concrete tile dissolves into the real one
-//   4. the call to action under the emblem: a button
 // Layout and sizes live in theme.css §12a. The h1 keeps the editable headline
 // in the DOM (visually hidden) so the copy editor and search still see it.
 import { href } from '~/lib/url';
 
 interface Props {
   heading?: string;
-  ctaLabel?: string;
-  ctaLink?: string;
   /** Address prefix for the inline copy editor, e.g. "pages/index:hero". */
   editBase?: string;
 }
 
 const {
   heading = 'BUILT FOR THE STUBBORN.',
-  ctaLabel = 'SCORE YOURS TODAY',
-  ctaLink = '/products/the-establishment',
   editBase,
 } = Astro.props;
 ---
@@ -47,8 +43,5 @@ const {
       height="1000"
       decoding="async"
     />
-    <div class="hero-cta">
-      <a href={href(ctaLink)} class="btn btn--solid snap">{ctaLabel}</a>
-    </div>
   </div>
 </section>
