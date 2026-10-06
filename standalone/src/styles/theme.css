@@ -599,17 +599,24 @@ dialog.card-pick-modal::backdrop { background:rgba(255,255,255,.88); }
      slack to give. On a wide-but-short window (max-height clamps below
      the photo's own aspect-ratio height) that budget ran out first at the
      bottom, cropping into the crossed umbrellas before it touched the hat. */
-  /* 2026-10-06: the engraved photo (headline + emblem baked in) was replaced
-     by a plain concrete wall. Nothing in the image needs protecting from the
-     crop any more, so a plain center anchor is fine and the h1 is real text. */
-  background:var(--paper) url('/assets/backgrounds/hero-concrete.jpg') center/cover no-repeat;
+  background:var(--paper) url('/assets/backgrounds/hero-engraved.jpg') left 55%/cover no-repeat;
 }
 .hero-copy { max-width:680px; }
-.hero h1 { font-size:clamp(3rem,7.5vw,6.5rem); line-height:.92; margin:0; color:var(--cream); }
+/* The headline's real text stays in the DOM for accessibility/SEO; visually
+   it's replaced by the photo above (the box just needs to occupy roughly
+   the same area the baked-in lettering sits in). */
+.hero h1 { font-size:clamp(3rem,7.5vw,6.5rem); line-height:.92; margin:0; color:transparent; }
 @media (max-width:860px) {
+  /* The mobile photo (hero-engraved-mobile.jpg) is the same 1920x1072-ratio
+     composition, just downscaled. Cover-cropping it to a content-driven or
+     viewport-height box cuts into the skull/headline on narrow-tall phones —
+     keeping the section at the photo's own aspect-ratio instead shows the
+     whole image edge to edge, letterboxed by height rather than cropped. */
   .hero {
-    grid-template-columns:1fr; align-content:center; padding:var(--s6) var(--s3); gap:var(--s4);
-    aspect-ratio:auto; max-height:none; min-height:60vh;
+    grid-template-columns:1fr; align-content:center; padding:0 var(--s3); gap:var(--s4);
+    aspect-ratio:900/502; max-height:none;
+    background-image:url('/assets/backgrounds/hero-engraved-mobile.jpg');
+    background-size:contain; background-position:center;
   }
   .hero-copy { display:flex; align-items:center; justify-content:center; }
   .hero h1 { font-size:clamp(1.6rem,9vw,3rem); }
