@@ -30,10 +30,11 @@ const {
     carrying the whole visual, likely the page's LCP element), so nothing
     hints the browser to fetch it early the way astro:assets' `loading="eager"
     fetchpriority="high"` used to. A plain <link preload> stands in — browsers'
-    preload scanners process it wherever it sits, not just in <head>. The
-    background is now a plain concrete wall (no baked-in text or emblem), so
-    one image serves every breakpoint and the h1 is real, visible text. */}
-<link rel="preload" as="image" href={href('/assets/backgrounds/hero-concrete.jpg')} fetchpriority="high" />
+    preload scanners process it wherever it sits, not just in <head>. Two
+    variants, gated by `media` to match theme.css's own breakpoint, so a
+    phone doesn't fetch the unused desktop image (or vice versa). */}
+<link rel="preload" as="image" href={href('/assets/backgrounds/hero-engraved.jpg')} media="(min-width: 861px)" fetchpriority="high" />
+<link rel="preload" as="image" href={href('/assets/backgrounds/hero-engraved-mobile.jpg')} media="(max-width: 860px)" fetchpriority="high" />
 <section class="hero">
   <div class="hero-copy">
     {heading && <h1 class="chunk" data-line-id={editBase && `${editBase}.settings.heading`}>{heading}</h1>}
