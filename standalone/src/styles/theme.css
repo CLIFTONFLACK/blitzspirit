@@ -566,61 +566,51 @@ dialog.card-pick-modal::backdrop { background:rgba(255,255,255,.88); }
        equipment (shared 50/50 layouts, ported from index.html)
    ============================================================ */
 
-/* 12a. HERO — copy left / artwork right, both baked into one photo.
-   A single generated shot of the headline and the skull-and-brollies
-   emblem carved/painted into one continuous concrete wall (tools/openart) —
-   two separate generated images here read as two pasted-on tiles rather
-   than one wall, so this is one wide photo set as the section's own
-   background instead. .hero-art (Hero.astro) is an empty grid spacer;
-   the artwork itself is just the right half of this photo. */
+/* 12a. HERO — built in parts so each can be swapped or tweaked alone:
+     1. .hero background        the empty concrete wall (hero-wall.jpg)
+     2. .hero-figure            the product mockup, a cut-out PNG/WebP of the
+                                wearer (hero-figure.webp), left column
+     3. .hero-emblem            the skull & brollies, an engraved tile
+                                feathered at the edges and multiplied into
+                                the wall (hero-emblem.webp), right column,
+                                sized 35% down from the old baked-in photo
+     4. .hero-cta               real text + button under the emblem
+   The h1 keeps the editable headline in the DOM, visually hidden. */
 .hero {
-  /* Height tracks the photo's own aspect ratio (1920/1072) rather than the
-     viewport's, capped so it never exceeds the screen: forcing 100vh
-     regardless of width made portrait tablets and narrow-but-tall windows
-     scale the photo up drastically to "cover" an unrelated shape, cropping
-     into the headline text itself rather than just the decorative skull
-     half. Below 860px the aspect-ratio is dropped for content-driven height
-     instead (see media query) — copy stacked in one column needs more room
-     than the image's own shape provides. */
-  /* Explicit width:100% stops the browser from also shrinking the box's
-     width to satisfy aspect-ratio once max-height clamps it (the default
-     "auto" fill-width is treated as adjustable here on wide-but-short
-     windows, leaving a gap beside the hero) — cover still crops the photo
-     to fit whatever height max-height leaves. */
-  width:100%; aspect-ratio:1920/1072;
-  display:grid; grid-template-columns:1.1fr 1fr; align-items:center; gap:var(--s5);
-  padding:96px var(--s6) var(--s6);
+  position:relative; width:100%; aspect-ratio:1920/1072; overflow:hidden;
+  display:flex; justify-content:flex-end; align-items:center;
+  padding:0 var(--s6);
   border-bottom:1px solid var(--line);
-  /* Anchored slightly below center (55% rather than 50%): the emblem's
-     content band isn't symmetric around the image's midline — the bowler
-     hat starts at ~14% from the top but the umbrella tips run to ~89%
-     (measured off the source photo), so a plain center anchor spends
-     equal crop budget on both ends while the bottom only has ~11% of
-     slack to give. On a wide-but-short window (max-height clamps below
-     the photo's own aspect-ratio height) that budget ran out first at the
-     bottom, cropping into the crossed umbrellas before it touched the hat. */
-  background:var(--paper) url('/assets/backgrounds/hero-engraved.jpg') center/cover no-repeat;
+  background:var(--paper) url('/assets/backgrounds/hero-wall.jpg') center/cover no-repeat;
 }
-.hero-copy { max-width:680px; }
-/* The headline's real text stays in the DOM for accessibility/SEO; visually
-   it's replaced by the photo above (the box just needs to occupy roughly
-   the same area the baked-in lettering sits in). */
-.hero h1 { font-size:clamp(3rem,7.5vw,6.5rem); line-height:.92; margin:0; color:transparent; }
+.hero h1 {
+  position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden;
+  clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; border:0;
+}
+/* The figure is taken out of flow so its intrinsic 496x1600 never sizes the
+   hero: pinned to the floor of the left half, 94% of the hero's height. */
+.hero-figure {
+  position:absolute; bottom:0; left:25%; transform:translateX(-50%);
+  height:94%; width:auto; max-width:48%; object-fit:contain; object-position:bottom center;
+  filter:drop-shadow(0 18px 30px rgba(0,0,0,.35));
+}
+.hero-art {
+  width:50%; display:flex; flex-direction:column; align-items:center; gap:var(--s3);
+}
+.hero-emblem {
+  /* The old photo's emblem stood ~75% of the hero's height; 35% smaller is
+     ~49%, nudged up 10% (2026-10-06), which at the hero's ratio is ~30% of its width, i.e.
+     60.3% of this half. */
+  width:60.3%; max-width:100%; height:auto;
+}
+.hero-cta { text-align:center; display:flex; flex-direction:column; align-items:center; gap:var(--s2); }
+.hero-cta .btn { width:auto; padding:11px 3px; min-width:0; background:#fff; color:var(--btn-blue); border-color:var(--line-bri); }
+.hero-cta .btn:hover { background:var(--btn-blue); color:#fff; border-color:var(--btn-blue); }
 @media (max-width:860px) {
-  /* The mobile photo (hero-engraved-mobile.jpg) is the same 1920x1072-ratio
-     composition, just downscaled. Cover-cropping it to a content-driven or
-     viewport-height box cuts into the skull/headline on narrow-tall phones —
-     keeping the section at the photo's own aspect-ratio instead shows the
-     whole image edge to edge, letterboxed by height rather than cropped. */
-  .hero {
-    grid-template-columns:1fr; align-content:center; padding:0 var(--s3); gap:var(--s4);
-    aspect-ratio:900/502; max-height:none;
-    background-image:url('/assets/backgrounds/hero-engraved-mobile.jpg');
-    background-size:contain; background-position:center;
-  }
-  .hero-copy { display:flex; align-items:center; justify-content:center; }
-  .hero h1 { font-size:clamp(1.6rem,9vw,3rem); }
-  .hero-art { display:none; }
+  .hero { flex-direction:column; aspect-ratio:auto; padding:var(--s4) var(--s3) 0; gap:var(--s4); }
+  .hero-figure { position:static; transform:none; height:auto; max-height:70vh; max-width:80%; order:2; }
+  .hero-art { order:1; width:100%; }
+  .hero-emblem { width:min(60vw, 260px); }
 }
 
 /* 12b. FEATURED PRODUCT — elevated showcase */
