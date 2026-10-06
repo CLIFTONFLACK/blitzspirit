@@ -85,7 +85,7 @@ const items = [
   }
   .aso-slash::before {
     content: ""; position: absolute; top: 50%; left: -10%; width: 120%; height: 1.5px;
-    background: var(--bone-dim); transform: rotate(-35deg);
+    background: currentColor; transform: rotate(-35deg);
   }
   @media (max-width: 480px) {
     .aso-icons { gap: var(--s3); }
@@ -110,8 +110,8 @@ const items = [
   .as-seen-on.in .aso-slash::before {
     transition: transform 0.25s cubic-bezier(0.7, 0, 0.3, 1) calc(0.6s + var(--i) * 0.12s);
   }
-  /* After the reveal, the strikes keep a slow heartbeat so the band never
-     reads as dead: each one fades a touch and back, offset per icon. */
+  /* After the reveal, the icons and their strikes (both on currentColor)
+     keep a slow heartbeat so the band never reads as dead, offset per icon. */
   .as-seen-on.in .aso-icon { animation: aso-breathe 4s ease-in-out calc(1.2s + var(--i) * 0.5s) infinite; }
   @keyframes aso-breathe {
     0%, 100% { color: var(--bone-dim); }
