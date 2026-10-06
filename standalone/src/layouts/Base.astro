@@ -59,7 +59,9 @@ const fullTitle = title.includes(settings.shop.name)
 
     <StructuredData product={product} collection={collection} productImage={image} />
 
-    <link rel="icon" type="image/png" href={href("/assets/blitzspirit-stamp.png")} />
+    <link rel="icon" href={href("/favicon.ico")} sizes="any" />
+    <link rel="icon" type="image/png" sizes="512x512" href={href("/assets/favicon-512.png")} />
+    <link rel="apple-touch-icon" href={href("/assets/apple-touch-icon.png")} />
 
     <link
       rel="preload"

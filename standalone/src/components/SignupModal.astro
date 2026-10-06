@@ -9,16 +9,26 @@ import settings from '~/data/settings.json';
 import strings from '~/data/strings.json';
 
 const modal = settings.signupModal;
+const waitlist = settings.waitlist;
 
+// Waitlist for The Establishment tee (2026-10-06). The countdown target is
+// settings.waitlist.availableAt; modal.js ticks it from data-available-at.
 const content = {
   eyebrow: 'DISPATCHES',
-  heading: 'Join the Home Guard.',
-  subheading: 'Take 10% off your first order.',
-  body: 'What you get: first word on new designs, and a code for 10% off your first order. That is all. No spam — that would be nonsense.',
-  buttonLabel: '[ SIGN ME UP ]',
-  dismissLabel: 'No thanks — I’ll pay full price',
+  // U+2011 non-breaking hyphen: keeps "T-shirt" on one line in the headline.
+  heading: `Join the waitlist for ${waitlist.product} t‑shirt.`,
+  subheading: 'Available in',
+  body: 'First in the queue gets first dibs, plus a code for 10% off. That is all. No spam — that would be nonsense.',
+  buttonLabel: '[ JOIN THE WAITLIST ]',
+  dismissLabel: 'No thanks — I’ll take my chances',
   carryOnLabel: '[ CARRY ON SHOPPING ]',
 };
+const units = [
+  ['days', 'DAYS'],
+  ['hours', 'HRS'],
+  ['minutes', 'MIN'],
+  ['seconds', 'SEC'],
+];
 ---
 {modal.enabled && (
   <dialog
@@ -29,6 +39,7 @@ const content = {
     data-suppress-days={String(modal.suppressDays)}
     data-exit-intent={modal.exitIntent ? 'true' : 'false'}
     data-discount-code={settings.discount.code}
+    data-available-at={waitlist.availableAt}
     aria-labelledby="SignupModalHeading"
   >
     <div class="signup-inner">
@@ -43,9 +54,18 @@ const content = {
 
       <p class="signup-sub eyebrow">{content.subheading}</p>
 
+      <div class="signup-countdown" data-countdown role="timer" aria-live="off">
+        {units.map(([key, label]) => (
+          <div class="signup-count">
+            <b class="chunk" data-countdown-unit={key}>00</b>
+            <span class="eyebrow">{label}</span>
+          </div>
+        ))}
+      </div>
+
       <p class="signup-body">{content.body}</p>
 
-      <NewsletterForm id="SignupModalForm" buttonLabel={content.buttonLabel} />
+      <NewsletterForm id="SignupModalForm" buttonLabel={content.buttonLabel} tags="waitlist,establishment,backbone10" />
 
       <button type="button" class="signup-dismiss snap" data-modal-close>
         {content.dismissLabel}
@@ -93,6 +113,24 @@ const content = {
   .signup-close:hover { color: var(--accent); }
   .signup-head { color: var(--ink); font-size: clamp(1.8rem, 5vw, 2.6rem); }
   .signup-sub { color: var(--accent); }
+  .signup-countdown[hidden] { display: none; }
+  .signup-countdown {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--s1);
+    border: 1px solid var(--line-bri);
+  }
+  .signup-count {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--s2) 0 var(--s1);
+    border-right: 1px solid var(--line);
+  }
+  .signup-count:last-child { border-right: none; }
+  .signup-count b { font-size: clamp(1.8rem, 6vw, 2.6rem); color: var(--ink); font-variant-numeric: tabular-nums; }
+  .signup-count .eyebrow { color: var(--bone-mute); font-size: 10px; }
+  .signup-countdown.is-live b { color: var(--accent); }
   .signup-body {
     color: var(--bone-mute);
     font-size: 12px;

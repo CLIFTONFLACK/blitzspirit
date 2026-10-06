@@ -51,6 +51,10 @@
     "suppressDays": 7,
     "exitIntent": true
   },
+  "waitlist": {
+    "product": "The Establishment",
+    "availableAt": "2026-11-05T09:00:00Z"
+  },
   "social": {
     "instagram": "#",
     "tiktok": "",
