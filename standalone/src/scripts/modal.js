@@ -31,6 +31,44 @@
   if (!dlg || typeof dlg.showModal !== 'function') return;
   if (dlg.dataset.enabled !== 'true') return;
 
+  /* Waitlist countdown: data-available-at is an ISO date from settings.json.
+     Ticks once a second while the dialog is open; at zero it reads 00 and
+     the subheading flips to "available now". A missing or unparseable date
+     leaves the block hidden rather than counting from NaN. */
+  var countdown = dlg.querySelector('[data-countdown]');
+  var availableAt = Date.parse(dlg.dataset.availableAt || '');
+  var tickTimer = null;
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function renderCountdown() {
+    var left = Math.max(0, availableAt - Date.now());
+    var s = Math.floor(left / 1000);
+    var parts = {
+      days: Math.floor(s / 86400),
+      hours: Math.floor((s % 86400) / 3600),
+      minutes: Math.floor((s % 3600) / 60),
+      seconds: s % 60
+    };
+    Object.keys(parts).forEach(function (key) {
+      var el = countdown.querySelector('[data-countdown-unit="' + key + '"]');
+      if (el) el.textContent = pad(parts[key]);
+    });
+    if (left === 0) {
+      countdown.classList.add('is-live');
+      var sub = dlg.querySelector('.signup-sub');
+      if (sub) sub.textContent = 'Available now';
+      if (tickTimer) clearInterval(tickTimer);
+      tickTimer = null;
+    }
+  }
+  if (countdown && isNaN(availableAt)) {
+    countdown.hidden = true;
+    var subNaN = dlg.querySelector('.signup-sub');
+    if (subNaN) subNaN.hidden = true;
+  } else if (countdown) {
+    renderCountdown();
+    dlg.addEventListener('close', function () { if (tickTimer) clearInterval(tickTimer); tickTimer = null; });
+  }
+
   var delayMs = (parseInt(dlg.dataset.delay, 10) || 16) * 1000;
   var suppressDays = parseInt(dlg.dataset.suppressDays, 10) || 7;
   var exitIntent = dlg.dataset.exitIntent === 'true';
@@ -55,6 +93,10 @@
     lastFocus = document.activeElement;
     dlg.showModal();
     markSeen();
+    if (countdown && !countdown.hidden && !tickTimer) {
+      renderCountdown();
+      tickTimer = setInterval(renderCountdown, 1000);
+    }
   }
 
   function closeModal() {

@@ -42,7 +42,9 @@ const image = assetOrNull(src);
   ) : (
     <div class="plate__placeholder" aria-hidden="true"></div>
   )}
-  {refText && <span class="plate-cnr">{refText}</span>}
+  {/* refText is accepted but no longer rendered: the descriptor chips
+      ("FILE 02 / 1940 → 1964", "BS_002 // ISSUE_001") were retired from every
+      product image on 2026-10-06. */}
 </div>
 
 <style is:global>

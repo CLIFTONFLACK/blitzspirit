@@ -22,7 +22,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
       ))}
     </nav>
 
-    {strapline && <span class="eyebrow outro-strap" data-line-id="settings:outro.strapline">{strapline}</span>}
+    {strapline && <h2 class="chunk outro-strap" data-line-id="settings:outro.strapline">{strapline}</h2>}
   </div>
 
   <div class="footer-bottom">
@@ -34,4 +34,5 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 
 <style>
   .outro-text { color: var(--bone-dim); }
+  .outro-strap { color: var(--ink); font-size: clamp(1.4rem, 3.5vw, 2.2rem); }
 </style>
