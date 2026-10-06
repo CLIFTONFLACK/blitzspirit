@@ -604,7 +604,8 @@ dialog.card-pick-modal::backdrop { background:rgba(255,255,255,.88); }
   width:60.3%; max-width:100%; height:auto;
 }
 .hero-cta { text-align:center; display:flex; flex-direction:column; align-items:center; gap:var(--s2); }
-.hero-cta .btn { width:auto; padding:14px 32px; }
+.hero-cta .btn { width:auto; padding:14px 32px; background:#fff; color:var(--btn-blue); border-color:var(--line-bri); }
+.hero-cta .btn:hover { background:var(--btn-blue); color:#fff; border-color:var(--btn-blue); }
 @media (max-width:860px) {
   .hero { flex-direction:column; aspect-ratio:auto; padding:var(--s4) var(--s3) 0; gap:var(--s4); }
   .hero-figure { position:static; transform:none; height:auto; max-height:70vh; max-width:80%; order:2; }
