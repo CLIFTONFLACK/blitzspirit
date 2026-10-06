@@ -292,6 +292,11 @@ h1, h2, h3, h4, h5, h6 { font-family:var(--display-font); font-weight:400; }
 .details .size-pill[aria-pressed="true"] { background:var(--bone); color:var(--paper); border-color:var(--bone); }
 .details .btn { color:var(--bone); border-color:var(--bone-dim); margin-top:var(--s2); }
 .details .btn:hover { background:var(--bone); color:var(--paper); border-color:var(--bone); }
+/* The solid fill keeps its white label inside a dossier too (the .details
+   rule above would otherwise win on specificity). Hover stays the sitewide
+   .btn--solid:hover invert. */
+.details .btn--solid { color:#fff; }
+.details .btn--solid:hover { background:#fff; color:var(--btn-blue); border-color:var(--btn-blue); }
 .details .what-link { display:block; margin-top:10px; border:1px solid var(--accent); padding:10px var(--s2); font-size:13px; letter-spacing:.15em; text-transform:uppercase; color:var(--accent); text-align:center; font-family:var(--sans); }
 /* Inside .actions (item/featured), the "WHAT IS X" link sits beside
    ADD TO BAG on the same row, sized like the button. */
@@ -574,7 +579,6 @@ dialog.card-pick-modal::backdrop { background:rgba(255,255,255,.88); }
                                 feathered at the edges and multiplied into
                                 the wall (hero-emblem.webp), right column,
                                 sized 35% down from the old baked-in photo
-     4. .hero-cta               real text + button under the emblem
    The h1 keeps the editable headline in the DOM, visually hidden. */
 .hero {
   position:relative; width:100%; aspect-ratio:1920/1072; overflow:hidden;
@@ -603,9 +607,6 @@ dialog.card-pick-modal::backdrop { background:rgba(255,255,255,.88); }
      60.3% of this half. */
   width:60.3%; max-width:100%; height:auto;
 }
-.hero-cta { text-align:center; display:flex; flex-direction:column; align-items:center; gap:var(--s2); }
-.hero-cta .btn { width:auto; padding:11px 3px; min-width:0; background:#fff; color:var(--btn-blue); border-color:var(--line-bri); }
-.hero-cta .btn:hover { background:var(--btn-blue); color:#fff; border-color:var(--btn-blue); }
 @media (max-width:860px) {
   .hero { flex-direction:column; aspect-ratio:auto; padding:var(--s4) var(--s3) 0; gap:var(--s4); }
   .hero-figure { position:static; transform:none; height:auto; max-height:70vh; max-width:80%; order:2; }
