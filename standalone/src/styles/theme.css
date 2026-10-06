@@ -581,7 +581,8 @@ dialog.card-pick-modal::backdrop { background:rgba(255,255,255,.88); }
                                 sized 35% down from the old baked-in photo
    The h1 keeps the editable headline in the DOM, visually hidden. */
 .hero {
-  position:relative; width:100%; aspect-ratio:1920/1072; overflow:hidden;
+  /* 20% shorter than the photo's own 1920/1072 (2026-10-06). */
+  position:relative; width:100%; aspect-ratio:1920/858; overflow:hidden;
   display:flex; justify-content:flex-end; align-items:center;
   padding:0 var(--s6);
   border-bottom:1px solid var(--line);
