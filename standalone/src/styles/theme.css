@@ -599,9 +599,9 @@ dialog.card-pick-modal::backdrop { background:rgba(255,255,255,.88); }
 }
 .hero-emblem {
   /* The old photo's emblem stood ~75% of the hero's height; 35% smaller is
-     ~49%, which at the hero's 1920/1072 ratio is 27.4% of its width, i.e.
-     54.8% of this half. */
-  width:54.8%; max-width:100%; height:auto;
+     ~49%, nudged up 10% (2026-10-06), which at the hero's ratio is ~30% of its width, i.e.
+     60.3% of this half. */
+  width:60.3%; max-width:100%; height:auto;
 }
 .hero-cta { text-align:center; display:flex; flex-direction:column; align-items:center; gap:var(--s2); }
 .hero-cta .btn { width:auto; padding:14px 32px; }
