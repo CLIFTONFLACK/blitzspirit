@@ -205,11 +205,13 @@ const parse = (text: string) =>
      reach. The `.plate svg` rules are dropped with placeholder_svg_tag: Plate now
      renders a .plate__placeholder div, so they could never match. */}
 <style is:global>
+  .featured-visual { align-items: center; }
   .featured-visual .pdp-gallery-row {
-    margin-top: 36px;
+    margin-top: 0;
   }
   .featured-visual .plate {
     width: min(73%, 486px);
+    margin-inline: auto;
     aspect-ratio: 1 / 1.12;
     box-shadow: 0 30px 90px rgba(0, 0, 0, 0.7);
   }
