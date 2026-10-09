@@ -23,7 +23,7 @@ const {
 <link rel="preload" as="image" href={href('/assets/backgrounds/hero-stubborn.jpg')} fetchpriority="high" />
 <section class="hero">
   <div class="hero-copy">
-    {heading && <h1 class="chunk hero-title" data-line-id={editBase && `${editBase}.settings.heading`}>{heading.replace(/ (THE )/i, '\n$1')}</h1>}
+    {heading && <h1 class="chunk hero-title" data-line-id={editBase && `${editBase}.settings.heading`}>{heading.replace(/ (THE )/i, '\n$1').replace(/ (STUBBORN)/i, '\n$1')}</h1>}
     <span class="hero-rule" aria-hidden="true"></span>
     {ctaLabel && <a class="hero-cta" href={href(ctaLink)}>{ctaLabel} <span aria-hidden="true">→</span></a>}
   </div>
