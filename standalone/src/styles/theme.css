@@ -211,6 +211,14 @@ h1, h2, h3, h4, h5, h6 { font-family:var(--display-font); font-weight:400; }
 .plate img { width:100%; height:100%; object-fit:contain; }
 .plate-cnr { position:absolute; bottom:8px; right:10px; font-size:9px; letter-spacing:.1em; color:var(--plate-ref); }
 
+/* Wall-poster mockups: the image is a transparent cut-out of the poster, so the
+   container itself carries the concrete. No padding, no beige well. */
+:is(.plate,.coll-plate,.cs-plate,.ci-plate):has(img[src*="mockup-"]) {
+  background:url('../assets/mockup-wall.jpg') center / cover no-repeat;
+  padding:0;
+  border:0;
+}
+
 /* Price (snippets/price.liquid) */
 .price__compare { color:var(--bone-mute); text-decoration:line-through; margin-right:8px; }
 .price__current { font-family:var(--display-font); font-weight:400; font-size:17px; letter-spacing:.02em; }
