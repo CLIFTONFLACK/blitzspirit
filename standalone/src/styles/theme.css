@@ -566,14 +566,47 @@ dialog.card-pick-modal::backdrop { background:rgba(255,255,255,.88); }
        equipment (shared 50/50 layouts, ported from index.html)
    ============================================================ */
 
-/* 12a. HERO — copy left / artwork right, both baked into one photo.
+/* 12a. HERO — one photo (man + skull-and-brollies emblem on a concrete wall),
+   text-free. The headline and CTA are real HTML overlaid on the empty wall
+   on the left (Hero.astro), so they stay editable and accessible. Height
+   tracks the photo's own aspect ratio, capped at the viewport. */
+.hero {
+  position:relative; width:100%; aspect-ratio:1600/866; max-height:100vh;
+  border-bottom:1px solid var(--line);
+  background:var(--paper) url('/assets/backgrounds/hero-stubborn.jpg') center/cover no-repeat;
+}
+.hero-copy {
+  position:absolute; left:6.5%; top:50%; transform:translateY(-50%);
+  display:flex; flex-direction:column; align-items:flex-start; gap:clamp(10px,1.4vw,22px);
+}
+.hero h1 { font-size:clamp(1.2rem,2.1vw,2.4rem); line-height:1; margin:0; color:var(--cream); white-space:pre-line; }
+.hero-rule { display:block; width:clamp(70px,5.6vw,110px); height:2px; background:var(--cream); }
+.hero-cta {
+  display:inline-flex; align-items:center; gap:.9em; font-family:var(--sans); font-weight:700;
+  font-size:clamp(10px,.8vw,13px); letter-spacing:.22em; text-transform:uppercase; color:var(--cream);
+}
+.hero-cta span { transition:transform .2s ease; font-size:1.6em; letter-spacing:0; line-height:1; }
+.hero-cta:hover span { transform:translateX(6px); }
+@media (max-width:860px) {
+  /* Whole photo edge to edge on top, copy stacked beneath on paper. */
+  .hero {
+    aspect-ratio:auto; max-height:none; padding-top:calc(100vw * 866 / 1600);
+    background-size:100% auto; background-position:top center;
+  }
+  .hero-copy { position:static; transform:none; padding:var(--s4) var(--s3); }
+  .hero h1 { font-size:clamp(1.8rem,8vw,2.6rem); }
+  .hero-cta { font-size:11px; }
+}
+
+/* 12a-2. STUBBORN STRIP — the previous hero, moved just above the footer.
+   Copy left / artwork right, both baked into one photo.
    A single generated shot of the headline and the skull-and-brollies
    emblem carved/painted into one continuous concrete wall (tools/openart) —
    two separate generated images here read as two pasted-on tiles rather
    than one wall, so this is one wide photo set as the section's own
-   background instead. .hero-art (Hero.astro) is an empty grid spacer;
+   background instead. .stubborn-strip .hero-art (Hero.astro) is an empty grid spacer;
    the artwork itself is just the right half of this photo. */
-.hero {
+.stubborn-strip {
   /* Height tracks the photo's own aspect ratio (1920/1072) rather than the
      viewport's, capped so it never exceeds the screen: forcing 100vh
      regardless of width made portrait tablets and narrow-but-tall windows
@@ -601,26 +634,26 @@ dialog.card-pick-modal::backdrop { background:rgba(255,255,255,.88); }
      bottom, cropping into the crossed umbrellas before it touched the hat. */
   background:var(--paper) url('/assets/backgrounds/hero-engraved.jpg') center/cover no-repeat;
 }
-.hero-copy { max-width:680px; }
+.stubborn-strip .hero-copy { max-width:680px; }
 /* The headline's real text stays in the DOM for accessibility/SEO; visually
    it's replaced by the photo above (the box just needs to occupy roughly
    the same area the baked-in lettering sits in). */
-.hero h1 { font-size:clamp(3rem,7.5vw,6.5rem); line-height:.92; margin:0; color:transparent; }
+.stubborn-strip h2 { font-size:clamp(3rem,7.5vw,6.5rem); line-height:.92; margin:0; color:transparent; }
 @media (max-width:860px) {
   /* The mobile photo (hero-engraved-mobile.jpg) is the same 1920x1072-ratio
      composition, just downscaled. Cover-cropping it to a content-driven or
      viewport-height box cuts into the skull/headline on narrow-tall phones —
      keeping the section at the photo's own aspect-ratio instead shows the
      whole image edge to edge, letterboxed by height rather than cropped. */
-  .hero {
+  .stubborn-strip {
     grid-template-columns:1fr; align-content:center; padding:0 var(--s3); gap:var(--s4);
     aspect-ratio:900/502; max-height:none;
     background-image:url('/assets/backgrounds/hero-engraved-mobile.jpg');
     background-size:contain; background-position:center;
   }
-  .hero-copy { display:flex; align-items:center; justify-content:center; }
-  .hero h1 { font-size:clamp(1.6rem,9vw,3rem); }
-  .hero-art { display:none; }
+  .stubborn-strip .hero-copy { display:flex; align-items:center; justify-content:center; }
+  .stubborn-strip h2 { font-size:clamp(1.6rem,9vw,3rem); }
+  .stubborn-strip .hero-art { display:none; }
 }
 
 /* 12b. FEATURED PRODUCT — elevated showcase */

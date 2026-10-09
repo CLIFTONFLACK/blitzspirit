@@ -1,0 +1,16 @@
+---
+// StubbornStrip — the previous homepage hero (headline + skull & brollies
+// carved into one concrete wall, baked into one photo), moved to sit just
+// above the footer. Styles: theme.css §12a-2. The h2 keeps its real text in
+// the DOM, transparent over the photo's own lettering.
+import { href } from '~/lib/url';
+
+interface Props { heading?: string; }
+const { heading = 'BUILT FOR THE STUBBORN.' } = Astro.props;
+---
+<section class="stubborn-strip">
+  <div class="hero-copy">
+    <h2 class="chunk">{heading}</h2>
+  </div>
+  <div class="hero-art" aria-hidden="true"></div>
+</section>

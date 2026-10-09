@@ -21,6 +21,7 @@ import AsSeenOn from '~/components/AsSeenOn.astro';
 import CollectionGrid from '~/components/CollectionGrid.astro';
 import FeaturedProduct from '~/components/FeaturedProduct.astro';
 import PromoBand from '~/components/PromoBand.astro';
+import StubbornStrip from '~/components/StubbornStrip.astro';
 import AboutSplit from '~/components/AboutSplit.astro';
 
 import pageData from '~/data/pages/index.json';
@@ -83,4 +84,6 @@ const meansBody = '<p>The blitz spirit isn’t nostalgia. It’s not bunting and
     imageSide="left"
     fillVisual
   />
+
+  <StubbornStrip heading={hero.heading} />
 </Base>
