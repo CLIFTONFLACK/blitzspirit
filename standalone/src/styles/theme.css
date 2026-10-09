@@ -584,11 +584,11 @@ dialog.card-pick-modal::backdrop { background:rgba(255,255,255,.88); }
   position:absolute; left:6.5%; top:50%; transform:translateY(-50%);
   display:flex; flex-direction:column; align-items:flex-start; gap:clamp(10px,1.4vw,22px);
 }
-.hero h1 { font-size:clamp(1.2rem,2.1vw,2.4rem); line-height:1; margin:0; color:var(--cream); white-space:pre-line; }
+.hero h1 { font-size:clamp(calc(1.2rem + 10px),calc(2.1vw + 10px),calc(2.4rem + 10px)); line-height:1; margin:0; color:var(--cream); white-space:pre-line; }
 .hero-rule { display:block; width:clamp(70px,5.6vw,110px); height:2px; background:var(--cream); }
 .hero-cta {
   display:inline-flex; align-items:center; gap:.9em; font-family:var(--sans); font-weight:700;
-  font-size:clamp(10px,.8vw,13px); letter-spacing:.22em; text-transform:uppercase; color:var(--cream);
+  font-size:clamp(12px,calc(.8vw + 2px),15px); letter-spacing:.22em; text-transform:uppercase; color:var(--cream);
 }
 .hero-cta span { transition:transform .2s ease; font-size:1.6em; letter-spacing:0; line-height:1; }
 .hero-cta:hover span { transform:translateX(6px); }
@@ -599,8 +599,8 @@ dialog.card-pick-modal::backdrop { background:rgba(255,255,255,.88); }
     background-size:100% auto; background-position:top center;
   }
   .hero-copy { position:static; transform:none; padding:var(--s4) var(--s3); }
-  .hero h1 { font-size:clamp(1.8rem,8vw,2.6rem); }
-  .hero-cta { font-size:11px; }
+  .hero h1 { font-size:clamp(calc(1.8rem + 10px),calc(8vw + 10px),calc(2.6rem + 10px)); }
+  .hero-cta { font-size:13px; }
 }
 
 /* 12b. FEATURED PRODUCT — elevated showcase */
