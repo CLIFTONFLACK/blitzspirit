@@ -196,9 +196,9 @@
       "media": [
         {
           "colour": "Black",
-          "src": "/assets/products/mockup-establishment-black.jpg",
-          "width": 1122,
-          "height": 1402,
+          "src": "/assets/products/mockup-establishment-black.png",
+          "width": 933,
+          "height": 1259,
           "alt": "The Establishment / OXY_BLACK, on a wall poster"
         },
         {
@@ -483,9 +483,9 @@
       "media": [
         {
           "colour": "Off-White",
-          "src": "/assets/products/mockup-frequency-off-white.jpg",
-          "width": 1122,
-          "height": 1402,
+          "src": "/assets/products/mockup-frequency-off-white.png",
+          "width": 933,
+          "height": 1259,
           "alt": "The Frequency / CHALK_WHITE, on a wall poster"
         },
         {
@@ -525,9 +525,9 @@
         },
         {
           "colour": "Navy",
-          "src": "/assets/products/mockup-frequency-navy.jpg",
-          "width": 1122,
-          "height": 1402,
+          "src": "/assets/products/mockup-frequency-navy.png",
+          "width": 933,
+          "height": 1259,
           "alt": "The Frequency / SYSTEM_NAVY, on a wall poster"
         },
         {
@@ -737,9 +737,9 @@
       "media": [
         {
           "colour": "Black",
-          "src": "/assets/products/mockup-stubborn-black.jpg",
-          "width": 1122,
-          "height": 1402,
+          "src": "/assets/products/mockup-stubborn-black.png",
+          "width": 933,
+          "height": 1259,
           "alt": "The Stubborn / OXY_BLACK, on a wall poster"
         },
         {
