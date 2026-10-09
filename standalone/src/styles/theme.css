@@ -212,12 +212,13 @@ h1, h2, h3, h4, h5, h6 { font-family:var(--display-font); font-weight:400; }
 .plate-cnr { position:absolute; bottom:8px; right:10px; font-size:9px; letter-spacing:.1em; color:var(--plate-ref); }
 
 /* Wall-poster mockups: the image is a transparent cut-out of the poster, so the
-   container itself carries the concrete. No padding, no beige well. */
-:is(.plate,.coll-plate,.cs-plate,.ci-plate):has(img[src*="mockup-"]) {
-  background:url('../assets/mockup-wall.jpg') center / cover no-repeat;
-  padding:0;
-  border:0;
+   container carries the one concrete wall (a clean section of the homepage hero
+   photo). The plate itself goes transparent: no padding, border or second texture. */
+:is(.pdp-gallery,.featured-visual,.item-visual,.coll-plate,.cs-plate,.ci-plate):has(img[src*="mockup-"]) {
+  background-image:url('../assets/mockup-wall.jpg');
+  background-size:cover; background-position:center; background-repeat:no-repeat;
 }
+.plate:has(img[src*="mockup-"]) { background:transparent; border:0; padding:0; box-shadow:none; }
 
 /* Price (snippets/price.liquid) */
 .price__compare { color:var(--bone-mute); text-decoration:line-through; margin-right:8px; }
