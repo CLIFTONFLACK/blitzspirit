@@ -571,50 +571,36 @@ dialog.card-pick-modal::backdrop { background:rgba(255,255,255,.88); }
        equipment (shared 50/50 layouts, ported from index.html)
    ============================================================ */
 
-/* 12a. HERO — built in parts so each can be swapped or tweaked alone:
-     1. .hero background        the empty concrete wall (hero-wall.jpg)
-     2. .hero-figure            the product mockup, a cut-out PNG/WebP of the
-                                wearer (hero-figure.webp), left column
-     3. .hero-emblem            the skull & brollies, an engraved tile
-                                feathered at the edges and multiplied into
-                                the wall (hero-emblem.webp), right column,
-                                sized 35% down from the old baked-in photo
-   The h1 keeps the editable headline in the DOM, visually hidden. */
+/* 12a. HERO — one photo (man + skull-and-brollies emblem on a concrete wall),
+   text-free. The headline and CTA are real HTML overlaid on the empty wall
+   on the left (Hero.astro), so they stay editable and accessible. Height
+   tracks the photo's own aspect ratio, capped at the viewport. */
 .hero {
-  /* 20% shorter than the photo's own 1920/1072 (2026-10-06). */
-  position:relative; width:100%; aspect-ratio:1920/858; overflow:hidden;
-  display:flex; justify-content:flex-end; align-items:center;
-  padding:0 var(--s6);
+  position:relative; width:100%; aspect-ratio:1600/866; max-height:100vh;
   border-bottom:1px solid var(--line);
-  background:var(--paper) url('/assets/backgrounds/hero-wall.jpg') center/cover no-repeat;
+  background:var(--paper) url('/assets/backgrounds/hero-stubborn.jpg') center/cover no-repeat;
 }
-.hero h1 {
-  position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden;
-  clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; border:0;
+.hero-copy {
+  position:absolute; left:6.5%; top:50%; transform:translateY(-50%);
+  display:flex; flex-direction:column; align-items:flex-start; gap:clamp(10px,1.4vw,22px);
 }
-/* The figure is taken out of flow so its intrinsic 496x1600 never sizes the
-   hero: pinned to the floor of the left half, 94% of the hero's height. */
-.hero-figure {
-  position:absolute; bottom:0; left:25%; transform:translateX(-50%);
-  height:94%; width:auto; max-width:48%; object-fit:contain; object-position:bottom center;
-  filter:drop-shadow(0 18px 30px rgba(0,0,0,.35));
+.hero h1 { font-size:clamp(1.2rem,2.1vw,2.4rem); line-height:1; margin:0; color:var(--cream); white-space:pre-line; }
+.hero-rule { display:block; width:clamp(70px,5.6vw,110px); height:2px; background:var(--cream); }
+.hero-cta {
+  display:inline-flex; align-items:center; gap:.9em; font-family:var(--sans); font-weight:700;
+  font-size:clamp(10px,.8vw,13px); letter-spacing:.22em; text-transform:uppercase; color:var(--cream);
 }
-.hero-art {
-  width:50%; display:flex; flex-direction:column; align-items:center; gap:var(--s3);
-}
-.hero-emblem {
-  /* The old photo's emblem stood ~75% of the hero's height; 35% smaller is
-     ~49%, nudged up 10% (2026-10-06), which at the hero's ratio is ~30% of its width, i.e.
-     60.3% of this half. */
-  width:60.3%; max-width:100%; height:auto;
-}
+.hero-cta span { transition:transform .2s ease; font-size:1.6em; letter-spacing:0; line-height:1; }
+.hero-cta:hover span { transform:translateX(6px); }
 @media (max-width:860px) {
-  /* Phone: same side-by-side composition as desktop, taller box. The figure
-     stands on the left half, the emblem sits smaller on the right half. */
-  .hero { aspect-ratio:auto; height:min(120vw, 70vh); padding:0 var(--s2); justify-content:flex-end; }
-  .hero-figure { left:26%; height:92%; max-width:50%; }
-  .hero-art { width:50%; }
-  .hero-emblem { width:82%; }
+  /* Whole photo edge to edge on top, copy stacked beneath on paper. */
+  .hero {
+    aspect-ratio:auto; max-height:none; padding-top:calc(100vw * 866 / 1600);
+    background-size:100% auto; background-position:top center;
+  }
+  .hero-copy { position:static; transform:none; padding:var(--s4) var(--s3); }
+  .hero h1 { font-size:clamp(1.8rem,8vw,2.6rem); }
+  .hero-cta { font-size:11px; }
 }
 
 /* 12b. FEATURED PRODUCT — elevated showcase */

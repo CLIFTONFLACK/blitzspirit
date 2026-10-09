@@ -1,47 +1,30 @@
 ---
-// Hero — built in parts (2026-10-06) so each can be edited on its own:
-//   1. the concrete wall, as .hero's background (hero-wall.jpg, the
-//      concrete-panel.jpg texture upscaled from 850px)
-//   2. the product mockup: a cut-out of the wearer (hero-figure.webp), left
-//   3. the skull & brollies emblem (hero-emblem.webp), right, multiplied into
-//      the wall so its own concrete tile dissolves into the real one
-// Layout and sizes live in theme.css §12a. The h1 keeps the editable headline
-// in the DOM (visually hidden) so the copy editor and search still see it.
+// Hero — one text-free photo (hero-stubborn.jpg: man + skull-and-brollies
+// emblem on a concrete wall). The headline and CTA are real HTML overlaid on
+// the empty wall at left (theme.css §12a), set in ChunkFive via `.chunk`.
+// The previous baked-text hero now lives on as StubbornStrip above the footer.
 import { href } from '~/lib/url';
 
 interface Props {
   heading?: string;
+  ctaLabel?: string;
+  ctaLink?: string;
   /** Address prefix for the inline copy editor, e.g. "pages/index:hero". */
   editBase?: string;
 }
 
 const {
   heading = 'BUILT FOR THE STUBBORN.',
+  ctaLabel = 'SHOP THE COLLECTION',
+  ctaLink = '/collections/all',
   editBase,
 } = Astro.props;
 ---
-<link rel="preload" as="image" href={href('/assets/backgrounds/hero-wall.jpg')} fetchpriority="high" />
+<link rel="preload" as="image" href={href('/assets/backgrounds/hero-stubborn.jpg')} fetchpriority="high" />
 <section class="hero">
-  {heading && <h1 class="chunk" data-line-id={editBase && `${editBase}.settings.heading`}>{heading}</h1>}
-
-  <img
-    class="hero-figure"
-    src={href('/assets/backgrounds/hero-figure.webp')}
-    alt="The Establishment tee, worn"
-    width="396"
-    height="1600"
-    fetchpriority="high"
-    decoding="async"
-  />
-
-  <div class="hero-art">
-    <img
-      class="hero-emblem"
-      src={href('/assets/backgrounds/hero-emblem.webp')}
-      alt=""
-      width="831"
-      height="1000"
-      decoding="async"
-    />
+  <div class="hero-copy">
+    {heading && <h1 class="chunk hero-title" data-line-id={editBase && `${editBase}.settings.heading`}>{heading.replace(/ (THE )/i, '\n$1')}</h1>}
+    <span class="hero-rule" aria-hidden="true"></span>
+    {ctaLabel && <a class="hero-cta" href={href(ctaLink)}>{ctaLabel} <span aria-hidden="true">→</span></a>}
   </div>
 </section>
