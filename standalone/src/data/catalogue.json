@@ -196,6 +196,13 @@
       "media": [
         {
           "colour": "Black",
+          "src": "/assets/products/mockup-establishment-black.jpg",
+          "width": 1122,
+          "height": 1402,
+          "alt": "The Establishment / OXY_BLACK, on a wall poster"
+        },
+        {
+          "colour": "Black",
           "src": "/assets/products/tee-skull-black-colour.jpg",
           "width": 994,
           "height": 1092,
@@ -476,6 +483,13 @@
       "media": [
         {
           "colour": "Off-White",
+          "src": "/assets/products/mockup-frequency-off-white.jpg",
+          "width": 1122,
+          "height": 1402,
+          "alt": "The Frequency / CHALK_WHITE, on a wall poster"
+        },
+        {
+          "colour": "Off-White",
           "src": "/assets/products/tee-roundel-offwhite.jpg",
           "width": 974,
           "height": 1118,
@@ -508,6 +522,13 @@
           "width": 1000,
           "height": 1000,
           "alt": "The Frequency / CHALK_WHITE, worn by a woman"
+        },
+        {
+          "colour": "Navy",
+          "src": "/assets/products/mockup-frequency-navy.jpg",
+          "width": 1122,
+          "height": 1402,
+          "alt": "The Frequency / SYSTEM_NAVY, on a wall poster"
         },
         {
           "colour": "Navy",
@@ -714,6 +735,13 @@
         }
       ],
       "media": [
+        {
+          "colour": "Black",
+          "src": "/assets/products/mockup-stubborn-black.jpg",
+          "width": 1122,
+          "height": 1402,
+          "alt": "The Stubborn / OXY_BLACK, on a wall poster"
+        },
         {
           "colour": "Black",
           "src": "/assets/products/tee-stubborn-black.png",
