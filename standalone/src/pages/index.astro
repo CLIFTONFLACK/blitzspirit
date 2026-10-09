@@ -1,7 +1,8 @@
 ---
-// Home — templates/index.json, section for section and in order:
-// hero, as-seen-on, featured product, statement band, product grid (all 3, one
-// row), promo (signup), what-it-means.
+// Home — templates/index.json's sections, with two departures (the stubborn
+// title band is new, as-seen-on moved below the carousel):
+// hero, stubborn title band, featured product, statement band, product grid
+// (all 3, one row), as-seen-on, promo (signup), what-it-means.
 //
 // One email ask only: the statement band (promo_band_VF78L7, "The Blitz, the
 // weather, the pub queue.") renders without its signup form, because with the
@@ -18,10 +19,10 @@
 import Base from '~/layouts/Base.astro';
 import Hero from '~/components/Hero.astro';
 import AsSeenOn from '~/components/AsSeenOn.astro';
+import StubbornTitle from '~/components/StubbornTitle.astro';
 import CollectionGrid from '~/components/CollectionGrid.astro';
 import FeaturedProduct from '~/components/FeaturedProduct.astro';
 import PromoBand from '~/components/PromoBand.astro';
-import StubbornStrip from '~/components/StubbornStrip.astro';
 import AboutSplit from '~/components/AboutSplit.astro';
 
 import pageData from '~/data/pages/index.json';
@@ -44,8 +45,6 @@ const meansBody = '<p>The blitz spirit isn’t nostalgia. It’s not bunting and
 >
   <Hero heading={hero.heading} editBase="pages/index:hero" />
 
-  <AsSeenOn />
-
   <FeaturedProduct
     product={featured.product}
     dossier={featured.dossier}
@@ -64,6 +63,8 @@ const meansBody = '<p>The blitz spirit isn’t nostalgia. It’s not bunting and
   />
 
   <CollectionGrid products={products} wide carousel />
+
+  <AsSeenOn />
 
   <PromoBand
     id="PromoBand"
@@ -85,5 +86,5 @@ const meansBody = '<p>The blitz spirit isn’t nostalgia. It’s not bunting and
     fillVisual
   />
 
-  <StubbornStrip heading={hero.heading} />
+  <StubbornTitle />
 </Base>

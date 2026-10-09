@@ -21,13 +21,13 @@ const items = [
   { label: 'Influencers' },
 ];
 ---
-<section class="as-seen-on">
+<section class="as-seen-on reveal">
   <div class="aso-inner">
     <h2 class="chunk aso-head">{heading}</h2>
     <p class="aso-body">{body}</p>
     <ul class="aso-icons" aria-hidden="true">
-      {items.map((item) => (
-        <li class="aso-icon" title={item.label}>
+      {items.map((item, i) => (
+        <li class="aso-icon" title={item.label} style={`--i:${i}`}>
           {item.label === 'Shops' && (
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
               <path d="M3 9l1.5-5h15L21 9" stroke-linecap="round" stroke-linejoin="round" />
@@ -85,9 +85,43 @@ const items = [
   }
   .aso-slash::before {
     content: ""; position: absolute; top: 50%; left: -10%; width: 120%; height: 1.5px;
-    background: var(--bone-dim); transform: rotate(-35deg);
+    background: currentColor; transform: rotate(-35deg);
   }
   @media (max-width: 480px) {
     .aso-icons { gap: var(--s3); }
+  }
+
+  /* Life: on first scroll into view (reveal.js adds .in) the heading and
+     body rise in, each icon pops up in turn, then its strike slashes across
+     like a stamp going down. Only ever hidden behind html.js, so no-JS
+     visitors see everything at once. */
+  html.js .as-seen-on:not(.in) .aso-head,
+  html.js .as-seen-on:not(.in) .aso-body { opacity: 0; transform: translateY(14px); }
+  html.js .as-seen-on:not(.in) .aso-icon { opacity: 0; transform: translateY(10px) scale(0.8); }
+  html.js .as-seen-on:not(.in) .aso-slash::before { transform: rotate(-35deg) scaleX(0); }
+  .aso-slash::before { transform-origin: left center; }
+  .as-seen-on.in .aso-head { transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .as-seen-on.in .aso-body { transition: opacity 0.5s ease 0.12s, transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.12s; }
+  .as-seen-on.in .aso-icon {
+    transition:
+      opacity 0.35s ease calc(0.3s + var(--i) * 0.12s),
+      transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) calc(0.3s + var(--i) * 0.12s);
+  }
+  .as-seen-on.in .aso-slash::before {
+    transition: transform 0.25s cubic-bezier(0.7, 0, 0.3, 1) calc(0.6s + var(--i) * 0.12s);
+  }
+  /* After the reveal, the icons and their strikes (both on currentColor)
+     keep a slow heartbeat so the band never reads as dead, offset per icon. */
+  .as-seen-on.in .aso-icon { animation: aso-breathe 4s ease-in-out calc(1.2s + var(--i) * 0.5s) infinite; }
+  @keyframes aso-breathe {
+    0%, 100% { color: var(--bone-dim); }
+    50% { color: var(--ink); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html.js .as-seen-on:not(.in) .aso-head,
+    html.js .as-seen-on:not(.in) .aso-body,
+    html.js .as-seen-on:not(.in) .aso-icon { opacity: 1; transform: none; }
+    html.js .as-seen-on:not(.in) .aso-slash::before { transform: rotate(-35deg); }
+    .as-seen-on.in .aso-icon { animation: none; }
   }
 </style>
