@@ -215,8 +215,11 @@ h1, h2, h3, h4, h5, h6 { font-family:var(--display-font); font-weight:400; }
    container carries the one concrete wall (a clean section of the homepage hero
    photo). The plate itself goes transparent: no padding, border or second texture. */
 :is(.pdp-gallery,.featured-visual,.item-visual,.coll-plate,.cs-plate,.ci-plate):has(img[src*="mockup-"]) {
-  background-image:url('../assets/mockup-wall.jpg');
-  background-size:cover; background-position:center; background-repeat:no-repeat;
+  /* The wall is a seamless 330px tile cut from the hero photo (1600px wide), so
+     sizing it at 20.6vw keeps the hero's own concrete scale at every width
+     (floored at 160px on phones) instead of cover-zooming a narrow crop. */
+  background-image:url('../assets/mockup-wall-tile.jpg');
+  background-size:max(20.6vw, 160px) auto; background-position:center top; background-repeat:repeat;
 }
 .plate:has(img[src*="mockup-"]) { background:transparent; border:0; padding:0; box-shadow:none; }
 
